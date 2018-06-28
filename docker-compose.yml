@@ -113,7 +113,7 @@ services:
         - "CONTEXT_BROKER=http://orion:1026/v2" # URL of the context broker to update context
         - "NGSI_LD_PREFIX="
         - "STH_COMET_SERVICE_URL=http://sth-comet:8666/STH/v1"
-        - "WUNDERGROUND_KEY_ID=<ADD_YOUR_KEY_ID>"
+        - "OPENWEATHERMAP_KEY_ID=<ADD_YOUR_KEY_ID>"
         - "TWITTER_CONSUMER_KEY=<ADD_YOUR_CONSUMER_KEY>"
         - "TWITTER_CONSUMER_SECRET=<ADD_YOUR_CONSUMER_SECRET>"
 
