@@ -18,10 +18,7 @@ loadData () {
 
 stoppingContainers () {
 	echo "Stopping containers"
-	docker-compose -f docker-compose.yml -p fiware down
-	echo "Removing volumes"
-	docker volume prune --force
-	echo ""
+	docker-compose --log-level ERROR -p fiware down -v --remove-orphans
 }
 
 if (( $# != 1 )); then
@@ -37,13 +34,13 @@ case "${command}" in
         ;;
 	 "start")
 		stoppingContainers
-		echo -e "Starting five containers \033[1;34mOrion\033[0m, \033[1;34mstart\033[0m, \033[1;36mIoT-Agent\033[0m, \033[1;30mContext-Provider\033[0m and a \033[1;30mMongoDB\033[0m database."	
+		echo -e "Starting seven containers \033[1;34mOrion\033[0m, \033[1;34mQuantum Leap\033[0m, \033[1;36mIoT-Agent\033[0m, \033[1;30mContext-Provider\033[0m, a \033[1;30mGrafana\033[0m metrics dashboard and \033[1;30mCrate\033[0m and \033[1;30mMongoDB\033[0m databases."	
 		echo -e "\033[1;34mOrion\033[0m is the context broker"
-		echo -e "\033[1;34mstart\033[0m will read and write to Mongo-DB"
+		echo -e "\033[1;34mQuantum Leap\033[0m will read and write to Crate-DB"
 		echo -e "\033[1;36mIoT-Agent\033[0m is configured for the UltraLight Protocol"
 		echo -e "\033[1;30mContext-Provider\033[0m acts as a series of dummy IoT Sensors over HTTP"
 		echo ""
-		docker-compose -f docker-compose.yml -p fiware up -d --remove-orphans
+		docker-compose --log-level ERROR -p fiware up -d --remove-orphans
 		loadData
 		;;
 	"stop")
