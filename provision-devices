@@ -1,0 +1,723 @@
+#!/bin/bash
+#
+#  curl commands to reload the data from the previous tutorial
+#
+#
+
+set -e
+
+
+curl () {
+  docker run --network fiware_default --rm appropriate/curl -s \
+    "$@"
+}
+
+
+#
+# Create a service group for all UltraLight IoT devices
+#
+
+curl -X POST \
+  'http://iot-agent:4041/iot/services' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+ "services": [
+   {
+     "apikey":      "4jggokgpepnvsb2uv4s40d59ov",
+     "cbroker":     "http://orion:1026",
+     "entity_type": "Thing",
+     "resource":    "/iot/d"
+   }
+ ]
+}'
+
+####################################################
+
+#
+# Provision motion sensor 001
+#
+
+curl -X POST \
+  'http://iot-agent:4041/iot/devices' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+ "devices": [
+   {
+     "device_id":   "motion001",
+     "entity_name": "Motion:001",
+     "entity_type": "Motion",
+     "protocol":    "PDI-IoTA-UltraLight",
+     "timezone":    "Europe/Berlin",
+     "attributes": [
+       { "object_id": "c", "name":"count", "type":"Integer"}
+      ],
+      "static_attributes": [
+         {"name":"refStore", "type": "Relationship","value": "Store:001"}
+      ]
+   },
+   {
+      "device_id": "bell001",
+      "entity_name": "Bell:001",
+      "entity_type": "Bell",
+      "protocol": "PDI-IoTA-UltraLight",
+      "transport": "HTTP",
+      "endpoint": "http://context-provider:3001/iot/bell001",
+      "commands": [ 
+        {
+          "name": "ring",
+          "type": "command"
+        }
+       ],
+       "static_attributes": [
+         {"name":"refStore", "type": "Relationship","value": "Store:001"}
+      ]
+    },
+    {
+      "device_id": "door001",
+      "entity_name": "Door:001",
+      "entity_type": "Door",
+      "protocol": "PDI-IoTA-UltraLight",
+      "transport": "HTTP",
+      "endpoint": "http://context-provider:3001/iot/door001",
+      "commands": [ 
+        {"name": "unlock","type": "command"},
+        {"name": "open","type": "command"},
+        {"name": "close","type": "command"},
+        {"name": "lock","type": "command"}
+       ],
+       "attributes": [
+        {"object_id": "s", "name": "state", "type":"Text"}
+       ],
+       "static_attributes": [
+         {"name":"refStore", "type": "Relationship","value": "Store:001"}
+       ]
+    }, 
+    {
+      "device_id": "lamp001",
+      "entity_name": "Lamp:001",
+      "entity_type": "Lamp",
+      "protocol": "PDI-IoTA-UltraLight",
+      "transport": "HTTP",
+      "endpoint": "http://context-provider:3001/iot/lamp001",
+      "commands": [ 
+        {"name": "on","type": "command"},
+        {"name": "off","type": "command"}
+       ],
+       "attributes": [
+       	{"object_id": "s", "name": "state", "type":"Text"},
+        {"object_id": "l", "name": "luminosity", "type":"Integer"}
+       ],
+       "static_attributes": [
+         {"name":"refStore", "type": "Relationship","value": "Store:001"}
+    	]
+    }
+  ]
+}
+'
+
+
+####################################
+
+
+#
+# Register Bell 001 commands with the Orion Context Broker
+#
+
+curl -X POST \
+  'http://orion:1026/v2/registrations' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+  "description": "Bell Commands",
+  "dataProvided": {
+    "entities": [
+      {
+        "id": "Bell:001", "type": "Bell"
+      }
+    ],
+    "attrs": ["ring"]
+  },
+  "provider": {
+    "http": {"url": "http://orion:1026/v1"},
+    "legacyForwarding": true
+  }
+}'
+
+
+#
+# Register Smart Door 001 commands with the Orion Context Broker
+#
+
+curl -X POST \
+  'http://orion:1026/v2/registrations' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+  "description": "Door Commands",
+  "dataProvided": {
+    "entities": [
+      {
+        "id": "Door:001", "type": "Door"
+      }
+    ],
+    "attrs": [ "lock", "unlock", "open", "close"]
+  },
+  "provider": {
+    "http": {"url": "http://orion:1026/v1"},
+    "legacyForwarding": true
+  }
+}'
+
+
+#
+# Register Smart Lamp 001 commands with the Orion Context Broker
+#
+
+curl -X POST \
+  'http://orion:1026/v2/registrations' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+  "description": "Lamp Commands",
+  "dataProvided": {
+    "entities": [
+      {
+        "id": "Lamp:001","type": "Lamp"
+      }
+    ],
+    "attrs": [ "on", "off" ]
+  },
+  "provider": {
+    "http": {"url": "http://orion:1026/v1"},
+    "legacyForwarding": true
+  }
+}'
+
+
+
+####################################################
+
+#
+# Provision motion sensor 002
+#
+
+curl -X POST \
+  'http://iot-agent:4041/iot/devices' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+ "devices": [
+   {
+     "device_id":   "motion002",
+     "entity_name": "Motion:002",
+     "entity_type": "Motion",
+     "protocol":    "PDI-IoTA-UltraLight",
+     "timezone":    "Europe/Berlin",
+     "attributes": [
+       { "object_id": "c", "name":"count", "type":"Integer"}
+      ],
+      "static_attributes": [
+         {"name":"refStore", "type": "Relationship","value": "Store:002"}
+      ]
+   },
+   {
+      "device_id": "bell002",
+      "entity_name": "Bell:002",
+      "entity_type": "Bell",
+      "protocol": "PDI-IoTA-UltraLight",
+      "transport": "HTTP",
+      "endpoint": "http://context-provider:3001/iot/bell002",
+      "commands": [ 
+        {
+          "name": "ring",
+          "type": "command"
+        }
+       ],
+       "static_attributes": [
+         {"name":"refStore", "type": "Relationship","value": "Store:002"}
+      ]
+    },
+    {
+      "device_id": "door002",
+      "entity_name": "Door:002",
+      "entity_type": "Door",
+      "protocol": "PDI-IoTA-UltraLight",
+      "transport": "HTTP",
+      "endpoint": "http://context-provider:3001/iot/door002",
+      "commands": [ 
+        {"name": "unlock","type": "command"},
+        {"name": "open","type": "command"},
+        {"name": "close","type": "command"},
+        {"name": "lock","type": "command"}
+       ],
+       "attributes": [
+        {"object_id": "s", "name": "state", "type":"Text"}
+       ],
+       "static_attributes": [
+         {"name":"refStore", "type": "Relationship","value": "Store:002"}
+       ]
+    },
+    {
+      "device_id": "lamp002",
+      "entity_name": "Lamp:002",
+      "entity_type": "Lamp",
+      "protocol": "PDI-IoTA-UltraLight",
+      "transport": "HTTP",
+      "endpoint": "http://context-provider:3001/iot/lamp002",
+      "commands": [ 
+        {"name": "on","type": "command"},
+        {"name": "off","type": "command"}
+       ],
+       "attributes": [
+       	{"object_id": "s", "name": "state", "type":"Text"},
+        {"object_id": "l", "name": "luminosity", "type":"Integer"}
+       ],
+       "static_attributes": [
+         {"name":"refStore", "type": "Relationship","value": "Store:002"}
+    	]
+    }
+  ]
+}
+'
+
+
+####################################
+
+
+#
+# Register Bell 002 commands with the Orion Context Broker
+#
+
+curl -X POST \
+  'http://orion:1026/v2/registrations' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+  "description": "Bell Commands",
+  "dataProvided": {
+    "entities": [
+      {
+        "id": "Bell:002", "type": "Bell"
+      }
+    ],
+    "attrs": ["ring"]
+  },
+  "provider": {
+    "http": {"url": "http://orion:1026/v1"},
+    "legacyForwarding": true
+  }
+}'
+
+
+#
+# Register Smart Door 002 commands with the Orion Context Broker
+#
+
+curl -X POST \
+  'http://orion:1026/v2/registrations' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+  "description": "Door Commands",
+  "dataProvided": {
+    "entities": [
+      {
+        "id": "Door:002", "type": "Door"
+      }
+    ],
+    "attrs": [ "lock", "unlock", "open", "close"]
+  },
+  "provider": {
+    "http": {"url": "http://orion:1026/v1"},
+    "legacyForwarding": true
+  }
+}'
+
+
+#
+# Register Smart Lamp 002 commands with the Orion Context Broker
+#
+
+curl -X POST \
+  'http://orion:1026/v2/registrations' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+  "description": "Lamp Commands",
+  "dataProvided": {
+    "entities": [
+      {
+        "id": "Lamp:002","type": "Lamp"
+      }
+    ],
+    "attrs": [ "on", "off" ]
+  },
+  "provider": {
+    "http": {"url": "http://orion:1026/v1"},
+    "legacyForwarding": true
+  }
+}'
+
+
+
+####################################################
+
+#
+# Provision motion sensor 003
+#
+
+curl -X POST \
+  'http://iot-agent:4041/iot/devices' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+ "devices": [
+   {
+     "device_id":   "motion003",
+     "entity_name": "Motion:003",
+     "entity_type": "Motion",
+     "protocol":    "PDI-IoTA-UltraLight",
+     "timezone":    "Europe/Berlin",
+     "attributes": [
+       { "object_id": "c", "name":"count", "type":"Integer"}
+      ],
+      "static_attributes": [
+         {"name":"refStore", "type": "Relationship","value": "Store:003"}
+      ]
+   },
+   {
+      "device_id": "bell003",
+      "entity_name": "Bell:003",
+      "entity_type": "Bell",
+      "protocol": "PDI-IoTA-UltraLight",
+      "transport": "HTTP",
+      "endpoint": "http://context-provider:3001/iot/bell003",
+      "commands": [ 
+        {
+          "name": "ring",
+          "type": "command"
+        }
+       ],
+       "static_attributes": [
+         {"name":"refStore", "type": "Relationship","value": "Store:003"}
+      ]
+    },
+    {
+      "device_id": "door003",
+      "entity_name": "Door:003",
+      "entity_type": "Door",
+      "protocol": "PDI-IoTA-UltraLight",
+      "transport": "HTTP",
+      "endpoint": "http://context-provider:3001/iot/door003",
+      "commands": [ 
+        {"name": "unlock","type": "command"},
+        {"name": "open","type": "command"},
+        {"name": "close","type": "command"},
+        {"name": "lock","type": "command"}
+       ],
+       "attributes": [
+        {"object_id": "s", "name": "state", "type":"Text"}
+       ],
+       "static_attributes": [
+         {"name":"refStore", "type": "Relationship","value": "Store:003"}
+       ]
+    },
+    {
+      "device_id": "lamp003",
+      "entity_name": "Lamp:003",
+      "entity_type": "Lamp",
+      "protocol": "PDI-IoTA-UltraLight",
+      "transport": "HTTP",
+      "endpoint": "http://context-provider:3001/iot/lamp003",
+      "commands": [ 
+        {"name": "on","type": "command"},
+        {"name": "off","type": "command"}
+       ],
+       "attributes": [
+       	{"object_id": "s", "name": "state", "type":"Text"},
+        {"object_id": "l", "name": "luminosity", "type":"Integer"}
+       ],
+       "static_attributes": [
+         {"name":"refStore", "type": "Relationship","value": "Store:003"}
+    	]
+    }
+  ]
+}
+'
+
+
+####################################
+
+
+#
+# Register Bell 003 commands with the Orion Context Broker
+#
+
+curl -X POST \
+  'http://orion:1026/v2/registrations' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+  "description": "Bell Commands",
+  "dataProvided": {
+    "entities": [
+      {
+        "id": "Bell:003", "type": "Bell"
+      }
+    ],
+    "attrs": ["ring"]
+  },
+  "provider": {
+    "http": {"url": "http://orion:1026/v1"},
+    "legacyForwarding": true
+  }
+}'
+
+
+#
+# Register Smart Door 003 commands with the Orion Context Broker
+#
+
+curl -X POST \
+  'http://orion:1026/v2/registrations' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+  "description": "Door Commands",
+  "dataProvided": {
+    "entities": [
+      {
+        "id": "Door:003", "type": "Door"
+      }
+    ],
+    "attrs": [ "lock", "unlock", "open", "close"]
+  },
+  "provider": {
+    "http": {"url": "http://orion:1026/v1"},
+    "legacyForwarding": true
+  }
+}'
+
+
+#
+# Register Smart Lamp 003 commands with the Orion Context Broker
+#
+
+curl -X POST \
+  'http://orion:1026/v2/registrations' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+  "description": "Lamp Commands",
+  "dataProvided": {
+    "entities": [
+      {
+        "id": "Lamp:003","type": "Lamp"
+      }
+    ],
+    "attrs": [ "on", "off" ]
+  },
+  "provider": {
+    "http": {"url": "http://orion:1026/v1"},
+    "legacyForwarding": true
+  }
+}'
+
+
+
+####################################################
+
+#
+# Provision motion sensor 004
+#
+
+curl -X POST \
+  'http://iot-agent:4041/iot/devices' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+ "devices": [
+   {
+     "device_id":   "motion004",
+     "entity_name": "Motion:004",
+     "entity_type": "Motion",
+     "protocol":    "PDI-IoTA-UltraLight",
+     "timezone":    "Europe/Berlin",
+     "attributes": [
+       { "object_id": "c", "name":"count", "type":"Integer"}
+      ],
+      "static_attributes": [
+         {"name":"refStore", "type": "Relationship","value": "Store:004"}
+      ]
+   },
+   {
+      "device_id": "bell004",
+      "entity_name": "Bell:004",
+      "entity_type": "Bell",
+      "protocol": "PDI-IoTA-UltraLight",
+      "transport": "HTTP",
+      "endpoint": "http://context-provider:3001/iot/bell004",
+      "commands": [ 
+        {
+          "name": "ring",
+          "type": "command"
+        }
+       ],
+       "static_attributes": [
+         {"name":"refStore", "type": "Relationship","value": "Store:004"}
+      ]
+    },
+    {
+      "device_id": "door004",
+      "entity_name": "Door:004",
+      "entity_type": "Door",
+      "protocol": "PDI-IoTA-UltraLight",
+      "transport": "HTTP",
+      "endpoint": "http://context-provider:3001/iot/door004",
+      "commands": [ 
+        {"name": "unlock","type": "command"},
+        {"name": "open","type": "command"},
+        {"name": "close","type": "command"},
+        {"name": "lock","type": "command"}
+       ],
+       "attributes": [
+        {"object_id": "s", "name": "state", "type":"Text"}
+       ],
+       "static_attributes": [
+         {"name":"refStore", "type": "Relationship","value": "Store:004"}
+       ]
+    },
+    {
+      "device_id": "lamp004",
+      "entity_name": "Lamp:004",
+      "entity_type": "Lamp",
+      "protocol": "PDI-IoTA-UltraLight",
+      "transport": "HTTP",
+      "endpoint": "http://context-provider:3001/iot/lamp004",
+      "commands": [ 
+        {"name": "on","type": "command"},
+        {"name": "off","type": "command"}
+       ],
+       "attributes": [
+       	{"object_id": "s", "name": "state", "type":"Text"},
+        {"object_id": "l", "name": "luminosity", "type":"Integer"}
+       ],
+       "static_attributes": [
+         {"name":"refStore", "type": "Relationship","value": "Store:004"}
+    	]
+    }
+  ]
+}
+'
+
+
+####################################
+
+
+#
+# Register Bell 004 commands with the Orion Context Broker
+#
+
+curl -X POST \
+  'http://orion:1026/v2/registrations' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+  "description": "Bell Commands",
+  "dataProvided": {
+    "entities": [
+      {
+        "id": "Bell:004", "type": "Bell"
+      }
+    ],
+    "attrs": ["ring"]
+  },
+  "provider": {
+    "http": {"url": "http://orion:1026/v1"},
+    "legacyForwarding": true
+  }
+}'
+
+
+#
+# Register Smart Door 004 commands with the Orion Context Broker
+#
+
+curl -X POST \
+  'http://orion:1026/v2/registrations' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+  "description": "Door Commands",
+  "dataProvided": {
+    "entities": [
+      {
+        "id": "Door:004", "type": "Door"
+      }
+    ],
+    "attrs": [ "lock", "unlock", "open", "close"]
+  },
+  "provider": {
+    "http": {"url": "http://orion:1026/v1"},
+    "legacyForwarding": true
+  }
+}'
+
+
+#
+# Register Smart Lamp 004 commands with the Orion Context Broker
+#
+
+curl -X POST \
+  'http://orion:1026/v2/registrations' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+  "description": "Lamp Commands",
+  "dataProvided": {
+    "entities": [
+      {
+        "id": "Lamp:004","type": "Lamp"
+      }
+    ],
+    "attrs": [ "on", "off" ]
+  },
+  "provider": {
+    "http": {"url": "http://orion:1026/v1"},
+    "legacyForwarding": true
+  }
+}'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,69 @@
+#!/bin/bash
+#
+#  Command Line Interface to start all services associated with the Getting-Started Tutorial
+#
+#  For this tutorial the commands are merely a convenience script to run docker-compose
+#
+
+set -e
+
+loadData () {
+	sleep 2
+	echo "Loading context data"
+	./import-data
+	echo "Provisioning IoT devices"
+	./provision-devices
+}
+
+
+stoppingContainers () {
+	echo "Stopping containers"
+	docker-compose -f docker-compose.yml -p fiware down
+	echo "Removing volumes"
+	docker volume prune --force
+	echo ""
+}
+
+if (( $# != 1 )); then
+    echo "Illegal number of parameters"
+    echo "usage: services [start|stop]"
+    exit 1
+fi
+
+command="$1"
+case "${command}" in
+	"help")
+        echo "usage: services [start|stop]"
+        ;;
+	 "start")
+		stoppingContainers
+		echo -e "Starting five containers \033[1;34mOrion\033[0m, \033[1;34mstart\033[0m, \033[1;36mIoT-Agent\033[0m, \033[1;30mContext-Provider\033[0m and a \033[1;30mMongoDB\033[0m database."	
+		echo -e "\033[1;34mOrion\033[0m is the context broker"
+		echo -e "\033[1;34mstart\033[0m will read and write to Mongo-DB"
+		echo -e "\033[1;36mIoT-Agent\033[0m is configured for the UltraLight Protocol"
+		echo -e "\033[1;30mContext-Provider\033[0m acts as a series of dummy IoT Sensors over HTTP"
+		echo ""
+		docker-compose -f docker-compose.yml -p fiware up -d --remove-orphans
+		loadData
+		;;
+	"stop")
+		stoppingContainers
+		;;
+	"create")
+		echo "Obtaining Mongo DB image"
+		docker pull mongo:3.6
+		echo "Obtaining Latest Orion Image"
+		docker pull fiware/orion
+		echo "Obtaining Latest UltraLight IoT Agent"
+		docker pull fiware/iotagent-ul
+		echo "Obtaining Latest Crate"
+		docker pull crate:1.0.5
+		echo "Obtaining Latest Grafana"
+		docker pull grafana/grafana
+		echo "Obtaining Latest Quantum Leap"
+		docker pull smartsdk/quantumleap
+		echo "Recreate Context-Providers proxy"
+		docker build -t fiware/cp-web-app ./proxy
+		
+		;;
+esac

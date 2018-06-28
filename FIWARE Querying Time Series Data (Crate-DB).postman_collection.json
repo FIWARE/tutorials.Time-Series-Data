@@ -1,0 +1,239 @@
+{
+	"info": {
+		"_postman_id": "dceacf1d-ab06-4cdb-a217-9956d295e6ab",
+		"name": "FIWARE Querying Time Series Data (Crate-DB)",
+		"description": "This tutorial is an introduction to [FIWARE STH-Comet](https://fiware-sth-comet.readthedocs.io/) - a generic enabler which is used to retrieve trend data from a Mongo-DB database. The tutorial activates the IoT sensors connected in the [previous tutorial](https://github.com/Fiware/tutorials.IoT-Agent) and persists measurements from those sensors into a database and retrieves time-based aggregations of that data.\n\nThe `docker-compose` files for this tutorial can be found on GitHub: \n\n![GitHub](https://fiware.github.io/tutorials.Short-Term-History/icon/GitHub-Mark-32px.png) [FIWARE 302: Short Term Historic Data](https://github.com/Fiware/tutorials.Short-Term-History)\n\n# Querying Time Series Data\n\n> \"The *\"moment\"* has no yesterday or tomorrow. It is not the result of thought and therefore has no time.\"\n>\n> — Bruce Lee\n\n\nWithin the FIWARE platform, historical context data can be persisted to a database using a combination of the **Orion \nContext Broker** and the **Cygnus** generic enabler. This results in a series of data points being written to the\ndatabase of your choice. Each time-stamped data point represents the state of context entities at a given moment in time.\nThe individual data points are relatively meaningless on their own, it is only through combining a series data points\nthat meaningful statistics such as maxima, minima and trends can be observed.\n\nThe creation and analysis of trend data is a common requirement of context-driven systems - therefore the FIWARE platform \noffers a generic enabler ([STH-Comet](https://fiware-sth-comet.readthedocs.io/)) specifically to deal with the issue of persisting and interpreting time series data. **STH-Comet** itself can be used in two modes:\n\n* In *minimal* mode, **STH-Comet** is responsible for both data collection and interpreting the data when requested\n* In *formal* mode, the collection of data is delegated to **Cygnus**, **STH-Comet** merely reads from an existing database.\n\nOf the two modes of operation, the *formal* mode is more flexible, but *minimal* mode is simpler and easier to set-up. The key differences between the two are summarized in the table below:\n\n\n|                                                         | *minimal* mode                | *formal* mode              |\n|---------------------------------------------------------|-------------------------------|----------------------------|\n| Is the system easy to set-up  properly?                 | Only one configuration supported - Easy to set up                | Highly configurable - Complex to set up          |\n| Which component is responsible for a data persistance?  | **STH-Comet**                 | **Cygnus**                 |\n| What is the role of **STH-Comet**?                      | Reading and writing data      | Data Read only             |\n| What is the role of **Cygnus**?                         | Not Used                      | Data Write only            |\n| Where is the data aggregated?                           | Mongo-DB database connected to **STH-Comet** only| Mongo-DB database connected to both **Cygnus** and **STH-Comet** |\n| Can the system be configured to use other databases?    | No                            | Yes                        |\n| Does the solution scale easily?                         | Does not scale easily - use for simple systems | Scales easily - use for complex systems |\n| Can the system cope with high rates of throughput?      | No - use where throughput is low | Yes - use where throughput is high |\n\n\n## Analyzing time series data\n\nThe appropriate use of time series data analysis will depend on your use case and the reliability of the data measurements you receive. Time series data analysis can be used to answer questions such as:\n\n* What was the maximum measurement of a device within a given time period?\n* What was the average measurement of a device within a given time period?\n* What was the sum of the measurements sent by a device within a given time period?\n\nIt can also be used to reduce the signficance of each individual data point to exclude outliers by smoothing.\n\n\n\n#### Device Monitor\n\nFor the purpose of this tutorial, a series of dummy IoT devices have been created, which will be attached to the context broker. Details of the architecture and protocol used can be found in the [IoT Sensors tutorial](https://github.com/Fiware/tutorials.IoT-Sensors).\nThe state of each device can be seen on the UltraLight device monitor web-page found at: `http://localhost:3000/device/monitor`\n\n![FIWARE Monitor](https://fiware.github.io/tutorials.Short-Term-History/img/device-monitor.png)\n\n\n\n# Architecture\n\nThis application builds on the components and dummy IoT devices created in \n[previous tutorials](https://github.com/Fiware/tutorials.IoT-Agent/). It will use three or four FIWARE components depending on the configuration of the system:\nthe [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/), the\n[IoT Agent for Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/),\n[STH-Comet](http://fiware-cygnus.readthedocs.io/en/latest/) and\n[Cygnus](http://fiware-cygnus.readthedocs.io/en/latest/). \n\nTherefore the overall architecture will consist of the following elements:\n\n* Four **FIWARE Generic Enablers**:\n  * The FIWARE [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/) which will receive requests using [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2)\n  * The FIWARE [IoT Agent for Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/) which will receive northbound measurements from the dummy IoT devices in [Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual) format and convert them to [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) requests for the context broker to alter the state of the context entities\n  * FIWARE [STH-Comet](http://fiware-sth-comet.readthedocs.io/) will:\n    + interpret time-based data queries\n    + subscribe to context changes and persist them into a **Mongo-DB** database  (*minimal* mode only)\n   * FIWARE [Cygnus](http://fiware-cygnus.readthedocs.io/en/latest/) where it will subscribe to context changes and persist them into a **Mongo-DB** database (*formal* mode only) \n\n> :information_source: **Note:** **Cygnus** will only be used if **STH-Comet** is configured in *formal* mode.\n\n* A [MongoDB](https://www.mongodb.com/) database:\n  * Used by the **Orion Context Broker** to hold context data information such as data entities, subscriptions and registrations\n  * Used by the **IoT Agent** to hold device information such as device URLs and Keys\n  * Used as a data sink to hold time-based historical context data\n     + In *minimal* mode - this is read and populated by **STH-Comet** \n     + In *formal* mode - this is populated by **Cygnus**  and read by **STH-Comet** \n* Three **Context Providers**:\n  * The **Stock Management Frontend** is not used in this tutorial. It does the following:\n    + Display store information and allow users to interact with the dummy IoT devices\n    + Show which products can be bought at each store\n    + Allow users to \"buy\" products and reduce the stock count.\n  * A webserver acting as set of [dummy IoT devices](https://github.com/Fiware/tutorials.IoT-Sensors) using the [Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual) protocol running over HTTP.\n  * The **Context Provider NGSI** proxy is not used in this tutorial. It does the following:\n    + receive requests using [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2)\n    + makes requests to publicly available data sources using their own APIs in a proprietary format \n    + returns context data back to the Orion Context Broker in [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) format.\n\n\n\n\nSince all interactions between the elements are initiated by HTTP requests, the entities can be containerized and run from exposed ports. \n\nThe specific architecture of both the *minimal* and *formal* configurations is discussed below.\n\n\n\n# Prerequisites\n\n## Docker and Docker Compose \n\nTo keep things simple all components will be run using [Docker](https://www.docker.com). **Docker** is a container technology which allows to different components isolated into their respective environments. \n\n* To install Docker on Windows follow the instructions [here](https://docs.docker.com/docker-for-windows/)\n* To install Docker on Mac follow the instructions [here](https://docs.docker.com/docker-for-mac/)\n* To install Docker on Linux follow the instructions [here](https://docs.docker.com/install/)\n\n**Docker Compose** is a tool for defining and running multi-container Docker applications. A  series of [YAML files](https://raw.githubusercontent.com/Fiware/tutorials.Historic-Context/master/cygnus) are used configure the required\nservices for the application. This means all container services can be brought up in a single command. Docker Compose is installed by default as part of Docker for Windows and  Docker for Mac, however Linux users will need to follow the instructions found [here](https://docs.docker.com/compose/install/)\n\n## Cygwin for Windows\n\nWe will start up our services using a simple Bash script. Windows users should download [cygwin](http://www.cygwin.com/) to provide a command line functionality similar to a Linux distribution on Windows.\n\n\n\n\n# Start Up\n\nBefore you start you should ensure that you have obtained or built the necessary Docker images locally. Please run\n\n```console\n./services create\n``` \n\n>**Note** The `context-provider` image has not yet been pushed to Docker hub.\n> Failing to build the Docker sources before proceeding will result in the following error:\n>\n>```\n>Pulling context-provider (fiware/cp-web-app:latest)...\n>ERROR: The image for the service you're trying to recreate has been removed.\n>```\n\n\nThereafter, all services can be initialized from the command line by running the [services](https://github.com/Fiware/tutorials.Historic-Context/blob/master/services) Bash script provided within the repository:\n\n```console\n./services <command>\n``` \n\nWhere `<command>` will vary depending upon the mode we wish to activate.\nThis command will also import seed data from the previous tutorials and provision the dummy IoT sensors on startup.\n\n>:information_source: **Note:** If you want to clean up and start over again you can do so with the following command:\n>\n>```console\n>./services stop\n>``` \n>",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Orion - Quantum-Leap - Aggregate Motion Sensor Count Events",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "fiware-service",
+						"value": "openiot"
+					},
+					{
+						"key": "fiware-servicepath",
+						"value": "/"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"description\": \"Notify Quantum Leap of all Motion Sensor count changes\",\n  \"subject\": {\n    \"entities\": [\n      {\n        \"idPattern\": \"Motion.*\"\n      }\n    ],\n    \"condition\": {\n      \"attrs\": [\n        \"count\"\n      ]\n    }\n  },\n  \"notification\": {\n    \"http\": {\n      \"url\": \"http://quantum-leap:8668/v2/notify\"\n    },\n    \"attrs\": [\n      \"count\"\n    ],\n    \"metadata\": [\"dateCreated\", \"dateModified\"]\n  }\n}"
+				},
+				"url": {
+					"raw": "http://{{orion}}/v2/subscriptions/",
+					"protocol": "http",
+					"host": [
+						"{{orion}}"
+					],
+					"path": [
+						"v2",
+						"subscriptions",
+						""
+					]
+				},
+				"description": "Once a dynamic context system is up and running, we need to inform **STH-Comet** directly of changes in context.\nThe rate of change of the **Motion Sensor** is driven by events in the real-world. We need to receive\nevery event to be able to aggregate the results.\n\nThis is done by making a POST request to the `/v2/subscription` endpoint of the Orion Context Broker.\n\n* The `fiware-service` and `fiware-servicepath` headers are used to filter the subscription to only listen to measurements from the attached IoT Sensors\n* The `idPattern` in the request body ensures that **STH-Comet** will be informed of all **Motion Sensor** data changes.\n* The notification `url` must match the configured `STH_PORT`\n* The `attrsFormat=legacy` is required since **STH-Comet** currently only accepts notifications in the older NGSI v1 format."
+			},
+			"response": []
+		},
+		{
+			"name": "Orion - Quantum-Leap - Sample Lamp Luminosity",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "fiware-service",
+						"value": "openiot"
+					},
+					{
+						"key": "fiware-servicepath",
+						"value": "/"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"description\": \"Notify Quantum Leap to sample Lamp changes every five seconds\",\n  \"subject\": {\n    \"entities\": [\n      {\n        \"idPattern\": \"Lamp.*\"\n      }\n    ],\n    \"condition\": {\n      \"attrs\": [\n        \"luminosity\"\n      ]\n    }\n  },\n  \"notification\": {\n    \"http\": {\n      \"url\": \"http://quantum-leap:8668/v2/notify\"\n    },\n    \"attrs\": [\n      \"luminosity\"\n    ],\n    \"metadata\": [\"dateCreated\", \"dateModified\"]\n  },\n  \"throttling\": 5\n}"
+				},
+				"url": {
+					"raw": "http://{{orion}}/v2/subscriptions/",
+					"protocol": "http",
+					"host": [
+						"{{orion}}"
+					],
+					"path": [
+						"v2",
+						"subscriptions",
+						""
+					]
+				},
+				"description": "Once a dynamic context system is up and running, we need to inform **STH-Comet** directly of changes in context.\n\nThe luminosity of the **Smart Lamp** is constantly changing, we only need to **sample** the values to be\nable to work out relevant statistics such as minimum and maximum values and rates of change.\n\nThis is done by making a POST request to the `/v2/subscription` endpoint of the Orion Context Broker\nand including the `throttling` attribute in the request body.\n\n* The `fiware-service` and `fiware-servicepath` headers are used to filter the subscription to only listen to measurements from the attached IoT Sensors\n* The `idPattern` in the request body ensures that **STH-Comet** will be informed of all **Smart Lamp** data changes only\n* The notification `url` must match the configured `STH_PORT`\n* The `attrsFormat=legacy` is required since **STH-Comet** currently only accepts notifications in the older NGSI v1 format.\n* The `throttling` value defines the rate that changes are sampled."
+			},
+			"response": []
+		},
+		{
+			"name": "Crate-DB - Read Schemas",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.etmotion WHERE entity_id = 'Motion:001' LIMIT 10\"}"
+				},
+				"url": {
+					"raw": "http://{{crate}}/_sql",
+					"protocol": "http",
+					"host": [
+						"{{crate}}"
+					],
+					"path": [
+						"_sql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crate-DB - Read Tables",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.etmotion WHERE entity_id = 'Motion:001' LIMIT 10\"}"
+				},
+				"url": {
+					"raw": "http://{{crate}}/_sql",
+					"protocol": "http",
+					"host": [
+						"{{crate}}"
+					],
+					"path": [
+						"_sql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crate-DB - Read Aggregated Motion Sensor Events",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.etmotion WHERE entity_id = 'Motion:001' LIMIT 10\"}"
+				},
+				"url": {
+					"raw": "http://{{crate}}/_sql",
+					"protocol": "http",
+					"host": [
+						"{{crate}}"
+					],
+					"path": [
+						"_sql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crate-DB - Read Sampled Lamp Luminosity",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.etlamp WHERE entity_id = 'Lamp:001' LIMIT 100\"}"
+				},
+				"url": {
+					"raw": "http://{{crate}}/_sql",
+					"protocol": "http",
+					"host": [
+						"{{crate}}"
+					],
+					"path": [
+						"_sql"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "d1cff9ac-8932-417c-b6e2-582ba712ff79",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "cc3f098c-a786-4112-a15e-b1c8c83cc657",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "405b1090-2430-430c-b701-8770474cc0e4",
+			"key": "orion",
+			"value": "localhost:1026",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "0c29320f-9c2c-4834-aaee-f331fa2bb824",
+			"key": "quantum-leap",
+			"value": "localhost:8668",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "dde9e7fa-c4fb-4e6b-bfa0-72764ac81899",
+			"key": "crate",
+			"value": "localhost:4200",
+			"type": "string",
+			"description": ""
+		}
+	]
+}
