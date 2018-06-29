@@ -203,11 +203,6 @@ In the configuration, **Quantum Leap** listens to NGSI v2 notifications on port 
 data to the Crate-DB. Crate-DB is accessible using port `4200` and can either be queried directly or attached to the
 Grafana analytics tool.  The rest of the system providing the context data has been described in previous tutorials
 
-
-The overall architecture can be seen below:
-
-![](https://fiware.github.io/tutorials.Time-Series-Data/img/architecture.png)
-
 ## Crate-DB Database Server Configuration
 
 ```yaml
