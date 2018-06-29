@@ -1,6 +1,7 @@
 [![FIWARE Banner](https://fiware.github.io/tutorials.Time-Series-Data/img/fiware.png)](https://www.fiware.org/developers)
 
-This tutorial is an introduction to [FIWARE Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) - a generic enabler which is used to retrieve trend data from a **Crate-DB** database. The tutorial activates the IoT sensors connected in the [previous tutorial](https://github.com/Fiware/tutorials.IoT-Agent) and persists measurements from those sensors into a database and retrieves time-based aggregations of that data.
+This tutorial is an introduction to [FIWARE Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) - a generic enabler which is used to perist context data into a **Crate-DB** database. The tutorial activates the IoT sensors connected in the [previous tutorial](https://github.com/Fiware/tutorials.IoT-Agent) and persists measurements from those sensors into the database.
+The **Crate-DB** HTTP endpoint is then used to retrieve time-based aggregations of that data. The results are visualised on a graph or via the **Grafana** time series analytics tool.
 
 The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also available as [Postman documentation](http://fiware.github.io/tutorials.Time-Series-Data/)
 
@@ -9,7 +10,7 @@ The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also a
 
 # Contents
 
-- [Querying Time Series Data (Crate-DB)](#querying-time-series-data-crate-db)
+- [Persisting and Querying Time Series Data (Crate-DB)](#persisting-and-querying-time-series-data-crate-db)
   * [Analyzing time series data](#analyzing-time-series-data)
 - [Architecture](#architecture)
 - [Prerequisites](#prerequisites)
@@ -36,7 +37,7 @@ The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also a
 - [Next Steps](#next-steps)
 
 
-# Querying Time Series Data (Crate-DB)
+# Persisting and Querying Time Series Data (Crate-DB)
 
 > "Forever is composed of nows."
 >
