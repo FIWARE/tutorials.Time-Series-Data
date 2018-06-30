@@ -6,8 +6,6 @@
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/d24facc3c430bb5d5aaf)
 
-* このチュートリアルは[日本語](README.ja.md)でもご覧いただけます。
-
 # 内容
 
 - [時系列データの永続化とクエリ (Crate-DB)](#persisting-and-querying-time-series-data-crate-db)
@@ -17,7 +15,7 @@
   * [Docker と Docker Compose](#docker-and-docker-compose)
   * [Cygwin for Windows](#cygwin-for-windows)
 - [起動](#start-up)
-- [Quantum Leap を介して Crate-DB データベースに FIWARE を接続](#connecting-fiware-to-a-crate-db-database-via-quantum-leap)
+- [Quantum Leap を介して FIWARE を Crate-DB データベースに接続](#connecting-fiware-to-a-crate-db-database-via-quantum-leap)
   * [Crate-DB データベース・サーバの設定](#crate-db-database-server-configuration)
   * [Quantum Leap の設定](#quantum-leap-configuration)
   * [Grafana の設定](#grafana-configuration)
@@ -45,17 +43,17 @@
 
 [以前のチュートリアル](https://github.com/Fiware/tutorials.Historic-Context)では、履歴コンテキスト・データを MySQL や PostgreSQL などのデータベースに永続化する方法を示しました。さらに、[Short Term Historic](https://github.com/Fiware/tutorials.Short-Term-History) のチュートリアルでは、**Mongo-DB** データベースを使用して履歴コンテキスト・データを永続化およびクエリするための [STH-Comet](http://fiware-sth-comet.readthedocs.io/) Generic Enabler を導入しました。
 
-FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**Crate-DB** 時系列データベースへのデータ永続性のために特別に作成された代替 Generic Enabler であるり、[STH-Comet](http://fiware-sth-comet.readthedocs.io/) に代わるものです。
+FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**Crate-DB** 時系列データベースへのデータ永続性のために特別に作成された代替 Generic Enabler であり、[STH-Comet](http://fiware-sth-comet.readthedocs.io/) に代わるものです。
 
-[Crate-DB](https://crate.io/) は、Things of Internet で使用するために設計された分散 SQL DBMS です。1秒間に多数のデータ・ポイントを取り込むことができ、リアルタイムでクエリすることができます。このデータベースは、地理空間データや時系列データなどの複雑なクエリの実行用に設計されています。この履歴データを取得することで、グラフやダッシュボードを作成し、時間の経過とともに傾向を表示することができます。
+[Crate-DB](https://crate.io/) は、Internet of Things で使用するために設計された分散 SQL DBMS です。1秒間に多数のデータ・ポイントを取り込むことができ、リアルタイムでクエリすることができます。このデータベースは、地理空間データや時系列データなどの複雑なクエリの実行用に設計されています。この履歴データを取得することで、グラフやダッシュボードを作成し、時間の経過とともに傾向を表示することができます。
 
 違いの概要を以下に示します :
 
 | Quantum Leap               | STH-Comet |
 |----------------------------|-----------|
-| 通知のための NGSI v2 インターフェイスを提供します | 通知のための NGSI v1 インターフェイスを提供します |
+| 通知のための NGSI v2 インタフェースを提供します | 通知のための NGSI v1 インタフェースを提供します |
 | データを Crate-DB データベースに保存します  | データを Mongo-DB データベースに保存します |
-| クエリ 用に独自の HTTP エンドポイントを提供しません。Crate-DB SQL エンドポイント を使用します | クエリ用に独自の HTTPエンドポイントを提供します。Mongo-DB データベースに直接アクセスすることはできません |
+| クエリ 用に独自の HTTP エンドポイントを提供しません。Crate-DB SQL エンドポイント を使用します | クエリ用に独自の HTTP エンドポイントを提供します。Mongo-DB データベースに直接アクセスすることはできません |
 | Crate-DB SQL エンドポイントは、SQL を使用して複雑なデータクエリを満たすことができます | STH-Comet は限定された一連のクエリを提供していますs |
 | Crate-DBは、NoSQL ストレージの上に構築された分散 SQL DBMS です | Mongo-DB は、ドキュメント・ベースの NoSQL データベースです |
 
@@ -100,10 +98,10 @@ FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**C
 
 * **FIWARE Generic Enablers** :
   * FIWARE [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/) は、[NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使用してリクエストを受信します
-  * FIWARE [IoT Agent for Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/) は、Ultralight 2.0 形式のダミー IoT デバイスからノース・バウンドの測定値を受信し、Context Broker の[NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) リクエストに変換してコンテキスト・エンティティの状態を変更します
+  * FIWARE [IoT Agent for Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/) は、Ultralight 2.0 形式のダミー IoT デバイスからノース・バウンドの測定値を受信し、Context Broker の [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) リクエストに変換してコンテキスト・エンティティの状態を変更します
   * FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) はコンテキストの変更をサブスクライブし、**Crate-DB** データベースに永続化します
 * [MongoDB](https://www.mongodb.com/) データベース : 
-  * **Orion Context Broker**が、データ・エンティティ、サブスクリプション、レジストレーションなどのコンテキスト・データ情報を保持するために使用します
+  * **Orion Context Broker** が、データ・エンティティ、サブスクリプション、レジストレーションなどのコンテキスト・データ情報を保持するために使用します
   * デバイスの URLs や Keys などのデバイス情報を保持するために **IoT Agent** によって使用されます
 * [Crate-DB](https://crate.io/) データベース：
   * 時間ベースの履歴コンテキスト・データを保持するデータシンクとして使用されます
@@ -179,7 +177,7 @@ cd tutorials.Time-Series-Data
 >
 
 <a name="connecting-fiware-to-a-crate-db-database-via-quantum-leap"></a>
-# Quantum Leap を介して Crate-DB データベースに FIWARE を接続
+# Quantum Leap を介して FIWARE を Crate-DB データベースに接続
 
 この設定では、**Quantum Leap** は、ポート `8868` 上の NGSI v2 通知を待ち受け、履歴データを **Crate-DB** に永続化します。**Crate-DB** は、ポート `4200` を使用してアクセスでき、直接クエリすることも、Grafana 分析ツールに接続することもできます。コンテキスト・データを提供するシステムの残りの部分は、以前のチュートリアルで説明しています。
 
@@ -227,54 +225,43 @@ cd tutorials.Time-Series-Data
 
 `quantum-leap` コンテナは、1つのポートで待機しています：
 
-* Quantum Leap のポートの操作 - ポート `8668` サービスは、Orion Context Broker らの通知をリッスンするポートです
+* Quantum Leap のポートの操作 - ポート `8668` サービスは、Orion Context Broker からの通知をリッスンするポートです
 
-The `CRATE_HOST` environment variable defines the location where the data will be persisted.
+`CRATE_HOST` 環境変数は、データが永続化される場所を定義します。
 
-The `crate-db` container is listening on two ports: 
-* The Admin UI is available on port `4200`
-* The transport protocol is available on `port 4300`
+`crate-db` コンテナは、2つのポートでリッスンしています：
 
-The `grafana` container has connected up port `3000` internally with port `3003` externally. This is because the Grafana 
-UI is usually available on port `3000`, but this port has already been taken by the dummy devices UI so it has been shifted
-to another port. The Grafana Environment variables are described within their own 
-[documentation](http://docs.grafana.org/installation/configuration/). The configuration ensures we will be able to connect
-to the **Crate-DB** database later on in the tutorial
+* Admin UI は、ポート `4200` で利用できます
+* トランスポートプロトコルは、ポート `4300` で利用できます
 
-### Generating Context Data
+`grafana` コンテナは、内部ポート `3000` を外部ポート `3003` に接続しています。これは Grafana UI が通常はポート `3000` で使用できるためですが、このポートは ダミー IoT デバイスの UI によって既に取得されているため、別のポートに移動しています。Grafana 環境変数は、Grafana の[ドキュメント](http://docs.grafana.org/installation/configuration/)に記述されています。この設定により、チュートリアルの後半で **Crate-DB** データベースに接続できるようになります。
 
-For the purpose of this tutorial, we must be monitoring a system where the context is periodically being updated.
-The dummy IoT Sensors can be used to do this. Open the device monitor page at `http://localhost:3000/device/monitor`
-and unlock a **Smart Door** and switch on a **Smart Lamp**. This can be done by selecting an appropriate the command 
-from the drop down list and pressing the `send` button. The stream of measurements coming from the devices can then
-be seen on the same page:
+### コンテキスト・データの生成
+
+このチュートリアルでは、コンテキストが定期的に更新されるシステムを監視する必要があります。ダミー IoT センサを使用してこれを行うことができます。`http://localhost:3000/device/monitor` でデバイス・モニタのページを開き、**スマート・ドア**のロックを解除し、**スマート・ランプ**をオンにします。これは、ドロップ・ダウン・リストから適切なコマンドを選択し、`send` ボタンを押すことによって行うことができます。デバイスからの測定の流れは、同じページに表示されます :
 
 ![](https://fiware.github.io/tutorials.Time-Series-Data/img/door-open.gif)
 
 
 <a name="setting-up-subscriptions"></a>
-## Setting up Subscriptions
+## サブスクリプションのセットアップ
 
-Once a dynamic context system is up and running, we need to inform **Quantum Leap** directly of changes in context. 
-As expected this is done using the subscription mechanism of the **Orion Context Broker**. The `attrsFormat=legacy`
-attribute is not required since **Quantum Leap** accepts NGSI v2 notifications directly.
+動的コンテキスト・システムが起動したら、コンテキストの変更を直接 **Quantum Leap** に通知する必要があります。予想通り、これは **Orion Context Broker** のサブスクリプション・メカニズムを使用して行われます。**Quantum Leap** は、NGSI v2 通知を直接受け入れるため、`attrsFormat=legacy ` 属性は不要です。
 
-More details about subscriptions can be found in previous tutorials
+サブスクリプションに関する詳細は、以前のチュートリアルで確認できます。
 
 <a name="aggregate-motion-sensor-count-events"></a>
-### Aggregate Motion Sensor Count Events
+### モーション・センサのカウント・イベントの集計
 
-The rate of change of the **Motion Sensor** is driven by events in the real-world. We need to receive every event to be able to aggregate the results.
+**モーション・センサ**の変化率は、現実世界の事象によって引き起こされます。結果を集約するためには、すべてのイベントを受け取る必要があります。
 
-This is done by making a POST request to the `/v2/subscription` endpoint of the **Orion Context Broker**.
+これは、**Orion Context Broker** の `/v2/subscription` エンドポイントに POST リクエストをすることで行われます。
 
-* The `fiware-service` and `fiware-servicepath` headers are used to filter the subscription to only listen to measurements from the attached IoT Sensors
-* The `idPattern` in the request body ensures that **Quantum Leap** will be informed of all **Motion Sensor** data changes.
-* The `notification` url must match the exposed port.
+* `fiware-service` と `fiware-servicepath` ヘッダは、サブスクリプションをフィルタリングして、接続された IoT センサからの測定値のみをリッスンためにするために使用されます
+* リクエストのボディの `idPattern` は、すべての**モーション・センサ**のデータ変更を **Quantum Leap** に通知されるようにします
+* `notification` url は、公開されたポートと一致する必要があります
 
-The `metadata` attribute ensures that the `time_index` column within the **Crate-DB** database will match the data found
-within the **Mongo-DB** database used by the **Orion Context Broker** rather than using the creation time of the record
-within the **Crate-DB** itself.
+`metadata` 属性により、**Crate-DB** データベース内の `time_index` 列が、**Crate-DB** 自体のレコードの作成時間を使用するのではなく、**Orion Context Broker** が使用する **Mongo-DB** データベース内のデータと一致することが保証されます。
 
 #### :one: リクエスト :
 
@@ -311,21 +298,18 @@ curl -iX POST \
 ```
 
 <a name="sample-lamp-luminosity"></a>
-### Sample Lamp Luminosity
+### ランプの明度のサンプリング
 
-The luminosity of the Smart Lamp is constantly changing, we only need to sample the values to be able to work out relevant statistics such as minimum and maximum values and rates of change.
+**スマート・ランプ**の明るさは常に変化していますので、最小値や最大値、変化率などの関連する統計値を計算するために値を**サンプリング**するだけです。
 
-This is done by making a POST request to the `/v2/subscription` endpoint of the **Orion Context Broker** and including
- the `throttling` attribute in the request body.
+これは、**Orion Context Broker** の `/v2/subscription` エンドポイントに POST リクエストを行い、リクエストのボディに `throttling` 属性 を含めることによって行われます。
 
-* The `fiware-service` and `fiware-servicepath` headers are used to filter the subscription to only listen to measurements from the attached IoT Sensors
-* The `idPattern` in the request body ensures that **Quantum Leap** will be informed of all **Motion Sensor** data changes.
-* The `notification` url must match the exposed port.
-* The `throttling` value defines the rate that changes are sampled.
+* `fiware-service` と `fiware-servicepath` ヘッダは、サブスクリプションをフィルタリングして、接続された IoT センサからの測定値のみをリッスンためにするために使用されます
+* リクエストのボディの `idPattern` は、すべての**モーション・センサ**のデータ変更を **Quantum Leap** に通知されるようにします
+* `notification` url は、公開されたポートと一致する必要があります
+* `throttling` 値は、変更がサンプリングされる割合を定義します
 
-The `metadata` attribute ensures that the `time_index` column within the **Crate-DB** database will match the data found
-within the **Mongo-DB** database used by the **Orion Context Broker** rather than using the creation time of the record
-within the **Crate-DB** itself.
+`metadata` 属性により、**Crate-DB** データベース内の `time_index` 列が、**Crate-DB** 自体のレコードの作成時間を使用するのではなく、**Orion Context Broker** が使用する **Mongo-DB** データベース内のデータと一致することが保証されます。
 
 #### :two: リクエスト :
 
@@ -363,18 +347,16 @@ curl -iX POST \
 ```
 
 <a name="time-series-data-queries-crate-db"></a>
-## Time Series Data Queries (Crate-DB)
+## 時系列データクエリ (Crate-DB)
 
+**Crate-DB** は、SQL クエリを送信するために使用できる [HTTP エンドポイント](https://crate.io/docs/crate/reference/en/latest/interfaces/http.html)を提供します。エンドポイントは、`<servername:port>/_sql` 下でアクセス可能です。
 
-**Crate-DB** offers an [HTTP Endpoint](https://crate.io/docs/crate/reference/en/latest/interfaces/http.html) that can be used to submit SQL queries. The endpoint is accessible under `<servername:port>/_sql`.
-
-SQL statements are sent as the body of POST requests in JSON format, where the SQL statement is the value of the `stmt` attribute.
+SQL ステートメントは POST リクエストの本体として JSON 形式で送信されます。ここで、SQL ステートメントは `stmt` 属性の値です。
 
 <a name="read-schemas"></a>
-### Read Schemas
+### スキーマの読み込み
 
-**Quantum Leap** does not currently offer any interfaces to query for the persisted data A good method to see if data is being persisted is to check to see if a `table_schema` has been created. This can be done by making a request to the **Crate-DB** HTTP endpoint as shown:
-
+**Quantum Leap** は、現在、永続化されたデータをクエリするためのインタフェースを提供していません。データが永続化されているかどうかを確認するには、`table_schema` が作成されているかどうかを確認するのが良い方法です。これは、以下のように **Crate-DB** HTTP エンドポイントにリクエストを行うことで実行できます :
 
 #### :three: リクエスト :
 
@@ -402,15 +384,14 @@ curl -iX POST \
 }
 ```
 
-Schema names are formed with the `mt` prefix followed by `fiware-service` header in lower case. The IoT Agent is forwarding measurements from the dummy IoT devices, with the header `openiot`. These are being persisted under the `mtopeniot` schema.
+スキーマ名は、`mt` プレフィックスとそれに続く、小文字の `fiware-service` ヘッダで構成されます。IoT Agent は、ヘッダ `openiot` を使用して、ダミー IoT デバイスから測定値を転送します。これらは `mtopeniot` スキーマの下に保持されています。
 
-If the `mtopeniot` does not exist, then the subscription to **Quantum Leap** has not been set up correctly. Check that the subscription exists, and has been configured to send data to the correct location.
-
+`mtopeniot` が存在しない場合は、**Quantum Leap** のサブスクリプションが正しく設定されていません。サブスクリプションが存在し、データを正しい場所に送信するように設定されていることを確認します。
 
 <a name="read-tables"></a>
-### Read Tables
+### テーブルの読み込み
 
-**Quantum Leap** will persist data into separate tables within the **Crate-DB** database based on the entity type. Table names are formed with the `et` prefix and the entity type name in lowercase.
+**Quantum Leap** は、エンティティ型に基づいて **Crate-DB** データベース内の別のテーブルにデータを永続化します。テーブル名は、`et` プレフィックスとエンティティ型の名前を小文字にして形成されます。
 
 #### :four: リクエスト :
 
@@ -435,14 +416,14 @@ curl -X POST \
 }
 ```
 
-The response shows that both **Motion Sensor** data and **Smart Lamp** data are being persisted in the database.
+レスポンスは、**モーション・センサ**のデータと**スマート・ランプ**のデータの両方がデータベースに保持されていることを示します。
 
 <a name="list-the-first-n-sampled-values"></a>
-### List the first N Sampled Values
+### 最初の N 個のサンプリング値をリスト
 
-This example shows the first 3 sampled luminosity values from **Lamp:001**.
+この例では、**Lamp:001** の最初の3つのサンプリングされた明度値を示しています。
 
-The SQL statement uses `ORDER BY` and `LIMIT` clauses to sort the data. More details can be found under within the **Crate-DB** [documentation](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)
+SQL 文は `ORDER BY` と `LIMIT` を使用してデータをソートします。詳細は、**Crate-DB** の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を参照してください。
 
 #### :five: リクエスト :
 
@@ -469,11 +450,11 @@ curl -iX POST \
 ```
 
 <a name="list-n-sampled-values-at-an-offset"></a>
-### List N Sampled Values at an Offset
+### オフセットで N 個のサンプリングされた値をリスト
 
-This example shows the fourth, fifth and sixth sampled count values from **Motion:001**.
+この例では、**Motion:001** からのサンプリングされた4番目、5番目、6番目のカウント値を示しています。
 
-The SQL statement uses an `OFFSET` clause to retrieve the required rows. More details can be found under within the **Crate-DB** [documentation](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)
+SQL 文は、`OFFSET` 句を使用して必要な行を取り出します。詳細は、**Crate-DB** の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を参照してください。
 
 #### :six: リクエスト :
 
@@ -500,11 +481,11 @@ curl -iX POST \
 ```
 
 <a name="list-the-latest-n-sampled-values"></a>
-### List the latest N Sampled Values
+### 最新の N 個のサンプリング値をリスト
 
-This example shows latest three sampled count values from **Motion:001**.
+この例では、**Motion:001** から最新の3つのサンプリングされたカウント値を示しています。
 
-The SQL statement uses an `ORDER BY ... DESC` clause combined with a `LIMIT` clause to retrieve the last N rows. More details can be found under within the **Crate-DB** [documentation](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)
+SQL 文は、最後の N 行を取り出すために `LIMIT` 節と結合された、`ORDER BY ... DESC` 節を使用します。詳細は、**Crate-DB**の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を参照してください。
 
 #### :seven: リクエスト :
 
@@ -531,11 +512,11 @@ curl -iX POST \
 ```
 
 <a name="list-the-sum-of-values-over-a-time-period"></a>
-### List the Sum of values over a time period
+### 一定期間にわたる値の合計をリスト
 
-This example shows total count values from **Motion:001** over each minute.
+この例では、1分ごとに **Motion:001** からの合計カウント値を示しています。
 
-The SQL statement uses a `SUM` function and `GROUP BY` clause to retrieve the relevant data.  **Crate-DB** offers a range of [Date-Time Functions](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions) to truncate and convert the timestamps into data which can be grouped.
+SQL 文は、`SUM` 関数と `GROUP BY` 句を使用して関連するデータを取得します。 **Crate-DB** は、タイムスタンプを切り捨ててグループ化できるデータに変換するための一連の[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を提供しています。
 
 #### :eight: リクエスト :
 
@@ -564,11 +545,11 @@ curl -iX POST \
 ```
 
 <a name="list-the-minimum-values-over-a-time-period"></a>
-### List the Minimum Values over a Time Period
+### 一定期間にわたる値の最小値をリスト
 
-This example shows minimum luminosity values from **Lamp:001** over each minute.
+この例は、1分ごとに **Lamp:001** からの最小の明度値を示しています。
 
-The SQL statement uses a `MIN` function and `GROUP BY` clause to retrieve the relevant data.  **Crate-DB** offers a range of [Date-Time Functions](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions) to truncate and convert the timestamps into data which can be grouped.
+SQL 文は、`MIN` 関数と `GROUP BY` 句を使用して関連するデータを取得します。 **Crate-DB** は、タイムスタンプを切り捨ててグループ化できるデータに変換するための一連の[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を提供しています。
 
 #### :nine: リクエスト :
 
@@ -597,11 +578,11 @@ curl -iX POST \
 ```
 
 <a name="list-the-maximum-values-over-a-time-period"></a>
-### List the Maximum Values over a Time Period
+### 一定期間にわたる値の最大値をリスト
 
-This example shows maximum luminosity values from **Lamp:001** over each minute.
+この例は、1分ごとに **Lamp:001** からの最大の明度値を示しています。
 
-The SQL statement uses a `MAX` function and `GROUP BY` clause to retrieve the relevant data.  **Crate-DB** offers a range of [Date-Time Functions](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions) to truncate and convert the timestamps into data which can be grouped.
+SQL 文は、`MAX`関数と `GROUP BY` 句を使用して関連するデータを取得します。**Crate-DB** は、タイムスタンプを切り捨ててグループ化できるデータに変換するための一連の[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を提供しています。
 
 #### :one::zero: リクエスト :
 
@@ -630,11 +611,11 @@ curl -iX POST \
 ```
 
 <a name="list-the-average-values-over-a-time-period"></a>
-### List the Average Values over a Time Period
+### 一定期間にわたる値の平均値をリスト
 
-This example shows the average of luminosity values from **Lamp:001** over each minute.
+この例では、1分ごとに **Lamp:001** からの明度値の平均を示しています。
 
-The SQL statement uses a `AVG` function and `GROUP BY` clause to retrieve the relevant data. **Crate-DB** offers a range of [Date-Time Functions](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions) to truncate and convert the timestamps into data which can be grouped.
+SQL 文は、`AVG` 関数と `GROUP BY` 句を使用して関連するデータを取得します。**Crate-DB** は、タイムスタンプを切り捨ててグループ化できるデータに変換するための一連の[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を提供しています。
 
 #### :one::one: リクエスト :
 
@@ -669,10 +650,9 @@ curl -iX POST \
 
 
 <a name="next-steps"></a>
-# Next Steps
+# 次のステップ
 
-Want to learn how to add more complexity to your application by adding advanced features?
-You can find out by reading the other tutorials in this series:
+高度な機能を追加することで、アプリケーションに複雑さを加える方法を知りたいですか？このシリーズの他のチュートリアルを読むことで見つけることができます :
 
 &nbsp; 101. [Getting Started](https://github.com/Fiware/tutorials.Getting-Started)<br/>
 &nbsp; 102. [Entity Relationships](https://github.com/Fiware/tutorials.Entity-Relationships)<br/>
