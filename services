@@ -23,14 +23,14 @@ stoppingContainers () {
 
 if (( $# != 1 )); then
     echo "Illegal number of parameters"
-    echo "usage: services [start|stop]"
+    echo "usage: services [create|start|stop]"
     exit 1
 fi
 
 command="$1"
 case "${command}" in
 	"help")
-        echo "usage: services [start|stop]"
+        echo "usage: services [create|start|stop]"
         ;;
 	 "start")
 		stoppingContainers
@@ -62,6 +62,10 @@ case "${command}" in
 		docker pull smartsdk/quantumleap
 		echo "Recreate Context-Providers proxy"
 		docker build -t fiware/cp-web-app ./proxy
-		
+		;;
+	*)
+		echo "Command not Found."
+		echo "usage: services [create|start|stop]"
+		exit 127;
 		;;
 esac
