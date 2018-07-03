@@ -85,6 +85,40 @@
 						"description": "The rate of change of the **Motion Sensor** is driven by events in the real-world. We need to receive\nevery event to be able to aggregate the results.\n\nThis is done by making a POST request to the `/v2/subscription` endpoint of the Orion Context Broker.\n\n* The `fiware-service` and `fiware-servicepath` headers are used to filter the subscription to only listen to measurements from the attached IoT Sensors\n* The `idPattern` in the request body ensures that **Quantum Leap** will be informed of all **Motion Sensor** data changes.\n* The notification `url` must match the exposed port.\n\nThe `metadata` attribute ensures that the `time_index` column within the Crate-DB database will match the data found within the **Orion Context Broker** rather than using the creation time of the record within the Crate-DB itself."
 					},
 					"response": []
+				},
+				{
+					"name": "Orion - Check Subscription is working",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "openiot"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{orion}}/v2/subscriptions/",
+							"protocol": "http",
+							"host": [
+								"{{orion}}"
+							],
+							"path": [
+								"v2",
+								"subscriptions",
+								""
+							]
+						},
+						"description": "If the subscriptions have been created, you can check to see if they are firing by making a GET \nrequest to the `/v2/subscriptions` endpoint.\n\nWithin the `notification` section of the response, you can see several additional `attributes` which describe the health of the subscription\n\nIf the criteria of the subscription have been met, `timesSent` should be greater than `0`.\nA zero value would indicate that the `subject` of the subscription is incorrect or the subscription \nhas created with the wrong `fiware-service-path` or `fiware-service` header\n\nThe `lastNotification` should be a recent timestamp - if this is not the case, then the devices\nare not regularly sending data. Remember to unlock the **Smart Door** and switch on the **Smart Lamp**\n\nThe `lastSuccess` should match the `lastNotification` date - if this is not the case \nthen **Quantum Leap** is not receiving the subscription properly. Check that the host name\nand port are correct. \n\nFinally, check that the `status` of the subscription is `active` - an expired subscription\nwill not fire."
+					},
+					"response": []
 				}
 			],
 			"event": [
@@ -210,7 +244,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.etmotion WHERE entity_id = 'Motion:001' LIMIT 10\"}"
+							"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.etmotion WHERE entity_id = 'Motion:001' ORDER BY time_index ASC  LIMIT 3 OFFSET 3\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",
@@ -238,7 +272,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.motion WHERE entity_id = 'Motion:001'  ORDER BY time_index DESC LIMIT 3\"}"
+							"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.etmotion WHERE entity_id = 'Motion:001'  ORDER BY time_index DESC LIMIT 3\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",
@@ -266,7 +300,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, SUM (count) AS sum FROM mtopeniot.etmotion WHERE entity_id = 'Motion:001' GROUP BY minute\"}"
+							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, SUM (count) AS sum FROM mtopeniot.etmotion WHERE entity_id = 'Motion:001' GROUP BY minute ORDER BY minute\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",
@@ -294,7 +328,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, MIN (luminosity) AS min FROM mtopeniot.etlamp WHERE entity_id = 'Lamp:001' GROUP BY minute\"}"
+							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, MIN (luminosity) AS min FROM mtopeniot.etlamp WHERE entity_id = 'Lamp:001' GROUP BY minute ORDER BY minute\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",
@@ -322,7 +356,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, MAX (luminosity) AS max FROM mtopeniot.etlamp WHERE entity_id = 'Lamp:001' GROUP BY minute\"}"
+							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, MAX (luminosity) AS max FROM mtopeniot.etlamp WHERE entity_id = 'Lamp:001' GROUP BY minute ORDER BY minute\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",
@@ -350,7 +384,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, AVG (luminosity) AS average FROM mtopeniot.etlamp WHERE entity_id = 'Lamp:001' GROUP BY minute\"}"
+							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, AVG (luminosity) AS average FROM mtopeniot.etlamp WHERE entity_id = 'Lamp:001' GROUP BY minute ORDER BY minute\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",
@@ -415,21 +449,21 @@
 	],
 	"variable": [
 		{
-			"id": "0c6d5a70-6761-4e90-94d7-0afd0f0c3768",
+			"id": "da178a23-1afe-48b8-bff2-0b4cec4d0020",
 			"key": "orion",
 			"value": "localhost:1026",
 			"type": "string",
 			"description": ""
 		},
 		{
-			"id": "8d02af2f-f88b-42d9-9166-2bbb3b09c564",
+			"id": "2dab1535-7336-4742-89a4-7c0d70506748",
 			"key": "quantum-leap",
 			"value": "localhost:8668",
 			"type": "string",
 			"description": ""
 		},
 		{
-			"id": "3ea2f4e0-3e29-41ac-ab55-d6363cceecca",
+			"id": "376d043a-9877-46c1-9bb3-72540f03de20",
 			"key": "crate",
 			"value": "localhost:4200",
 			"type": "string",

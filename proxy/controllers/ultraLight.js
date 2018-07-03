@@ -16,7 +16,7 @@
 
 /* global SOCKET_IO */
 /* global MQTT_CLIENT */
-const NodeCache = require( "node-cache" );
+const NodeCache = require("node-cache");
 const myCache = new NodeCache();
 const _ = require('lodash');
 const request = require("request");
@@ -28,8 +28,11 @@ const UL_HOST = process.env.IOTA_HTTP_HOST || 'localhost';
 const UL_PORT = process.env.IOTA_HTTP_PORT || 7896;
 const UL_URL = 'http://' + UL_HOST + ':' + UL_PORT + '/iot/d';
 const UL_TRANSPORT = (process.env.DUMMY_DEVICES_TRANSPORT || 'HTTP');
+const UL_CONTEXT_BROKER = process.env.CONTEXT_BROKER || 'http://localhost:1026/v2';
+const UL_NGSI_PREFIX =  (process.env.NGSI_LD_PREFIX !== undefined) ? process.env.NGSI_LD_PREFIX : 'urn:ngsi-ld:';
 
-// A series of constants used by our se of devices
+
+// A series of constants used by our set of devices
 const OK = ' OK';
 const NOT_OK = ' NOT OK';
 const DOOR_LOCKED = 's|LOCKED';
@@ -42,13 +45,14 @@ const BELL_ON = 's|ON';
 const LAMP_ON = 's|ON|l|1750';
 const LAMP_OFF = 's|OFF|l|0';
 
-const INITIAL_COUNT = 'c|0';
+const NO_MOTION_DETECTED = 'c|0';
+const MOTION_DETECTED = 'c|1';
 
 
 // The bell will respond to the "ring" command.
 // this will briefly set the bell to on.
 // The bell  is not a sensor - it will not report state northbound
-function  processHttpBellCommand(req, res) {
+function  processHttpBellCommand (req, res) {
 	const keyValuePairs = req.body.split('|') || [''];
 	const command =   getCommand (keyValuePairs[0]);
 	const deviceId = 'bell' + req.params.id;
@@ -69,7 +73,7 @@ function  processHttpBellCommand(req, res) {
 // The door responds to "open", "close", "lock" and "unlock" commands
 // Each command alters the state of the door. When the door is unlocked
 // it can be opened and shut by external events.
-function processHttpDoorCommand(req, res) {
+function processHttpDoorCommand( req, res) {
 	const keyValuePairs = req.body.split('|') || [''];
 	const command = getCommand (keyValuePairs[0]);
 	const deviceId = 'door' + req.params.id;
@@ -89,7 +93,7 @@ function processHttpDoorCommand(req, res) {
 
 // The lamp can be "on" or "off" - it also registers luminocity.
 // It will slowly dim as time passes (provided no movement is detected)
-function processHttpLampCommand(req, res) {
+function processHttpLampCommand (req, res) {
 	const keyValuePairs = req.body.split('|') || [''];
 	const command =   getCommand (keyValuePairs[0]);
 	const deviceId = 'lamp' + req.params.id;
@@ -106,7 +110,9 @@ function processHttpLampCommand(req, res) {
 	return res.status(200).send(result + OK);	
 }
 
-function processMqttMessage(topic, message) {
+// The device monitor will display all MQTT messages on screen.
+// cmd topics are consumed by the actuators (bell, lamp and door)
+function processMqttMessage (topic, message) {
 	const mqttBrokerUrl = process.env.MQTT_BROKER_URL || 'mqtt://mosquitto';
 	SOCKET_IO.emit( 'mqtt' , mqttBrokerUrl + topic + '  ' + message);
 	const path = topic.split("/");
@@ -124,7 +130,8 @@ function processMqttMessage(topic, message) {
 	}
 }
 
-function actuateDevice(deviceId, command){
+// Change the state of a dummy IoT device based on the command received.
+function actuateDevice (deviceId, command) {
 	switch (deviceId.replace(/\d/g, '')){
 		case "bell":
 			if (command === 'ring'){
@@ -156,7 +163,7 @@ function actuateDevice(deviceId, command){
 //
 // Splits the deviceId from the command sent.
 //
-function getCommand (string){
+function getCommand (string) {
 	const command =  string.split('@');
 	if (command.length === 1){
 		command.push('');
@@ -171,26 +178,141 @@ function getCommand (string){
 // The motion sensor counts the number of people passing by
 // The lamp can be ON or OFF. This also registers luminocity.
 // It will slowly dim as time passes (provided no movement is detected)
-function init (){
-	setDeviceState( 'door001', DOOR_LOCKED);
-	setDeviceState( 'door002', DOOR_LOCKED);
-	setDeviceState( 'door003', DOOR_LOCKED);
-	setDeviceState( 'door004', DOOR_LOCKED);
+function init () {
+	myCache.set( 'door001', DOOR_LOCKED);
+	myCache.set( 'door002', DOOR_LOCKED);
+	myCache.set( 'door003', DOOR_LOCKED);
+	myCache.set( 'door004', DOOR_LOCKED);
 
-	setDeviceState( 'bell001', BELL_OFF, false);
-	setDeviceState( 'bell002', BELL_OFF, false);
-	setDeviceState( 'bell003', BELL_OFF, false);
-	setDeviceState( 'bell004', BELL_OFF, false);
+	myCache.set( 'bell001', BELL_OFF, false);
+	myCache.set( 'bell002', BELL_OFF, false);
+	myCache.set( 'bell003', BELL_OFF, false);
+	myCache.set( 'bell004', BELL_OFF, false);
 
-	setDeviceState( 'lamp001', LAMP_OFF);
-	setDeviceState( 'lamp002', LAMP_OFF);
-	setDeviceState( 'lamp003', LAMP_OFF);
-	setDeviceState( 'lamp004', LAMP_OFF);
+	myCache.set( 'lamp001', LAMP_OFF);
+	myCache.set( 'lamp002', LAMP_OFF);
+	myCache.set( 'lamp003', LAMP_OFF);
+	myCache.set( 'lamp004', LAMP_OFF);
 
-	setDeviceState( 'motion001', INITIAL_COUNT);
-	setDeviceState( 'motion002', INITIAL_COUNT);
-	setDeviceState( 'motion003', INITIAL_COUNT);
-	setDeviceState( 'motion004', INITIAL_COUNT);
+	myCache.set( 'motion001', NO_MOTION_DETECTED);
+	myCache.set( 'motion002', NO_MOTION_DETECTED);
+	myCache.set( 'motion003', NO_MOTION_DETECTED);
+	myCache.set( 'motion004', NO_MOTION_DETECTED);
+
+	// Once a minute, read the existing state of the dummy devices
+	const deviceIds = myCache.keys();
+	let wait = 4000;
+	_.forEach(deviceIds, (deviceId) => {
+		wait = wait  + 1999;
+		setTimeout(setUpDeviceReading, wait, deviceId);
+	});
+}
+
+let isDoorActive = false;
+let isDevicesActive = false;
+
+// Open and shut an unlocked door
+function activateDoor () {
+	if(isDoorActive){
+		return;
+	}
+    
+    isDoorActive = true;
+    const deviceIds = myCache.keys();
+
+	_.forEach(deviceIds, (deviceId) => {
+		const state = getDeviceState(deviceId);
+		const isSensor = true;
+
+		switch (deviceId.replace(/\d/g, '')){
+			case "door":
+				//  The door is OPEN or CLOSED or LOCKED,
+				if(state.s !== 'LOCKED'){
+					// Randomly open and close the door if not locked.
+					// lower the rate if the lamp is off.
+					const rate = (getLampState (deviceId, 'door') === 'ON') ? 3 : 6;
+					state.s = (getRandom() > rate) ? 'OPEN' : 'CLOSED';
+				}
+				setDeviceState(deviceId, toUltraLight(state), isSensor);
+			break;
+		}
+	});
+   isDoorActive = false;
+}
+
+// Update state of Lamps, Doors and Motion Sensors
+function activateDevices () {
+	if(isDevicesActive){
+		return;
+	}
+		 
+	isDevicesActive = true;
+
+	const deviceIds = myCache.keys();
+
+	_.forEach(deviceIds, (deviceId) => {
+		const state = getDeviceState(deviceId);
+		let isSensor = true;
+
+		switch (deviceId.replace(/\d/g, '')){
+			
+			case "bell":
+				// ON or OFF - Switch off the bell if it is still ringing
+				if(state.s === 'ON'){
+					state.s = 'OFF';
+				}
+				isSensor = false;	
+				break;
+
+			case "motion":
+				// If the door is OPEN, randomly switch the count of the motion sensor
+				if(getDoorState (deviceId, 'motion') === 'OPEN'){
+					if (state.c === 1 ){
+						state.c = 0;
+					} else {
+						state.c =  ((getRandom() > 3) ? 1 : 0);
+					}
+				} else	{
+					state.c = 0;
+				}
+				setDeviceState(deviceId, toUltraLight(state), isSensor);
+				break;			
+
+
+			case "lamp":
+				if(state.s === 'OFF'){
+					state.l = 0;
+				} else if(getDoorState (deviceId, 'lamp') === 'OPEN'){
+					// if the door is open set the light to full power
+					state.l = parseInt(state.l) || 1000;
+					state.l = state.l + (getRandom() * getRandom() );
+					if (state.l < 1850){
+						state.l = state.l + 30 + (getRandom() * getRandom() );
+					}
+					if (state.l > 1990){
+						state.l = 1990 + getRandom();
+					}
+				} else if (state.l > 1000){
+					// if the door is closed dim the light
+					state.l = parseInt(state.l) || 1990;
+					if  (getRandom() > 3) {
+						state.l = state.l - 30 - (getRandom() * getRandom() );
+					}
+					state.l = state.l + getRandom();
+				}
+				break;	
+		}
+
+		setDeviceState(deviceId, toUltraLight(state), isSensor);
+	});
+	isDevicesActive = false;
+}
+
+// Read the existing state of the dummy devices when requested.
+function sendDeviceReading (deviceId) {
+	const state = toUltraLight(getDeviceState(deviceId));
+	const isSensor = (deviceId.replace(/\d/g, '') !== 'bell');
+	setDeviceState(deviceId, state, isSensor, true);
 }
 
 //
@@ -201,7 +323,7 @@ function init (){
 // e.g. s|ON|l|1000 becomes
 // { s: 'ON', l: '1000'}
 //
-function getDeviceState(deviceId){
+function getDeviceState (deviceId) {
 	const ultraLight = myCache.get(deviceId);
 	const obj = {};
 	const keyValuePairs = ultraLight.split('|')
@@ -215,11 +337,13 @@ function getDeviceState(deviceId){
 // it also reports (and attempts to send) the northbound traffic to the IoT agent.
 // The state of the dummy device is also sent to the browser for display
 //
-function setDeviceState(deviceId, state, isSensor = true){
+// * If we are running under HTTP mode the device will respond with a result
+// * If we are running under MQTT mode the device will post the result as a topic 
+function setDeviceState (deviceId, state, isSensor = true, force = false) {
 	const previousState = myCache.get(deviceId);
 	myCache.set(deviceId, state);
 	
-	if ( isSensor && (state !== previousState) ){
+	if ( isSensor && ((state !== previousState) || force )){
 		
 
 		if (UL_TRANSPORT ===  'HTTP'){
@@ -253,7 +377,7 @@ function setDeviceState(deviceId, state, isSensor = true){
 // Each key and value is in turn separated by a pipe character
 //
 // e.g. s|ON,l|1000
-function toUltraLight (object){
+function toUltraLight (object) {
 	const strArray = [];
 	_.forEach(object, function(value, key) {
 		strArray.push(key + '|' + value);
@@ -265,7 +389,7 @@ function toUltraLight (object){
 // this is because no people will enter if the door is LOCKED, and therefore
 // both the motion sensor will not increment an the smart lamp will slowly
 // decrease
-function getDoorState (deviceId, type){
+function getDoorState (deviceId, type) {
 	const door = getDeviceState(deviceId.replace(type, 'door'));
 	return  door.s || 'LOCKED';
 }
@@ -273,139 +397,86 @@ function getDoorState (deviceId, type){
 // Return the state of the lamp with the same number as the current element
 // this is because fewer people will enter the building if the lamp is OFF, 
 // and therefore the motion sensor will increment more slowly
-function getLampState (deviceId, type){
+function getLampState (deviceId, type) {
 	const lamp = getDeviceState(deviceId.replace(type, 'lamp'));
 	return  lamp.s || 'OFF';
 }
 
 // Pick a random number between 1 and 10
-function getRandom (){
+function getRandom () {
 	return  Math.floor(Math.random() * 10) + 1;
 }
 
+// This function allows a Bell, Door or Lamp command to be sent to the Dummy IoT devices
+// via the Orion Context Broker and the UltraLight IoT Agent.
+function sendCommand (req) {	
+	let id = req.body.id.split(":").pop();
+	const action = req.body.action;
+	// This is not a command, just a manually activated motion sensor event.
+	const isMotionSensor = (action === 'presence');
+	const payload = {};
 
+	payload[action] = {
+    	"type" : "command",
+    	"value" : ""
+	};
 
+	if (action === "ring"){
+		id =  'Bell:' + id;
+	} else if (action === "on" || action === "off" ){
+		id =  'Lamp:' + id;
+	} else if (action === "presence") {
+		id =  'motion' + id;
+	} else {
+		id =  'Door:' + id;
+	} 
 
-setTimeout (() =>{
-	// Initialize the array of sensors and periodically update them.
-	init ();
+	const options = { method: 'PATCH',
+		url: UL_CONTEXT_BROKER + '/entities/' + UL_NGSI_PREFIX + id + '/attrs',
+		headers: { 
+			'Content-Type': 'application/json',
+		 	'fiware-servicepath': '/',
+		 	'fiware-service': 'openiot' },
+		body: payload,
+		json: true 
+	};
 
+	if(isMotionSensor){
+		// The motion sensor does not accept commands,
+		// Update the state of the device directly
+		setDeviceState(id, MOTION_DETECTED, true);
+	} else {
+		request(options,  error  => {
+			if (error) { 
+				debug(error);
+			}
+		});	
+	}
+}
 
-	let isRunningDoor = false;
-	let isRunning = false;
+// Once a minute, read the existing state of the dummy devices
+function setUpDeviceReading (deviceId) {
+	const deviceType = deviceId.replace(/\d/g, '');
+	if ( deviceType === 'lamp' || deviceType === 'motion') {
+		setInterval(sendDeviceReading, 59999, deviceId);
+	}
+}
 
-
-	// Every few seconds, update the state of the dummy devices in a 
-	// semi-random fashion. 
-	setInterval(() => {
-	    if(!isRunningDoor){
-	        isRunningDoor = true;
-
-	        const deviceIds = myCache.keys();
-
-			_.forEach(deviceIds, (deviceId) => {
-				const state = getDeviceState(deviceId);
-				const isSensor = true;
-
-				switch (deviceId.replace(/\d/g, '')){
-					case "door":
-						//  The door is OPEN or CLOSED or LOCKED,
-						if(state.s !== 'LOCKED'){
-							// Randomly open and close the door if not locked.
-							// lower the rate if the lamp is off.
-							const rate = (getLampState (deviceId, 'door') === 'ON') ? 3 : 6;
-							state.s = (getRandom() > rate) ? 'OPEN' : 'CLOSED';
-						}
-						setDeviceState(deviceId, toUltraLight(state), isSensor);
-					break;
-				}
-
-				
-			});
-			
-	       isRunningDoor = false;
-	    }
-	}, 5000);
-
-
-
-
-	// Every seconds, update the state of the dummy devices in a 
-	// semi-random fashion. 
-	setInterval( () => {
-	    if(!isRunning){
-	        isRunning = true;
-
-	        const deviceIds = myCache.keys();
-
-			_.forEach(deviceIds, (deviceId) => {
-				const state = getDeviceState(deviceId);
-				let isSensor = true;
-
-				switch (deviceId.replace(/\d/g, '')){
-					
-					case "bell":
-						// ON or OFF - Switch off the bell if it is still ringing
-						if(state.s === 'ON'){
-							state.s = 'OFF';
-						}
-						isSensor = false;	
-						break;
-
-					case "motion":
-						// If the door is OPEN, randomly switch the count of the motion sensor
-						if(getDoorState (deviceId, 'motion') === 'OPEN'){
-							if (state.c === 1 ){
-								state.c = 0;
-							} else {
-								state.c =  ((getRandom() > 3) ? 1 : 0);
-							}
-						} else	{
-							state.c = 0;
-						}
-						setDeviceState(deviceId, toUltraLight(state), isSensor);
-						break;			
-
-
-					case "lamp":
-						if(state.s === 'OFF'){
-							state.l = 0;
-						} else if(getDoorState (deviceId, 'lamp') === 'OPEN'){
-							// if the door is open set the light to full power
-							state.l = parseInt(state.l) || 1000;
-							state.l = state.l + (getRandom() * getRandom() );
-							if (state.l < 1900){
-								state.l = state.l + 30 + (getRandom() * getRandom() );
-							}
-							if (state.l > 2000){
-								state.l = 2000;
-							}
-						} else if (state.l > 1000){
-							// if the door is closed dim the light
-							state.l = parseInt(state.l) || 2000;
-							if  (getRandom() > 3) {
-								state.l = state.l - 30 - (getRandom() * getRandom() );
-							}
-							state.l = state.l + getRandom();
-						}
-						break;	
-				}
-
-				setDeviceState(deviceId, toUltraLight(state), isSensor);
-			});
-			
-	       isRunning = false;
-	    }
-	}, 1000);
-
-}, 3000);
-
-
+// Initialize the array of sensors and periodically update them.
+// Intervals are prime numbers to avoid simultaneous updates.
+init ();
+// Every few seconds, update the state of the dummy devices in a 
+// semi-random fashion. 
+setInterval(activateDoor, 4999);
+// Every second, update the state of the dummy devices in a 
+// semi-random fashion. 
+setInterval(activateDevices, 997);
 
 
 module.exports = {
 	processHttpBellCommand,
 	processHttpDoorCommand,
 	processHttpLampCommand,
-	processMqttMessage
+	processMqttMessage,
+	sendCommand
 };

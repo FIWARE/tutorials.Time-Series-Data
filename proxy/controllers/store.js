@@ -11,14 +11,11 @@ const NgsiV2 = require('ngsi_v2');
 const defaultClient = NgsiV2.ApiClient.instance;
 const debug = require('debug')('proxy:server');
 const monitor = require('../lib/monitoring');
-const request = require("request");
 
 // The basePath must be set - this is the location of the Orion
 // context broker. It is best to do this with an environment
 // variable (with a fallback if necessary)
 defaultClient.basePath = process.env.CONTEXT_BROKER || 'http://localhost:1026/v2';
-const nsgiLdPrefix =  (process.env.NGSI_LD_PREFIX !== undefined) ? process.env.NGSI_LD_PREFIX : 'urn:ngsi-ld:';
-
 
 // This function receives the details of a store from the context
 //
@@ -118,46 +115,6 @@ function displayWarehouseInfo(req, res) {
 	res.render('warehouse', { id: req.params.storeId });
 }
 
-// This function allows a Bell, Door or Lamp command to be sent to the Dummy IoT devices
-// via the Orion Context Broker and the UltraLight IoT Agent.
-function sendCommand(req) {
-
-
-	
-	let id = req.body.id.split(":").pop();
-	const action = req.body.action;
-	const payload = {};
-
-	payload[action] = {
-    	"type" : "command",
-    	"value" : ""
-	};
-
-	if (action === "ring"){
-		id =  'Bell:' + id;
-	} else if (action === "on" || action === "off" ){
-		id =  'Lamp:' + id;
-	} else {
-		id =  'Door:' + id;
-	}
-
-	const options = { method: 'PATCH',
-		url: defaultClient.basePath + '/entities/' + nsgiLdPrefix + id + '/attrs',
-		headers: { 
-			'Content-Type': 'application/json',
-		 	'fiware-servicepath': '/',
-		 	'fiware-service': 'openiot' },
-		body: payload,
-		json: true 
-	};
-
-	request(options,  error  => {
-		if (error) { 
-			debug(error);
-		}
-	});	
-}
-
 
 
 // This is a promise to make an HTTP PATCH request to the /v2/entities/<entity-id>/attr end point
@@ -198,6 +155,5 @@ module.exports = {
 	buyItem,
 	displayStore,
 	displayTillInfo,
-	displayWarehouseInfo,
-	sendCommand
+	displayWarehouseInfo
 };

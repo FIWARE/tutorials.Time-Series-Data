@@ -3,6 +3,7 @@ const router = express.Router();
 const monitor = require('../lib/monitoring');
 const Store = require('../controllers/store');
 const History = require('../controllers/history');
+const Ultralight = require('../controllers/ultraLight');
 const _ = require('lodash');
 
 
@@ -39,10 +40,16 @@ router.get('/device/monitor', function(req, res) {
 	res.render('device-monitor', { title: 'UltraLight IoT Devices', traffic});
 });
 
-router.post('/device/command', Store.sendCommand);
+router.post('/device/command', Ultralight.sendCommand);
 
-router.get('/device/history/:deviceId', catchErrors(History.readDeviceHistory));
-
+// Retrieve Device History from STH-Comet
+if (process.env.STH_COMET_SERVICE_URL) {
+	router.get('/device/history/:deviceId', catchErrors(History.readCometDeviceHistory));
+}
+// Retrieve Device History from Crate-DB
+if (process.env.CRATE_DB_SERVICE_URL ){
+	router.get('/device/history/:deviceId', catchErrors(History.readCrateDeviceHistory));
+}
 
 router.get('/app/monitor', function(req, res) {
 	res.render('monitor', { title: 'Event Monitor' });
