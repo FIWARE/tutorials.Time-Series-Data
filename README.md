@@ -1,12 +1,13 @@
 [![FIWARE Banner](https://fiware.github.io/tutorials.Time-Series-Data/img/fiware.png)](https://www.fiware.org/developers)
 
-This tutorial is an introduction to [FIWARE Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) - a generic enabler which is used to perist context data into a **Crate-DB** database. The tutorial activates the IoT sensors connected in the [previous tutorial](https://github.com/Fiware/tutorials.IoT-Agent) and persists measurements from those sensors into the database.
-The **Crate-DB** HTTP endpoint is then used to retrieve time-based aggregations of that data. The results are visualised on a graph or via the **Grafana** time series analytics tool.
+This tutorial is an introduction to [FIWARE Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) - a generic enabler which is used to persist context data into a **Crate-DB** database. The tutorial activates the IoT sensors connected in the [previous tutorial](https://github.com/Fiware/tutorials.IoT-Agent) and persists measurements from those sensors into the database.
+The **Crate-DB** HTTP endpoint is then used to retrieve time-based aggregations of that data. The results are visualized on a graph or via the **Grafana** time series analytics tool.
 
 The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also available as [Postman documentation](http://fiware.github.io/tutorials.Time-Series-Data/)
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/d24facc3c430bb5d5aaf)
 
+* このチュートリアルは[日本語](README.ja.md)でもご覧いただけます。
 
 # Contents
 
@@ -61,13 +62,13 @@ A summary of the differences can be seen below:
 
 | Quantum Leap               | STH-Comet |
 |----------------------------|-----------|
-| Offers an NGSI v2 interface for notifications | Offers an NGSI v1 interface for notifiations |
+| Offers an NGSI v2 interface for notifications | Offers an NGSI v1 interface for notifications |
 | Persists Data to a Crate-DB database  | Persists Data to Mongo-DB database |
 | Does not offer its own HTTP endpoint for queries, use the Crate-DB SQL endpoint | Offers its own HTTP endpoint for queries - Mongo-DB database cannot be accessed directly |
 | The Crate-DB SQL endpoint is able to satisfy complex data queries using SQL | STH-Comet offers a limited set of queries |
 | Crate-DB is a distributed SQL DBMS built atop NoSQL storage | Mongo-DB is a document based NoSQL database|
 
-Further details about the differences between the the underlying database engines can be found [here](https://db-engines.com/en/system/CrateDB%3BMongoDB)
+Further details about the differences between the underlying database engines can be found [here](https://db-engines.com/en/system/CrateDB%3BMongoDB)
 
 
 ## Analyzing time series data
@@ -84,7 +85,7 @@ It can also be used to reduce the significance of each individual data point to 
 #### Grafana
 
 [Grafana](https://grafana.com/) is an open source software for time series analytics tool which will be used 
-during this tutorial. It integrates with a variety of time-series databases including Crate-DB
+during this tutorial. It integrates with a variety of time-series databases including **Crate-DB**
 It is available licensed under the Apache License 2.0. More information can be found at https://grafana.com/
 
 
@@ -113,7 +114,7 @@ and [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) .
 
 Therefore the overall architecture will consist of the following elements:
 
-* Thre **FIWARE Generic Enablers**:
+* The **FIWARE Generic Enablers**:
   * The FIWARE [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/) which will receive requests using [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2)
   * The FIWARE [IoT Agent for Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/) which will receive northbound measurements from the dummy IoT devices in [Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual) format and convert them to [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) requests for the context broker to alter the state of the context entities
   * FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) subscribe to context changes and persist them into a **Crate-DB** database  
@@ -184,7 +185,7 @@ cd tutorials.Time-Series-Data
 >```
 
 
-Thereafter, all services can be initialized from the command line by running the [services](https://github.com/Fiware/tutorials.Historic-Context/blob/master/services) Bash script provided within the repository:
+Thereafter, all services can be initialized from the command line by running the [services](https://github.com/Fiware/tutorials.Time-Series-Data/blob/master/services) Bash script provided within the repository:
 
 ```console
 ./services start
@@ -201,7 +202,7 @@ Thereafter, all services can be initialized from the command line by running the
 # Connecting FIWARE to a Crate-DB Database via Quantum Leap
 
 In the configuration, **Quantum Leap** listens to NGSI v2 notifications on port `8868` and persists historic context
-data to the Crate-DB. Crate-DB is accessible using port `4200` and can either be queried directly or attached to the
+data to the **Crate-DB**. **Crate-DB** is accessible using port `4200` and can either be queried directly or attached to the
 Grafana analytics tool.  The rest of the system providing the context data has been described in previous tutorials
 
 ## Crate-DB Database Server Configuration
@@ -245,19 +246,19 @@ Grafana analytics tool.  The rest of the system providing the context data has b
 
 The `quantum-leap` container is listening on one port: 
 
-* The Operations for port for STH-Comet - `8668` is where the service will be listening for notifications from the Orion context broker
+* The Operations for port for Quantum Leap - `8668` is where the service will be listening for notifications from the Orion context broker
 
 The `CRATE_HOST` environment variable defines the location where the data will be persisted.
 
 The `crate-db` container is listening on two ports: 
-* The Admin UI is avaliable on port `4200`
-* The transport protocol is available on `4300`
+* The Admin UI is available on port `4200`
+* The transport protocol is available on `port 4300`
 
 The `grafana` container has connected up port `3000` internally with port `3003` externally. This is because the Grafana 
 UI is usually available on port `3000`, but this port has already been taken by the dummy devices UI so it has been shifted
 to another port. The Grafana Environment variables are described within their own 
 [documentation](http://docs.grafana.org/installation/configuration/). The configuration ensures we will be able to connect
-to the Crate-DB database later on in the tutorial
+to the **Crate-DB** database later on in the tutorial
 
 ### Generating Context Data
 
@@ -380,7 +381,7 @@ curl -iX POST \
 ## Time Series Data Queries (Crate-DB)
 
 
-Crate-DB offers an [HTTP Endpoint](https://crate.io/docs/crate/reference/en/latest/interfaces/http.html) that can be used to submit SQL queries. The endpoint is accessible under `<servername:port>/_sql`.
+**Crate-DB** offers an [HTTP Endpoint](https://crate.io/docs/crate/reference/en/latest/interfaces/http.html) that can be used to submit SQL queries. The endpoint is accessible under `<servername:port>/_sql`.
 
 SQL statements are sent as the body of POST requests in JSON format, where the SQL statement is the value of the `stmt` attribute.
 
@@ -415,7 +416,7 @@ curl -iX POST \
 }
 ```
 
-Schema names are formed with the `mt` prefix followed by `fiware-service` header in lower case. The IoT Agent is forwarding measurements from the dummy IoT devices, with the header `openiot` these are being persisted under the `mtopeniot` schema.
+Schema names are formed with the `mt` prefix followed by `fiware-service` header in lower case. The IoT Agent is forwarding measurements from the dummy IoT devices, with the header `openiot`. These are being persisted under the `mtopeniot` schema.
 
 If the `mtopeniot` does not exist, then the subscription to **Quantum Leap** has not been set up correctly. Check that the subscription exists, and has been configured to send data to the correct location.
 
@@ -423,7 +424,7 @@ If the `mtopeniot` does not exist, then the subscription to **Quantum Leap** has
 
 ### Read Tables
 
-Quantum Leap will persist data into separate tables within the Crate-DB database based on the entity type. Table names are formed with the et prefix and the entity type name in lowercase.
+**Quantum Leap** will persist data into separate tables within the **Crate-DB** database based on the entity type. Table names are formed with the `et` prefix and the entity type name in lowercase.
 
 #### :four: Request:
 
