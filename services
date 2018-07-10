@@ -60,8 +60,8 @@ case "${command}" in
 		docker pull grafana/grafana
 		echo "Obtaining Latest Quantum Leap"
 		docker pull smartsdk/quantumleap
-		echo "Recreate Context-Providers proxy"
-		docker build -t fiware/cp-web-app ./proxy
+		echo "Obtaining Tutorial Context-Provider"
+		docker pull fiware/tutorials.context-provider
 		;;
 	*)
 		echo "Command not Found."

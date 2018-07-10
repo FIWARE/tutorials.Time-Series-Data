@@ -1,5 +1,10 @@
 [![FIWARE Banner](https://fiware.github.io/tutorials.Time-Series-Data/img/fiware.png)](https://www.fiware.org/developers)
 
+[![FIWARE Core Context](https://img.shields.io/badge/FIWARE-Core_Context-233c68.svg)](https://www.fiware.org/developers/catalogue/)
+[![Documentation](https://readthedocs.org/projects/fiware-tutorials/badge/?version=latest)](https://fiware-tutorials.readthedocs.io/en/latest)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](http://fiware.github.io/context.Orion/api/v2/stable/)
+
 This tutorial is an introduction to [FIWARE Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) - a generic enabler which is used to persist context data into a **Crate-DB** database. The tutorial activates the IoT sensors connected in the [previous tutorial](https://github.com/Fiware/tutorials.IoT-Agent) and persists measurements from those sensors into the database.
 The **Crate-DB** HTTP endpoint is then used to retrieve time-based aggregations of that data. The results are visualized on a graph or via the **Grafana** time series analytics tool.
 
@@ -680,20 +685,5 @@ curl -iX POST \
 # Next Steps
 
 Want to learn how to add more complexity to your application by adding advanced features?
-You can find out by reading the other tutorials in this series:
+You can find out by reading the other [tutorials in this series](https://fiware-tutorials.readthedocs.io/en/latest)
 
-&nbsp; 101. [Getting Started](https://github.com/Fiware/tutorials.Getting-Started)<br/>
-&nbsp; 102. [Entity Relationships](https://github.com/Fiware/tutorials.Entity-Relationships)<br/>
-&nbsp; 103. [CRUD Operations](https://github.com/Fiware/tutorials.CRUD-Operations)<br/>
-&nbsp; 104. [Context Providers](https://github.com/Fiware/tutorials.Context-Providers)<br/>
-&nbsp; 105. [Altering the Context Programmatically](https://github.com/Fiware/tutorials.Accessing-Context)<br/> 
-&nbsp; 106. [Subscribing to Changes in Context](https://github.com/Fiware/tutorials.Subscriptions)<br/>
-
-&nbsp; 201. [Introduction to IoT Sensors](https://github.com/Fiware/tutorials.IoT-Sensors)<br/>
-&nbsp; 202. [Provisioning an IoT Agent](https://github.com/Fiware/tutorials.IoT-Agent)<br/>
-&nbsp; 203. [IoT over MQTT](https://github.com/Fiware/tutorials.IoT-over-MQTT)<br/>
-&nbsp; 250. [Introduction to Fast-RTPS and Micro-RTPS ](https://github.com/Fiware/tutorials.Fast-RTPS-Micro-RTPS)<br/>
-
-&nbsp; 301. [Persisting Context Data (Mongo-DB, MySQL, PostgreSQL)](https://github.com/Fiware/tutorials.Historic-Context)<br/>
-&nbsp; 302. [Querying Time Series Data (Mongo-DB)](https://github.com/Fiware/tutorials.Short-Term-History)<br/>
-&nbsp; 303. [Querying Time Series Data (Crate-DB)](https://github.com/Fiware/tutorials.Time-Series-Data)<br/>
