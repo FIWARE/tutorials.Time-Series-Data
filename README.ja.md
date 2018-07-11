@@ -361,7 +361,7 @@ SQL ステートメントは POST リクエストの本体として JSON 形式�
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT * FROM mtopeniot.etmotion WHERE entity_id = '\''Motion:001'\'' LIMIT 10"}'
+  -d '{"stmt":"SHOW SCHEMAS"}'
 ```
 
 #### レスポンス :
@@ -396,7 +396,7 @@ curl -iX POST \
 curl -X POST \
   'http://{{crate}}/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT table_schema,table_name FROM information_schema.tables WHERE table_schema ='\''mtopeniot'\''"}'
+  -d '{"stmt":"SHOW TABLES"}'
 ```
 
 #### レスポンス :

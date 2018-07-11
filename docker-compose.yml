@@ -14,7 +14,7 @@ services:
 
   
   crate-db:
-    image: crate
+    image: crate:2.3
     hostname: crate-db
     container_name: db-crate
     ports:

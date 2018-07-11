@@ -395,7 +395,7 @@ SQL statements are sent as the body of POST requests in JSON format, where the S
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT * FROM mtopeniot.etmotion WHERE entity_id = '\''Motion:001'\'' LIMIT 10"}'
+  -d '{"stmt":"SHOW SCHEMAS"}'
 ```
 
 #### Response:
@@ -431,7 +431,7 @@ If the `mtopeniot` does not exist, then the subscription to **Quantum Leap** has
 curl -X POST \
   'http://{{crate}}/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT table_schema,table_name FROM information_schema.tables WHERE table_schema ='\''mtopeniot'\''"}'
+  -d '{"stmt":"SHOW TABLES"}'
 ```
 
 #### Response:

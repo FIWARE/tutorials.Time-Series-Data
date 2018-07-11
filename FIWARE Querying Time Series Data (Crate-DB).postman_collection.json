@@ -160,7 +160,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.etmotion WHERE entity_id = 'Motion:001' LIMIT 10\"}"
+							"raw": "{\"stmt\":\"SHOW SCHEMAS\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",
@@ -188,7 +188,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.etmotion WHERE entity_id = 'Motion:001' LIMIT 10\"}"
+							"raw": "{\"stmt\":\"SHOW TABLES\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",
@@ -449,21 +449,21 @@
 	],
 	"variable": [
 		{
-			"id": "da178a23-1afe-48b8-bff2-0b4cec4d0020",
+			"id": "7797e658-f923-458c-a9c0-b4d019b25a0f",
 			"key": "orion",
 			"value": "localhost:1026",
 			"type": "string",
 			"description": ""
 		},
 		{
-			"id": "2dab1535-7336-4742-89a4-7c0d70506748",
+			"id": "49c457a4-4a81-48fb-ad72-5ccacccaa7d4",
 			"key": "quantum-leap",
 			"value": "localhost:8668",
 			"type": "string",
 			"description": ""
 		},
 		{
-			"id": "376d043a-9877-46c1-9bb3-72540f03de20",
+			"id": "bf7ae6dd-dc09-4393-a725-e0d5ce0d357a",
 			"key": "crate",
 			"value": "localhost:4200",
 			"type": "string",
