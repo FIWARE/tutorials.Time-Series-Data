@@ -183,7 +183,7 @@ cd tutorials.Time-Series-Data
 
 ```yaml
   crate-db:
-    image: crate:1.0.5
+    image: crate:2.3
     hostname: crate-db
     ports:
       - "4200:4200"
