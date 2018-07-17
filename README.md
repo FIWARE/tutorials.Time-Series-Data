@@ -54,18 +54,18 @@ The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also a
 >
 > — Emily Dickinson
 
-[Previous tutorials](https://github.com/Fiware/tutorials.Historic-Context) have shown how to persist historic 
+[Previous tutorials](https://github.com/Fiware/tutorials.Historic-Context) have shown how to persist historic
 context data into a range of databases such as **MySQL** and **PostgreSQL**. Furthermore, the [Short Term Historic](https://github.com/Fiware/tutorials.Short-Term-History) tutorial has introduced the [STH-Comet](http://fiware-sth-comet.readthedocs.io/) generic enabler for persisting and querying historic context data using
 a **Mongo-DB** database.
 
 FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) is an alternative generic enabler created
 specifically for data persistence into the **Crate-DB** time-series database, and therefore offers an alternative to the
-[STH-Comet](http://fiware-sth-comet.readthedocs.io/). 
+[STH-Comet](http://fiware-sth-comet.readthedocs.io/).
 
 [Crate-DB](https://crate.io/) is a distributed SQL DBMS designed for use with the Internet of Things. It is capable of ingesting a large number of data points per second and can be queried in real-time. The database is designed for the
-execution of complex queries such as geospatial and time series data. Retrieval of this historic context data allows 
+execution of complex queries such as geospatial and time series data. Retrieval of this historic context data allows
 for the creation of graphs and dashboards displaying trends over time.
- 
+
 
 A summary of the differences can be seen below:
 
@@ -94,7 +94,7 @@ It can also be used to reduce the significance of each individual data point to 
 
 #### Grafana
 
-[Grafana](https://grafana.com/) is an open source software for time series analytics tool which will be used 
+[Grafana](https://grafana.com/) is an open source software for time series analytics tool which will be used
 during this tutorial. It integrates with a variety of time-series databases including **Crate-DB**
 It is available licensed under the Apache License 2.0. More information can be found at https://grafana.com/
 
@@ -116,18 +116,18 @@ Once **Quantum Leap** has started aggregating data, the historical state of each
 
 # Architecture
 
-This application builds on the components and dummy IoT devices created in 
+This application builds on the components and dummy IoT devices created in
 [previous tutorials](https://github.com/Fiware/tutorials.IoT-Agent/). It will use three FIWARE components:
 the [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/), the
 [IoT Agent for Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/),
-and [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) . 
+and [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) .
 
 Therefore the overall architecture will consist of the following elements:
 
 * The **FIWARE Generic Enablers**:
   * The FIWARE [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/) which will receive requests using [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2)
   * The FIWARE [IoT Agent for Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/) which will receive northbound measurements from the dummy IoT devices in [Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual) format and convert them to [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) requests for the context broker to alter the state of the context entities
-  * FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) subscribe to context changes and persist them into a **Crate-DB** database  
+  * FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) subscribe to context changes and persist them into a **Crate-DB** database
 * A [MongoDB](https://www.mongodb.com/) database:
   * Used by the **Orion Context Broker** to hold context data information such as data entities, subscriptions and registrations
   * Used by the **IoT Agent** to hold device information such as device URLs and Keys
@@ -143,11 +143,11 @@ Therefore the overall architecture will consist of the following elements:
   * A webserver acting as set of [dummy IoT devices](https://github.com/Fiware/tutorials.IoT-Sensors) using the [Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual) protocol running over HTTP.
   * The **Context Provider NGSI** proxy is not used in this tutorial. It does the following:
     + receive requests using [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2)
-    + makes requests to publicly available data sources using their own APIs in a proprietary format 
+    + makes requests to publicly available data sources using their own APIs in a proprietary format
     + returns context data back to the Orion Context Broker in [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) format.
 
 
-Since all interactions between the elements are initiated by HTTP requests, the entities can be containerized and run from exposed ports. 
+Since all interactions between the elements are initiated by HTTP requests, the entities can be containerized and run from exposed ports.
 
 The overall architecture can be seen below:
 
@@ -157,9 +157,9 @@ The overall architecture can be seen below:
 
 # Prerequisites
 
-## Docker and Docker Compose 
+## Docker and Docker Compose
 
-To keep things simple all components will be run using [Docker](https://www.docker.com). **Docker** is a container technology which allows to different components isolated into their respective environments. 
+To keep things simple all components will be run using [Docker](https://www.docker.com). **Docker** is a container technology which allows to different components isolated into their respective environments.
 
 * To install Docker on Windows follow the instructions [here](https://docs.docker.com/docker-for-windows/)
 * To install Docker on Mac follow the instructions [here](https://docs.docker.com/docker-for-mac/)
@@ -167,6 +167,15 @@ To keep things simple all components will be run using [Docker](https://www.dock
 
 **Docker Compose** is a tool for defining and running multi-container Docker applications. A  series of [YAML files](https://raw.githubusercontent.com/Fiware/tutorials.Historic-Context/master/cygnus) are used configure the required
 services for the application. This means all container services can be brought up in a single command. Docker Compose is installed by default as part of Docker for Windows and  Docker for Mac, however Linux users will need to follow the instructions found [here](https://docs.docker.com/compose/install/)
+
+You can check your current **Docker** and **Docker Compose** versions using the following commands:
+
+```console
+docker-compose -v
+docker version
+```
+
+Please ensure that you are using Docker version 18.03 or higher and Docker Compose 1.21 or higher and upgrade if necessary.
 
 ## Cygwin for Windows
 
@@ -184,7 +193,7 @@ git clone git@github.com:Fiware/tutorials.Time-Series-Data.git
 cd tutorials.Time-Series-Data
 
 ./services create
-``` 
+```
 
 
 
@@ -193,13 +202,13 @@ Thereafter, all services can be initialized from the command line by running the
 
 ```console
 ./services start
-``` 
+```
 
 >:information_source: **Note:** If you want to clean up and start over again you can do so with the following command:
 >
 >```console
 >./services stop
->``` 
+>```
 >
 
 
@@ -221,7 +230,7 @@ Grafana analytics tool.  The rest of the system providing the context data has b
     command: -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
 ```
 
-## Quantum Leap Configuration 
+## Quantum Leap Configuration
 
 ```yaml
   quantum-leap:
@@ -248,19 +257,19 @@ Grafana analytics tool.  The rest of the system providing the context data has b
       - GF_INSTALL_PLUGINS=crate-datasource,grafana-clock-panel,grafana-worldmap-panel
 ```
 
-The `quantum-leap` container is listening on one port: 
+The `quantum-leap` container is listening on one port:
 
 * The Operations for port for Quantum Leap - `8668` is where the service will be listening for notifications from the Orion context broker
 
 The `CRATE_HOST` environment variable defines the location where the data will be persisted.
 
-The `crate-db` container is listening on two ports: 
+The `crate-db` container is listening on two ports:
 * The Admin UI is available on port `4200`
 * The transport protocol is available on `port 4300`
 
-The `grafana` container has connected up port `3000` internally with port `3003` externally. This is because the Grafana 
+The `grafana` container has connected up port `3000` internally with port `3003` externally. This is because the Grafana
 UI is usually available on port `3000`, but this port has already been taken by the dummy devices UI so it has been shifted
-to another port. The Grafana Environment variables are described within their own 
+to another port. The Grafana Environment variables are described within their own
 [documentation](http://docs.grafana.org/installation/configuration/). The configuration ensures we will be able to connect
 to the **Crate-DB** database later on in the tutorial
 
@@ -268,7 +277,7 @@ to the **Crate-DB** database later on in the tutorial
 
 For the purpose of this tutorial, we must be monitoring a system where the context is periodically being updated.
 The dummy IoT Sensors can be used to do this. Open the device monitor page at `http://localhost:3000/device/monitor`
-and unlock a **Smart Door** and switch on a **Smart Lamp**. This can be done by selecting an appropriate the command 
+and unlock a **Smart Door** and switch on a **Smart Lamp**. This can be done by selecting an appropriate the command
 from the drop down list and pressing the `send` button. The stream of measurements coming from the devices can then
 be seen on the same page:
 
@@ -277,7 +286,7 @@ be seen on the same page:
 
 ## Setting up Subscriptions
 
-Once a dynamic context system is up and running, we need to inform **Quantum Leap** directly of changes in context. 
+Once a dynamic context system is up and running, we need to inform **Quantum Leap** directly of changes in context.
 As expected this is done using the subscription mechanism of the **Orion Context Broker**. The `attrsFormat=legacy`
 attribute is not required since **Quantum Leap** accepts NGSI v2 notifications directly.
 
@@ -678,8 +687,8 @@ curl -iX POST \
 
 # Accessing Time Series Data Programmatically
 
-Once the JSON response for a specified time series has been retrieved, displaying the raw data is of little 
-use to an end user.  It must be manipulated to be displayed in a bar chart, line graph or table listing. 
+Once the JSON response for a specified time series has been retrieved, displaying the raw data is of little
+use to an end user.  It must be manipulated to be displayed in a bar chart, line graph or table listing.
 This is not within the domain of **Quantum Leap** as it not a graphical tool, but can be delegated to a
 mashup or dashboard component such as [Wirecloud](https://catalogue.fiware.org/enablers/application-mashup-wirecloud) or [Knowage](https://catalogue-server.fiware.org/enablers/data-visualization-knowage)
 
@@ -692,12 +701,12 @@ The basic processing consists of two steps - retrieval and attribute mapping, sa
 function readCrateLampLuminosity(id, aggMethod){
     return new Promise(function(resolve, reject) {
     const sqlStatement = 'SELECT DATE_FORMAT (DATE_TRUNC (\'minute\', time_index)) AS minute, ' +
-           aggMethod + '(luminosity) AS '+  aggMethod + 
+           aggMethod + '(luminosity) AS '+  aggMethod +
            ' FROM mtopeniot.etlamp WHERE entity_id = \'Lamp:' + id +
            '\' GROUP BY minute ORDER BY minute';
     const options = { method: 'POST',
         url: crateUrl,
-        headers: 
+        headers:
          { 'Content-Type': 'application/json' },
         body: { stmt: sqlStatement },
         json: true };
@@ -715,7 +724,7 @@ function crateToTimeSeries(crateResponse, aggMethod, hexColor){
   const labels = [];
   const color =  [];
 
-  if(crateResponse && crateResponse.rows && crateResponse.rows.length > 0 ){    
+  if(crateResponse && crateResponse.rows && crateResponse.rows.length > 0 ){
       _.forEach( crateResponse.rows, element => {
           const date = moment(element[0]);
           data.push({ t: date, y: element[1] });
@@ -737,14 +746,14 @@ The result is shown here: `http://localhost:3000/device/history/urn:ngsi-ld:Stor
 
 ## Displaying Crate-DB data as a Grafana Dashboard
 
-**Crate-DB** has been chosen as the time-series data sink, as it integrates seamlessly  with the [Grafana](https://grafana.com/) time 
+**Crate-DB** has been chosen as the time-series data sink, as it integrates seamlessly  with the [Grafana](https://grafana.com/) time
 series analytics tool. Grafana can be used to display the aggregated sensor data - a full tutorial on building dashboards can be found
 [here](https://www.youtube.com/watch?v=sKNZMtoSHN4). The simpified instructions below summarize how to connect and display a graph of the
 Lamp `luminosity` data.
 
 ### Logging in
 
-The `docker-compose` file has started an instance of the Grafana UI listening on port `3003`, so the login page can be found at: 
+The `docker-compose` file has started an instance of the Grafana UI listening on port `3003`, so the login page can be found at:
 `http://localhost:3003/login`. The default username is `admin` and the default password is `admin`
 
 ### Configuring a Data Source
@@ -769,7 +778,7 @@ Click on the Save and test button and the message *Data Source added* will be re
 
 ### Configuring a Dashboard
 
-To display a new dashboard, you can either click the **+** button and select **New Dashboard** or go directly to 
+To display a new dashboard, you can either click the **+** button and select **New Dashboard** or go directly to
 `http://localhost:3003/dashboard/new?orgId=1`. Thereafter select the **Graph** dashboard type.
 
 To configure the dashboard click on Panel title  and select edit from the dropdown list.
