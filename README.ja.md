@@ -37,6 +37,11 @@
     + [一定期間にわたる値の最小値をリスト](#list-the-minimum-values-over-a-time-period)
     + [一定期間にわたる値の最大値をリスト](#list-the-maximum-values-over-a-time-period)
     + [一定期間にわたる値の平均値をリスト](#list-the-average-values-over-a-time-period)
+- [プログラミングによる時系列データへのアクセス](#accessing-time-series-data-programmatically)
+  * [Crate-DB データを Grafana Dashboard として表示](#displaying-crate-db-data-as-a-grafana-dashboard)
+    + [ログイン](#logging-in)
+    + [データソースの設定](#configuring-a-data-source)
+    + [ダッシュボードの設定](#configuring-a-dashboard)
 - [次のステップ](#next-steps)
 
 <a name="persisting-and-querying-time-series-data-crate-db"></a>
@@ -642,6 +647,112 @@ curl -iX POST \
 }
 ```
 
+<a name="accessing-time-series-data-programmatically"></a>
+# プログラミングによる時系列データへのアクセス
+
+指定された時系列の JSON レスポンスが取得されると、生のデータを表示することはエンドユーザにとってほとんど役に立たちません。これは、棒グラフ、折れ線グラフ、またはテーブル・リストに表示するために操作する必要があります。これは、グラフィカルなツールではないため、**Quantum Leap** のドメイン内にはありませんが、[Wirecloud](https://catalogue.fiware.org/enablers/application-mashup-wirecloud) や [Knowage](https://catalogue-server.fiware.org/enablers/data-visualization-knowage) などのマッシュアップやダッシュボード・コンポーネントに任せることができます。
+
+また、コーディング環境に適したサード・パーティのグラフ作成ツール ([chartjs](http://www.chartjs.org/) など) を使用して、検索して表示することもできます。この例は、[Git Repository](https://github.com/Fiware/tutorials.Step-by-Step/blob/master/docker/context-provider/express-app/controllers/history.js) の `history` コントローラ内にあります。
+
+基本的な処理は、検索と属性マッピングの2つのステップで構成されています。サンプルコードは以下のとおりです :
+
+```javascript
+function readCrateLampLuminosity(id, aggMethod){
+    return new Promise(function(resolve, reject) {
+    const sqlStatement = 'SELECT DATE_FORMAT (DATE_TRUNC (\'minute\', time_index)) AS minute, ' +
+           aggMethod + '(luminosity) AS '+  aggMethod +
+           ' FROM mtopeniot.etlamp WHERE entity_id = \'Lamp:' + id +
+           '\' GROUP BY minute ORDER BY minute';
+    const options = { method: 'POST',
+        url: crateUrl,
+        headers:
+         { 'Content-Type': 'application/json' },
+        body: { stmt: sqlStatement },
+        json: true };
+      request(options, (error, response, body) => {
+          return error ? reject(error) : resolve(body);
+      });
+    });
+}
+```
+
+```javascript
+function crateToTimeSeries(crateResponse, aggMethod, hexColor){
+
+  const data = [];
+  const labels = [];
+  const color =  [];
+
+  if(crateResponse && crateResponse.rows && crateResponse.rows.length > 0 ){
+      _.forEach( crateResponse.rows, element => {
+          const date = moment(element[0]);
+          data.push({ t: date, y: element[1] });
+          labels.push(date.format( 'HH:mm'));
+          color.push(hexColor);
+      });
+  }
+
+  return {
+    labels,
+    data,
+    color
+  };
+}
+```
+
+変更されたデータは、フロント・エンドに渡され、サード・パーティのグラフ作成ツールによって処理されます。結果は次のとおりです : `http://localhost:3000/device/history/urn:ngsi-ld:Store:001`
+
+<a name="displaying-crate-db-data-as-a-grafana-dashboard"></a>
+## Crate-DB データを Grafana Dashboard として表示
+
+[Grafana](https://grafana.com/) 時系列分析ツールとシームレスに統合されるため、**Crate-DB** は時系列データシンクとして選択されています。Grafana を使用して集計されたセンサ・データを表示することができます。[ここ](https://www.youtube.com/watch?v=sKNZMtoSHN4)でダッシュボードを構築するための完全なチュートリアルを見つけることができます。次の簡単な手順では、ランプの `luminosity` データのグラフを接続して表示する方法をまとめています。
+
+<a name="logging-in"></a>
+### ログイン
+
+`docker-compose` ファイルは Grafana UI のインスタンスをポート `3003` でリッスンしているので、ログイン・ページは次の場所にあります: `http://localhost:3003/login`。デフォルトのユーザー名は `admin` で、デフォルトのパスワードは `admin` です。
+
+<a name="configuring-a-data-source"></a>
+### データソースの設定
+
+ログイン後、データソースは、`http://localhost:3003/datasources` において、次の値で設定する必要があります：
+
+* **Name**  Lamp
+* **Type**  Crate
+
+* **URL**   http://crate-db:4200
+* **Access** Server (デフォルト)
+
+* **Schema** mtopeniot
+* **Table**  etlamp
+* **Time column** time_index
+
+![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-settings.png)
+
+![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-crate-connect.png)
+
+Save をクリックすると、*Data Source added* メッセージが返されますj
+
+<a name="configuring-a-dashboard"></a>
+### ダッシュボードの設定
+
+新しいダッシュボードを表示するには、**+** ボタンをクリックして **New Dashboard** を選択するか、直接 `http://localhost:3003/dashboard/new?orgId=1` に移動します。その後、**Graph** ダッシュボード・タイプを選択します。
+
+ダッシュボードを設定するには、Panel title をクリックし、ドロップ・ダウンリストから edit を選択します。
+
+**太字のテキスト**の次の値は、グラフ作成ウィザードに配置する必要があります :
+The following values in **bold text** need to be placed in the graphing wizard
+
+* Data Source **Lamp** (以前に作成したデータソースから選択)
+* FROM **mtopeniot.etlamp** WHERE **entity_id** = **Lamp:001**
+* Select **Min**  **luminosity**
+* Group By time Interval **Minute** Format as **Time Series**
+
+![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-graph.png)
+
+最終結果は以下の通りです :
+
+![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-result.png)
 
 
 <a name="next-steps"></a>
