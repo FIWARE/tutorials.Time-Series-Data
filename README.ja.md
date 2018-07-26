@@ -102,7 +102,7 @@ FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**C
 <a name="architecture"></a>
 # アーキテクチャ
 
-このアプリケーションは、[以前のチュートリアル](https://github.com/Fiware/tutorials.IoT-Agent/) で作成したコンポーネントとダミー IoT デバイスをベースにしています 。[Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)，[IoT Agent for Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/) および [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) の 3つの FIWARE コンポーネントを使用します。
+このアプリケーションは、[以前のチュートリアル](https://github.com/Fiware/tutorials.IoT-Agent/) で作成したコンポーネントとダミー IoT デバイスをベースにしています。[Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)，[IoT Agent for Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/) および [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) の 3つの FIWARE コンポーネントを使用します。
 
 したがって、全体的なアーキテクチャは次の要素で構成されます :
 
@@ -110,7 +110,7 @@ FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**C
   * FIWARE [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/) は、[NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使用してリクエストを受信します
   * FIWARE [IoT Agent for Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/) は、Ultralight 2.0 形式のダミー IoT デバイスからノース・バウンドの測定値を受信し、Context Broker の [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) リクエストに変換してコンテキスト・エンティティの状態を変更します
   * FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) はコンテキストの変更をサブスクライブし、**Crate-DB** データベースに永続化します
-* [MongoDB](https://www.mongodb.com/) データベース : 
+* [MongoDB](https://www.mongodb.com/) データベース :
   * **Orion Context Broker** が、データ・エンティティ、サブスクリプション、レジストレーションなどのコンテキスト・データ情報を保持するために使用します
   * デバイスの URLs や Keys などのデバイス情報を保持するために **IoT Agent** によって使用されます
 * [Crate-DB](https://crate.io/) データベース：
@@ -148,6 +148,15 @@ FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**C
 
 **Docker Compose** は、マルチコンテナ Docker アプリケーションを定義して実行するためのツールです。[YAML file](https://raw.githubusercontent.com/Fiware/tutorials.Getting-Started/master/docker-compose.yml) ファイルは、アプリケーションのために必要なサービスを構成するために使用します。つまり、すべてのコンテナ・サービスは1つのコマンドで呼び出すことができます。Docker Compose は、デフォルトで Docker for Windows とDocker for Mac の一部としてインストールされますが、Linux ユーザは[ここ](https://docs.docker.com/compose/install/)に記載されている手順に従う必要があります。
 
+次のコマンドを使用して、現在の **Docker** バージョンと **Docker Compose** バージョンを確認できます :
+
+```console
+docker-compose -v
+docker version
+```
+
+Docker バージョン 18.03 以降と Docker Compose 1.21 以上を使用していることを確認し、必要に応じてアップグレードしてください。
+
 <a name="cygwin-for-windows"></a>
 ## Cygwin for Windows
 
@@ -163,19 +172,19 @@ git clone git@github.com:Fiware/tutorials.Time-Series-Data.git
 cd tutorials.Time-Series-Data
 
 ./services create
-``` 
+```
 
 その後、リポジトリ内で提供される [services](https://github.com/fisuda/tutorials.Time-Series-Data/blob/master/services) Bash スクリプトを実行することによって、コマンドラインからすべてのサービスを初期化することができます :
 
 ```console
 ./services start
-``` 
+```
 
 >:information_source: **注:** クリーンアップをやり直したい場合は、次のコマンドを使用して再起動することができます :
 >
 >```console
 >./services stop
->``` 
+>```
 >
 
 <a name="connecting-fiware-to-a-crate-db-database-via-quantum-leap"></a>
