@@ -8,7 +8,6 @@
 set -e
 
 loadData () {
-	sleep 2
 	echo "Loading context data"
 	./import-data
 	echo "Provisioning IoT devices"
@@ -35,14 +34,16 @@ case "${command}" in
 	 "start")
 		stoppingContainers
 		echo -e "Starting seven containers \033[1;34mOrion\033[0m, \033[1;34mQuantum Leap\033[0m, \033[1;36mIoT-Agent\033[0m, \033[1;30mContext-Provider\033[0m, a \033[1;30mGrafana\033[0m metrics dashboard and \033[1;30mCrate\033[0m and \033[1;30mMongoDB\033[0m databases."	
-		echo -e "\033[1;34mOrion\033[0m is the context broker"
-		echo -e "\033[1;34mQuantum Leap\033[0m will write to Crate-DB"
-		echo -e "\033[1;30mGrafana\033[0m will read from Crate-DB"
-		echo -e "\033[1;36mIoT-Agent\033[0m is configured for the UltraLight Protocol"
-		echo -e "\033[1;30mContext-Provider\033[0m acts as a series of dummy IoT Sensors over HTTP"
+		echo -e "- \033[1;34mOrion\033[0m is the context broker"
+		echo -e "- \033[1;34mQuantum Leap\033[0m will write to Crate-DB"
+		echo -e "- \033[1;30mGrafana\033[0m will read from Crate-DB"
+		echo -e "- \033[1;36mIoT-Agent\033[0m is configured for the UltraLight Protocol"
+		echo -e "- \033[1;30mContext-Provider\033[0m acts as a series of dummy IoT Sensors over HTTP"
 		echo ""
 		docker-compose --log-level ERROR -p fiware up -d --remove-orphans
 		loadData
+		echo ""
+		echo -e "Now open \033[4mhttp://localhost:3000/device/monitor\033[0m"
 		;;
 	"stop")
 		stoppingContainers
