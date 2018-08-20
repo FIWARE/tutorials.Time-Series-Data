@@ -55,8 +55,8 @@ case "${command}" in
 		docker pull fiware/orion
 		echo "Obtaining Latest UltraLight IoT Agent"
 		docker pull fiware/iotagent-ul
-		echo "Obtaining Latest Crate"
-		docker pull crate:1.0.5
+		echo "Obtaining Crate Image"
+		docker pull crate:2.3
 		echo "Obtaining Latest Grafana"
 		docker pull grafana/grafana
 		echo "Obtaining Latest Quantum Leap"
