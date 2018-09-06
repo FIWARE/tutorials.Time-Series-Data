@@ -65,7 +65,7 @@ curl -X POST \
       "entity_type": "Bell",
       "protocol": "PDI-IoTA-UltraLight",
       "transport": "HTTP",
-      "endpoint": "http://context-provider:3001/iot/bell001",
+      "endpoint": "http://iot-sensors:3001/iot/bell001",
       "commands": [ 
         {
           "name": "ring",
@@ -82,7 +82,7 @@ curl -X POST \
       "entity_type": "Door",
       "protocol": "PDI-IoTA-UltraLight",
       "transport": "HTTP",
-      "endpoint": "http://context-provider:3001/iot/door001",
+      "endpoint": "http://iot-sensors:3001/iot/door001",
       "commands": [ 
         {"name": "unlock","type": "command"},
         {"name": "open","type": "command"},
@@ -102,7 +102,7 @@ curl -X POST \
       "entity_type": "Lamp",
       "protocol": "PDI-IoTA-UltraLight",
       "transport": "HTTP",
-      "endpoint": "http://context-provider:3001/iot/lamp001",
+      "endpoint": "http://iot-sensors:3001/iot/lamp001",
       "commands": [ 
         {"name": "on","type": "command"},
         {"name": "off","type": "command"}
@@ -234,7 +234,7 @@ curl -X POST \
       "entity_type": "Bell",
       "protocol": "PDI-IoTA-UltraLight",
       "transport": "HTTP",
-      "endpoint": "http://context-provider:3001/iot/bell002",
+      "endpoint": "http://iot-sensors:3001/iot/bell002",
       "commands": [ 
         {
           "name": "ring",
@@ -251,7 +251,7 @@ curl -X POST \
       "entity_type": "Door",
       "protocol": "PDI-IoTA-UltraLight",
       "transport": "HTTP",
-      "endpoint": "http://context-provider:3001/iot/door002",
+      "endpoint": "http://iot-sensors:3001/iot/door002",
       "commands": [ 
         {"name": "unlock","type": "command"},
         {"name": "open","type": "command"},
@@ -271,7 +271,7 @@ curl -X POST \
       "entity_type": "Lamp",
       "protocol": "PDI-IoTA-UltraLight",
       "transport": "HTTP",
-      "endpoint": "http://context-provider:3001/iot/lamp002",
+      "endpoint": "http://iot-sensors:3001/iot/lamp002",
       "commands": [ 
         {"name": "on","type": "command"},
         {"name": "off","type": "command"}
@@ -403,7 +403,7 @@ curl -X POST \
       "entity_type": "Bell",
       "protocol": "PDI-IoTA-UltraLight",
       "transport": "HTTP",
-      "endpoint": "http://context-provider:3001/iot/bell003",
+      "endpoint": "http://iot-sensors:3001/iot/bell003",
       "commands": [ 
         {
           "name": "ring",
@@ -420,7 +420,7 @@ curl -X POST \
       "entity_type": "Door",
       "protocol": "PDI-IoTA-UltraLight",
       "transport": "HTTP",
-      "endpoint": "http://context-provider:3001/iot/door003",
+      "endpoint": "http://iot-sensors:3001/iot/door003",
       "commands": [ 
         {"name": "unlock","type": "command"},
         {"name": "open","type": "command"},
@@ -440,7 +440,7 @@ curl -X POST \
       "entity_type": "Lamp",
       "protocol": "PDI-IoTA-UltraLight",
       "transport": "HTTP",
-      "endpoint": "http://context-provider:3001/iot/lamp003",
+      "endpoint": "http://iot-sensors:3001/iot/lamp003",
       "commands": [ 
         {"name": "on","type": "command"},
         {"name": "off","type": "command"}
@@ -572,7 +572,7 @@ curl -X POST \
       "entity_type": "Bell",
       "protocol": "PDI-IoTA-UltraLight",
       "transport": "HTTP",
-      "endpoint": "http://context-provider:3001/iot/bell004",
+      "endpoint": "http://iot-sensors:3001/iot/bell004",
       "commands": [ 
         {
           "name": "ring",
@@ -589,7 +589,7 @@ curl -X POST \
       "entity_type": "Door",
       "protocol": "PDI-IoTA-UltraLight",
       "transport": "HTTP",
-      "endpoint": "http://context-provider:3001/iot/door004",
+      "endpoint": "http://iot-sensors:3001/iot/door004",
       "commands": [ 
         {"name": "unlock","type": "command"},
         {"name": "open","type": "command"},
@@ -609,7 +609,7 @@ curl -X POST \
       "entity_type": "Lamp",
       "protocol": "PDI-IoTA-UltraLight",
       "transport": "HTTP",
-      "endpoint": "http://context-provider:3001/iot/lamp004",
+      "endpoint": "http://iot-sensors:3001/iot/lamp004",
       "commands": [ 
         {"name": "on","type": "command"},
         {"name": "off","type": "command"}

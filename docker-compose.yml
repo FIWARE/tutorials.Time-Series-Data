@@ -90,16 +90,19 @@ services:
         - "IOTA_HTTP_PORT=7896" # The port used for device traffic over HTTP
         - "IOTA_PROVIDER_URL=http://iot-agent:4041"
 
-  context-provider:
+  tutorial:
     image: fiware/tutorials.context-provider
-    hostname: context-provider
-    container_name: context-provider
+    hostname: tutorial
+    container_name: fiware-tutorial
     depends_on:
         - orion
         - iot-agent
         - quantum-leap
     networks:
-        - default
+      default:
+        aliases:
+          - iot-sensors
+          - context-provider
     expose:
         - "3000"
         - "3001"
