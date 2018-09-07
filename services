@@ -8,10 +8,13 @@
 set -e
 
 loadData () {
-	echo "Loading context data"
+	printf "Loading context data "
 	./import-data
-	echo "Provisioning IoT devices"
+	echo -e " \033[1;32mdone\033[0m"
+	printf "Provisioning IoT devices "
 	./provision-devices
+	echo -e " \033[1;32mdone\033[0m"
+	echo ""
 }
 
 
@@ -42,7 +45,6 @@ case "${command}" in
 		echo ""
 		docker-compose --log-level ERROR -p fiware up -d --remove-orphans
 		loadData
-		echo ""
 		echo -e "Now open \033[4mhttp://localhost:3000/device/monitor\033[0m"
 		;;
 	"stop")
