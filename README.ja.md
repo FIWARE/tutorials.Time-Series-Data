@@ -278,7 +278,7 @@ cd tutorials.Time-Series-Data
 
 ```console
 curl -iX POST \
-  'http://{{orion}}/v2/subscriptions/' \
+  'http://localhost:1026/v2/subscriptions/' \
   -H 'Content-Type: application/json' \
   -H 'fiware-service: openiot' \
   -H 'fiware-servicepath: /' \
@@ -326,7 +326,7 @@ curl -iX POST \
 
 ```console
 curl -iX POST \
-  'http://{{orion}}/v2/subscriptions/' \
+  'http://localhost:1026/v2/subscriptions/' \
   -H 'Content-Type: application/json' \
   -H 'fiware-service: openiot' \
   -H 'fiware-servicepath: /' \
@@ -408,7 +408,7 @@ curl -iX POST \
 
 ```console
 curl -X POST \
-  'http://{{crate}}/_sql' \
+  'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
   -d '{"stmt":"SHOW TABLES"}'
 ```
