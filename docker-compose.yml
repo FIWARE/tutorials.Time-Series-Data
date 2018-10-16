@@ -40,7 +40,7 @@ services:
    
 
   orion:
-    image: fiware/orion
+    image: fiware/orion:2.0.0
     hostname: orion
     container_name: fiware-orion
     depends_on:
@@ -55,7 +55,7 @@ services:
 
 
   quantum-leap:
-    image: smartsdk/quantumleap
+    image: smartsdk/quantumleap:0.4
     hostname: quantum-leap
     container_name: fiware-quantum-leap
     ports:
@@ -67,7 +67,7 @@ services:
 
 
   iot-agent:
-    image: fiware/iotagent-ul
+    image: fiware/iotagent-ul:1.7.0
     hostname: iot-agent
     container_name: fiware-iot-agent
     depends_on:
