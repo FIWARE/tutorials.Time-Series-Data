@@ -273,11 +273,12 @@ to another port. The Grafana Environment variables are described within their ow
 [documentation](http://docs.grafana.org/installation/configuration/). The configuration ensures we will be able to connect
 to the **Crate-DB** database later on in the tutorial
 
-### Generating Context Data
+### 
+Context Data
 
 For the purpose of this tutorial, we must be monitoring a system where the context is periodically being updated.
 The dummy IoT Sensors can be used to do this. Open the device monitor page at `http://localhost:3000/device/monitor`
-and unlock a **Smart Door** and switch on a **Smart Lamp**. This can be done by selecting an appropriate the command
+and unlock a **Smart Door** and switch on a **Smart Lamp**. This can be done by selecting an appropriate command
 from the drop down list and pressing the `send` button. The stream of measurements coming from the devices can then
 be seen on the same page:
 
