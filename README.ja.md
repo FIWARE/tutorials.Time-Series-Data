@@ -3,7 +3,7 @@
 [![FIWARE Core Context Management](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/core.svg)](https://www.fiware.org/developers/catalogue/)
 [![License: MIT](https://img.shields.io/github/license/fiware/tutorials.Time-Series-Data.svg)](https://opensource.org/licenses/MIT)
 [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
-[![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](http://fiware.github.io/context.Orion/api/v2/stable/)
+[![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](https://fiware-ges.github.io/core.Orion/api/v2/stable/)
 
 このチュートリアルでは、コンテキスト・データを **Crate-DB** データベースに保存するために使用される、Generic Enabler である [FIWARE Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) について紹介します。このチュートリアルでは、[以前のチュートリアル](https://github.com/Fiware/tutorials.IoT-Agent)で接続した IoT センサを有効にし、それらのセンサからの測定値をデータベースに保存します。**Crate-DB** HTTP エンドポイントは、そのデータの時間ベースの集計を取得するために使用されます。結果は、グラフまたは **Grafana** 時系列分析ツールを介して視覚化されます。
 
@@ -659,7 +659,7 @@ curl -iX POST \
 <a name="accessing-time-series-data-programmatically"></a>
 # プログラミングによる時系列データへのアクセス
 
-指定された時系列の JSON レスポンスが取得されると、生のデータを表示することはエンドユーザにとってほとんど役に立たちません。これは、棒グラフ、折れ線グラフ、またはテーブル・リストに表示するために操作する必要があります。これは、グラフィカルなツールではないため、**Quantum Leap** のドメイン内にはありませんが、[Wirecloud](https://catalogue.fiware.org/enablers/application-mashup-wirecloud) や [Knowage](https://catalogue-server.fiware.org/enablers/data-visualization-knowage) などのマッシュアップやダッシュボード・コンポーネントに任せることができます。
+指定された時系列の JSON レスポンスが取得されると、生のデータを表示することはエンドユーザにとってほとんど役に立たちません。これは、棒グラフ、折れ線グラフ、またはテーブル・リストに表示するために操作する必要があります。これは、グラフィカルなツールではないため、**Quantum Leap** のドメイン内にはありませんが、[Wirecloud](https://github.com/Fiware/catalogue/blob/master/processing/README.md#Wirecloud) や [Knowage](https://catalogue-server.fiware.org/enablers/data-visualization-knowage) などのマッシュアップやダッシュボード・コンポーネントに任せることができます。
 
 また、コーディング環境に適したサード・パーティのグラフ作成ツール ([chartjs](http://www.chartjs.org/) など) を使用して、検索して表示することもできます。この例は、[Git Repository](https://github.com/Fiware/tutorials.Step-by-Step/blob/master/docker/context-provider/express-app/controllers/history.js) の `history` コントローラ内にあります。
 

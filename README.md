@@ -3,7 +3,7 @@
 [![FIWARE Core Context Management](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/core.svg)](https://www.fiware.org/developers/catalogue/)
 [![License: MIT](https://img.shields.io/github/license/fiware/tutorials.Time-Series-Data.svg)](https://opensource.org/licenses/MIT)
 [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
-[![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](http://fiware.github.io/context.Orion/api/v2/stable/)
+[![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](https://fiware-ges.github.io/core.Orion/api/v2/stable/)
 
 This tutorial is an introduction to [FIWARE Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) - a generic enabler which is used to persist context data into a **Crate-DB** database. The tutorial activates the IoT sensors connected in the [previous tutorial](https://github.com/Fiware/tutorials.IoT-Agent) and persists measurements from those sensors into the database.
 The **Crate-DB** HTTP endpoint is then used to retrieve time-based aggregations of that data. The results are visualized on a graph or via the **Grafana** time series analytics tool.
@@ -62,7 +62,7 @@ FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) is an alt
 specifically for data persistence into the **Crate-DB** time-series database, and therefore offers an alternative to the
 [STH-Comet](http://fiware-sth-comet.readthedocs.io/).
 
-[Crate-DB](https://crate.io/) is a distributed SQL DBMS designed for use with the Internet of Things. It is capable of ingesting a large number of data points per second and can be queried in real-time. The database is designed for the
+[Crate-DB](https://crate.io/) is a distributed SQL DBMS designed for use with the internet of Things. It is capable of ingesting a large number of data points per second and can be queried in real-time. The database is designed for the
 execution of complex queries such as geospatial and time series data. Retrieval of this historic context data allows
 for the creation of graphs and dashboards displaying trends over time.
 
@@ -102,13 +102,13 @@ It is available licensed under the Apache License 2.0. More information can be f
 #### Device Monitor
 
 For the purpose of this tutorial, a series of dummy IoT devices have been created, which will be attached to the context broker. Details of the architecture and protocol used can be found in the [IoT Sensors tutorial](https://github.com/Fiware/tutorials.IoT-Sensors).
-The state of each device can be seen on the UltraLight device monitor web-page found at: `http://localhost:3000/device/monitor`
+The state of each device can be seen on the UltraLight device monitor web page found at: `http://localhost:3000/device/monitor`
 
 ![FIWARE Monitor](https://fiware.github.io/tutorials.Time-Series-Data/img/device-monitor.png)
 
 #### Device History
 
-Once **Quantum Leap** has started aggregating data, the historical state of each device can be seen on the device history web-page found at: `http://localhost:3000/device/history/urn:ngsi-ld:Store:001`
+Once **Quantum Leap** has started aggregating data, the historical state of each device can be seen on the device history web page found at: `http://localhost:3000/device/history/urn:ngsi-ld:Store:001`
 
 ![](https://fiware.github.io/tutorials.Time-Series-Data/img/history-graphs.png)
 
@@ -179,7 +179,7 @@ Please ensure that you are using Docker version 18.03 or higher and Docker Compo
 
 ## Cygwin for Windows
 
-We will start up our services using a simple Bash script. Windows users should download [cygwin](http://www.cygwin.com/) to provide a command line functionality similar to a Linux distribution on Windows.
+We will start up our services using a simple Bash script. Windows users should download [cygwin](http://www.cygwin.com/) to provide a command-line functionality similar to a Linux distribution on Windows.
 
 
 
@@ -198,7 +198,7 @@ cd tutorials.Time-Series-Data
 
 
 
-Thereafter, all services can be initialized from the command line by running the [services](https://github.com/Fiware/tutorials.Time-Series-Data/blob/master/services) Bash script provided within the repository:
+Thereafter, all services can be initialized from the command-line by running the [services](https://github.com/Fiware/tutorials.Time-Series-Data/blob/master/services) Bash script provided within the repository:
 
 ```console
 ./services start
@@ -300,7 +300,7 @@ This is done by making a POST request to the `/v2/subscription` endpoint of the 
 
 * The `fiware-service` and `fiware-servicepath` headers are used to filter the subscription to only listen to measurements from the attached IoT Sensors
 * The `idPattern` in the request body ensures that **Quantum Leap** will be informed of all **Motion Sensor** data changes.
-* The `notification` url must match the exposed port.
+* The `notification` URL must match the exposed port.
 
 The `metadata` attribute ensures that the `time_index` column within the **Crate-DB** database will match the data found
 within the **Mongo-DB** database used by the **Orion Context Broker** rather than using the creation time of the record
@@ -349,7 +349,7 @@ This is done by making a POST request to the `/v2/subscription` endpoint of the 
 
 * The `fiware-service` and `fiware-servicepath` headers are used to filter the subscription to only listen to measurements from the attached IoT Sensors
 * The `idPattern` in the request body ensures that **Quantum Leap** will be informed of all **Motion Sensor** data changes.
-* The `notification` url must match the exposed port.
+* The `notification` URL must match the exposed port.
 * The `throttling` value defines the rate that changes are sampled.
 
 The `metadata` attribute ensures that the `time_index` column within the **Crate-DB** database will match the data found
@@ -690,12 +690,12 @@ curl -iX POST \
 Once the JSON response for a specified time series has been retrieved, displaying the raw data is of little
 use to an end user.  It must be manipulated to be displayed in a bar chart, line graph or table listing.
 This is not within the domain of **Quantum Leap** as it not a graphical tool, but can be delegated to a
-mashup or dashboard component such as [Wirecloud](https://catalogue.fiware.org/enablers/application-mashup-wirecloud) or [Knowage](https://catalogue-server.fiware.org/enablers/data-visualization-knowage)
+mashup or dashboard component such as [Wirecloud](https://github.com/Fiware/catalogue/blob/master/processing/README.md#Wirecloud) or [Knowage](https://catalogue-server.fiware.org/enablers/data-visualization-knowage)
 
 It can also be retrieved and displayed using a third-party graphing tool appropriate to your coding environment -
 for example [chartjs](http://www.chartjs.org/). An example of this can be found within the `history` controller in the [Git Repository](https://github.com/Fiware/tutorials.Step-by-Step/blob/master/docker/context-provider/express-app/controllers/history.js)
 
-The basic processing consists of two steps - retrieval and attribute mapping, sample code can be seen below:
+The basic processing consists of two-step - retrieval and attribute mapping, sample code can be seen below:
 
 ```javascript
 function readCrateLampLuminosity(id, aggMethod){
@@ -741,7 +741,7 @@ function crateToTimeSeries(crateResponse, aggMethod, hexColor){
 }
 ```
 
-The modified data is then passed to the front-end to be processed by the third-party graphing tool.
+The modified data is then passed to the frontend to be processed by the third-party graphing tool.
 The result is shown here: `http://localhost:3000/device/history/urn:ngsi-ld:Store:001`
 
 ## Displaying Crate-DB data as a Grafana Dashboard
