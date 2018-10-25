@@ -9,7 +9,7 @@
 
 このチュートリアルでは、コンテキスト・データを **Crate-DB** データベースに保存するために使用される、Generic Enabler である [FIWARE Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) について紹介します。このチュートリアルでは、[以前のチュートリアル](https://github.com/Fiware/tutorials.IoT-Agent)で接続した IoT センサを有効にし、それらのセンサからの測定値をデータベースに保存します。**Crate-DB** HTTP エンドポイントは、そのデータの時間ベースの集計を取得するために使用されます。結果は、グラフまたは **Grafana** 時系列分析ツールを介して視覚化されます。
 
-このチュートリアルでは、全体で [cUrl](https://ec.haxx.se/) コマンドを使用していますが、[Postman documentation](http://fiware.github.io/tutorials.Time-Series-Data/) も利用できます。
+このチュートリアルでは、全体で [cUrl](https://ec.haxx.se/) コマンドを使用していますが、[Postman documentation](https://fiware.github.io/tutorials.Time-Series-Data/) も利用できます。
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/d24facc3c430bb5d5aaf)
 
@@ -53,9 +53,9 @@
 >
 > — Emily Dickinson
 
-[以前のチュートリアル](https://github.com/Fiware/tutorials.Historic-Context)では、履歴コンテキスト・データを MySQL や PostgreSQL などのデータベースに永続化する方法を示しました。さらに、[Short Term Historic](https://github.com/Fiware/tutorials.Short-Term-History) のチュートリアルでは、**Mongo-DB** データベースを使用して履歴コンテキスト・データを永続化およびクエリするための [STH-Comet](http://fiware-sth-comet.readthedocs.io/) Generic Enabler を導入しました。
+[以前のチュートリアル](https://github.com/Fiware/tutorials.Historic-Context)では、履歴コンテキスト・データを MySQL や PostgreSQL などのデータベースに永続化する方法を示しました。さらに、[Short Term Historic](https://github.com/Fiware/tutorials.Short-Term-History) のチュートリアルでは、**Mongo-DB** データベースを使用して履歴コンテキスト・データを永続化およびクエリするための [STH-Comet](https://fiware-sth-comet.readthedocs.io/) Generic Enabler を導入しました。
 
-FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**Crate-DB** 時系列データベースへのデータ永続性のために特別に作成された代替 Generic Enabler であり、[STH-Comet](http://fiware-sth-comet.readthedocs.io/) に代わるものです。
+FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**Crate-DB** 時系列データベースへのデータ永続性のために特別に作成された代替 Generic Enabler であり、[STH-Comet](https://fiware-sth-comet.readthedocs.io/) に代わるものです。
 
 [Crate-DB](https://crate.io/) は、Internet of Things で使用するために設計された分散 SQL DBMS です。1秒間に多数のデータ・ポイントを取り込むことができ、リアルタイムでクエリすることができます。このデータベースは、地理空間データや時系列データなどの複雑なクエリの実行用に設計されています。この履歴データを取得することで、グラフやダッシュボードを作成し、時間の経過とともに傾向を表示することができます。
 
@@ -104,13 +104,13 @@ FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**C
 <a name="architecture"></a>
 # アーキテクチャ
 
-このアプリケーションは、[以前のチュートリアル](https://github.com/Fiware/tutorials.IoT-Agent/) で作成したコンポーネントとダミー IoT デバイスをベースにしています。[Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)，[IoT Agent for Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/) および [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) の 3つの FIWARE コンポーネントを使用します。
+このアプリケーションは、[以前のチュートリアル](https://github.com/Fiware/tutorials.IoT-Agent/) で作成したコンポーネントとダミー IoT デバイスをベースにしています。[Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)，[IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/) および [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) の 3つの FIWARE コンポーネントを使用します。
 
 したがって、全体的なアーキテクチャは次の要素で構成されます :
 
 * **FIWARE Generic Enablers** :
   * FIWARE [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/) は、[NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使用してリクエストを受信します
-  * FIWARE [IoT Agent for Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/) は、Ultralight 2.0 形式のダミー IoT デバイスからノース・バウンドの測定値を受信し、Context Broker の [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) リクエストに変換してコンテキスト・エンティティの状態を変更します
+  * FIWARE [IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/) は、Ultralight 2.0 形式のダミー IoT デバイスからノース・バウンドの測定値を受信し、Context Broker の [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) リクエストに変換してコンテキスト・エンティティの状態を変更します
   * FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) はコンテキストの変更をサブスクライブし、**Crate-DB** データベースに永続化します
 * [MongoDB](https://www.mongodb.com/) データベース :
   * **Orion Context Broker** が、データ・エンティティ、サブスクリプション、レジストレーションなどのコンテキスト・データ情報を保持するために使用します
@@ -123,7 +123,7 @@ FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**C
      + 店舗情報を表示し、ユーザーがダミー IoT デバイスと対話できるようにします
      + 各店舗で購入できる商品を表示します
      + ユーザが製品を購入して在庫数を減らすことを許可します
-  * HTTP 上で動作する [Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual) プロトコルを使用して、[ダミー IoT デバイス](https://github.com/Fiware/tutorials.IoT-Sensors)のセットとして機能する Web サーバ
+  * HTTP 上で動作する [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual) プロトコルを使用して、[ダミー IoT デバイス](https://github.com/Fiware/tutorials.IoT-Sensors)のセットとして機能する Web サーバ
   * このチュートリアルでは、**コンテキスト・プロバイダの NGSI proxy** は使用しません。これは以下を行います :
      + [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使用してリクエストを受信します
      + 独自の API を独自のフォーマットで使用して、公開されているデータ・ソースへのリクエストを行います
@@ -731,7 +731,7 @@ function crateToTimeSeries(crateResponse, aggMethod, hexColor){
 * **Name**  Lamp
 * **Type**  Crate
 
-* **URL**   http://crate-db:4200
+* **URL**   `http://crate-db:4200`
 * **Access** Server (デフォルト)
 
 * **Schema** mtopeniot

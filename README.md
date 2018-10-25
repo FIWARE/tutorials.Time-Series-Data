@@ -19,7 +19,7 @@ tool.
 
 The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also
 available as
-[Postman documentation](http://fiware.github.io/tutorials.Time-Series-Data/)
+[Postman documentation](https://fiware.github.io/tutorials.Time-Series-Data/)
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/d24facc3c430bb5d5aaf)
 
@@ -68,14 +68,14 @@ available as
 shown how to persist historic context data into a range of databases such as
 **MySQL** and **PostgreSQL**. Furthermore, the
 [Short Term Historic](https://github.com/Fiware/tutorials.Short-Term-History)
-tutorial has introduced the [STH-Comet](http://fiware-sth-comet.readthedocs.io/)
-generic enabler for persisting and querying historic context data using a
-**Mongo-DB** database.
+tutorial has introduced the
+[STH-Comet](https://fiware-sth-comet.readthedocs.io/) generic enabler for
+persisting and querying historic context data using a **Mongo-DB** database.
 
 FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) is an
 alternative generic enabler created specifically for data persistence into the
 **Crate-DB** time-series database, and therefore offers an alternative to the
-[STH-Comet](http://fiware-sth-comet.readthedocs.io/).
+[STH-Comet](https://fiware-sth-comet.readthedocs.io/).
 
 [Crate-DB](https://crate.io/) is a distributed SQL DBMS designed for use with
 the internet of Things. It is capable of ingesting a large number of data points
@@ -144,7 +144,7 @@ This application builds on the components and dummy IoT devices created in
 [previous tutorials](https://github.com/Fiware/tutorials.IoT-Agent/). It will
 use three FIWARE components: the
 [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/), the
-[IoT Agent for Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/),
+[IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/),
 and [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) .
 
 Therefore the overall architecture will consist of the following elements:
@@ -155,9 +155,9 @@ Therefore the overall architecture will consist of the following elements:
         which will receive requests using
         [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2)
     -   The FIWARE
-        [IoT Agent for Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/)
+        [IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/)
         which will receive northbound measurements from the dummy IoT devices in
-        [Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
+        [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
         format and convert them to
         [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) requests
         for the context broker to alter the state of the context entities
@@ -184,7 +184,7 @@ Therefore the overall architecture will consist of the following elements:
     -   A webserver acting as set of
         [dummy IoT devices](https://github.com/Fiware/tutorials.IoT-Sensors)
         using the
-        [Ultralight 2.0](http://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
+        [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
         protocol running over HTTP.
     -   The **Context Provider NGSI** proxy is not used in this tutorial. It
         does the following:
@@ -909,7 +909,7 @@ After logging in, a datasource must be set up at
 -   **Name** Lamp
 -   **Type** Crate
 
--   **URL** http://crate-db:4200
+-   **URL** `http://crate-db:4200`
 -   **Access** Server (Default)
 
 -   **Schema** mtopeniot
