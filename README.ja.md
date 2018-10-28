@@ -7,7 +7,7 @@
 <br/>
 [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
 
-このチュートリアルでは、コンテキスト・データを **Crate-DB** データベースに保存するために使用される、Generic Enabler である [FIWARE QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) について紹介します。このチュートリアルでは、[以前のチュートリアル](https://github.com/Fiware/tutorials.IoT-Agent)で接続した IoT センサを有効にし、それらのセンサからの測定値をデータベースに保存します。**Crate-DB** HTTP エンドポイントは、そのデータの時間ベースの集計を取得するために使用されます。結果は、グラフまたは **Grafana** 時系列分析ツールを介して視覚化されます。
+このチュートリアルでは、コンテキスト・データを **CrateDB** データベースに保存するために使用される、Generic Enabler である [FIWARE QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) について紹介します。このチュートリアルでは、[以前のチュートリアル](https://github.com/Fiware/tutorials.IoT-Agent)で接続した IoT センサを有効にし、それらのセンサからの測定値をデータベースに保存します。**CrateDB** HTTP エンドポイントは、そのデータの時間ベースの集計を取得するために使用されます。結果は、グラフまたは **Grafana** 時系列分析ツールを介して視覚化されます。
 
 このチュートリアルでは、全体で [cUrl](https://ec.haxx.se/) コマンドを使用していますが、[Postman documentation](https://fiware.github.io/tutorials.Time-Series-Data/) も利用できます。
 
@@ -15,21 +15,21 @@
 
 # 内容
 
-- [時系列データの永続化とクエリ (Crate-DB)](#persisting-and-querying-time-series-data-crate-db)
+- [時系列データの永続化とクエリ (CrateDB)](#persisting-and-querying-time-series-data-cratedb)
   * [時系列データの解析](#analyzing-time-series-data)
 - [アーキテクチャ](#architecture)
 - [前提条件](#prerequisites)
   * [Docker と Docker Compose](#docker-and-docker-compose)
   * [Cygwin for Windows](#cygwin-for-windows)
 - [起動](#start-up)
-- [QuantumLeap を介して FIWARE を Crate-DB データベースに接続](#connecting-fiware-to-a-crate-db-database-via-quantumleap)
-  * [Crate-DB データベース・サーバの設定](#crate-db-database-server-configuration)
+- [QuantumLeap を介して FIWARE を CrateDB データベースに接続](#connecting-fiware-to-a-cratedb-database-via-quantumleap)
+  * [CrateDB データベース・サーバの設定](#cratedb-database-server-configuration)
   * [QuantumLeap の設定](#quantumleap-configuration)
   * [Grafana の設定](#grafana-configuration)
   * [サブスクリプションのセットアップ](#setting-up-subscriptions)
     + [モーション・センサのカウント・イベントの集計](#aggregate-motion-sensor-count-events)
     + [ランプの明度のサンプリング](#sample-lamp-luminosity)
-  * [時系列データクエリ (Crate-DB)](#time-series-data-queries-crate-db)
+  * [時系列データクエリ (CrateDB)](#time-series-data-queries-cratedb)
     + [スキーマの読み込み](#read-schemas)
     + [テーブルの読み込み](#read-tables)
     + [最初の N 個のサンプリング値をリスト](#list-the-first-n-sampled-values)
@@ -40,14 +40,14 @@
     + [一定期間にわたる値の最大値をリスト](#list-the-maximum-values-over-a-time-period)
     + [一定期間にわたる値の平均値をリスト](#list-the-average-values-over-a-time-period)
 - [プログラミングによる時系列データへのアクセス](#accessing-time-series-data-programmatically)
-  * [Crate-DB データを Grafana Dashboard として表示](#displaying-crate-db-data-as-a-grafana-dashboard)
+  * [CrateDB データを Grafana Dashboard として表示](#displaying-cratedb-data-as-a-grafana-dashboard)
     + [ログイン](#logging-in)
     + [データソースの設定](#configuring-a-data-source)
     + [ダッシュボードの設定](#configuring-a-dashboard)
 - [次のステップ](#next-steps)
 
-<a name="persisting-and-querying-time-series-data-crate-db"></a>
-# 時系列データの永続化とクエリ (Crate-DB)
+<a name="persisting-and-querying-time-series-data-cratedb"></a>
+# 時系列データの永続化とクエリ (CrateDB)
 
 > "Forever is composed of nows."
 >
@@ -55,19 +55,19 @@
 
 [以前のチュートリアル](https://github.com/Fiware/tutorials.Historic-Context)では、履歴コンテキスト・データを MySQL や PostgreSQL などのデータベースに永続化する方法を示しました。さらに、[Short Term Historic](https://github.com/Fiware/tutorials.Short-Term-History) のチュートリアルでは、**Mongo-DB** データベースを使用して履歴コンテキスト・データを永続化およびクエリするための [STH-Comet](https://fiware-sth-comet.readthedocs.io/) Generic Enabler を導入しました。
 
-FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**Crate-DB** 時系列データベースへのデータ永続性のために特別に作成された代替 Generic Enabler であり、[STH-Comet](https://fiware-sth-comet.readthedocs.io/) に代わるものです。
+FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**CrateDB** 時系列データベースへのデータ永続性のために特別に作成された代替 Generic Enabler であり、[STH-Comet](https://fiware-sth-comet.readthedocs.io/) に代わるものです。
 
-[Crate-DB](https://crate.io/) は、Internet of Things で使用するために設計された分散 SQL DBMS です。1秒間に多数のデータ・ポイントを取り込むことができ、リアルタイムでクエリすることができます。このデータベースは、地理空間データや時系列データなどの複雑なクエリの実行用に設計されています。この履歴データを取得することで、グラフやダッシュボードを作成し、時間の経過とともに傾向を表示することができます。
+[CrateDB](https://crate.io/) は、Internet of Things で使用するために設計された分散 SQL DBMS です。1秒間に多数のデータ・ポイントを取り込むことができ、リアルタイムでクエリすることができます。このデータベースは、地理空間データや時系列データなどの複雑なクエリの実行用に設計されています。この履歴データを取得することで、グラフやダッシュボードを作成し、時間の経過とともに傾向を表示することができます。
 
 違いの概要を以下に示します :
 
 | QuantumLeap               | STH-Comet |
 |----------------------------|-----------|
 | 通知のための NGSI v2 インタフェースを提供します | 通知のための NGSI v1 インタフェースを提供します |
-| データを Crate-DB データベースに保存します  | データを Mongo-DB データベースに保存します |
-| クエリ 用に独自の HTTP エンドポイントを提供しません。Crate-DB SQL エンドポイント を使用します | クエリ用に独自の HTTP エンドポイントを提供します。Mongo-DB データベースに直接アクセスすることはできません |
-| Crate-DB SQL エンドポイントは、SQL を使用して複雑なデータクエリを満たすことができます | STH-Comet は限定された一連のクエリを提供していますs |
-| Crate-DBは、NoSQL ストレージの上に構築された分散 SQL DBMS です | Mongo-DB は、ドキュメント・ベースの NoSQL データベースです |
+| データを CrateDB データベースに保存します  | データを Mongo-DB データベースに保存します |
+| クエリ 用に独自の HTTP エンドポイントを提供しません。CrateDB SQL エンドポイント を使用します | クエリ用に独自の HTTP エンドポイントを提供します。Mongo-DB データベースに直接アクセスすることはできません |
+| CrateDB SQL エンドポイントは、SQL を使用して複雑なデータクエリを満たすことができます | STH-Comet は限定された一連のクエリを提供していますs |
+| CrateDBは、NoSQL ストレージの上に構築された分散 SQL DBMS です | Mongo-DB は、ドキュメント・ベースの NoSQL データベースです |
 
 基盤となるデータベースエンジンの相違点の詳細は、[こちら](https://db-engines.com/en/system/CrateDB%3BMongoDB)を参照してください。
 
@@ -85,7 +85,7 @@ FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**Cr
 
 #### Grafana
 
-[Grafana](https://grafana.com/) は、このチュートリアルで使用する時系列解析ツール用のオープンソースソフトウェアです。これは、**Crate-DB** を含む様々な時系列データベースと統合されています。Apache License 2.0 のライセンスで利用可能です。詳細は、https://grafana.com/ をご覧ください。
+[Grafana](https://grafana.com/) は、このチュートリアルで使用する時系列解析ツール用のオープンソースソフトウェアです。これは、**CrateDB** を含む様々な時系列データベースと統合されています。Apache License 2.0 のライセンスで利用可能です。詳細は、https://grafana.com/ をご覧ください。
 
 
 #### デバイス・モニタ
@@ -111,11 +111,11 @@ FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**Cr
 * **FIWARE Generic Enablers** :
   * FIWARE [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/) は、[NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使用してリクエストを受信します
   * FIWARE [IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/) は、Ultralight 2.0 形式のダミー IoT デバイスからノース・バウンドの測定値を受信し、Context Broker の [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) リクエストに変換してコンテキスト・エンティティの状態を変更します
-  * FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) はコンテキストの変更をサブスクライブし、**Crate-DB** データベースに永続化します
+  * FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) はコンテキストの変更をサブスクライブし、**CrateDB** データベースに永続化します
 * [MongoDB](https://www.mongodb.com/) データベース :
   * **Orion Context Broker** が、データ・エンティティ、サブスクリプション、レジストレーションなどのコンテキスト・データ情報を保持するために使用します
   * デバイスの URLs や Keys などのデバイス情報を保持するために **IoT Agent** によって使用されます
-* [Crate-DB](https://crate.io/) データベース：
+* [CrateDB](https://crate.io/) データベース：
   * 時間ベースの履歴コンテキスト・データを保持するデータシンクとして使用されます
   * 時間ベースのデータクエリを解釈する HTTP エンドポイントを提供します
 * 3つの**コンテキストプロバイダ** :
@@ -189,18 +189,18 @@ cd tutorials.Time-Series-Data
 >```
 >
 
-<a name="connecting-fiware-to-a-crate-db-database-via-quantumleap"></a>
-# QuantumLeap を介して FIWARE を Crate-DB データベースに接続
+<a name="connecting-fiware-to-a-cratedb-database-via-quantumleap"></a>
+# QuantumLeap を介して FIWARE を CrateDB データベースに接続
 
-この設定では、**QuantumLeap** は、ポート `8868` 上の NGSI v2 通知を待ち受け、履歴データを **Crate-DB** に永続化します。**Crate-DB** は、ポート `4200` を使用してアクセスでき、直接クエリすることも、Grafana 分析ツールに接続することもできます。コンテキスト・データを提供するシステムの残りの部分は、以前のチュートリアルで説明しています。
+この設定では、**QuantumLeap** は、ポート `8868` 上の NGSI v2 通知を待ち受け、履歴データを **CrateDB** に永続化します。**CrateDB** は、ポート `4200` を使用してアクセスでき、直接クエリすることも、Grafana 分析ツールに接続することもできます。コンテキスト・データを提供するシステムの残りの部分は、以前のチュートリアルで説明しています。
 
-<a name="crate-db-database-server-configuration"></a>
-## Crate-DB データベース・サーバの設定
+<a name="cratedb-database-server-configuration"></a>
+## CrateDB データベース・サーバの設定
 
 ```yaml
-  crate-db:
+  cratedb:
     image: crate:2.3
-    hostname: crate-db
+    hostname: cratedb
     ports:
       - "4200:4200"
       - "4300:4300"
@@ -217,9 +217,9 @@ cd tutorials.Time-Series-Data
     ports:
       - "8668:8668"
     depends_on:
-      - crate-db
+      - cratedb
     environment:
-      - CRATE_HOST=crate-db
+      - CRATE_HOST=cratedb
 ```
 
 <a name="grafana-configuration"></a>
@@ -229,7 +229,7 @@ cd tutorials.Time-Series-Data
   grafana:
     image: grafana/grafana
     depends_on:
-      - crate-db
+      - cratedb
     ports:
       - "3003:3000"
     environment:
@@ -242,12 +242,12 @@ cd tutorials.Time-Series-Data
 
 `CRATE_HOST` 環境変数は、データが永続化される場所を定義します。
 
-`crate-db` コンテナは、2つのポートでリッスンしています：
+`cratedb` コンテナは、2つのポートでリッスンしています：
 
 * Admin UI は、ポート `4200` で利用できます
 * トランスポートプロトコルは、ポート `4300` で利用できます
 
-`grafana` コンテナは、内部ポート `3000` を外部ポート `3003` に接続しています。これは Grafana UI が通常はポート `3000` で使用できるためですが、このポートは ダミー IoT デバイスの UI によって既に取得されているため、別のポートに移動しています。Grafana 環境変数は、Grafana の[ドキュメント](http://docs.grafana.org/installation/configuration/)に記述されています。この設定により、チュートリアルの後半で **Crate-DB** データベースに接続できるようになります。
+`grafana` コンテナは、内部ポート `3000` を外部ポート `3003` に接続しています。これは Grafana UI が通常はポート `3000` で使用できるためですが、このポートは ダミー IoT デバイスの UI によって既に取得されているため、別のポートに移動しています。Grafana 環境変数は、Grafana の[ドキュメント](http://docs.grafana.org/installation/configuration/)に記述されています。この設定により、チュートリアルの後半で **CrateDB** データベースに接続できるようになります。
 
 ### コンテキスト・データの生成
 
@@ -274,7 +274,7 @@ cd tutorials.Time-Series-Data
 * リクエストのボディの `idPattern` は、すべての**モーション・センサ**のデータ変更を **QuantumLeap** に通知されるようにします
 * `notification` url は、公開されたポートと一致する必要があります
 
-`metadata` 属性により、**Crate-DB** データベース内の `time_index` 列が、**Crate-DB** 自体のレコードの作成時間を使用するのではなく、**Orion Context Broker** が使用する **Mongo-DB** データベース内のデータと一致することが保証されます。
+`metadata` 属性により、**CrateDB** データベース内の `time_index` 列が、**CrateDB** 自体のレコードの作成時間を使用するのではなく、**Orion Context Broker** が使用する **Mongo-DB** データベース内のデータと一致することが保証されます。
 
 #### :one: リクエスト :
 
@@ -322,7 +322,7 @@ curl -iX POST \
 * `notification` url は、公開されたポートと一致する必要があります
 * `throttling` 値は、変更がサンプリングされる割合を定義します
 
-`metadata` 属性により、**Crate-DB** データベース内の `time_index` 列が、**Crate-DB** 自体のレコードの作成時間を使用するのではなく、**Orion Context Broker** が使用する **Mongo-DB** データベース内のデータと一致することが保証されます。
+`metadata` 属性により、**CrateDB** データベース内の `time_index` 列が、**CrateDB** 自体のレコードの作成時間を使用するのではなく、**Orion Context Broker** が使用する **Mongo-DB** データベース内のデータと一致することが保証されます。
 
 #### :two: リクエスト :
 
@@ -359,17 +359,17 @@ curl -iX POST \
 }'
 ```
 
-<a name="time-series-data-queries-crate-db"></a>
-## 時系列データクエリ (Crate-DB)
+<a name="time-series-data-queries-cratedb"></a>
+## 時系列データクエリ (CrateDB)
 
-**Crate-DB** は、SQL クエリを送信するために使用できる [HTTP エンドポイント](https://crate.io/docs/crate/reference/en/latest/interfaces/http.html)を提供します。エンドポイントは、`<servername:port>/_sql` 下でアクセス可能です。
+**CrateDB** は、SQL クエリを送信するために使用できる [HTTP エンドポイント](https://crate.io/docs/crate/reference/en/latest/interfaces/http.html)を提供します。エンドポイントは、`<servername:port>/_sql` 下でアクセス可能です。
 
 SQL ステートメントは POST リクエストの本体として JSON 形式で送信されます。ここで、SQL ステートメントは `stmt` 属性の値です。
 
 <a name="read-schemas"></a>
 ### スキーマの読み込み
 
-**QuantumLeap** は、現在、永続化されたデータをクエリするためのインタフェースを提供していません。データが永続化されているかどうかを確認するには、`table_schema` が作成されているかどうかを確認するのが良い方法です。これは、以下のように **Crate-DB** HTTP エンドポイントにリクエストを行うことで実行できます :
+**QuantumLeap** は、現在、永続化されたデータをクエリするためのインタフェースを提供していません。データが永続化されているかどうかを確認するには、`table_schema` が作成されているかどうかを確認するのが良い方法です。これは、以下のように **CrateDB** HTTP エンドポイントにリクエストを行うことで実行できます :
 
 #### :three: リクエスト :
 
@@ -404,7 +404,7 @@ curl -iX POST \
 <a name="read-tables"></a>
 ### テーブルの読み込み
 
-**QuantumLeap** は、エンティティ型に基づいて **Crate-DB** データベース内の別のテーブルにデータを永続化します。テーブル名は、`et` プレフィックスとエンティティ型の名前を小文字にして形成されます。
+**QuantumLeap** は、エンティティ型に基づいて **CrateDB** データベース内の別のテーブルにデータを永続化します。テーブル名は、`et` プレフィックスとエンティティ型の名前を小文字にして形成されます。
 
 #### :four: リクエスト :
 
@@ -436,7 +436,7 @@ curl -X POST \
 
 この例では、**Lamp:001** の最初の3つのサンプリングされた明度値を示しています。
 
-SQL 文は `ORDER BY` と `LIMIT` を使用してデータをソートします。詳細は、**Crate-DB** の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を参照してください。
+SQL 文は `ORDER BY` と `LIMIT` を使用してデータをソートします。詳細は、**CrateDB** の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を参照してください。
 
 #### :five: リクエスト :
 
@@ -467,7 +467,7 @@ curl -iX POST \
 
 この例では、**Motion:001** からのサンプリングされた4番目、5番目、6番目のカウント値を示しています。
 
-SQL 文は、`OFFSET` 句を使用して必要な行を取り出します。詳細は、**Crate-DB** の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を参照してください。
+SQL 文は、`OFFSET` 句を使用して必要な行を取り出します。詳細は、**CrateDB** の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を参照してください。
 
 #### :six: リクエスト :
 
@@ -498,7 +498,7 @@ curl -iX POST \
 
 この例では、**Motion:001** から最新の3つのサンプリングされたカウント値を示しています。
 
-SQL 文は、最後の N 行を取り出すために `LIMIT` 節と結合された、`ORDER BY ... DESC` 節を使用します。詳細は、**Crate-DB**の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を参照してください。
+SQL 文は、最後の N 行を取り出すために `LIMIT` 節と結合された、`ORDER BY ... DESC` 節を使用します。詳細は、**CrateDB**の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を参照してください。
 
 #### :seven: リクエスト :
 
@@ -529,7 +529,7 @@ curl -iX POST \
 
 この例では、1分ごとに **Motion:001** からの合計カウント値を示しています。
 
-SQL 文は、`SUM` 関数と `GROUP BY` 句を使用して関連するデータを取得します。 **Crate-DB** は、タイムスタンプを切り捨ててグループ化できるデータに変換するための一連の[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を提供しています。
+SQL 文は、`SUM` 関数と `GROUP BY` 句を使用して関連するデータを取得します。 **CrateDB** は、タイムスタンプを切り捨ててグループ化できるデータに変換するための一連の[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を提供しています。
 
 #### :eight: リクエスト :
 
@@ -562,7 +562,7 @@ curl -iX POST \
 
 この例は、1分ごとに **Lamp:001** からの最小の明度値を示しています。
 
-SQL 文は、`MIN` 関数と `GROUP BY` 句を使用して関連するデータを取得します。 **Crate-DB** は、タイムスタンプを切り捨ててグループ化できるデータに変換するための一連の[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を提供しています。
+SQL 文は、`MIN` 関数と `GROUP BY` 句を使用して関連するデータを取得します。 **CrateDB** は、タイムスタンプを切り捨ててグループ化できるデータに変換するための一連の[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を提供しています。
 
 #### :nine: リクエスト :
 
@@ -595,7 +595,7 @@ curl -iX POST \
 
 この例は、1分ごとに **Lamp:001** からの最大の明度値を示しています。
 
-SQL 文は、`MAX`関数と `GROUP BY` 句を使用して関連するデータを取得します。**Crate-DB** は、タイムスタンプを切り捨ててグループ化できるデータに変換するための一連の[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を提供しています。
+SQL 文は、`MAX`関数と `GROUP BY` 句を使用して関連するデータを取得します。**CrateDB** は、タイムスタンプを切り捨ててグループ化できるデータに変換するための一連の[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を提供しています。
 
 #### :one::zero: リクエスト :
 
@@ -628,7 +628,7 @@ curl -iX POST \
 
 この例では、1分ごとに **Lamp:001** からの明度値の平均を示しています。
 
-SQL 文は、`AVG` 関数と `GROUP BY` 句を使用して関連するデータを取得します。**Crate-DB** は、タイムスタンプを切り捨ててグループ化できるデータに変換するための一連の[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を提供しています。
+SQL 文は、`AVG` 関数と `GROUP BY` 句を使用して関連するデータを取得します。**CrateDB** は、タイムスタンプを切り捨ててグループ化できるデータに変換するための一連の[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を提供しています。
 
 #### :one::one: リクエスト :
 
@@ -713,10 +713,10 @@ function crateToTimeSeries(crateResponse, aggMethod, hexColor){
 
 変更されたデータは、フロント・エンドに渡され、サード・パーティのグラフ作成ツールによって処理されます。結果は次のとおりです : `http://localhost:3000/device/history/urn:ngsi-ld:Store:001`
 
-<a name="displaying-crate-db-data-as-a-grafana-dashboard"></a>
-## Crate-DB データを Grafana Dashboard として表示
+<a name="displaying-cratedb-data-as-a-grafana-dashboard"></a>
+## CrateDB データを Grafana Dashboard として表示
 
-[Grafana](https://grafana.com/) 時系列分析ツールとシームレスに統合されるため、**Crate-DB** は時系列データシンクとして選択されています。Grafana を使用して集計されたセンサ・データを表示することができます。[ここ](https://www.youtube.com/watch?v=sKNZMtoSHN4)でダッシュボードを構築するための完全なチュートリアルを見つけることができます。次の簡単な手順では、ランプの `luminosity` データのグラフを接続して表示する方法をまとめています。
+[Grafana](https://grafana.com/) 時系列分析ツールとシームレスに統合されるため、**CrateDB** は時系列データシンクとして選択されています。Grafana を使用して集計されたセンサ・データを表示することができます。[ここ](https://www.youtube.com/watch?v=sKNZMtoSHN4)でダッシュボードを構築するための完全なチュートリアルを見つけることができます。次の簡単な手順では、ランプの `luminosity` データのグラフを接続して表示する方法をまとめています。
 
 <a name="logging-in"></a>
 ### ログイン
@@ -731,7 +731,7 @@ function crateToTimeSeries(crateResponse, aggMethod, hexColor){
 * **Name**  Lamp
 * **Type**  Crate
 
-* **URL**   `http://crate-db:4200`
+* **URL**   `http://cratedb:4200`
 * **Access** Server (デフォルト)
 
 * **Schema** mtopeniot
