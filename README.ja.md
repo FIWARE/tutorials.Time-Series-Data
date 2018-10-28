@@ -7,7 +7,7 @@
 <br/>
 [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
 
-このチュートリアルでは、コンテキスト・データを **Crate-DB** データベースに保存するために使用される、Generic Enabler である [FIWARE Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) について紹介します。このチュートリアルでは、[以前のチュートリアル](https://github.com/Fiware/tutorials.IoT-Agent)で接続した IoT センサを有効にし、それらのセンサからの測定値をデータベースに保存します。**Crate-DB** HTTP エンドポイントは、そのデータの時間ベースの集計を取得するために使用されます。結果は、グラフまたは **Grafana** 時系列分析ツールを介して視覚化されます。
+このチュートリアルでは、コンテキスト・データを **Crate-DB** データベースに保存するために使用される、Generic Enabler である [FIWARE QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) について紹介します。このチュートリアルでは、[以前のチュートリアル](https://github.com/Fiware/tutorials.IoT-Agent)で接続した IoT センサを有効にし、それらのセンサからの測定値をデータベースに保存します。**Crate-DB** HTTP エンドポイントは、そのデータの時間ベースの集計を取得するために使用されます。結果は、グラフまたは **Grafana** 時系列分析ツールを介して視覚化されます。
 
 このチュートリアルでは、全体で [cUrl](https://ec.haxx.se/) コマンドを使用していますが、[Postman documentation](https://fiware.github.io/tutorials.Time-Series-Data/) も利用できます。
 
@@ -22,9 +22,9 @@
   * [Docker と Docker Compose](#docker-and-docker-compose)
   * [Cygwin for Windows](#cygwin-for-windows)
 - [起動](#start-up)
-- [Quantum Leap を介して FIWARE を Crate-DB データベースに接続](#connecting-fiware-to-a-crate-db-database-via-quantum-leap)
+- [QuantumLeap を介して FIWARE を Crate-DB データベースに接続](#connecting-fiware-to-a-crate-db-database-via-quantumleap)
   * [Crate-DB データベース・サーバの設定](#crate-db-database-server-configuration)
-  * [Quantum Leap の設定](#quantum-leap-configuration)
+  * [QuantumLeap の設定](#quantumleap-configuration)
   * [Grafana の設定](#grafana-configuration)
   * [サブスクリプションのセットアップ](#setting-up-subscriptions)
     + [モーション・センサのカウント・イベントの集計](#aggregate-motion-sensor-count-events)
@@ -55,13 +55,13 @@
 
 [以前のチュートリアル](https://github.com/Fiware/tutorials.Historic-Context)では、履歴コンテキスト・データを MySQL や PostgreSQL などのデータベースに永続化する方法を示しました。さらに、[Short Term Historic](https://github.com/Fiware/tutorials.Short-Term-History) のチュートリアルでは、**Mongo-DB** データベースを使用して履歴コンテキスト・データを永続化およびクエリするための [STH-Comet](https://fiware-sth-comet.readthedocs.io/) Generic Enabler を導入しました。
 
-FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**Crate-DB** 時系列データベースへのデータ永続性のために特別に作成された代替 Generic Enabler であり、[STH-Comet](https://fiware-sth-comet.readthedocs.io/) に代わるものです。
+FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**Crate-DB** 時系列データベースへのデータ永続性のために特別に作成された代替 Generic Enabler であり、[STH-Comet](https://fiware-sth-comet.readthedocs.io/) に代わるものです。
 
 [Crate-DB](https://crate.io/) は、Internet of Things で使用するために設計された分散 SQL DBMS です。1秒間に多数のデータ・ポイントを取り込むことができ、リアルタイムでクエリすることができます。このデータベースは、地理空間データや時系列データなどの複雑なクエリの実行用に設計されています。この履歴データを取得することで、グラフやダッシュボードを作成し、時間の経過とともに傾向を表示することができます。
 
 違いの概要を以下に示します :
 
-| Quantum Leap               | STH-Comet |
+| QuantumLeap               | STH-Comet |
 |----------------------------|-----------|
 | 通知のための NGSI v2 インタフェースを提供します | 通知のための NGSI v1 インタフェースを提供します |
 | データを Crate-DB データベースに保存します  | データを Mongo-DB データベースに保存します |
@@ -96,7 +96,7 @@ FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**C
 
 #### デバイス履歴
 
-**Quantum Leap** がデータの集計を開始すると、各デバイスの履歴の状態は、デバイス履歴の Web ページに表示されます : `http://localhost:3000/device/history/urn:ngsi-ld:Store:001`
+**QuantumLeap** がデータの集計を開始すると、各デバイスの履歴の状態は、デバイス履歴の Web ページに表示されます : `http://localhost:3000/device/history/urn:ngsi-ld:Store:001`
 
 ![](https://fiware.github.io/tutorials.Time-Series-Data/img/history-graphs.png)
 
@@ -104,14 +104,14 @@ FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**C
 <a name="architecture"></a>
 # アーキテクチャ
 
-このアプリケーションは、[以前のチュートリアル](https://github.com/Fiware/tutorials.IoT-Agent/) で作成したコンポーネントとダミー IoT デバイスをベースにしています。[Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)，[IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/) および [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) の 3つの FIWARE コンポーネントを使用します。
+このアプリケーションは、[以前のチュートリアル](https://github.com/Fiware/tutorials.IoT-Agent/) で作成したコンポーネントとダミー IoT デバイスをベースにしています。[Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)，[IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/) および [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) の 3つの FIWARE コンポーネントを使用します。
 
 したがって、全体的なアーキテクチャは次の要素で構成されます :
 
 * **FIWARE Generic Enablers** :
   * FIWARE [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/) は、[NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使用してリクエストを受信します
   * FIWARE [IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/) は、Ultralight 2.0 形式のダミー IoT デバイスからノース・バウンドの測定値を受信し、Context Broker の [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) リクエストに変換してコンテキスト・エンティティの状態を変更します
-  * FIWARE [Quantum Leap](https://smartsdk.github.io/ngsi-timeseries-api/) はコンテキストの変更をサブスクライブし、**Crate-DB** データベースに永続化します
+  * FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) はコンテキストの変更をサブスクライブし、**Crate-DB** データベースに永続化します
 * [MongoDB](https://www.mongodb.com/) データベース :
   * **Orion Context Broker** が、データ・エンティティ、サブスクリプション、レジストレーションなどのコンテキスト・データ情報を保持するために使用します
   * デバイスの URLs や Keys などのデバイス情報を保持するために **IoT Agent** によって使用されます
@@ -189,10 +189,10 @@ cd tutorials.Time-Series-Data
 >```
 >
 
-<a name="connecting-fiware-to-a-crate-db-database-via-quantum-leap"></a>
-# Quantum Leap を介して FIWARE を Crate-DB データベースに接続
+<a name="connecting-fiware-to-a-crate-db-database-via-quantumleap"></a>
+# QuantumLeap を介して FIWARE を Crate-DB データベースに接続
 
-この設定では、**Quantum Leap** は、ポート `8868` 上の NGSI v2 通知を待ち受け、履歴データを **Crate-DB** に永続化します。**Crate-DB** は、ポート `4200` を使用してアクセスでき、直接クエリすることも、Grafana 分析ツールに接続することもできます。コンテキスト・データを提供するシステムの残りの部分は、以前のチュートリアルで説明しています。
+この設定では、**QuantumLeap** は、ポート `8868` 上の NGSI v2 通知を待ち受け、履歴データを **Crate-DB** に永続化します。**Crate-DB** は、ポート `4200` を使用してアクセスでき、直接クエリすることも、Grafana 分析ツールに接続することもできます。コンテキスト・データを提供するシステムの残りの部分は、以前のチュートリアルで説明しています。
 
 <a name="crate-db-database-server-configuration"></a>
 ## Crate-DB データベース・サーバの設定
@@ -207,13 +207,13 @@ cd tutorials.Time-Series-Data
     command: -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
 ```
 
-<a name="quantum-leap-configuration"></a>
-## Quantum Leap の設定
+<a name="quantumleap-configuration"></a>
+## QuantumLeap の設定
 
 ```yaml
-  quantum-leap:
+  quantumleap:
     image: smartsdk/quantumleap
-    hostname: quantum-leap
+    hostname: quantumleap
     ports:
       - "8668:8668"
     depends_on:
@@ -236,9 +236,9 @@ cd tutorials.Time-Series-Data
       - GF_INSTALL_PLUGINS=crate-datasource,grafana-clock-panel,grafana-worldmap-panel
 ```
 
-`quantum-leap` コンテナは、1つのポートで待機しています：
+`quantumleap` コンテナは、1つのポートで待機しています：
 
-* Quantum Leap のポートの操作 - ポート `8668` サービスは、Orion Context Broker からの通知をリッスンするポートです
+* QuantumLeap のポートの操作 - ポート `8668` サービスは、Orion Context Broker からの通知をリッスンするポートです
 
 `CRATE_HOST` 環境変数は、データが永続化される場所を定義します。
 
@@ -259,7 +259,7 @@ cd tutorials.Time-Series-Data
 <a name="setting-up-subscriptions"></a>
 ## サブスクリプションのセットアップ
 
-動的コンテキスト・システムが起動したら、コンテキストの変更を直接 **Quantum Leap** に通知する必要があります。予想通り、これは **Orion Context Broker** のサブスクリプション・メカニズムを使用して行われます。**Quantum Leap** は、NGSI v2 通知を直接受け入れるため、`attrsFormat=legacy ` 属性は不要です。
+動的コンテキスト・システムが起動したら、コンテキストの変更を直接 **QuantumLeap** に通知する必要があります。予想通り、これは **Orion Context Broker** のサブスクリプション・メカニズムを使用して行われます。**QuantumLeap** は、NGSI v2 通知を直接受け入れるため、`attrsFormat=legacy ` 属性は不要です。
 
 サブスクリプションに関する詳細は、以前のチュートリアルで確認できます。
 
@@ -271,7 +271,7 @@ cd tutorials.Time-Series-Data
 これは、**Orion Context Broker** の `/v2/subscription` エンドポイントに POST リクエストをすることで行われます。
 
 * `fiware-service` と `fiware-servicepath` ヘッダは、サブスクリプションをフィルタリングして、接続された IoT センサからの測定値のみをリッスンためにするために使用されます
-* リクエストのボディの `idPattern` は、すべての**モーション・センサ**のデータ変更を **Quantum Leap** に通知されるようにします
+* リクエストのボディの `idPattern` は、すべての**モーション・センサ**のデータ変更を **QuantumLeap** に通知されるようにします
 * `notification` url は、公開されたポートと一致する必要があります
 
 `metadata` 属性により、**Crate-DB** データベース内の `time_index` 列が、**Crate-DB** 自体のレコードの作成時間を使用するのではなく、**Orion Context Broker** が使用する **Mongo-DB** データベース内のデータと一致することが保証されます。
@@ -285,7 +285,7 @@ curl -iX POST \
   -H 'fiware-service: openiot' \
   -H 'fiware-servicepath: /' \
   -d '{
-  "description": "Notify Quantum Leap of all Motion Sensor count changes",
+  "description": "Notify QuantumLeap of all Motion Sensor count changes",
   "subject": {
     "entities": [
       {
@@ -300,7 +300,7 @@ curl -iX POST \
   },
   "notification": {
     "http": {
-      "url": "http://quantum-leap:8668/v2/notify"
+      "url": "http://quantumleap:8668/v2/notify"
     },
     "attrs": [
       "count"
@@ -318,7 +318,7 @@ curl -iX POST \
 これは、**Orion Context Broker** の `/v2/subscription` エンドポイントに POST リクエストを行い、リクエストのボディに `throttling` 属性 を含めることによって行われます。
 
 * `fiware-service` と `fiware-servicepath` ヘッダは、サブスクリプションをフィルタリングして、接続された IoT センサからの測定値のみをリッスンためにするために使用されます
-* リクエストのボディの `idPattern` は、すべての**モーション・センサ**のデータ変更を **Quantum Leap** に通知されるようにします
+* リクエストのボディの `idPattern` は、すべての**モーション・センサ**のデータ変更を **QuantumLeap** に通知されるようにします
 * `notification` url は、公開されたポートと一致する必要があります
 * `throttling` 値は、変更がサンプリングされる割合を定義します
 
@@ -333,7 +333,7 @@ curl -iX POST \
   -H 'fiware-service: openiot' \
   -H 'fiware-servicepath: /' \
   -d '{
-  "description": "Notify Quantum Leap to sample Lamp changes every five seconds",
+  "description": "Notify QuantumLeap to sample Lamp changes every five seconds",
   "subject": {
     "entities": [
       {
@@ -348,7 +348,7 @@ curl -iX POST \
   },
   "notification": {
     "http": {
-      "url": "http://quantum-leap:8668/v2/notify"
+      "url": "http://quantumleap:8668/v2/notify"
     },
     "attrs": [
       "luminosity"
@@ -369,7 +369,7 @@ SQL ステートメントは POST リクエストの本体として JSON 形式�
 <a name="read-schemas"></a>
 ### スキーマの読み込み
 
-**Quantum Leap** は、現在、永続化されたデータをクエリするためのインタフェースを提供していません。データが永続化されているかどうかを確認するには、`table_schema` が作成されているかどうかを確認するのが良い方法です。これは、以下のように **Crate-DB** HTTP エンドポイントにリクエストを行うことで実行できます :
+**QuantumLeap** は、現在、永続化されたデータをクエリするためのインタフェースを提供していません。データが永続化されているかどうかを確認するには、`table_schema` が作成されているかどうかを確認するのが良い方法です。これは、以下のように **Crate-DB** HTTP エンドポイントにリクエストを行うことで実行できます :
 
 #### :three: リクエスト :
 
@@ -399,12 +399,12 @@ curl -iX POST \
 
 スキーマ名は、`mt` プレフィックスとそれに続く、小文字の `fiware-service` ヘッダで構成されます。IoT Agent は、ヘッダ `openiot` を使用して、ダミー IoT デバイスから測定値を転送します。これらは `mtopeniot` スキーマの下に保持されています。
 
-`mtopeniot` が存在しない場合は、**Quantum Leap** のサブスクリプションが正しく設定されていません。サブスクリプションが存在し、データを正しい場所に送信するように設定されていることを確認します。
+`mtopeniot` が存在しない場合は、**QuantumLeap** のサブスクリプションが正しく設定されていません。サブスクリプションが存在し、データを正しい場所に送信するように設定されていることを確認します。
 
 <a name="read-tables"></a>
 ### テーブルの読み込み
 
-**Quantum Leap** は、エンティティ型に基づいて **Crate-DB** データベース内の別のテーブルにデータを永続化します。テーブル名は、`et` プレフィックスとエンティティ型の名前を小文字にして形成されます。
+**QuantumLeap** は、エンティティ型に基づいて **Crate-DB** データベース内の別のテーブルにデータを永続化します。テーブル名は、`et` プレフィックスとエンティティ型の名前を小文字にして形成されます。
 
 #### :four: リクエスト :
 
@@ -661,7 +661,7 @@ curl -iX POST \
 <a name="accessing-time-series-data-programmatically"></a>
 # プログラミングによる時系列データへのアクセス
 
-指定された時系列の JSON レスポンスが取得されると、生のデータを表示することはエンドユーザにとってほとんど役に立たちません。これは、棒グラフ、折れ線グラフ、またはテーブル・リストに表示するために操作する必要があります。これは、グラフィカルなツールではないため、**Quantum Leap** のドメイン内にはありませんが、[Wirecloud](https://github.com/Fiware/catalogue/blob/master/processing/README.md#Wirecloud) や [Knowage](https://catalogue-server.fiware.org/enablers/data-visualization-knowage) などのマッシュアップやダッシュボード・コンポーネントに任せることができます。
+指定された時系列の JSON レスポンスが取得されると、生のデータを表示することはエンドユーザにとってほとんど役に立たちません。これは、棒グラフ、折れ線グラフ、またはテーブル・リストに表示するために操作する必要があります。これは、グラフィカルなツールではないため、**QuantumLeap** のドメイン内にはありませんが、[Wirecloud](https://github.com/Fiware/catalogue/blob/master/processing/README.md#Wirecloud) や [Knowage](https://catalogue-server.fiware.org/enablers/data-visualization-knowage) などのマッシュアップやダッシュボード・コンポーネントに任せることができます。
 
 また、コーディング環境に適したサード・パーティのグラフ作成ツール ([chartjs](http://www.chartjs.org/) など) を使用して、検索して表示することもできます。この例は、[Git Repository](https://github.com/Fiware/tutorials.Step-by-Step/blob/master/docker/context-provider/express-app/controllers/history.js) の `history` コントローラ内にあります。
 

@@ -54,10 +54,10 @@ services:
     command: -dbhost mongo-db -logLevel DEBUG
 
 
-  quantum-leap:
+  quantumleap:
     image: smartsdk/quantumleap:0.4
-    hostname: quantum-leap
-    container_name: fiware-quantum-leap
+    hostname: quantumleap
+    container_name: fiware-quantumleap
     ports:
       - "8668:8668"
     depends_on:
@@ -97,7 +97,7 @@ services:
     depends_on:
         - orion
         - iot-agent
-        - quantum-leap
+        - quantumleap
     networks:
       default:
         aliases:
