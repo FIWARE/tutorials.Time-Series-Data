@@ -51,7 +51,7 @@ case "${command}" in
 		stoppingContainers
 		;;
 	"create")
-		echo "Obtaining Mongo DB image"
+		echo "Obtaining MongoDB image"
 		docker pull mongo:3.6
 		echo "Obtaining Latest Orion Image"
 		docker pull fiware/orion

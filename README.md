@@ -70,7 +70,7 @@ shown how to persist historic context data into a range of databases such as
 [Short Term Historic](https://github.com/Fiware/tutorials.Short-Term-History)
 tutorial has introduced the
 [STH-Comet](https://fiware-sth-comet.readthedocs.io/) generic enabler for
-persisting and querying historic context data using a **Mongo-DB** database.
+persisting and querying historic context data using a **MongoDB** database.
 
 FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) is an
 alternative generic enabler created specifically for data persistence into the
@@ -89,10 +89,10 @@ A summary of the differences can be seen below:
 | QuantumLeap                                                                    | STH-Comet                                                                                |
 | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 | Offers an NGSI v2 interface for notifications                                   | Offers an NGSI v1 interface for notifications                                            |
-| Persists Data to a CrateDB database                                            | Persists Data to Mongo-DB database                                                       |
-| Does not offer its own HTTP endpoint for queries, use the CrateDB SQL endpoint | Offers its own HTTP endpoint for queries - Mongo-DB database cannot be accessed directly |
+| Persists Data to a CrateDB database                                            | Persists Data to MongoDB database                                                       |
+| Does not offer its own HTTP endpoint for queries, use the CrateDB SQL endpoint | Offers its own HTTP endpoint for queries - MongoDB database cannot be accessed directly |
 | The CrateDB SQL endpoint is able to satisfy complex data queries using SQL     | STH-Comet offers a limited set of queries                                                |
-| CrateDB is a distributed SQL DBMS built atop NoSQL storage                     | Mongo-DB is a document based NoSQL database                                              |
+| CrateDB is a distributed SQL DBMS built atop NoSQL storage                     | MongoDB is a document based NoSQL database                                              |
 
 Further details about the differences between the underlying database engines
 can be found [here](https://db-engines.com/en/system/CrateDB%3BMongoDB)
@@ -379,7 +379,7 @@ This is done by making a POST request to the `/v2/subscription` endpoint of the
 -   The `notification` URL must match the exposed port.
 
 The `metadata` attribute ensures that the `time_index` column within the
-**CrateDB** database will match the data found within the **Mongo-DB** database
+**CrateDB** database will match the data found within the **MongoDB** database
 used by the **Orion Context Broker** rather than using the creation time of the
 record within the **CrateDB** itself.
 
@@ -435,7 +435,7 @@ body.
 -   The `throttling` value defines the rate that changes are sampled.
 
 The `metadata` attribute ensures that the `time_index` column within the
-**CrateDB** database will match the data found within the **Mongo-DB** database
+**CrateDB** database will match the data found within the **MongoDB** database
 used by the **Orion Context Broker** rather than using the creation time of the
 record within the **CrateDB** itself.
 

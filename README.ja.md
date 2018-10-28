@@ -53,7 +53,7 @@
 >
 > — Emily Dickinson
 
-[以前のチュートリアル](https://github.com/Fiware/tutorials.Historic-Context)では、履歴コンテキスト・データを MySQL や PostgreSQL などのデータベースに永続化する方法を示しました。さらに、[Short Term Historic](https://github.com/Fiware/tutorials.Short-Term-History) のチュートリアルでは、**Mongo-DB** データベースを使用して履歴コンテキスト・データを永続化およびクエリするための [STH-Comet](https://fiware-sth-comet.readthedocs.io/) Generic Enabler を導入しました。
+[以前のチュートリアル](https://github.com/Fiware/tutorials.Historic-Context)では、履歴コンテキスト・データを MySQL や PostgreSQL などのデータベースに永続化する方法を示しました。さらに、[Short Term Historic](https://github.com/Fiware/tutorials.Short-Term-History) のチュートリアルでは、**MongoDB** データベースを使用して履歴コンテキスト・データを永続化およびクエリするための [STH-Comet](https://fiware-sth-comet.readthedocs.io/) Generic Enabler を導入しました。
 
 FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**CrateDB** 時系列データベースへのデータ永続性のために特別に作成された代替 Generic Enabler であり、[STH-Comet](https://fiware-sth-comet.readthedocs.io/) に代わるものです。
 
@@ -64,10 +64,10 @@ FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) は、**Cr
 | QuantumLeap               | STH-Comet |
 |----------------------------|-----------|
 | 通知のための NGSI v2 インタフェースを提供します | 通知のための NGSI v1 インタフェースを提供します |
-| データを CrateDB データベースに保存します  | データを Mongo-DB データベースに保存します |
-| クエリ 用に独自の HTTP エンドポイントを提供しません。CrateDB SQL エンドポイント を使用します | クエリ用に独自の HTTP エンドポイントを提供します。Mongo-DB データベースに直接アクセスすることはできません |
+| データを CrateDB データベースに保存します  | データを MongoDB データベースに保存します |
+| クエリ 用に独自の HTTP エンドポイントを提供しません。CrateDB SQL エンドポイント を使用します | クエリ用に独自の HTTP エンドポイントを提供します。MongoDB データベースに直接アクセスすることはできません |
 | CrateDB SQL エンドポイントは、SQL を使用して複雑なデータクエリを満たすことができます | STH-Comet は限定された一連のクエリを提供していますs |
-| CrateDBは、NoSQL ストレージの上に構築された分散 SQL DBMS です | Mongo-DB は、ドキュメント・ベースの NoSQL データベースです |
+| CrateDBは、NoSQL ストレージの上に構築された分散 SQL DBMS です | MongoDB は、ドキュメント・ベースの NoSQL データベースです |
 
 基盤となるデータベースエンジンの相違点の詳細は、[こちら](https://db-engines.com/en/system/CrateDB%3BMongoDB)を参照してください。
 
@@ -274,7 +274,7 @@ cd tutorials.Time-Series-Data
 * リクエストのボディの `idPattern` は、すべての**モーション・センサ**のデータ変更を **QuantumLeap** に通知されるようにします
 * `notification` url は、公開されたポートと一致する必要があります
 
-`metadata` 属性により、**CrateDB** データベース内の `time_index` 列が、**CrateDB** 自体のレコードの作成時間を使用するのではなく、**Orion Context Broker** が使用する **Mongo-DB** データベース内のデータと一致することが保証されます。
+`metadata` 属性により、**CrateDB** データベース内の `time_index` 列が、**CrateDB** 自体のレコードの作成時間を使用するのではなく、**Orion Context Broker** が使用する **MongoDB** データベース内のデータと一致することが保証されます。
 
 #### :one: リクエスト :
 
@@ -322,7 +322,7 @@ curl -iX POST \
 * `notification` url は、公開されたポートと一致する必要があります
 * `throttling` 値は、変更がサンプリングされる割合を定義します
 
-`metadata` 属性により、**CrateDB** データベース内の `time_index` 列が、**CrateDB** 自体のレコードの作成時間を使用するのではなく、**Orion Context Broker** が使用する **Mongo-DB** データベース内のデータと一致することが保証されます。
+`metadata` 属性により、**CrateDB** データベース内の `time_index` 列が、**CrateDB** 自体のレコードの作成時間を使用するのではなく、**Orion Context Broker** が使用する **MongoDB** データベース内のデータと一致することが保証されます。
 
 #### :two: リクエスト :
 
