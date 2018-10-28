@@ -1,8 +1,8 @@
 version: "3.1"
 services:
-  mongo-db:
+  mongodb:
     image: mongo:3.6
-    hostname: mongo-db
+    hostname: mongodb
     container_name: db-mongo
     ports:
         - "27017:27017"
@@ -10,12 +10,12 @@ services:
         - default
     command: --bind_ip_all --smallfiles
     volumes:
-      - mongo-db:/data
+      - mongodb:/data
 
   
-  crate-db:
+  cratedb:
     image: crate:2.3
-    hostname: crate-db
+    hostname: cratedb
     container_name: db-crate
     ports:
       # Admin UI
@@ -24,13 +24,13 @@ services:
       - "4300:4300"
     command: -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
     volumes:
-      - crate-db:/data
+      - cratedb:/data
 
   grafana:
     image: grafana/grafana
     container_name: grafana
     depends_on:
-      - crate-db
+      - cratedb
     ports:
       - "3003:3000"
     environment:
@@ -44,26 +44,26 @@ services:
     hostname: orion
     container_name: fiware-orion
     depends_on:
-        - mongo-db
+        - mongodb
     networks:
         - default
     expose:
         - "1026"
     ports:
         - "1026:1026"
-    command: -dbhost mongo-db -logLevel DEBUG
+    command: -dbhost mongodb -logLevel DEBUG
 
 
-  quantum-leap:
+  quantumleap:
     image: smartsdk/quantumleap:0.4
-    hostname: quantum-leap
-    container_name: fiware-quantum-leap
+    hostname: quantumleap
+    container_name: fiware-quantumleap
     ports:
       - "8668:8668"
     depends_on:
-      - crate-db
+      - cratedb
     environment:
-      - CRATE_HOST=crate-db
+      - CRATE_HOST=cratedb
 
 
   iot-agent:
@@ -71,7 +71,7 @@ services:
     hostname: iot-agent
     container_name: fiware-iot-agent
     depends_on:
-        - mongo-db
+        - mongodb
     networks:
         - default
     ports:
@@ -84,7 +84,7 @@ services:
         - "IOTA_REGISTRY_TYPE=mongodb" #Whether to hold IoT device info in memory or in a database
         - "IOTA_LOG_LEVEL=DEBUG" #The log level of the IoT Agent
         - "IOTA_TIMESTAMP=true"
-        - "IOTA_MONGO_HOST=mongo-db" # The host name of ongoDB
+        - "IOTA_MONGO_HOST=mongodb" # The host name of ongoDB
         - "IOTA_MONGO_PORT=27017" # The port mongoDB is listening on
         - "IOTA_MONGO_DB=iotagentul" # The name of the database used in mongoDB
         - "IOTA_HTTP_PORT=7896" # The port used for device traffic over HTTP
@@ -97,7 +97,7 @@ services:
     depends_on:
         - orion
         - iot-agent
-        - quantum-leap
+        - quantumleap
     networks:
       default:
         aliases:
@@ -119,7 +119,7 @@ services:
         - "DUMMY_DEVICES_API_KEY=4jggokgpepnvsb2uv4s40d59ov"
         - "CONTEXT_BROKER=http://orion:1026/v2" # URL of the context broker to update context
         - "NGSI_LD_PREFIX="
-        - "CRATE_DB_SERVICE_URL=http://crate-db:4200/_sql"
+        - "CRATE_DB_SERVICE_URL=http://cratedb:4200/_sql"
         - "OPENWEATHERMAP_KEY_ID=<ADD_YOUR_KEY_ID>"
         - "TWITTER_CONSUMER_KEY=<ADD_YOUR_CONSUMER_KEY>"
         - "TWITTER_CONSUMER_SECRET=<ADD_YOUR_CONSUMER_SECRET>"
@@ -132,6 +132,6 @@ networks:
 
 
 volumes:
-  mongo-db:
-  crate-db:
+  mongodb:
+  cratedb:
   grafana:

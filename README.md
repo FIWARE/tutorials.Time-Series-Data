@@ -26,36 +26,62 @@ available as
 
 # Contents
 
--   [Persisting and Querying Time Series Data (CrateDB)](#persisting-and-querying-time-series-data-cratedb)
-    -   [Analyzing time series data](#analyzing-time-series-data)
--   [Architecture](#architecture)
--   [Prerequisites](#prerequisites)
-    -   [Docker and Docker Compose](#docker-and-docker-compose)
-    -   [Cygwin for Windows](#cygwin-for-windows)
--   [Start Up](#start-up)
--   [Connecting FIWARE to a CrateDB Database via QuantumLeap](#connecting-fiware-to-a-cratedb-database-via-quantumleap)
-    -   [CrateDB Database Server Configuration](#cratedb-database-server-configuration)
-    -   [QuantumLeap Configuration](#quantumleap-configuration)
-    -   [Grafana Configuration](#grafana-configuration)
-    -   [Setting up Subscriptions](#setting-up-subscriptions)
-        -   [Aggregate Motion Sensor Count Events](#aggregate-motion-sensor-count-events)
-        -   [Sample Lamp Luminosity](#sample-lamp-luminosity)
-    -   [Time Series Data Queries (CrateDB)](#time-series-data-queries-cratedb)
-        -   [Read Schemas](#read-schemas)
-        -   [Read Tables](#read-tables)
-        -   [List the first N Sampled Values](#list-the-first-n-sampled-values)
-        -   [List N Sampled Values at an Offset](#list-n-sampled-values-at-an-offset)
-        -   [List the latest N Sampled Values](#list-the-latest-n-sampled-values)
-        -   [List the Sum of values over a time period](#list-the-sum-of-values-over-a-time-period)
-        -   [List the Minimum Values over a Time Period](#list-the-minimum-values-over-a-time-period)
-        -   [List the Maximum Values over a Time Period](#list-the-maximum-values-over-a-time-period)
-        -   [List the Average Values over a Time Period](#list-the-average-values-over-a-time-period)
--   [Accessing Time Series Data Programmatically](#accessing-time-series-data-programmatically)
-    -   [Displaying CrateDB data as a Grafana Dashboard](#displaying-cratedb-data-as-a-grafana-dashboard)
-        -   [Logging in](#logging-in)
-        -   [Configuring a Data Source](#configuring-a-data-source)
-        -   [Configuring a Dashboard](#configuring-a-dashboard)
--   [Next Steps](#next-steps)
+- [Contents](#contents)
+- [Persisting and Querying Time Series Data (CrateDB)](#persisting-and-querying-time-series-data-cratedb)
+    - [Analyzing time series data](#analyzing-time-series-data)
+            - [Grafana](#grafana)
+            - [Device Monitor](#device-monitor)
+            - [Device History](#device-history)
+- [Architecture](#architecture)
+- [Prerequisites](#prerequisites)
+    - [Docker and Docker Compose](#docker-and-docker-compose)
+    - [Cygwin for Windows](#cygwin-for-windows)
+- [Start Up](#start-up)
+- [Connecting FIWARE to a CrateDB Database via QuantumLeap](#connecting-fiware-to-a-cratedb-database-via-quantumleap)
+    - [CrateDB Database Server Configuration](#cratedb-database-server-configuration)
+    - [QuantumLeap Configuration](#quantumleap-configuration)
+    - [Grafana Configuration](#grafana-configuration)
+        - [Generating Context Data](#generating-context-data)
+    - [Setting up Subscriptions](#setting-up-subscriptions)
+        - [Aggregate Motion Sensor Count Events](#aggregate-motion-sensor-count-events)
+            - [:one: Request:](#one-request)
+        - [Sample Lamp Luminosity](#sample-lamp-luminosity)
+            - [:two: Request:](#two-request)
+    - [Time Series Data Queries (CrateDB)](#time-series-data-queries-cratedb)
+        - [Read Schemas](#read-schemas)
+            - [:three: Request:](#three-request)
+            - [Response:](#response)
+        - [Read Tables](#read-tables)
+            - [:four: Request:](#four-request)
+            - [Response:](#response-1)
+        - [List the first N Sampled Values](#list-the-first-n-sampled-values)
+            - [:five: Request:](#five-request)
+            - [Response:](#response-2)
+        - [List N Sampled Values at an Offset](#list-n-sampled-values-at-an-offset)
+            - [:six: Request:](#six-request)
+            - [Response:](#response-3)
+        - [List the latest N Sampled Values](#list-the-latest-n-sampled-values)
+            - [:seven: Request:](#seven-request)
+            - [Response:](#response-4)
+        - [List the Sum of values over a time period](#list-the-sum-of-values-over-a-time-period)
+            - [:eight: Request:](#eight-request)
+            - [Response:](#response-5)
+        - [List the Minimum Values over a Time Period](#list-the-minimum-values-over-a-time-period)
+            - [:nine: Request:](#nine-request)
+            - [Response:](#response-6)
+        - [List the Maximum Values over a Time Period](#list-the-maximum-values-over-a-time-period)
+            - [:one::zero: Request:](#onezero-request)
+            - [Response:](#response-7)
+        - [List the Average Values over a Time Period](#list-the-average-values-over-a-time-period)
+            - [:one::one: Request:](#oneone-request)
+            - [Response:](#response-8)
+- [Accessing Time Series Data Programmatically](#accessing-time-series-data-programmatically)
+    - [Displaying CrateDB data as a Grafana Dashboard](#displaying-cratedb-data-as-a-grafana-dashboard)
+        - [Logging in](#logging-in)
+        - [Configuring a Data Source](#configuring-a-data-source)
+        - [Configuring a Dashboard](#configuring-a-dashboard)
+- [Next Steps](#next-steps)
+    - [License](#license)
 
 # Persisting and Querying Time Series Data (CrateDB)
 
@@ -282,9 +308,9 @@ has been described in previous tutorials
 ## CrateDB Database Server Configuration
 
 ```yaml
-crate-db:
+cratedb:
     image: crate:2.3
-    hostname: crate-db
+    hostname: cratedb
     ports:
         - "4200:4200"
         - "4300:4300"
@@ -296,15 +322,15 @@ crate-db:
 ## QuantumLeap Configuration
 
 ```yaml
-quantum-leap:
+quantumleap:
     image: smartsdk/quantumleap
-    hostname: quantum-leap
+    hostname: quantumleap
     ports:
         - "8668:8668"
     depends_on:
-        - crate-db
+        - cratedb
     environment:
-        - CRATE_HOST=crate-db
+        - CRATE_HOST=cratedb
 ```
 
 ## Grafana Configuration
@@ -313,14 +339,14 @@ quantum-leap:
 grafana:
     image: grafana/grafana
     depends_on:
-        - crate-db
+        - cratedb
     ports:
         - "3003:3000"
     environment:
         - GF_INSTALL_PLUGINS=crate-datasource,grafana-clock-panel,grafana-worldmap-panel
 ```
 
-The `quantum-leap` container is listening on one port:
+The `quantumleap` container is listening on one port:
 
 -   The Operations for port for QuantumLeap - `8668` is where the service will
     be listening for notifications from the Orion context broker
@@ -328,7 +354,7 @@ The `quantum-leap` container is listening on one port:
 The `CRATE_HOST` environment variable defines the location where the data will
 be persisted.
 
-The `crate-db` container is listening on two ports:
+The `cratedb` container is listening on two ports:
 
 -   The Admin UI is available on port `4200`
 -   The transport protocol is available on `port 4300`
@@ -406,7 +432,7 @@ curl -iX POST \
   },
   "notification": {
     "http": {
-      "url": "http://quantum-leap:8668/v2/notify"
+      "url": "http://quantumleap:8668/v2/notify"
     },
     "attrs": [
       "count"
@@ -462,7 +488,7 @@ curl -iX POST \
   },
   "notification": {
     "http": {
-      "url": "http://quantum-leap:8668/v2/notify"
+      "url": "http://quantumleap:8668/v2/notify"
     },
     "attrs": [
       "luminosity"
@@ -908,7 +934,7 @@ After logging in, a datasource must be set up at
 -   **Name** Lamp
 -   **Type** Crate
 
--   **URL** `http://crate-db:4200`
+-   **URL** `http://cratedb:4200`
 -   **Access** Server (Default)
 
 -   **Schema** mtopeniot
