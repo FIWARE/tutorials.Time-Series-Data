@@ -36,9 +36,9 @@ case "${command}" in
         ;;
 	 "start")
 		stoppingContainers
-		echo -e "Starting seven containers \033[1;34mOrion\033[0m, \033[1;34mQuantum Leap\033[0m, \033[1;36mIoT-Agent\033[0m, \033[1;30mTutorial\033[0m, a \033[1;30mGrafana\033[0m metrics dashboard and \033[1;30mCrate\033[0m and \033[1;30mMongoDB\033[0m databases."	
+		echo -e "Starting seven containers \033[1;34mOrion\033[0m, \033[1;34mQuantumLeap\033[0m, \033[1;36mIoT-Agent\033[0m, \033[1;30mTutorial\033[0m, a \033[1;30mGrafana\033[0m metrics dashboard and \033[1;30mCrate\033[0m and \033[1;30mMongoDB\033[0m databases."	
 		echo -e "- \033[1;34mOrion\033[0m is the context broker"
-		echo -e "- \033[1;34mQuantum Leap\033[0m will write to Crate-DB"
+		echo -e "- \033[1;34mQuantumLeap\033[0m will write to Crate-DB"
 		echo -e "- \033[1;30mGrafana\033[0m will read from Crate-DB"
 		echo -e "- \033[1;36mIoT-Agent\033[0m is configured for the UltraLight Protocol"
 		echo -e "- \033[1;30mTutorial\033[0m acts as a series of dummy IoT Sensors over HTTP"
@@ -61,7 +61,7 @@ case "${command}" in
 		docker pull crate:2.3
 		echo "Obtaining Latest Grafana"
 		docker pull grafana/grafana
-		echo "Obtaining Latest Quantum Leap"
+		echo "Obtaining Latest QuantumLeap"
 		docker pull smartsdk/quantumleap
 		echo "Obtaining Tutorial Application"
 		docker pull fiware/tutorials.context-provider
