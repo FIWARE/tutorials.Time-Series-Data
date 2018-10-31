@@ -12,10 +12,9 @@ This tutorial is an introduction to
 generic enabler which is used to persist context data into a **CrateDB**
 database. The tutorial activates the IoT sensors connected in the
 [previous tutorial](https://github.com/Fiware/tutorials.IoT-Agent) and persists
-measurements from those sensors into the database. The **CrateDB** HTTP
-endpoint is then used to retrieve time-based aggregations of that data. The
-results are visualized on a graph or via the **Grafana** time series analytics
-tool.
+measurements from those sensors into the database. The **CrateDB** HTTP endpoint
+is then used to retrieve time-based aggregations of that data. The results are
+visualized on a graph or via the **Grafana** time series analytics tool.
 
 The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also
 available as
@@ -77,21 +76,21 @@ alternative generic enabler created specifically for data persistence into the
 **CrateDB** time-series database, and therefore offers an alternative to the
 [STH-Comet](https://fiware-sth-comet.readthedocs.io/).
 
-[CrateDB](https://crate.io/) is a distributed SQL DBMS designed for use with
-the internet of Things. It is capable of ingesting a large number of data points
-per second and can be queried in real-time. The database is designed for the
+[CrateDB](https://crate.io/) is a distributed SQL DBMS designed for use with the
+internet of Things. It is capable of ingesting a large number of data points per
+second and can be queried in real-time. The database is designed for the
 execution of complex queries such as geospatial and time series data. Retrieval
 of this historic context data allows for the creation of graphs and dashboards
 displaying trends over time.
 
 A summary of the differences can be seen below:
 
-| QuantumLeap                                                                    | STH-Comet                                                                                |
-| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| Offers an NGSI v2 interface for notifications                                   | Offers an NGSI v1 interface for notifications                                            |
+| QuantumLeap                                                                    | STH-Comet                                                                               |
+| ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| Offers an NGSI v2 interface for notifications                                  | Offers an NGSI v1 interface for notifications                                           |
 | Persists Data to a CrateDB database                                            | Persists Data to MongoDB database                                                       |
 | Does not offer its own HTTP endpoint for queries, use the CrateDB SQL endpoint | Offers its own HTTP endpoint for queries - MongoDB database cannot be accessed directly |
-| The CrateDB SQL endpoint is able to satisfy complex data queries using SQL     | STH-Comet offers a limited set of queries                                                |
+| The CrateDB SQL endpoint is able to satisfy complex data queries using SQL     | STH-Comet offers a limited set of queries                                               |
 | CrateDB is a distributed SQL DBMS built atop NoSQL storage                     | MongoDB is a document based NoSQL database                                              |
 
 Further details about the differences between the underlying database engines
@@ -339,8 +338,8 @@ externally. This is because the Grafana UI is usually available on port `3000`,
 but this port has already been taken by the dummy devices UI so it has been
 shifted to another port. The Grafana Environment variables are described within
 their own [documentation](http://docs.grafana.org/installation/configuration/).
-The configuration ensures we will be able to connect to the **CrateDB**
-database later on in the tutorial
+The configuration ensures we will be able to connect to the **CrateDB** database
+later on in the tutorial
 
 ### Generating Context Data
 
@@ -348,9 +347,9 @@ For the purpose of this tutorial, we must be monitoring a system where the
 context is periodically being updated. The dummy IoT Sensors can be used to do
 this. Open the device monitor page at `http://localhost:3000/device/monitor` and
 unlock a **Smart Door** and switch on a **Smart Lamp**. This can be done by
-selecting an appropriate command from the drop down list and pressing the
-`send` button. The stream of measurements coming from the devices can then be
-seen on the same page:
+selecting an appropriate command from the drop down list and pressing the `send`
+button. The stream of measurements coming from the devices can then be seen on
+the same page:
 
 ![](https://fiware.github.io/tutorials.Time-Series-Data/img/door-open.gif)
 
