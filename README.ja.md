@@ -870,13 +870,13 @@ curl -iX POST \
 ールではないため、**QuantumLeap** のドメイン内にはありませんが
 、[Wirecloud](https://github.com/Fiware/catalogue/blob/master/processing/README.md#Wirecloud)
 や
-[Knowage](https://catalogue-server.fiware.org/enablers/data-visualization-knowage)
+[Knowage](https://github.com/Fiware/catalogue/blob/master/processing/README.md#Knowage)
 などのマッシュアップやダッシュボード・コンポーネントに任せることができます。
 
 また、コーディング環境に適したサード・パーティのグラフ作成ツール
 ([chartjs](http://www.chartjs.org/) など) を使用して、検索して表示することもでき
 ます。この例は
-、[Git Repository](https://github.com/Fiware/tutorials.Step-by-Step/blob/master/docker/context-provider/express-app/controllers/history.js)
+、[Git Repository](https://github.com/Fiware/tutorials.Step-by-Step/blob/master/context-provider/controllers/history.js)
 の `history` コントローラ内にあります。
 
 基本的な処理は、検索と属性マッピングの 2 つのステップで構成されています。サンプ
