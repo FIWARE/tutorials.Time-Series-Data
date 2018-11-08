@@ -1108,7 +1108,7 @@ to aggregate data in different ways.
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT MAX(luminosity) AS max FROM mtopeniot.etlamp WHERE entity_id = '\''Lamp:001'\'' and time_index >= '\''2018-11-02T10:31:55'\'' and time_index < '\''2018-11-02T10:38:55'\''"}'
+  -d '{"stmt":"SELECT MAX(luminosity) AS max FROM mtopeniot.etlamp WHERE entity_id = '\''Lamp:001'\'' and time_index >= '\''2018-06-27T09:00:00'\'' and time_index < '\''2018-06-30T23:59:59'\''"}'
 ```
 
 #### Response:
