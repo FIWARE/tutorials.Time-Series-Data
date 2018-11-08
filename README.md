@@ -1118,7 +1118,6 @@ curl -iX POST \
     "cols": ["max"],
     "rows": [
         [1753]
-        ...etc
     ],
     "rowcount": 43,
     "duration": 26.7215
