@@ -1075,7 +1075,7 @@ This example shows maximum `luminosity` value of `Lamp:001` that occurred betwee
 
 ```console
 curl -X GET \
-  'http://0.0.0.0:8668/v2/entities/Lamp:001/attrs/luminosity?fromDate=2018-10-29T15:03:00&toDate=2018-10-29T15:06:00' \
+  'http://0.0.0.0:8668/v2/entities/Lamp:001/attrs/luminosity?aggrMethod=max&fromDate=2018-06-27T09:00:00&toDate=2018-06-30T23:59:59' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
