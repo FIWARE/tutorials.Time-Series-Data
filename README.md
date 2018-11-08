@@ -1119,7 +1119,7 @@ curl -iX POST \
     "rows": [
         [1753]
     ],
-    "rowcount": 43,
+    "rowcount": 1,
     "duration": 26.7215
 }
 ```
