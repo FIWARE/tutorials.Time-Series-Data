@@ -1086,7 +1086,7 @@ curl -X GET \
 ```console
 {
     "data": {
-        "attrName": "count",
+        "attrName": "luminosity",
         "entityId": "Motion:001",
         "index": [],
         "values": [
