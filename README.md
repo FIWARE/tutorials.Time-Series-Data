@@ -546,7 +546,7 @@ multiple types of queries directly talking to QuantumLeap. The documentation of
 the API is [here](https://app.swaggerhub.com/apis/smartsdk/ngsi-tsdb/). Mind the
 versions. If you have access to your quantumleap container (e.g. it is running
 in locahost or port-forwarding to it), you can navigate its API via 
-[http://localhosts:8668/v2/ui](http://localhosts:8668/v2/ui).
+[http://localhost:8668/v2/ui](http://localhost:8668/v2/ui).
 
 When to query **CrateDB** and when **QuatumLeap**?. As a rule of thumb, prefer 
 working always with **QuantumLeap** for the following reasons:
