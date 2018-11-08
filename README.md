@@ -1087,7 +1087,7 @@ curl -X GET \
 {
     "data": {
         "attrName": "luminosity",
-        "entityId": "Motion:001",
+        "entityId": "Lamp:001",
         "index": [],
         "values": [
             1753
