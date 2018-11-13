@@ -486,7 +486,7 @@
 					"response": []
 				}
 			],
-			"description": "**QuantumLeap** offfers an API wrapping CrateDB backend so you can also perform\nmultiple types of queries. The documentation of the API is\n[here](https://app.swaggerhub.com/apis/smartsdk/ngsi-tsdb/). Mind the versions.\nIf you have access to your `quantumleap` container (e.g. it is running in\n`localhost` or port-forwarding to it), you can navigate its API via\n[http://localhost:8668/v2/ui](http://localhost:8668/v2/ui).\n",
+			"description": "**CrateDB** offers an\n[HTTP Endpoint](https://crate.io/docs/crate/reference/en/latest/interfaces/http.html)\nthat can be used to submit SQL queries. The endpoint is accessible under\n`<servername:port>/_sql`.\n\nSQL statements are sent as the body of POST requests in JSON format, where the\nSQL statement is the value of the `stmt` attribute.\n\n> When to query **CrateDB** and when **QuantumLeap**?. As a rule of thumb,\n> prefer working always with **QuantumLeap** for the following reasons:\n>\n> -   Your experience will be closer to FIWARE NGSI APIs like Orion's.\n> -   Your application will not be tied to CrateDB's specifics nor QuantumLeap's\n>     implementation details, which could change and break your app.\n> -   QuantumLeap can be easily extended to other backends and your app will get\n>     compatibility for free.\n> -   If your deployment is distributed, you won't need to expose the ports of\n>     your database to the outside.\n\nIf your are sure your query is not supported by **QuantumLeap**, you may have to\nend up querying **CrateDB**, however, please open an issue in\n[QuantumLeap's repo](https://github.com/smartsdk/ngsi-timeseries-api/issues) so\nthe team is aware.\n",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -537,7 +537,7 @@
 								"_sql"
 							]
 						},
-						"description": "**Qunatum Leap** does not currently offer any interfaces to query for the persisted data\nA good method to see if data is being persisted is to check to see if a `table_schema` has been created.\nThis can be done by making a request to the Crate-DB HTTP endpoint as shown:\n\nSchema names are formed with the `mt` prefix followed by `fiware-service` header in lower case.\nThe **IoT Agent** is forwarding measurements from the dummy IoT devices, with the header `openiot` these are being persisted under the `mtopeniot` schema.\n\nIf the `mtopeniot` does not exist, then the subscription to **Quantum Leap** has not been set up correctly. Check that the subscription exists, and has been configured to send data to the correct location."
+						"description": "Another way to see if data are being persisted is to check if a `table_schema`\nhas been created. This can be done by making a request to the **CrateDB** HTTP\nendpoint as shown below.\n\nSchema names are formed with the `mt` prefix followed by `fiware-service` header\nin lower case. The IoT Agent is forwarding measurements from the dummy IoT\ndevices, with the `FIWARE-Service` header `openiot`. These are being persisted\nunder the `mtopeniot` schema.\n\nIf the `mtopeniot` does not exist, then the subscription to **QuantumLeap** has\nnot been set up correctly. Check that the subscription exists, and has been\nconfigured to send data to the correct location."
 					},
 					"response": []
 				},
@@ -815,19 +815,19 @@
 	],
 	"variable": [
 		{
-			"id": "c02bff0b-91b0-469f-bb3d-9647d4537344",
+			"id": "8b93ca91-ce4f-4a33-b342-a9d398772ce3",
 			"key": "orion",
 			"value": "localhost:1026",
 			"type": "string"
 		},
 		{
-			"id": "2bca0eb6-6530-4cdd-ba40-de8c21f981f3",
+			"id": "ba15b36e-220a-48a6-9b51-1f1a2565d5a4",
 			"key": "quantumleap",
 			"value": "localhost:8668",
 			"type": "string"
 		},
 		{
-			"id": "ea950575-a02d-431f-876e-d9b905914a4d",
+			"id": "abee6884-b979-4c6e-acd7-bfea561e24f9",
 			"key": "crate",
 			"value": "localhost:4200",
 			"type": "string"
