@@ -11,7 +11,7 @@
 			"description": "Once a dynamic context system is up and running, we need to inform **QuantumLeap** directly\nof changes in context. As expected this is done using the subscription mechanism of the **Orion Context Broker**. The `attrsFormat=legacy` is not required since **QuantumLeap** accepts NGSI v2 notifications directly. \n\nMore details about subscriptions can be found in a [previous tutorials](https://github.com/Fiware/tutorials.Subscriptions)",
 			"item": [
 				{
-					"name": "Orion - Quantum-Leap - Sample Lamp Luminosity",
+					"name": "Orion - QuantumLeap - Sample Lamp Luminosity",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -44,12 +44,12 @@
 								""
 							]
 						},
-						"description": "The luminosity of the **Smart Lamp** is constantly changing, we only need to **sample** the values to be\nable to work out relevant statistics such as minimum and maximum values and rates of change.\n\nThis is done by making a POST request to the `/v2/subscription` endpoint of the Orion Context Broker\nand including the `throttling` attribute in the request body.\n\n* The `fiware-service` and `fiware-servicepath` headers are used to filter the subscription to only listen to measurements from the attached IoT Sensors\n* The `idPattern` in the request body ensures that **QuantumLeap** will be informed of all **Smart Lamp** data changes only\n* The notification `url` must match the configured `STH_PORT`\n* The `throttling` value defines the rate that changes are sampled.\n* \n\nThe `metadata` attribute ensures that the `time_index` column within the Crate-DB database will match the data found within the **Orion Context Broker** rather than using the creation time of the record within the Crate-DB itself."
+						"description": "The luminosity of the **Smart Lamp** is constantly changing, we only need to **sample** the values to be\nable to work out relevant statistics such as minimum and maximum values and rates of change.\n\nThis is done by making a POST request to the `/v2/subscription` endpoint of the Orion Context Broker\nand including the `throttling` attribute in the request body.\n\n* The `fiware-service` and `fiware-servicepath` headers are used to filter the subscription to only listen to measurements from the attached IoT Sensors\n* The `idPattern` in the request body ensures that **QuantumLeap** will be informed of all **Smart Lamp** data changes only\n* The notification `url` must match the configured `STH_PORT`\n* The `throttling` value defines the rate that changes are sampled.\n* \n\nThe `metadata` attribute ensures that the `time_index` column within the CrateDB database will match the data found within the **Orion Context Broker** rather than using the creation time of the record within the CrateDB itself."
 					},
 					"response": []
 				},
 				{
-					"name": "Orion - Quantum-Leap - Aggregate Motion Sensor Count Events",
+					"name": "Orion - QuantumLeap - Aggregate Motion Sensor Count Events",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -82,7 +82,7 @@
 								""
 							]
 						},
-						"description": "The rate of change of the **Motion Sensor** is driven by events in the real-world. We need to receive\nevery event to be able to aggregate the results.\n\nThis is done by making a POST request to the `/v2/subscription` endpoint of the Orion Context Broker.\n\n* The `fiware-service` and `fiware-servicepath` headers are used to filter the subscription to only listen to measurements from the attached IoT Sensors\n* The `idPattern` in the request body ensures that **QuantumLeap** will be informed of all **Motion Sensor** data changes.\n* The notification `url` must match the exposed port.\n\nThe `metadata` attribute ensures that the `time_index` column within the Crate-DB database will match the data found within the **Orion Context Broker** rather than using the creation time of the record within the Crate-DB itself."
+						"description": "The rate of change of the **Motion Sensor** is driven by events in the real-world. We need to receive\nevery event to be able to aggregate the results.\n\nThis is done by making a POST request to the `/v2/subscription` endpoint of the Orion Context Broker.\n\n* The `fiware-service` and `fiware-servicepath` headers are used to filter the subscription to only listen to measurements from the attached IoT Sensors\n* The `idPattern` in the request body ensures that **QuantumLeap** will be informed of all **Motion Sensor** data changes.\n* The notification `url` must match the exposed port.\n\nThe `metadata` attribute ensures that the `time_index` column within the CrateDB database will match the data found within the **Orion Context Broker** rather than using the creation time of the record within the CrateDB itself."
 					},
 					"response": []
 				},
@@ -145,8 +145,8 @@
 			]
 		},
 		{
-			"name": "Time Series Data Queries (Crate-DB)",
-			"description": "**Crate-DB** offers an [HTTP Endpoint](https://crate.io/docs/crate/reference/en/latest/interfaces/http.html) that can be used to submit SQL queries. The endpoint is accessible under `<servername:port>/_sql`.\n\nSQL statements are sent as the body of POST requests in JSON format, where the SQL statement is the value of the `stmt` attribute.\n",
+			"name": "Time Series Data Queries (CrateDB)",
+			"description": "**CrateDB** offers an [HTTP Endpoint](https://crate.io/docs/crate/reference/en/latest/interfaces/http.html) that can be used to submit SQL queries. The endpoint is accessible under `<servername:port>/_sql`.\n\nSQL statements are sent as the body of POST requests in JSON format, where the SQL statement is the value of the `stmt` attribute.\n",
 			"item": [
 				{
 					"name": "Read Schemas",
@@ -172,7 +172,7 @@
 								"_sql"
 							]
 						},
-						"description": "**Qunatum Leap** does not currently offer any interfaces to query for the persisted data\nA good method to see if data is being persisted is to check to see if a `table_schema` has been created.\nThis can be done by making a request to the Crate-DB HTTP endpoint as shown:\n\nSchema names are formed with the `mt` prefix followed by `fiware-service` header in lower case.\nThe **IoT Agent** is forwarding measurements from the dummy IoT devices, with the header `openiot` these are being persisted under the `mtopeniot` schema.\n\nIf the `mtopeniot` does not exist, then the subscription to **QuantumLeap** has not been set up correctly. Check that the subscription exists, and has been configured to send data to the correct location."
+						"description": "**Qunatum Leap** does not currently offer any interfaces to query for the persisted data\nA good method to see if data is being persisted is to check to see if a `table_schema` has been created.\nThis can be done by making a request to the CrateDB HTTP endpoint as shown:\n\nSchema names are formed with the `mt` prefix followed by `fiware-service` header in lower case.\nThe **IoT Agent** is forwarding measurements from the dummy IoT devices, with the header `openiot` these are being persisted under the `mtopeniot` schema.\n\nIf the `mtopeniot` does not exist, then the subscription to **QuantumLeap** has not been set up correctly. Check that the subscription exists, and has been configured to send data to the correct location."
 					},
 					"response": []
 				},
@@ -200,7 +200,7 @@
 								"_sql"
 							]
 						},
-						"description": "**QuantumLeap** will persist data into separate tables within the Crate-DB database based on the entity type. Table names are formed with the `et` prefix and the entity type name in lowercase.\n\nThe response shows that both **Motion Sensor** data and **Smart Lamp** data are being persisted in the database."
+						"description": "**QuantumLeap** will persist data into separate tables within the CrateDB database based on the entity type. Table names are formed with the `et` prefix and the entity type name in lowercase.\n\nThe response shows that both **Motion Sensor** data and **Smart Lamp** data are being persisted in the database."
 					},
 					"response": []
 				},
@@ -228,7 +228,7 @@
 								"_sql"
 							]
 						},
-						"description": "This example shows the first 3 sampled `luminosity` values from `Lamp:001`. \n\nThe SQL statement uses `ORDER BY` and `LIMIT` clauses to sort the data. More details can be found under within the Crate-DB [documentation](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)"
+						"description": "This example shows the first 3 sampled `luminosity` values from `Lamp:001`. \n\nThe SQL statement uses `ORDER BY` and `LIMIT` clauses to sort the data. More details can be found under within the CrateDB [documentation](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)"
 					},
 					"response": []
 				},
@@ -256,7 +256,7 @@
 								"_sql"
 							]
 						},
-						"description": "This example shows the fourth, fifth and sixth sampled count values from Motion:001.\n\nThe SQL statement uses an `OFFSET` clause to retrieve the required rows. \nMore details can be found under within the Crate-DB [documentation](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)"
+						"description": "This example shows the fourth, fifth and sixth sampled count values from Motion:001.\n\nThe SQL statement uses an `OFFSET` clause to retrieve the required rows. \nMore details can be found under within the CrateDB [documentation](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)"
 					},
 					"response": []
 				},
@@ -284,7 +284,7 @@
 								"_sql"
 							]
 						},
-						"description": "This example shows latest three sampled `count` values from `Motion:001`. \n\nThe SQL statement uses an `ORDER BY ... DESC` clause combined with a `LIMIT` clause to retrieve \nthe last N rows. More details can be found under within the Crate-DB [documentation](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)"
+						"description": "This example shows latest three sampled `count` values from `Motion:001`. \n\nThe SQL statement uses an `ORDER BY ... DESC` clause combined with a `LIMIT` clause to retrieve \nthe last N rows. More details can be found under within the CrateDB [documentation](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)"
 					},
 					"response": []
 				},
@@ -312,7 +312,7 @@
 								"_sql"
 							]
 						},
-						"description": "This example shows total `count` values from `Motion:001` over each minute.\n\nThe SQL statement uses a `SUM` function and `GROUP BY` clause to retrieve the relevant data.\nCrate-DB offers a range of [Date-Time Function](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions) to truncate and convert the timestamps into data which can be grouped."
+						"description": "This example shows total `count` values from `Motion:001` over each minute.\n\nThe SQL statement uses a `SUM` function and `GROUP BY` clause to retrieve the relevant data.\nCrateDB offers a range of [Date-Time Function](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions) to truncate and convert the timestamps into data which can be grouped."
 					},
 					"response": []
 				},
@@ -340,7 +340,7 @@
 								"_sql"
 							]
 						},
-						"description": "This example shows minimum `luminosity` values from `Lamp:001` over each minute.\n\nThe SQL statement uses a `MIN` function and `GROUP BY` clause to retrieve the relevant data.\nCrate-DB offers a range of [Date-Time Function](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions) to truncate and convert the timestamps into data which can be grouped."
+						"description": "This example shows minimum `luminosity` values from `Lamp:001` over each minute.\n\nThe SQL statement uses a `MIN` function and `GROUP BY` clause to retrieve the relevant data.\nCrateDB offers a range of [Date-Time Function](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions) to truncate and convert the timestamps into data which can be grouped."
 					},
 					"response": []
 				},
@@ -368,7 +368,7 @@
 								"_sql"
 							]
 						},
-						"description": "This example shows maximum `luminosity` values from `Lamp:001` over each minute.\n\nThe SQL statement uses a `MAX` function and `GROUP BY` clause to retrieve the relevant data.\nCrate-DB offers a range of [Date-Time Function](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions) to truncate and convert the timestamps into data which can be grouped."
+						"description": "This example shows maximum `luminosity` values from `Lamp:001` over each minute.\n\nThe SQL statement uses a `MAX` function and `GROUP BY` clause to retrieve the relevant data.\nCrateDB offers a range of [Date-Time Function](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions) to truncate and convert the timestamps into data which can be grouped."
 					},
 					"response": []
 				},
@@ -396,7 +396,7 @@
 								"_sql"
 							]
 						},
-						"description": "This example shows the average of `luminosity` values from `Lamp:001` over each minute.\n\nThe SQL statement uses a `AVG` function and `GROUP BY` clause to retrieve the relevant data.\nCrate-DB offers a range of [Date-Time Function](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions) to truncate and convert the timestamps into data which can be grouped."
+						"description": "This example shows the average of `luminosity` values from `Lamp:001` over each minute.\n\nThe SQL statement uses a `AVG` function and `GROUP BY` clause to retrieve the relevant data.\nCrateDB offers a range of [Date-Time Function](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions) to truncate and convert the timestamps into data which can be grouped."
 					},
 					"response": []
 				}
@@ -457,7 +457,7 @@
 		},
 		{
 			"id": "49c457a4-4a81-48fb-ad72-5ccacccaa7d4",
-			"key": "quantum-leap",
+			"key": "quantumleap",
 			"value": "localhost:8668",
 			"type": "string",
 			"description": ""

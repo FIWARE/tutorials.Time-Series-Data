@@ -299,9 +299,9 @@ Bash スクリプトを実行することによって、コマンドラインか
 ## CrateDB データベース・サーバの設定
 
 ```yaml
-crate-db:
+  cratedb:
     image: crate:2.3
-    hostname: crate-db
+    hostname: cratedb
     ports:
         - "4200:4200"
         - "4300:4300"
@@ -315,15 +315,15 @@ crate-db:
 ## QuantumLeap の設定
 
 ```yaml
-quantum-leap:
+  quantumleap:
     image: smartsdk/quantumleap
-    hostname: quantum-leap
+    hostname: quantumleap
     ports:
         - "8668:8668"
     depends_on:
-        - crate-db
+      - cratedb
     environment:
-        - CRATE_HOST=crate-db
+      - CRATE_HOST=cratedb
 ```
 
 <a name="grafana-configuration"></a>
@@ -334,21 +334,21 @@ quantum-leap:
 grafana:
     image: grafana/grafana
     depends_on:
-        - crate-db
+      - cratedb
     ports:
         - "3003:3000"
     environment:
         - GF_INSTALL_PLUGINS=crate-datasource,grafana-clock-panel,grafana-worldmap-panel
 ```
 
-`quantum-leap` コンテナは、1 つのポートで待機しています：
+`quantumleap` コンテナは、1つのポートで待機しています：
 
 -   QuantumLeap のポートの操作 - ポート `8668` サービスは、Orion Context Broker
     からの通知をリッスンするポートです
 
 `CRATE_HOST` 環境変数は、データが永続化される場所を定義します。
 
-`crate-db` コンテナは、2 つのポートでリッスンしています：
+`cratedb` コンテナは、2つのポートでリッスンしています：
 
 -   Admin UI は、ポート `4200` で利用できます
 -   トランスポートプロトコルは、ポート `4300` で利用できます
@@ -429,7 +429,7 @@ curl -iX POST \
   },
   "notification": {
     "http": {
-      "url": "http://quantum-leap:8668/v2/notify"
+      "url": "http://quantumleap:8668/v2/notify"
     },
     "attrs": [
       "count"
@@ -487,7 +487,7 @@ curl -iX POST \
   },
   "notification": {
     "http": {
-      "url": "http://quantum-leap:8668/v2/notify"
+      "url": "http://quantumleap:8668/v2/notify"
     },
     "attrs": [
       "luminosity"
