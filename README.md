@@ -14,8 +14,8 @@ database. The tutorial activates the IoT sensors connected in the
 [previous tutorial](https://github.com/Fiware/tutorials.IoT-Agent) and persists
 measurements from those sensors into the database. To retrieve time-based
 aggregations of such data, users can either use **QuantumLeap** query API or
-connect directly to the **CrateDB** HTTP endpoint. Results are visualised
-on a graph or via the **Grafana** time series analytics tool.
+connect directly to the **CrateDB** HTTP endpoint. Results are visualised on a
+graph or via the **Grafana** time series analytics tool.
 
 The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also
 available as
@@ -27,46 +27,43 @@ available as
 
 # Contents
 
-- [Persisting and Querying Time Series Data (CrateDB)](#persisting-and-querying-time-series-data-cratedb)
-    - [Analyzing time series data](#analyzing-time-series-data)
-        - [Grafana](#grafana)
-        - [Device Monitor](#device-monitor)
-        - [Device History](#device-history)
-- [Architecture](#architecture)
-- [Prerequisites](#prerequisites)
-    - [Docker and Docker Compose](#docker-and-docker-compose)
-    - [Cygwin for Windows](#cygwin-for-windows)
-- [Start Up](#start-up)
-- [Connecting FIWARE to a CrateDB Database via QuantumLeap](#connecting-fiware-to-a-cratedb-database-via-quantumleap)
-    - [CrateDB Database Server Configuration](#cratedb-database-server-configuration)
-    - [QuantumLeap Configuration](#quantumleap-configuration)
-    - [Grafana Configuration](#grafana-configuration)
-        - [Generating Context Data](#generating-context-data)
-    - [Setting up Subscriptions](#setting-up-subscriptions)
-        - [Aggregate Motion Sensor Count Events](#aggregate-motion-sensor-count-events)
-        - [Sample Lamp Luminosity](#sample-lamp-luminosity)
-    - [Time Series Data Queries (CrateDB)](#time-series-data-queries-cratedb)
-        - [Checking Subscriptions for QuantumLeap](#checking-subscriptions-for-quantumleap)
-        - [List the first N Sampled Values using QuantumLeap API](#list-the-first-n-sampled-values-using-quantumleap-api)
-        - [List N Sampled Values at an Offset using QuantumLeap API](#list-n-sampled-values-at-an-offset-using-quantumleap-api)
-        - [List the latest N Sampled Values using QuantumLeap API](#list-the-latest-n-sampled-values-using-quantumleap-api)
-        - [List the Sum of values grouped by a time period using QuantumLeap API](#list-the-sum-of-values-grouped-by-a-time-period-using-quantumleap-api)
-        - [List the Minimum Values grouped by a Time Period using QuantumLeap API](#list-the-minimum-values-grouped-by-a-time-period-using-quantumleap-api)
-        - [List the Maximum Value over a Time Period using QuantumLeap API](#list-the-maximum-value-over-a-time-period-using-quantumleap-api)
-        - [Checking Data persistence with CrateDB API](#checking-data-persistence-with-cratedb-api)
-        - [List the first N Sampled Values using CrateDB API](#list-the-first-n-sampled-values-using-cratedb-api)
-        - [List N Sampled Values at an Offset using CrateDB API](#list-n-sampled-values-at-an-offset-using-cratedb-api)
-        - [List the latest N Sampled Values using CrateDB API](#list-the-latest-n-sampled-values-using-cratedb-api)
-        - [List the Sum of values grouped by a time period using CrateDB API](#list-the-sum-of-values-grouped-by-a-time-period-using-cratedb-api)
-        - [List the Minimum Values grouped by a Time Period using CrateDB API](#list-the-minimum-values-grouped-by-a-time-period-using-cratedb-api)
-        - [List the Maximum Value over a Time Period using CrateDB API](#list-the-maximum-value-over-a-time-period-using-cratedb-api)
-- [Accessing Time Series Data Programmatically](#accessing-time-series-data-programmatically)
-    - [Displaying CrateDB data as a Grafana Dashboard](#displaying-cratedb-data-as-a-grafana-dashboard)
-        - [Logging in](#logging-in)
-        - [Configuring a Data Source](#configuring-a-data-source)
-        - [Configuring a Dashboard](#configuring-a-dashboard)
-- [Next Steps](#next-steps)
-    - [License](#license)
+-   [Persisting and Querying Time Series Data (CrateDB)](#persisting-and-querying-time-series-data-cratedb)
+    -   [Analyzing time series data](#analyzing-time-series-data)
+-   [Architecture](#architecture)
+-   [Prerequisites](#prerequisites)
+    -   [Docker and Docker Compose](#docker-and-docker-compose)
+    -   [Cygwin for Windows](#cygwin-for-windows)
+-   [Start Up](#start-up)
+-   [Connecting FIWARE to a CrateDB Database via QuantumLeap](#connecting-fiware-to-a-cratedb-database-via-quantumleap)
+    -   [CrateDB Database Server Configuration](#cratedb-database-server-configuration)
+    -   [QuantumLeap Configuration](#quantumleap-configuration)
+    -   [Grafana Configuration](#grafana-configuration)
+        -   [Generating Context Data](#generating-context-data)
+    -   [Setting up Subscriptions](#setting-up-subscriptions)
+        -   [Aggregate Motion Sensor Count Events](#aggregate-motion-sensor-count-events)
+        -   [Sample Lamp Luminosity](#sample-lamp-luminosity)
+        -   [Checking Subscriptions for QuantumLeap](#checking-subscriptions-for-quantumleap)
+    -   [Time Series Data Queries (QuantumLeap API)](#time-series-data-queries-quantumleap-api)
+        -   [QuantumLeap API - List the first N Sampled Values](#quantumleap-api---list-the-first-n-sampled-values)
+        -   [QuantumLeap API - List N Sampled Values at an Offset](#quantumleap-api---list-n-sampled-values-at-an-offset)
+        -   [QuantumLeap API - List the latest N Sampled Values](#quantumleap-api---list-the-latest-n-sampled-values)
+        -   [QuantumLeap API - List the Sum of values grouped by a time period](#quantumleap-api---list-the-sum-of-values-grouped-by-a-time-period)
+        -   [QuantumLeap API - List the Minimum Values grouped by a Time Period](#quantumleap-api---list-the-minimum-values-grouped-by-a-time-period)
+        -   [QuantumLeap API - List the Maximum Value over a Time Period](#quantumleap-api---list-the-maximum-value-over-a-time-period)
+    -   [Time Series Data Queries (CrateDB API)](#time-series-data-queries-cratedb-api)
+        -   [CrateDB API - Checking Data persistence](#cratedb-api---checking-data-persistence)
+        -   [CrateDB API - List the first N Sampled Values](#cratedb-api---list-the-first-n-sampled-values)
+        -   [CrateDB API - List N Sampled Values at an Offset](#cratedb-api---list-n-sampled-values-at-an-offset)
+        -   [CrateDB API - List the latest N Sampled Values](#cratedb-api---list-the-latest-n-sampled-values)
+        -   [CrateDB API - List the Sum of values grouped by a time period](#cratedb-api---list-the-sum-of-values-grouped-by-a-time-period)
+        -   [CrateDB API - List the Minimum Values grouped by a Time Period](#cratedb-api---list-the-minimum-values-grouped-by-a-time-period)
+        -   [CrateDB API - List the Maximum Value over a Time Period](#cratedb-api---list-the-maximum-value-over-a-time-period)
+-   [Accessing Time Series Data Programmatically](#accessing-time-series-data-programmatically)
+    -   [Displaying CrateDB data as a Grafana Dashboard](#displaying-cratedb-data-as-a-grafana-dashboard)
+        -   [Logging in](#logging-in)
+        -   [Configuring a Data Source](#configuring-a-data-source)
+        -   [Configuring a Dashboard](#configuring-a-dashboard)
+-   [Next Steps](#next-steps)
 
 # Persisting and Querying Time Series Data (CrateDB)
 
@@ -96,14 +93,14 @@ displaying trends over time.
 
 A summary of the differences can be seen below:
 
-| QuantumLeap                                               | STH-Comet                  |
-| --------------------------------------------------------- | -------------------------- |
-| Offers an NGSI v2 interface for notifications             | Offers an NGSI v1 interface for notifications  |
-| Persists Data to a CrateDB database                       | Persists Data to MongoDB database  |
-| Offers its own HTTP endpoint for queries, but you can also query CrateDB | Offers its own HTTP endpoint for queries - MongoDB database cannot be accessed directly  |
-| QuantumLeap supports complex data queries (thanks to CrateDB) | STH-Comet offers a limited set of queries  |
-| CrateDB is a distributed and scalable SQL DBMS built atop NoSQL storage | MongoDB is a document based NoSQL database  |
-| QuantumLeap's API is docummented in OpenAPI [here](https://app.swaggerhub.com/apis/smartsdk/ngsi-tsdb) | STH-Comet's API is explained in its docs [here](https://fiware-sth-comet.readthedocs.io/en/latest)  |
+| QuantumLeap                                                                                            | STH-Comet                                                                                          |
+| ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| Offers an NGSI v2 interface for notifications                                                          | Offers an NGSI v1 interface for notifications                                                      |
+| Persists Data to a CrateDB database                                                                    | Persists Data to MongoDB database                                                                  |
+| Offers its own HTTP endpoint for queries, but you can also query CrateDB                               | Offers its own HTTP endpoint for queries - MongoDB database cannot be accessed directly            |
+| QuantumLeap supports complex data queries (thanks to CrateDB)                                          | STH-Comet offers a limited set of queries                                                          |
+| CrateDB is a distributed and scalable SQL DBMS built atop NoSQL storage                                | MongoDB is a document based NoSQL database                                                         |
+| QuantumLeap's API is docummented in OpenAPI [here](https://app.swaggerhub.com/apis/smartsdk/ngsi-tsdb) | STH-Comet's API is explained in its docs [here](https://fiware-sth-comet.readthedocs.io/en/latest) |
 
 Further details about the differences between the underlying database engines
 can be found [here](https://db-engines.com/en/system/CrateDB%3BMongoDB).
@@ -161,6 +158,7 @@ and [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) .
 Therefore the overall architecture will consist of the following elements:
 
 -   The **FIWARE Generic Enablers**:
+
     -   The FIWARE
         [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)
         which will receive requests using
@@ -177,23 +175,23 @@ Therefore the overall architecture will consist of the following elements:
         database
 
 -   A [MongoDB](https://www.mongodb.com/) database:
+
     -   Used by the **Orion Context Broker** to hold context data information
         such as data entities, subscriptions and registrations
     -   Used by the **IoT Agent** to hold device information such as device URLs
         and Keys
 
 -   A [CrateDB](https://crate.io/) database:
+
     -   Used as a data sink to hold time-based historical context data
     -   offers an HTTP endpoint to interpret time-based data queries
 
--   A **Context Provider**:
-    -   A webserver acting as set of
-        [dummy IoT devices](https://github.com/Fiware/tutorials.IoT-Sensors)
-        using the
-        [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
-        protocol running over HTTP.
-    -   Note the **Stock Management Frontend** and **Context Provider NGSI**
-proxy are not used in this tutorial.
+-   A **Context Provider**: - A webserver acting as set of
+    [dummy IoT devices](https://github.com/Fiware/tutorials.IoT-Sensors) using
+    the
+    [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
+    protocol running over HTTP. - Note the **Stock Management Frontend** and
+    **Context Provider NGSI** proxy are not used in this tutorial.
 
 Since all interactions between the elements are initiated by HTTP requests, the
 entities can be containerized and run from exposed ports.
@@ -245,9 +243,9 @@ functionality similar to a Linux distribution on Windows.
 
 # Start Up
 
-Before you start, you should ensure that you have obtained or built the necessary
-Docker images locally. Please clone the repository and create the necessary
-images by running the commands as shown:
+Before you start, you should ensure that you have obtained or built the
+necessary Docker images locally. Please clone the repository and create the
+necessary images by running the commands as shown:
 
 ```console
 git clone git@github.com:Fiware/tutorials.Time-Series-Data.git
@@ -346,11 +344,11 @@ later on in the tutorial
 
 For the purpose of this tutorial, we must be monitoring a system where the
 context is periodically being updated. The dummy IoT Sensors can be used to do
-this. Open the device monitor page at `http://localhost:3000/device/monitor`
-and unlock a **Smart Door** and switch on a **Smart Lamp**. This can be done by
-selecting an appropriate command from the drop down list and pressing the
-`send` button. The stream of measurements coming from the devices can then be
-seen on the same page:
+this. Open the device monitor page at `http://localhost:3000/device/monitor` and
+unlock a **Smart Door** and switch on a **Smart Lamp**. This can be done by
+selecting an appropriate command from the drop down list and pressing the `send`
+button. The stream of measurements coming from the devices can then be seen on
+the same page:
 
 ![](https://fiware.github.io/tutorials.IoT-Sensors/img/door-open.gif)
 
@@ -478,38 +476,6 @@ curl -iX POST \
 }'
 ```
 
-## Time Series Data Queries (CrateDB)
-
-**QuantumLeap** offfers an API wrapping CrateDB backend so you can also perform
-multiple types of queries. The documentation of
-the API is [here](https://app.swaggerhub.com/apis/smartsdk/ngsi-tsdb/). Mind the
-versions. If you have access to your `quantumleap` container (e.g. it is running
-in `localhost` or port-forwarding to it), you can navigate its API via
-[http://localhost:8668/v2/ui](http://localhost:8668/v2/ui).
-
-**CrateDB** offers an
-[HTTP Endpoint](https://crate.io/docs/crate/reference/en/latest/interfaces/http.html)
-that can be used to submit SQL queries. The endpoint is accessible under
-`<servername:port>/_sql`.
-
-SQL statements are sent as the body of POST requests in JSON format, where the
-SQL statement is the value of the `stmt` attribute.
-
-> When to query **CrateDB** and when **QuantumLeap**?. As a rule of thumb, prefer
-> working always with **QuantumLeap** for the following reasons:
-> - Your experience will be closer to FIWARE NGSI APIs like Orion's.
-> - Your application will not be tied to CrateDB's specifics nor QuantumLeap's
-> implementation details, which could change and break your app.
-> - QuantumLeap can be easily extended to other backends and your app will get
-> compatibility for free.
-> - If your deployment is distributed, you won't need to expose the ports of
-> your database to the outside.
-
-If your are sure your query is not supported by **QuantumLeap**, you may have
-to end up querying **CrateDB**, however, please open an issue in
-[QuantumLeap's repo](https://github.com/smartsdk/ngsi-timeseries-api/issues)
-so the team is aware.
-
 ### Checking Subscriptions for QuantumLeap
 
 Before anything, check the subscriptions you created in steps :one: and :two:
@@ -562,22 +528,31 @@ curl -X GET \
 ]
 ```
 
-### List the first N Sampled Values using QuantumLeap API
+## Time Series Data Queries (QuantumLeap API)
 
-Now, to check QuantumLeap is persisting values, let's get started with our
-first query. This example shows the first 3 sampled `luminosity` values
-from `Lamp:001`.
+**QuantumLeap** offfers an API wrapping CrateDB backend so you can also perform
+multiple types of queries. The documentation of the API is
+[here](https://app.swaggerhub.com/apis/smartsdk/ngsi-tsdb/). Mind the versions.
+If you have access to your `quantumleap` container (e.g. it is running in
+`localhost` or port-forwarding to it), you can navigate its API via
+[http://localhost:8668/v2/ui](http://localhost:8668/v2/ui).
 
-Note the use of `Fiware-Service` and `Fiware-ServicePath` headers. These
-are required only when data are pushed to orion using such headers
-(in multitenancy scenarios). Failing to align these headers will result in
-no data being returned.
+### QuantumLeap API - List the first N Sampled Values
+
+Now, to check QuantumLeap is persisting values, let's get started with our first
+query. This example shows the first 3 sampled `luminosity` values from
+`Lamp:001`.
+
+Note the use of `Fiware-Service` and `Fiware-ServicePath` headers. These are
+required only when data are pushed to orion using such headers (in multitenancy
+scenarios). Failing to align these headers will result in no data being
+returned.
 
 #### :four: Request:
 
 ```console
 curl -X GET \
-  'http://0.0.0.0:8668/v2/entities/Lamp:001/attrs/luminosity?=3&limit=3' \
+  'http://localhost:8668/v2/entities/Lamp:001/attrs/luminosity?=3&limit=3' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
@@ -585,7 +560,7 @@ curl -X GET \
 
 #### Response:
 
-```console
+```json
 {
     "data": {
         "attrName": "luminosity",
@@ -604,15 +579,16 @@ curl -X GET \
 }
 ```
 
-### List N Sampled Values at an Offset using QuantumLeap API
+### QuantumLeap API - List N Sampled Values at an Offset
 
-This example shows the fourth, fifth and sixth sampled `count` values of `Motion:001`.
+This example shows the fourth, fifth and sixth sampled `count` values of
+`Motion:001`.
 
 #### :five: Request:
 
 ```console
 curl -X GET \
-  'http://0.0.0.0:8668/v2/entities/Motion:001/attrs/count?offset=3&limit=3' \
+  'http://localhost:8668/v2/entities/Motion:001/attrs/count?offset=3&limit=3' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
@@ -620,7 +596,7 @@ curl -X GET \
 
 #### Response:
 
-```console
+```json
 {
     "data": {
         "attrName": "count",
@@ -639,7 +615,7 @@ curl -X GET \
 }
 ```
 
-### List the latest N Sampled Values using QuantumLeap API
+### QuantumLeap API - List the latest N Sampled Values
 
 This example shows the latest three sampled `count` values from `Motion:001`.
 
@@ -647,7 +623,7 @@ This example shows the latest three sampled `count` values from `Motion:001`.
 
 ```console
 curl -X GET \
-  'http://0.0.0.0:8668/v2/entities/Motion:001/attrs/count?lastN=3' \
+  'http://localhost:8668/v2/entities/Motion:001/attrs/count?lastN=3' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
@@ -655,7 +631,7 @@ curl -X GET \
 
 #### Response:
 
-```console
+```json
 {
     "data": {
         "attrName": "count",
@@ -674,16 +650,16 @@ curl -X GET \
 }
 ```
 
-### List the Sum of values grouped by a time period using QuantumLeap API
+### QuantumLeap API - List the Sum of values grouped by a time period
 
 This example shows last 3 total `count` values of `Motion:001` over each minute.
 
-You need QuantumLeap **version >= 0.4.1**.
-You can check your version with a simple GET like:
+You need QuantumLeap **version >= 0.4.1**. You can check your version with a
+simple GET like:
 
 ```console
 curl -X GET \
-  'http://0.0.0.0:8668/v2/version' \
+  'http://localhost:8668/v2/version' \
   -H 'Accept: application/json'
 ```
 
@@ -691,7 +667,7 @@ curl -X GET \
 
 ```console
 curl -X GET \
-  'http://0.0.0.0:8668/v2/entities/Motion:001/attrs/count?aggrMethod=count&aggrPeriod=minute&lastN=3' \
+  'http://localhost:8668/v2/entities/Motion:001/attrs/count?aggrMethod=count&aggrPeriod=minute&lastN=3' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
@@ -699,7 +675,7 @@ curl -X GET \
 
 #### Response:
 
-```console
+```json
 {
     "data": {
         "attrName": "count",
@@ -718,16 +694,16 @@ curl -X GET \
 }
 ```
 
-### List the Minimum Values grouped by a Time Period using QuantumLeap API
+### QuantumLeap API - List the Minimum Values grouped by a Time Period
 
 This example shows minimum `luminosity` values from `Lamp:001` over each minute.
 
-> You need QuantumLeap **version >= 0.4.1**.
-> You can check your version with a simple GET like:
+> You need QuantumLeap **version >= 0.4.1**. You can check your version with a
+> simple GET like:
 
 > ```console
 > curl -X GET \
->   'http://0.0.0.0:8668/v2/version' \
+>   'http://localhost:8668/v2/version' \
 >   -H 'Accept: application/json'
 > ```
 
@@ -735,7 +711,7 @@ This example shows minimum `luminosity` values from `Lamp:001` over each minute.
 
 ```console
 curl -X GET \
-  'http://0.0.0.0:8668/v2/entities/Lamp:001/attrs/luminosity?aggrMethod=min&aggrPeriod=minute&lastN=3' \
+  'http://localhost:8668/v2/entities/Lamp:001/attrs/luminosity?aggrMethod=min&aggrPeriod=minute&lastN=3' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
@@ -743,7 +719,7 @@ curl -X GET \
 
 #### Response:
 
-```console
+```json
 {
     "data": {
         "attrName": "count",
@@ -762,15 +738,16 @@ curl -X GET \
 }
 ```
 
-### List the Maximum Value over a Time Period using QuantumLeap API
+### QuantumLeap API - List the Maximum Value over a Time Period
 
-This example shows maximum `luminosity` value of `Lamp:001` that occurred between from `2018-06-27T09:00:00` to `2018-06-30T23:59:59`.
+This example shows maximum `luminosity` value of `Lamp:001` that occurred
+between from `2018-06-27T09:00:00` to `2018-06-30T23:59:59`.
 
 #### :nine: Request:
 
 ```console
 curl -X GET \
-  'http://0.0.0.0:8668/v2/entities/Lamp:001/attrs/luminosity?aggrMethod=max&fromDate=2018-06-27T09:00:00&toDate=2018-06-30T23:59:59' \
+  'http://localhost:8668/v2/entities/Lamp:001/attrs/luminosity?aggrMethod=max&fromDate=2018-06-27T09:00:00&toDate=2018-06-30T23:59:59' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
@@ -778,7 +755,7 @@ curl -X GET \
 
 #### Response:
 
-```console
+```json
 {
     "data": {
         "attrName": "luminosity",
@@ -791,11 +768,37 @@ curl -X GET \
 }
 ```
 
-### Checking Data persistence with CrateDB API
+## Time Series Data Queries (CrateDB API)
 
-Another way to see if data are being persisted is to check if a
-`table_schema` has been created. This can be done by making a request
-to the **CrateDB** HTTP endpoint as shown:
+**CrateDB** offers an
+[HTTP Endpoint](https://crate.io/docs/crate/reference/en/latest/interfaces/http.html)
+that can be used to submit SQL queries. The endpoint is accessible under
+`<servername:port>/_sql`.
+
+SQL statements are sent as the body of POST requests in JSON format, where the
+SQL statement is the value of the `stmt` attribute.
+
+> When to query **CrateDB** and when **QuantumLeap**?. As a rule of thumb,
+> prefer working always with **QuantumLeap** for the following reasons:
+>
+> -   Your experience will be closer to FIWARE NGSI APIs like Orion's.
+> -   Your application will not be tied to CrateDB's specifics nor QuantumLeap's
+>     implementation details, which could change and break your app.
+> -   QuantumLeap can be easily extended to other backends and your app will get
+>     compatibility for free.
+> -   If your deployment is distributed, you won't need to expose the ports of
+>     your database to the outside.
+
+If your are sure your query is not supported by **QuantumLeap**, you may have to
+end up querying **CrateDB**, however, please open an issue in
+[QuantumLeap's repo](https://github.com/smartsdk/ngsi-timeseries-api/issues) so
+the team is aware.
+
+### CrateDB API - Checking Data persistence
+
+Another way to see if data are being persisted is to check if a `table_schema`
+has been created. This can be done by making a request to the **CrateDB** HTTP
+endpoint as shown:
 
 #### :one::zero: Request:
 
@@ -823,10 +826,10 @@ curl -iX POST \
 }
 ```
 
-Schema names are formed with the `mt` prefix followed by `fiware-service`
-header in lower case. The IoT Agent is forwarding measurements from the dummy
-IoT devices, with the `FIWARE-Service` header `openiot`. These are being
-persisted under the `mtopeniot` schema.
+Schema names are formed with the `mt` prefix followed by `fiware-service` header
+in lower case. The IoT Agent is forwarding measurements from the dummy IoT
+devices, with the `FIWARE-Service` header `openiot`. These are being persisted
+under the `mtopeniot` schema.
 
 If the `mtopeniot` does not exist, then the subscription to **QuantumLeap** has
 not been set up correctly. Check that the subscription exists, and has been
@@ -859,7 +862,7 @@ curl -X POST \
 The response shows that both **Motion Sensor** data and **Smart Lamp** data are
 being persisted in the database.
 
-### List the first N Sampled Values using CrateDB API
+### CrateDB API - List the first N Sampled Values
 
 The SQL statement uses `ORDER BY` and `LIMIT` clauses to sort the data. More
 details can be found under within the **CrateDB**
@@ -895,7 +898,7 @@ curl -iX POST \
 }
 ```
 
-### List N Sampled Values at an Offset using CrateDB API
+### CrateDB API - List N Sampled Values at an Offset
 
 The SQL statement uses an `OFFSET` clause to retrieve the required rows. More
 details can be found under within the **CrateDB**
@@ -931,7 +934,7 @@ curl -iX POST \
 }
 ```
 
-### List the latest N Sampled Values using CrateDB API
+### CrateDB API - List the latest N Sampled Values
 
 The SQL statement uses an `ORDER BY ... DESC` clause combined with a `LIMIT`
 clause to retrieve the last N rows. More details can be found under within the
@@ -968,7 +971,7 @@ curl -iX POST \
 }
 ```
 
-### List the Sum of values grouped by a time period using CrateDB API
+### CrateDB API - List the Sum of values grouped by a time period
 
 The SQL statement uses a `SUM` function and `GROUP BY` clause to retrieve the
 relevant data. **CrateDB** offers a range of
@@ -1001,7 +1004,7 @@ curl -iX POST \
 }
 ```
 
-### List the Minimum Values grouped by a Time Period using CrateDB API
+### CrateDB API - List the Minimum Values grouped by a Time Period
 
 The SQL statement uses a `MIN` function and `GROUP BY` clause to retrieve the
 relevant data. **CrateDB** offers a range of
@@ -1034,9 +1037,10 @@ curl -iX POST \
 }
 ```
 
-### List the Maximum Value over a Time Period using CrateDB API
+### CrateDB API - List the Maximum Value over a Time Period
 
-The SQL statement uses a `MAX` function and a `WHERE` clause to retrieve the relevant data. **CrateDB** offers a range of
+The SQL statement uses a `MAX` function and a `WHERE` clause to retrieve the
+relevant data. **CrateDB** offers a range of
 [Aggregate Functions](https://crate.io/docs/crate/reference/en/latest/general/dql/selects.html#data-aggregation)
 to aggregate data in different ways.
 
@@ -1054,9 +1058,7 @@ curl -iX POST \
 ```json
 {
     "cols": ["max"],
-    "rows": [
-        [1753]
-    ],
+    "rows": [[1753]],
     "rowcount": 1,
     "duration": 26.7215
 }
@@ -1137,8 +1139,9 @@ third-party graphing tool. The result is shown here:
 ## Displaying CrateDB data as a Grafana Dashboard
 
 **CrateDB** has been chosen as the time-series data sink for QuantumLeap,
-because, among [many other benefits](https://quantumleap.readthedocs.io/en/latest/),
-it integrates seamlessly with the [Grafana](https://grafana.com/) time series
+because, among
+[many other benefits](https://quantumleap.readthedocs.io/en/latest/), it
+integrates seamlessly with the [Grafana](https://grafana.com/) time series
 analytics tool. Grafana can be used to display the aggregated sensor data - a
 full tutorial on building dashboards can be found
 [here](https://www.youtube.com/watch?v=sKNZMtoSHN4). The simpified instructions
