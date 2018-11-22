@@ -186,12 +186,15 @@ Therefore the overall architecture will consist of the following elements:
     -   Used as a data sink to hold time-based historical context data
     -   offers an HTTP endpoint to interpret time-based data queries
 
--   A **Context Provider**: - A webserver acting as set of
-    [dummy IoT devices](https://github.com/Fiware/tutorials.IoT-Sensors) using
-    the
-    [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
-    protocol running over HTTP. - Note the **Stock Management Frontend** and
-    **Context Provider NGSI** proxy are not used in this tutorial.
+-   A **Context Provider**:
+
+    -   A webserver acting as set of
+        [dummy IoT devices](https://github.com/Fiware/tutorials.IoT-Sensors) using
+        the
+        [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
+        protocol running over HTTP. 
+    -   Note the **Stock Management Frontend** and
+        **Context Provider NGSI** proxy are not used in this tutorial.
 
 Since all interactions between the elements are initiated by HTTP requests, the
 entities can be containerized and run from exposed ports.
@@ -217,7 +220,7 @@ allows to different components isolated into their respective environments.
 
 **Docker Compose** is a tool for defining and running multi-container Docker
 applications. A series of
-[YAML files](https://raw.githubusercontent.com/Fiware/tutorials.Historic-Context/master/cygnus)
+[YAML files](https://raw.githubusercontent.com/Fiware/tutorials.Time-Series-Data/master/docker-compose.yml)
 are used to configure the required services for the application. This means all
 container services can be brought up in a single command. Docker Compose is
 installed by default as part of Docker for Windows and Docker for Mac, however
