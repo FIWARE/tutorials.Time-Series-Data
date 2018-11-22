@@ -190,15 +190,12 @@ FIWARE コンポーネントを使用します。
         ます
     -   時間ベースのデータクエリを解釈する HTTP エンドポイントを提供します
 
--   **コンテキストプロバイダ** :
-
-    -   HTTP 上で動作する
-        [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
-        プロトコルを使用して
-        、[ダミー IoT デバイス](https://github.com/Fiware/tutorials.IoT-Sensors)の
-        セットとして機能する Web サーバです
-    -   このチュートリアルでは、**コンテキスト・プロバイダの NGSI proxy** は使用
-        しません
+-   **コンテキストプロバイダ** : - HTTP 上で動作する
+    [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
+    プロトコルを使用して、
+    [ダミー IoT デバイス](https://github.com/Fiware/tutorials.IoT-Sensors)の
+    セットとして機能する Web サーバです。 -  このチュートリアルでは、
+    **コンテキスト・プロバイダの NGSI proxy** は使用しません
 
 要素間のすべての対話は HTTP リクエストによって開始されるため、エンティティはコン
 テナ化され、公開されたポートから実行されます。
