@@ -217,7 +217,7 @@ allows to different components isolated into their respective environments.
 
 **Docker Compose** is a tool for defining and running multi-container Docker
 applications. A series of
-[YAML files](https://raw.githubusercontent.com/Fiware/tutorials.Historic-Context/master/cygnus)
+[YAML files](https://raw.githubusercontent.com/Fiware/tutorials.Time-Series-Data/master/docker-compose.yml)
 are used to configure the required services for the application. This means all
 container services can be brought up in a single command. Docker Compose is
 installed by default as part of Docker for Windows and Docker for Mac, however
