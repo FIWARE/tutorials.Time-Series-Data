@@ -55,7 +55,7 @@ services:
 
 
   quantumleap:
-    image: smartsdk/quantumleap:0.4
+    image: smartsdk/quantumleap:0.4.1
     hostname: quantumleap
     container_name: fiware-quantumleap
     ports:
