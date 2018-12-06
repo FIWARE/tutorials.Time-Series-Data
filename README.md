@@ -570,11 +570,7 @@ curl -X GET \
             "2018-10-29T14:27:28",
             "2018-10-29T14:27:29"
         ],
-        "values": [
-            2000,
-            1991,
-            1998
-        ]
+        "values": [2000, 1991, 1998]
     }
 }
 ```
@@ -606,11 +602,7 @@ curl -X GET \
             "2018-10-29T14:23:54.812000",
             "2018-10-29T14:24:00.849000"
         ],
-        "values": [
-            0,
-            1,
-            0
-        ]
+        "values": [0, 1, 0]
     }
 }
 ```
@@ -641,11 +633,7 @@ curl -X GET \
             "2018-10-29T15:03:46.118000",
             "2018-10-29T15:03:47.111000"
         ],
-        "values": [
-            1,
-            0,
-            1
-        ]
+        "values": [1, 0, 1]
     }
 }
 ```
@@ -685,11 +673,7 @@ curl -X GET \
             "2018-10-29T15:04:00.000000",
             "2018-10-29T15:05:00.000000"
         ],
-        "values": [
-            21,
-            10,
-            11
-        ]
+        "values": [21, 10, 11]
     }
 }
 ```
@@ -729,11 +713,7 @@ curl -X GET \
             "2018-10-29T15:04:00.000000",
             "2018-10-29T15:05:00.000000"
         ],
-        "values": [
-            1720,
-            1878,
-            1443
-        ]
+        "values": [1720, 1878, 1443]
     }
 }
 ```
@@ -761,9 +741,7 @@ curl -X GET \
         "attrName": "luminosity",
         "entityId": "Lamp:001",
         "index": [],
-        "values": [
-            1753
-        ]
+        "values": [1753]
     }
 }
 ```
@@ -791,8 +769,8 @@ SQL statement is the value of the `stmt` attribute.
 
 If your are sure your query is not supported by **QuantumLeap**, you may have to
 end up querying **CrateDB**, however, please open an issue in
-[QuantumLeap's GitHub repository](https://github.com/smartsdk/ngsi-timeseries-api/issues) so
-the team is aware.
+[QuantumLeap's GitHub repository](https://github.com/smartsdk/ngsi-timeseries-api/issues)
+so the team is aware.
 
 ### CrateDB API - Checking Data persistence
 
