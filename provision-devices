@@ -112,7 +112,8 @@ curl -X POST \
         {"object_id": "l", "name": "luminosity", "type":"Integer"}
        ],
        "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:001"}
+         {"name":"refStore", "type": "Relationship","value": "Store:001"},
+         {"name":"location", "type":"geo:point", "value":"52.5547,13.3986"}
     	]
     }
   ]
@@ -281,7 +282,8 @@ curl -X POST \
         {"object_id": "l", "name": "luminosity", "type":"Integer"}
        ],
        "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:002"}
+         {"name":"refStore", "type": "Relationship","value": "Store:002"},
+         {"name":"location", "type":"geo:point", "value":"52.5075,13.3903"}
     	]
     }
   ]
@@ -450,7 +452,8 @@ curl -X POST \
         {"object_id": "l", "name": "luminosity", "type":"Integer"}
        ],
        "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:003"}
+         {"name":"refStore", "type": "Relationship","value": "Store:003"},
+         {"name":"location", "type":"geo:point", "value":"52.5031,13.4447"}
     	]
     }
   ]
@@ -619,7 +622,8 @@ curl -X POST \
         {"object_id": "l", "name": "luminosity", "type":"Integer"}
        ],
        "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:004"}
+         {"name":"refStore", "type": "Relationship","value": "Store:004"},
+         {"name":"location", "type":"geo:point", "value":"52.5208,13.4094"}
     	]
     }
   ]

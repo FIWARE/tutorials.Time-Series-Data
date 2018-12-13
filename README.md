@@ -468,7 +468,7 @@ curl -iX POST \
       "url": "http://quantumleap:8668/v2/notify"
     },
     "attrs": [
-      "luminosity"
+      "luminosity", "location"
     ],
     "metadata": ["dateCreated", "dateModified"]
   },
@@ -743,6 +743,103 @@ curl -X GET \
         "index": [],
         "values": [1753]
     }
+}
+```
+
+### QuantumLeap API - List the latest N Sampled Values of Devices near a Point
+
+This example shows the latest four sampled `luminosity` values of lamps that
+are within a 5 km radius from `52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße
+65, Berlin, Germany). If you have turned on all your lamps, you should see
+data for `Lamp:001` and `Lamp:004`.
+
+#### :ten: Request:
+
+```console
+curl -X GET \
+  'http://localhost:8668/v2/types/Lamp/attrs/luminosity?lastN=4&georel=near;maxDistance:5000&geometry=point&coords=52.5547,13.3986' \
+  -H 'Accept: application/json' \
+  -H 'Fiware-Service: openiot' \
+  -H 'Fiware-ServicePath: /'
+```
+
+#### Response:
+
+```json
+{
+  "data": {
+    "attrName": "luminosity",
+    "entities": [
+      {
+        "entityId": "Lamp:001",
+        "index": [
+          "2018-12-13T16:35:58.284",
+          "2018-12-13T16:36:58.216"
+        ],
+        "values": [
+          999,
+          999
+        ]
+      },
+      {
+        "entityId": "Lamp:004",
+        "index": [
+          "2018-12-13T16:35:04.351",
+          "2018-12-13T16:36:04.282"
+        ],
+        "values": [
+          948,
+          948
+        ]
+      }
+    ],
+    "entityType": "Lamp"
+  }
+}
+```
+
+### QuantumLeap API - List the latest N Sampled Values of Devices in an Area
+
+This example shows the latest four sampled `luminosity` values of lamps that
+are inside a square of side 200 m centred at `52°33'16.9"N 13°23'55.0"E`
+(Bornholmer Straße 65, Berlin, Germany). Even if you have turned on all your
+lamps, you should only see data for `Lamp:001`.
+
+#### :eleven: Request:
+
+```console
+curl -X GET \
+  'http://localhost:8668/v2/types/Lamp/attrs/luminosity?lastN=4&georel=coveredBy&geometry=polygon&coords=52.5537,13.3996;52.5557,13.3996;52.5557,13.3976;52.5537,13.3976;52.5537,13.3996' \
+  -H 'Accept: application/json' \
+  -H 'Fiware-Service: openiot' \
+  -H 'Fiware-ServicePath: /'
+```
+
+#### Response:
+
+```json
+{
+  "data": {
+    "attrName": "luminosity",
+    "entities": [
+      {
+        "entityId": "Lamp:001",
+        "index": [
+          "2018-12-13T17:08:56.041",
+          "2018-12-13T17:09:55.976",
+          "2018-12-13T17:10:55.907",
+          "2018-12-13T17:11:55.833"
+        ],
+        "values": [
+          999,
+          999,
+          999,
+          999
+        ]
+      }
+    ],
+    "entityType": "Lamp"
+  }
 }
 ```
 
