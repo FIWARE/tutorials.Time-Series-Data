@@ -750,10 +750,16 @@ curl -X GET \
 
 This example shows the latest four sampled `luminosity` values of lamps that
 are within a 5 km radius from `52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße
-65, Berlin, Germany). If you have turned on all your lamps, you should see
-data for `Lamp:001` and `Lamp:004`.
+65, Berlin, Germany). If you have turned on all the lamps available on the
+device monitor page, you should be able to see data for `Lamp:001` and
+`Lamp:004`.
 
-#### :ten: Request:
+> :information_source: **Note:** Geographical queries are only available
+> starting from version `0.5` of QuantumLeap which implements the full
+> set of queries detailed in the Geographical Queries section of the
+> [NGSI v2 specification](http://fiware.github.io/specifications/ngsiv2/stable/).
+
+#### :one::zero: Request:
 
 ```console
 curl -X GET \
@@ -802,10 +808,16 @@ curl -X GET \
 
 This example shows the latest four sampled `luminosity` values of lamps that
 are inside a square of side 200 m centred at `52°33'16.9"N 13°23'55.0"E`
-(Bornholmer Straße 65, Berlin, Germany). Even if you have turned on all your
-lamps, you should only see data for `Lamp:001`.
+(Bornholmer Straße 65, Berlin, Germany). Even if you have turned on all the
+lamps available on the device monitor page, you should only see data for
+`Lamp:001`.
 
-#### :eleven: Request:
+> :information_source: **Note:** Geographical queries are only available
+> starting from version `0.5` of QuantumLeap which implements the full
+> set of queries detailed in the Geographical Queries section of the
+> [NGSI v2 specification](http://fiware.github.io/specifications/ngsiv2/stable/).
+
+#### :one::one: Request:
 
 ```console
 curl -X GET \
@@ -875,7 +887,7 @@ Another way to see if data are being persisted is to check if a `table_schema`
 has been created. This can be done by making a request to the **CrateDB** HTTP
 endpoint as shown:
 
-#### :one::zero: Request:
+#### :one::two: Request:
 
 ```console
 curl -iX POST \
@@ -914,7 +926,7 @@ configured to send data to the correct location.
 database based on the entity type. Table names are formed with the `et` prefix
 and the entity type name in lowercase.
 
-#### :one::one: Request:
+#### :one::three: Request:
 
 ```console
 curl -X POST \
@@ -943,7 +955,7 @@ The SQL statement uses `ORDER BY` and `LIMIT` clauses to sort the data. More
 details can be found under within the **CrateDB**
 [documentation](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)
 
-#### :one::two: Request:
+#### :one::four: Request:
 
 ```console
 curl -iX POST \
@@ -979,7 +991,7 @@ The SQL statement uses an `OFFSET` clause to retrieve the required rows. More
 details can be found under within the **CrateDB**
 [documentation](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html).
 
-#### :one::three: Request:
+#### :one::five: Request:
 
 ```console
 curl -iX POST \
@@ -1016,7 +1028,7 @@ clause to retrieve the last N rows. More details can be found under within the
 **CrateDB**
 [documentation](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html).
 
-#### :one::four: Request:
+#### :one::six: Request:
 
 ```console
 curl -iX POST \
@@ -1053,7 +1065,7 @@ relevant data. **CrateDB** offers a range of
 [Date-Time Functions](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)
 to truncate and convert the timestamps into data which can be grouped.
 
-#### :one::five: Request:
+#### :one::seven: Request:
 
 ```console
 curl -iX POST \
@@ -1086,7 +1098,7 @@ relevant data. **CrateDB** offers a range of
 [Date-Time Functions](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)
 to truncate and convert the timestamps into data which can be grouped.
 
-#### :one::six: Request:
+#### :one::eight: Request:
 
 ```console
 curl -iX POST \
@@ -1119,7 +1131,7 @@ relevant data. **CrateDB** offers a range of
 [Aggregate Functions](https://crate.io/docs/crate/reference/en/latest/general/dql/selects.html#data-aggregation)
 to aggregate data in different ways.
 
-#### :one::seven: Request:
+#### :one::nine: Request:
 
 ```console
 curl -iX POST \
