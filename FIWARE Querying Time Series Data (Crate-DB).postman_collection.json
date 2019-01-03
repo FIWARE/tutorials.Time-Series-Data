@@ -67,7 +67,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"description\": \"Notify Quantum Leap to sample Lamp changes every five seconds\",\n  \"subject\": {\n    \"entities\": [\n      {\n        \"idPattern\": \"Lamp.*\"\n      }\n    ],\n    \"condition\": {\n      \"attrs\": [\n        \"luminosity\"\n      ]\n    }\n  },\n  \"notification\": {\n    \"http\": {\n      \"url\": \"http://quantumleap:8668/v2/notify\"\n    },\n    \"attrs\": [\n      \"luminosity\"\n    ],\n    \"metadata\": [\"dateCreated\", \"dateModified\"]\n  },\n  \"throttling\": 5\n}"
+							"raw": "{\n  \"description\": \"Notify Quantum Leap to sample Lamp changes every five seconds\",\n  \"subject\": {\n    \"entities\": [\n      {\n        \"idPattern\": \"Lamp.*\"\n      }\n    ],\n    \"condition\": {\n      \"attrs\": [\n        \"luminosity\"\n      ]\n    }\n  },\n  \"notification\": {\n    \"http\": {\n      \"url\": \"http://quantumleap:8668/v2/notify\"\n    },\n    \"attrs\": [\n      \"luminosity\", \"location\"\n    ],\n    \"metadata\": [\"dateCreated\", \"dateModified\"]\n  },\n  \"throttling\": 5\n}"
 						},
 						"url": {
 							"raw": "http://{{orion}}/v2/subscriptions/",
@@ -484,6 +484,132 @@
 						"description": "This example shows maximum `luminosity` value of `Lamp:001` that occurred\nbetween from `2018-06-27T09:00:00` to `2018-06-30T23:59:59`.\n\nAlter the `fromDate` and `toDate` parameters to retrieve your current data"
 					},
 					"response": []
+				},
+				{
+					"name": "List the latest N Sampled Values of Devices near a Point",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Fiware-Service",
+								"type": "text",
+								"value": "openiot"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"type": "text",
+								"value": "/"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{quantumleap}}/v2/types/Lamp/attrs/luminosity?lastN=4&georel=near;maxDistance:5000&geometry=point&coords=52.5547,13.3986\n",
+							"protocol": "http",
+							"host": [
+								"{{quantumleap}}"
+							],
+							"path": [
+								"v2",
+								"types",
+								"Lamp",
+								"attrs",
+								"luminosity"
+							],
+							"query": [
+								{
+									"key": "lastN",
+									"value": "4"
+								},
+								{
+									"key": "georel",
+									"value": "near;maxDistance:5000"
+								},
+								{
+									"key": "geometry",
+									"value": "point"
+								},
+								{
+									"key": "coords",
+									"value": "52.5547,13.3986\n"
+								}
+							]
+						},
+						"description": "This example shows the latest four sampled `luminosity` values of lamps that\nare within a 5 km radius from `52°33'16.9\"N 13°23'55.0\"E` (Bornholmer Straße\n65, Berlin, Germany). If you have turned on all the lamps available on the\ndevice monitor page, you should be able to see data for `Lamp:001` and\n`Lamp:004`.\n\n> **Note:** Geographical queries are only available\n> starting from version `0.5` of QuantumLeap which implements the full\n> set of queries detailed in the Geographical Queries section of the\n> [NGSI v2 specification](http://fiware.github.io/specifications/ngsiv2/stable/)."
+					},
+					"response": []
+				},
+				{
+					"name": "List the latest N Sampled Values of Devices in an Area",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Fiware-Service",
+								"type": "text",
+								"value": "openiot"
+							},
+							{
+								"key": "Fiware-ServicePath",
+								"type": "text",
+								"value": "/"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{quantumleap}}/v2/types/Lamp/attrs/luminosity?lastN=4&georel=coveredBy&geometry=polygon&coords=52.5537,13.3996;52.5557,13.3996;52.5557,13.3976;52.5537,13.3976;52.5537,13.3996",
+							"protocol": "http",
+							"host": [
+								"{{quantumleap}}"
+							],
+							"path": [
+								"v2",
+								"types",
+								"Lamp",
+								"attrs",
+								"luminosity"
+							],
+							"query": [
+								{
+									"key": "lastN",
+									"value": "4"
+								},
+								{
+									"key": "georel",
+									"value": "coveredBy"
+								},
+								{
+									"key": "geometry",
+									"value": "polygon"
+								},
+								{
+									"key": "coords",
+									"value": "52.5537,13.3996;52.5557,13.3996;52.5557,13.3976;52.5537,13.3976;52.5537,13.3996"
+								}
+							]
+						},
+						"description": "This example shows the latest four sampled `luminosity` values of lamps that\nare inside a square of side 200 m centred at `52°33'16.9\"N 13°23'55.0\"E`\n(Bornholmer Straße 65, Berlin, Germany). Even if you have turned on all the\nlamps available on the device monitor page, you should only see data for\n`Lamp:001`.\n\n> **Note:** Geographical queries are only available\n> starting from version `0.5` of QuantumLeap which implements the full\n> set of queries detailed in the Geographical Queries section of the\n> [NGSI v2 specification](http://fiware.github.io/specifications/ngsiv2/stable/)."
+					},
+					"response": []
 				}
 			],
 			"description": "**CrateDB** offers an\n[HTTP Endpoint](https://crate.io/docs/crate/reference/en/latest/interfaces/http.html)\nthat can be used to submit SQL queries. The endpoint is accessible under\n`<servername:port>/_sql`.\n\nSQL statements are sent as the body of POST requests in JSON format, where the\nSQL statement is the value of the `stmt` attribute.\n\n> When to query **CrateDB** and when **QuantumLeap**?. As a rule of thumb,\n> prefer working always with **QuantumLeap** for the following reasons:\n>\n> -   Your experience will be closer to FIWARE NGSI APIs like Orion's.\n> -   Your application will not be tied to CrateDB's specifics nor QuantumLeap's\n>     implementation details, which could change and break your app.\n> -   QuantumLeap can be easily extended to other backends and your app will get\n>     compatibility for free.\n> -   If your deployment is distributed, you won't need to expose the ports of\n>     your database to the outside.\n\nIf your are sure your query is not supported by **QuantumLeap**, you may have to\nend up querying **CrateDB**, however, please open an issue in\n[QuantumLeap's repo](https://github.com/smartsdk/ngsi-timeseries-api/issues) so\nthe team is aware.\n",
@@ -815,19 +941,19 @@
 	],
 	"variable": [
 		{
-			"id": "8b93ca91-ce4f-4a33-b342-a9d398772ce3",
+			"id": "8b7ca6be-14ae-48d8-b186-bcbf33350d0b",
 			"key": "orion",
 			"value": "localhost:1026",
 			"type": "string"
 		},
 		{
-			"id": "ba15b36e-220a-48a6-9b51-1f1a2565d5a4",
+			"id": "c315870d-963d-44b3-a3d4-677adb7afbb0",
 			"key": "quantumleap",
 			"value": "localhost:8668",
 			"type": "string"
 		},
 		{
-			"id": "abee6884-b979-4c6e-acd7-bfea561e24f9",
+			"id": "4b72cac0-925b-4d6a-9c0b-12c6351eac01",
 			"key": "crate",
 			"value": "localhost:4200",
 			"type": "string"
