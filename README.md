@@ -50,6 +50,8 @@ available as
         -   [QuantumLeap API - List the Sum of values grouped by a time period](#quantumleap-api---list-the-sum-of-values-grouped-by-a-time-period)
         -   [QuantumLeap API - List the Minimum Values grouped by a Time Period](#quantumleap-api---list-the-minimum-values-grouped-by-a-time-period)
         -   [QuantumLeap API - List the Maximum Value over a Time Period](#quantumleap-api---list-the-maximum-value-over-a-time-period)
+        -   [QuantumLeap API - List the latest N Sampled Values of Devices near a Point](#quantumleap-api---list-the-latest-n-sampled-values-of-devices-near-a-point)
+        -   [QuantumLeap API - List the latest N Sampled Values of Devices in an Area](#quantumleap-api---list-the-latest-n-sampled-values-of-devices-in-an-area)
     -   [Time Series Data Queries (CrateDB API)](#time-series-data-queries-cratedb-api)
         -   [CrateDB API - Checking Data persistence](#cratedb-api---checking-data-persistence)
         -   [CrateDB API - List the first N Sampled Values](#cratedb-api---list-the-first-n-sampled-values)
