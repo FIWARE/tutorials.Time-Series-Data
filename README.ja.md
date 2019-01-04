@@ -49,7 +49,9 @@
         -   [QuantumLeap API - 期間別にグループ化された値の合計をリスト](#quantumleap-api---list-the-sum-of-values-grouped-by-a-time-period)
         -   [QuantumLeap API - 期間別にグループ化された最小値をリスト](#quantumleap-api---list-the-minimum-values-grouped-by-a-time-period)
         -   [QuantumLeap API - ある期間の最大値のリスト](#quantumleap-api---list-the-maximum-value-over-a-time-period)
-    -   [時系列データ・クエリ (CrateDB)](#time-series-data-queries-cratedb-api)
+        -   [QuantumLeap API - ポイント付近のデバイスの最新の N 個のサンプル値をリスト](#quantumleap-api---list-the-latest-n-sampled-values-of-devices-near-a-point)
+        -   [QuantumLeap API - エリア内のデバイスの最新の N 個のサンプル値をリスト](#quantumleap-api---list-the-latest-n-sampled-values-of-devices-in-an-area)
+    -   [時系列データ・クエリ (CrateDB API)](#time-series-data-queries-cratedb-api)
         -   [CrateDB API - データの永続性のチェック](#cratedb-api---checking-data-persistence)
         -   [CrateDB API - 最初の N個の サンプリング値のリスト](#cratedb-api---list-the-first-n-sampled-values)
         -   [CrateDB API - N 個のサンプリング値をオフセットでリスト](#cratedb-api---list-n-sampled-values-at-an-offset)
@@ -496,7 +498,7 @@ curl -iX POST \
       "url": "http://quantumleap:8668/v2/notify"
     },
     "attrs": [
-      "luminosity"
+      "luminosity", "location"
     ],
     "metadata": ["dateCreated", "dateModified"]
   },
@@ -604,11 +606,7 @@ curl -X GET \
             "2018-10-29T14:27:28",
             "2018-10-29T14:27:29"
         ],
-        "values": [
-            2000,
-            1991,
-            1998
-        ]
+        "values": [2000, 1991, 1998]
     }
 }
 ```
@@ -641,11 +639,7 @@ curl -X GET \
             "2018-10-29T14:23:54.812000",
             "2018-10-29T14:24:00.849000"
         ],
-        "values": [
-            0,
-            1,
-            0
-        ]
+        "values": [0, 1, 0]
     }
 }
 ```
@@ -678,11 +672,7 @@ curl -X GET \
             "2018-10-29T15:03:46.118000",
             "2018-10-29T15:03:47.111000"
         ],
-        "values": [
-            1,
-            0,
-            1
-        ]
+        "values": [1, 0, 1]
     }
 }
 ```
@@ -724,11 +714,7 @@ curl -X GET \
             "2018-10-29T15:04:00.000000",
             "2018-10-29T15:05:00.000000"
         ],
-        "values": [
-            21,
-            10,
-            11
-        ]
+        "values": [21, 10, 11]
     }
 }
 ```
@@ -770,11 +756,7 @@ curl -X GET \
             "2018-10-29T15:04:00.000000",
             "2018-10-29T15:05:00.000000"
         ],
-        "values": [
-            1720,
-            1878,
-            1443
-        ]
+        "values": [1720, 1878, 1443]
     }
 }
 ```
@@ -804,16 +786,126 @@ curl -X GET \
         "attrName": "luminosity",
         "entityId": "Lamp:001",
         "index": [],
-        "values": [
-            1753
-        ]
+        "values": [1753]
     }
 }
 ```
 
+<a name="quantumleap-api---list-the-latest-n-sampled-values-of-devices-near-a-point"></a>
+
+### QuantumLeap API - ポイント付近のデバイスの最新の N 個のサンプル値をリスト
+
+この例は、
+`52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, Berlin, Germany)
+から半径5km以内にある最新の４つのサンプリングされたランプの `luminosity`
+値を示しています。デバイス・モニタのページで利用可能なすべてのランプをつけると、
+`Lamp:001` と `Lamp:004` のデータを見ることができるはずです。
+
+> :information_source: **注:** 地理的クエリは、
+> [NGSI v2 仕様](http://fiware.github.io/specifications/ngsiv2/stable/)
+> の地理的クエリのセクションに詳述されている完全なクエリのセットを実装する、
+> QuantumLeap のバージョン `0.5` からのみ利用可能です。
+
+#### :one::zero: リクエスト :
+
+```console
+curl -X GET \
+  'http://localhost:8668/v2/types/Lamp/attrs/luminosity?lastN=4&georel=near;maxDistance:5000&geometry=point&coords=52.5547,13.3986' \
+  -H 'Accept: application/json' \
+  -H 'Fiware-Service: openiot' \
+  -H 'Fiware-ServicePath: /'
+```
+
+#### レスポンス :
+
+```json
+{
+  "data": {
+    "attrName": "luminosity",
+    "entities": [
+      {
+        "entityId": "Lamp:001",
+        "index": [
+          "2018-12-13T16:35:58.284",
+          "2018-12-13T16:36:58.216"
+        ],
+         "values": [
+          999,
+          999
+         ]
+      },
+      {
+        "entityId": "Lamp:004",
+        "index": [
+          "2018-12-13T16:35:04.351",
+          "2018-12-13T16:36:04.282"
+        ],
+        "values": [
+          948,
+          948
+        ]
+      }
+    ],
+    "entityType": "Lamp"
+  }
+}
+```
+
+<a name="quantumleap-api---list-the-latest-n-sampled-values-of-devices-in-an-area"></a>
+
+### QuantumLeap API - エリア内のデバイスの最新の N 個のサンプル値をリスト
+
+この例は、
+`52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, Berlin, Germany)
+を中心とする一辺 200 m の正方形の内側にあるランプの最新の4つのサンプリング
+された `luminosity` 値を示しています。デバイス・モニタのページで利用可能な
+すべてのランプをつけたとしても、`Lamp:001` のデータだけを見るべきです。
+
+> :information_source: **注:** 地理的クエリは、
+> [NGSI v2 仕様](http://fiware.github.io/specifications/ngsiv2/stable/)
+> の地理的クエリのセクションに詳述されている完全なクエリのセットを実装する、
+> QuantumLeap のバージョン `0.5` からのみ利用可能です。
+
+#### :one::one: リクエスト :
+
+```console
+curl -X GET \
+  'http://localhost:8668/v2/types/Lamp/attrs/luminosity?lastN=4&georel=coveredBy&geometry=polygon&coords=52.5537,13.3996;52.5557,13.3996;52.5557,13.3976;52.5537,13.3976;52.5537,13.3996' \
+  -H 'Accept: application/json' \
+  -H 'Fiware-Service: openiot' \
+  -H 'Fiware-ServicePath: /'
+```
+
+#### レスポンス :
+
+```json
+{
+  "data": {
+    "attrName": "luminosity",
+    "entities": [
+      {
+        "entityId": "Lamp:001",
+        "index": [
+          "2018-12-13T17:08:56.041",
+          "2018-12-13T17:09:55.976",
+          "2018-12-13T17:10:55.907",
+          "2018-12-13T17:11:55.833"
+        ],
+        "values": [
+          999,
+          999,
+          999,
+          999
+        ]
+      }
+    ],
+    "entityType": "Lamp"
+  }
+}
+```
 <a name="time-series-data-queries-cratedb"></a>
 
-## 時系列データ・クエリ (CrateDB)
+## 時系列データ・クエリ (CrateDB API)
 
 **CrateDB** は、SQL クエリを送信するために使用できる
 [HTTP エンドポイント](https://crate.io/docs/crate/reference/en/latest/interfaces/http.html)を
@@ -847,7 +939,7 @@ SQL ステートメントは POST リクエストの本体として JSON 形式�
 作成されたことをチェックすることです。 次のように、**CrateDB**
 HTTP エンドポイントにリクエストすることでこれを行うことができます：
 
-#### :one::zero: リクエスト :
+#### :one::two: リクエスト :
 
 ```console
 curl -iX POST \
@@ -886,7 +978,7 @@ curl -iX POST \
 ーブルにデータを永続化します。テーブル名は、`et` プレフィックスとエンティティ型
 の名前を小文字にして形成されます。
 
-#### :one::one: リクエスト :
+#### :one::three: リクエスト :
 
 ```console
 curl -X POST \
@@ -918,7 +1010,7 @@ SQL 文は `ORDER BY` と `LIMIT` を使用してデータをソートします�
 の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を
 参照してください。
 
-#### :one::two: リクエスト :
+#### :one::four: リクエスト :
 
 ```console
 curl -iX POST \
@@ -955,7 +1047,7 @@ SQL 文は、`OFFSET` 句を使用して必要な行を取り出します。詳�
 の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を
 参照してください。
 
-#### :one::three: リクエスト :
+#### :one::five: リクエスト :
 
 ```console
 curl -iX POST \
@@ -993,7 +1085,7 @@ SQL 文は、最後の N 行を取り出すために `LIMIT` 節と結合され�
 、**CrateDB**の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を
 参照してください。
 
-#### :one::four: リクエスト :
+#### :one::six: リクエスト :
 
 ```console
 curl -iX POST \
@@ -1033,7 +1125,7 @@ SQL 文は、`SUM` 関数と `GROUP BY` 句を使用して関連するデータ�
 の[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を
 提供しています。
 
-#### :one::five: リクエスト :
+#### :one::seven: リクエスト :
 
 ```console
 curl -iX POST \
@@ -1068,7 +1160,7 @@ SQL 文は、`MIN` 関数と `GROUP BY` 句を使用して関連するデータ�
 [日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を
 提供しています。
 
-#### :one::six: リクエスト :
+#### :one::eight: リクエスト :
 
 ```console
 curl -iX POST \
@@ -1102,7 +1194,7 @@ SQL 文は、`MAX`関数と `WHERE` 句を使用して関連するデータを�
 [アグリゲーション関数](https://crate.io/docs/crate/reference/en/latest/general/dql/selects.html#data-aggregation)
 を提供しています。
 
-#### :one::seven: リクエスト :
+#### :one::nine: リクエスト :
 
 ```console
 curl -iX POST \
