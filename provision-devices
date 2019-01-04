@@ -13,6 +13,14 @@ curl () {
 }
 
 
+echo -e "\n\n⏳ Waiting for IoT Agent to be available\n"
+while [ `curl -s -o /dev/null -w %{http_code} 'http://iot-agent:4041/iot/about/'` -eq 000 ]
+do 
+  echo -e "IoT Agent Server HTTP state: " `curl -s -o /dev/null -w %{http_code} 'http://iot-agent:4041/iot/about'` " (waiting for 200)"
+  sleep 1
+done
+
+
 #
 # Create a service group for all UltraLight IoT devices
 #
