@@ -8,12 +8,8 @@
 set -e
 
 loadData () {
-	printf "Loading context data "
 	./import-data
-	echo -e " \033[1;32mdone\033[0m"
-	printf "Provisioning IoT devices "
 	./provision-devices
-	echo -e " \033[1;32mdone\033[0m"
 	echo ""
 }
 
