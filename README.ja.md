@@ -24,7 +24,10 @@
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/d24facc3c430bb5d5aaf)
 
-# 内容
+## 内容
+
+<details>
+<summary>詳細 <b>(クリックして拡大)</b></summary>
 
 -   [時系列データの永続化とクエリ (CrateDB)](#persisting-and-querying-time-series-data-cratedb)
     -   [時系列データの解析](#analyzing-time-series-data)
@@ -65,6 +68,8 @@
         -   [データソースの設定](#configuring-a-data-source)
         -   [ダッシュボードの設定](#configuring-a-dashboard)
 -   [次のステップ](#next-steps)
+
+</details>
 
 <a name="persisting-and-querying-time-series-data-cratedb"></a>
 

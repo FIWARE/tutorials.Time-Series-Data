@@ -25,7 +25,10 @@ available as
 
 -   このチュートリアルは[日本語](README.ja.md)でもご覧いただけます。
 
-# Contents
+## Contents
+
+<details>
+<summary><strong>Details</strong></summary>
 
 -   [Persisting and Querying Time Series Data (CrateDB)](#persisting-and-querying-time-series-data-cratedb)
     -   [Analyzing time series data](#analyzing-time-series-data)
@@ -66,6 +69,8 @@ available as
         -   [Configuring a Data Source](#configuring-a-data-source)
         -   [Configuring a Dashboard](#configuring-a-dashboard)
 -   [Next Steps](#next-steps)
+
+</details>
 
 # Persisting and Querying Time Series Data (CrateDB)
 
