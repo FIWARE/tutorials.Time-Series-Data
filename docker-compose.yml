@@ -5,14 +5,13 @@ services:
     hostname: mongodb
     container_name: db-mongo
     ports:
-        - "27017:27017"
+      - "27017:27017"
     networks:
-        - default
+      - default
     command: --bind_ip_all --smallfiles
     volumes:
       - mongodb:/data
 
-  
   cratedb:
     image: crate:2.3
     hostname: cratedb
@@ -37,24 +36,22 @@ services:
       - GF_INSTALL_PLUGINS=crate-datasource,grafana-clock-panel,grafana-worldmap-panel
     volumes:
       - grafana:/var/lib/grafana
-   
 
   orion:
     image: fiware/orion:2.1.0
     hostname: orion
     container_name: fiware-orion
     depends_on:
-        - mongodb
+      - mongodb
     networks:
-        - default
+      - default
     expose:
-        - "1026"
+      - "1026"
     ports:
-        - "1026:1026"
+      - "1026:1026"
     command: -dbhost mongodb -logLevel DEBUG
     healthcheck:
       test: curl --fail -s http://localhost:1026/version || exit 1
-
 
   quantumleap:
     image: smartsdk/quantumleap:0.5
@@ -67,30 +64,29 @@ services:
     environment:
       - CRATE_HOST=cratedb
 
-
   iot-agent:
     image: fiware/iotagent-ul:1.8.0
     hostname: iot-agent
     container_name: fiware-iot-agent
     depends_on:
-        - mongodb
+      - mongodb
     networks:
-        - default
+      - default
     ports:
-        - "4041:4041"
-        - "7896:7896"
+      - "4041:4041"
+      - "7896:7896"
     environment:
-        - "IOTA_CB_HOST=orion" # name of the context broker to update context
-        - "IOTA_CB_PORT=1026" # port the context broker listens on to update context
-        - "IOTA_NORTH_PORT=4041"
-        - "IOTA_REGISTRY_TYPE=mongodb" #Whether to hold IoT device info in memory or in a database
-        - "IOTA_LOG_LEVEL=DEBUG" #The log level of the IoT Agent
-        - "IOTA_TIMESTAMP=true"
-        - "IOTA_MONGO_HOST=mongodb" # The host name of ongoDB
-        - "IOTA_MONGO_PORT=27017" # The port mongoDB is listening on
-        - "IOTA_MONGO_DB=iotagentul" # The name of the database used in mongoDB
-        - "IOTA_HTTP_PORT=7896" # The port used for device traffic over HTTP
-        - "IOTA_PROVIDER_URL=http://iot-agent:4041"
+      - "IOTA_CB_HOST=orion" # name of the context broker to update context
+      - "IOTA_CB_PORT=1026" # port the context broker listens on to update context
+      - "IOTA_NORTH_PORT=4041"
+      - "IOTA_REGISTRY_TYPE=mongodb" #Whether to hold IoT device info in memory or in a database
+      - "IOTA_LOG_LEVEL=DEBUG" #The log level of the IoT Agent
+      - "IOTA_TIMESTAMP=true"
+      - "IOTA_MONGO_HOST=mongodb" # The host name of ongoDB
+      - "IOTA_MONGO_PORT=27017" # The port mongoDB is listening on
+      - "IOTA_MONGO_DB=iotagentul" # The name of the database used in mongoDB
+      - "IOTA_HTTP_PORT=7896" # The port used for device traffic over HTTP
+      - "IOTA_PROVIDER_URL=http://iot-agent:4041"
     healthcheck:
       test: curl --fail -s http://localhost:4041/iot/about || exit 1
 
@@ -99,34 +95,34 @@ services:
     hostname: tutorial
     container_name: fiware-tutorial
     depends_on:
-        - orion
-        - iot-agent
-        - quantumleap
+      - orion
+      - iot-agent
+      - quantumleap
     networks:
       default:
         aliases:
           - iot-sensors
           - context-provider
     expose:
-        - "3000"
-        - "3001"
+      - "3000"
+      - "3001"
     ports:
-        - "3000:3000"
-        - "3001:3001"
+      - "3000:3000"
+      - "3001:3001"
     environment:
-        - "DEBUG=tutorial:*"
-        - "WEB_APP_PORT=3000" # Port used by the content provider proxy and web-app for viewing data
-        - "IOTA_HTTP_HOST=iot-agent"
-        - "IOTA_HTTP_PORT=7896"
-        - "DUMMY_DEVICES_PORT=3001" # Port used by the dummy IOT devices to receive commands
-        - "DUMMY_DEVICES_TRANSPORT=HTTP" # Default transport used by dummy Io devices
-        - "DUMMY_DEVICES_API_KEY=4jggokgpepnvsb2uv4s40d59ov"
-        - "CONTEXT_BROKER=http://orion:1026/v2" # URL of the context broker to update context
-        - "NGSI_LD_PREFIX="
-        - "CRATE_DB_SERVICE_URL=http://cratedb:4200/_sql"
-        - "OPENWEATHERMAP_KEY_ID=<ADD_YOUR_KEY_ID>"
-        - "TWITTER_CONSUMER_KEY=<ADD_YOUR_CONSUMER_KEY>"
-        - "TWITTER_CONSUMER_SECRET=<ADD_YOUR_CONSUMER_SECRET>"
+      - "DEBUG=tutorial:*"
+      - "WEB_APP_PORT=3000" # Port used by the content provider proxy and web-app for viewing data
+      - "IOTA_HTTP_HOST=iot-agent"
+      - "IOTA_HTTP_PORT=7896"
+      - "DUMMY_DEVICES_PORT=3001" # Port used by the dummy IOT devices to receive commands
+      - "DUMMY_DEVICES_TRANSPORT=HTTP" # Default transport used by dummy Io devices
+      - "DUMMY_DEVICES_API_KEY=4jggokgpepnvsb2uv4s40d59ov"
+      - "CONTEXT_BROKER=http://orion:1026/v2" # URL of the context broker to update context
+      - "NGSI_LD_PREFIX="
+      - "CRATE_DB_SERVICE_URL=http://cratedb:4200/_sql"
+      - "OPENWEATHERMAP_KEY_ID=<ADD_YOUR_KEY_ID>"
+      - "TWITTER_CONSUMER_KEY=<ADD_YOUR_CONSUMER_KEY>"
+      - "TWITTER_CONSUMER_SECRET=<ADD_YOUR_CONSUMER_SECRET>"
     healthcheck:
       test: curl --fail -s http://localhost:3000/version || exit 1
 
@@ -136,8 +132,7 @@ networks:
       config:
         - subnet: 172.18.1.0/24
 
-
 volumes:
-  mongodb:
-  cratedb:
-  grafana:
+  ? mongodb
+  ? cratedb
+  ? grafana
