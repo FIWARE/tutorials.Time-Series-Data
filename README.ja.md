@@ -7,6 +7,8 @@
 <br/>
 [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
 
+<!-- prettier-ignore -->
+
 このチュートリアルでは、コンテキスト・データを **CrateDB** データベースに保存す
 るために使用される、Generic Enabler である
 [FIWARE QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) について紹
