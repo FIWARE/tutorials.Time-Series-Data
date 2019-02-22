@@ -81,7 +81,7 @@
 >
 > — Emily Dickinson
 
-[以前のチュートリアル](https://github.com/Fiware/tutorials.Historic-Context)では
+[以前のチュートリアル](https://github.com/Fiware/tutorials.Historic-Context-Flume)では
 、履歴コンテキスト・データを MySQL や PostgreSQL などのデータベースに永続化する
 方法を示しました。さらに
 、[Short Term Historic](https://github.com/Fiware/tutorials.Short-Term-History)
