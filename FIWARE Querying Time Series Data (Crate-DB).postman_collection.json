@@ -148,6 +148,29 @@
 			"name": "Time Series Data Queries (QuantumLeap API)",
 			"item": [
 				{
+					"name": "QuantumLeap - Obtain version information",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{quantumleap}}/v2/version",
+							"protocol": "http",
+							"host": [
+								"{{quantumleap}}"
+							],
+							"path": [
+								"v2",
+								"version"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "List the first N Sampled Values",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -941,19 +964,19 @@
 	],
 	"variable": [
 		{
-			"id": "6f6c0b75-2447-4ef0-909c-b1e5dc0f0448",
+			"id": "b3f6ac10-f8b4-420f-9081-465b9ea1dd95",
 			"key": "orion",
 			"value": "localhost:1026",
 			"type": "string"
 		},
 		{
-			"id": "3df120bd-4871-458b-881f-d560a3417194",
+			"id": "ab551cf7-381c-423a-ae57-502ea832e3ac",
 			"key": "quantumleap",
 			"value": "localhost:8668",
 			"type": "string"
 		},
 		{
-			"id": "b1ab4dff-49fe-4e7e-8352-fd0316b0734b",
+			"id": "451f63fc-7768-451b-a7ca-81bc7ca3e4c0",
 			"key": "crate",
 			"value": "localhost:4200",
 			"type": "string"

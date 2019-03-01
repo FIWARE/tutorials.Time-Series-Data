@@ -54,7 +54,7 @@ services:
       test: curl --fail -s http://localhost:1026/version || exit 1
 
   quantumleap:
-    image: smartsdk/quantumleap:0.5
+    image: smartsdk/quantumleap:0.6
     hostname: quantumleap
     container_name: fiware-quantumleap
     ports:
@@ -63,6 +63,8 @@ services:
       - cratedb
     environment:
       - CRATE_HOST=cratedb
+    healthcheck:
+      test: curl --fail -s http://localhost:8668/v2/version || exit 1
 
   iot-agent:
     image: fiware/iotagent-ul:1.8.0
