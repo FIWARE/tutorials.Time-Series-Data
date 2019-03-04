@@ -271,7 +271,7 @@ Docker バージョン 18.03 以降と Docker Compose 1.21 以上を使用して
 い :
 
 ```console
-git clone git@github.com:Fiware/tutorials.Time-Series-Data.git
+git clone git@github.com:FIWARE/tutorials.Time-Series-Data.git
 cd tutorials.Time-Series-Data
 
 ./services create
