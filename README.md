@@ -8,7 +8,7 @@
 
 This tutorial is an introduction to [FIWARE QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) - a generic
 enabler which is used to persist context data into a **CrateDB** database. The tutorial activates the IoT sensors
-connected in the [previous tutorial](https://github.com/Fiware/tutorials.IoT-Agent) and persists measurements from those
+connected in the [previous tutorial](https://github.com/FIWARE/tutorials.IoT-Agent) and persists measurements from those
 sensors into the database. To retrieve time-based aggregations of such data, users can either use **QuantumLeap** query
 API or connect directly to the **CrateDB** HTTP endpoint. Results are visualised on a graph or via the **Grafana** time
 series analytics tool.
@@ -74,9 +74,9 @@ The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also a
 > — Emily Dickinson
 
 Previous tutorials have shown how to persist historic context data into a range of databases such as **MySQL** and
-**PostgreSQL**. using [Apache Flume](https://github.com/Fiware/tutorials.Historic-Context) and
-[Apache NIFI](https://github.com/Fiware/tutorials.Historic-Context) Furthermore, the
-[Short Term Historic](https://github.com/Fiware/tutorials.Short-Term-History) tutorial has introduced the
+**PostgreSQL**. using [Apache Flume](https://github.com/FIWARE/tutorials.Historic-Context) and
+[Apache NIFI](https://github.com/FIWARE/tutorials.Historic-Context) Furthermore, the
+[Short Term Historic](https://github.com/FIWARE/tutorials.Short-Term-History) tutorial has introduced the
 [STH-Comet](https://fiware-sth-comet.readthedocs.io/) generic enabler for persisting and querying historic context data
 using a **MongoDB** database.
 
@@ -124,7 +124,7 @@ the Apache License 2.0. More information can be found at `https://grafana.com/`.
 
 For the purpose of this tutorial, a series of dummy IoT devices have been created, which will be attached to the context
 broker. Details of the architecture and protocol used can be found in the
-[IoT Sensors tutorial](https://github.com/Fiware/tutorials.IoT-Sensors). The state of each device can be seen on the
+[IoT Sensors tutorial](https://github.com/FIWARE/tutorials.IoT-Sensors). The state of each device can be seen on the
 UltraLight device monitor web page found at: `http://localhost:3000/device/monitor`
 
 ![FIWARE Monitor](https://fiware.github.io/tutorials.Time-Series-Data/img/device-monitor.png)
@@ -139,7 +139,7 @@ web page found at: `http://localhost:3000/device/history/urn:ngsi-ld:Store:001`
 # Architecture
 
 This application builds on the components and dummy IoT devices created in
-[previous tutorials](https://github.com/Fiware/tutorials.IoT-Agent/). It will use three FIWARE components: the
+[previous tutorials](https://github.com/FIWARE/tutorials.IoT-Agent/). It will use three FIWARE components: the
 [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/), the
 [IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/), and
 [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) .
@@ -170,7 +170,7 @@ Therefore the overall architecture will consist of the following elements:
     -   offers an HTTP endpoint to interpret time-based data queries
 
 -   A **Context Provider**: - A webserver acting as set of
-    [dummy IoT devices](https://github.com/Fiware/tutorials.IoT-Sensors) using the
+    [dummy IoT devices](https://github.com/FIWARE/tutorials.IoT-Sensors) using the
     [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
     protocol running over HTTP. - Note the **Stock Management Frontend** and **Context Provider NGSI** proxy are not
     used in this tutorial.
@@ -227,7 +227,7 @@ cd tutorials.Time-Series-Data
 ```
 
 Thereafter, all services can be initialized from the command-line by running the
-[services](https://github.com/Fiware/tutorials.Time-Series-Data/blob/master/services) Bash script provided within the
+[services](https://github.com/FIWARE/tutorials.Time-Series-Data/blob/master/services) Bash script provided within the
 repository:
 
 ```console
@@ -1024,12 +1024,12 @@ curl -iX POST \
 Once the JSON response for a specified time series has been retrieved, displaying the raw data is of little use to an
 end user. It must be manipulated to be displayed in a bar chart, line graph or table listing. This is not within the
 domain of **QuantumLeap** as it not a graphical tool, but can be delegated to a mashup or dashboard component such as
-[Wirecloud](https://github.com/Fiware/catalogue/blob/master/processing/README.md#Wirecloud) or
-[Knowage](https://github.com/Fiware/catalogue/blob/master/processing/README.md#Knowage)
+[Wirecloud](https://github.com/FIWARE/catalogue/blob/master/processing/README.md#Wirecloud) or
+[Knowage](https://github.com/FIWARE/catalogue/blob/master/processing/README.md#Knowage)
 
 It can also be retrieved and displayed using a third-party graphing tool appropriate to your coding environment - for
 example [chartjs](http://www.chartjs.org/). An example of this can be found within the `history` controller in the
-[Git Repository](https://github.com/Fiware/tutorials.Step-by-Step/blob/master/context-provider/controllers/history.js)
+[Git Repository](https://github.com/FIWARE/tutorials.Step-by-Step/blob/master/context-provider/controllers/history.js)
 
 The basic processing consists of two-step - retrieval and attribute mapping, sample code can be seen below:
 

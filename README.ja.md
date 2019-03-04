@@ -13,7 +13,7 @@
 るために使用される、Generic Enabler である
 [FIWARE QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) について紹
 介します。このチュートリアルでは
-、[以前のチュートリアル](https://github.com/Fiware/tutorials.IoT-Agent)で接続し
+、[以前のチュートリアル](https://github.com/FIWARE/tutorials.IoT-Agent)で接続し
 た IoT センサを有効にし、それらのセンサからの測定値をデータベースに保存します。
 このようなデータの時間ベースの集計を取得するには、**QuantumLeap** クエリAPIを
 使用するか、**CrateDB** HTTP エンドポイントに直接接続します。
@@ -81,10 +81,10 @@
 >
 > — Emily Dickinson
 
-[以前のチュートリアル](https://github.com/Fiware/tutorials.Historic-Context-Flume)では
+[以前のチュートリアル](https://github.com/FIWARE/tutorials.Historic-Context-Flume)では
 、履歴コンテキスト・データを MySQL や PostgreSQL などのデータベースに永続化する
 方法を示しました。さらに
-、[Short Term Historic](https://github.com/Fiware/tutorials.Short-Term-History)
+、[Short Term Historic](https://github.com/FIWARE/tutorials.Short-Term-History)
 のチュートリアルでは、**MongoDB** データベースを使用して履歴コンテキスト・データ
 を永続化およびクエリするための
 [STH-Comet](https://fiware-sth-comet.readthedocs.io/) Generic Enabler を導入しま
@@ -142,7 +142,7 @@ Generic Enabler であり、[STH-Comet](https://fiware-sth-comet.readthedocs.io/
 
 このチュートリアルの目的のために、一連のダミー IoT デバイスが作成され、Context
 Broker に接続されます。使用しているアーキテクチャとプロトコルの詳細は
-、[IoT Sensors チュートリアル](https://github.com/Fiware/tutorials.IoT-Sensors)に
+、[IoT Sensors チュートリアル](https://github.com/FIWARE/tutorials.IoT-Sensors)に
 あります。各デバイスの状態は、次の UltraLight デバイス・モニタの Web ページで確
 認できます : `http://localhost:3000/device/monitor`
 
@@ -161,7 +161,7 @@ Broker に接続されます。使用しているアーキテクチャとプロ�
 # アーキテクチャ
 
 このアプリケーションは
-、[以前のチュートリアル](https://github.com/Fiware/tutorials.IoT-Agent/) で作成
+、[以前のチュートリアル](https://github.com/FIWARE/tutorials.IoT-Agent/) で作成
 したコンポーネントとダミー IoT デバイスをベースにしています
 。[Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)，[IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/)
 および [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) の 3 つの
@@ -202,7 +202,7 @@ FIWARE コンポーネントを使用します。
 -   **コンテキストプロバイダ** : - HTTP 上で動作する
     [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
     プロトコルを使用して、
-    [ダミー IoT デバイス](https://github.com/Fiware/tutorials.IoT-Sensors)の
+    [ダミー IoT デバイス](https://github.com/FIWARE/tutorials.IoT-Sensors)の
     セットとして機能する Web サーバです。 -  このチュートリアルでは、
     **コンテキスト・プロバイダの NGSI proxy** は使用しません
 
@@ -1229,15 +1229,15 @@ curl -iX POST \
 ドユーザにとってほとんど役に立たちません。これは、棒グラフ、折れ線グラフ、または
 テーブル・リストに表示するために操作する必要があります。これは、グラフィカルなツ
 ールではないため、**QuantumLeap** のドメイン内にはありませんが
-、[Wirecloud](https://github.com/Fiware/catalogue/blob/master/processing/README.md#Wirecloud)
+、[Wirecloud](https://github.com/FIWARE/catalogue/blob/master/processing/README.md#Wirecloud)
 や
-[Knowage](https://github.com/Fiware/catalogue/blob/master/processing/README.md#Knowage)
+[Knowage](https://github.com/FIWARE/catalogue/blob/master/processing/README.md#Knowage)
 などのマッシュアップやダッシュボード・コンポーネントに任せることができます。
 
 また、コーディング環境に適したサード・パーティのグラフ作成ツール
 ([chartjs](http://www.chartjs.org/) など) を使用して、検索して表示することもでき
 ます。この例は
-、[Git Repository](https://github.com/Fiware/tutorials.Step-by-Step/blob/master/context-provider/controllers/history.js)
+、[Git Repository](https://github.com/FIWARE/tutorials.Step-by-Step/blob/master/context-provider/controllers/history.js)
 の `history` コントローラ内にあります。
 
 基本的な処理は、検索と属性マッピングの 2 つのステップで構成されています。サンプ
