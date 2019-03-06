@@ -4,8 +4,7 @@
 [![License: MIT](https://img.shields.io/github/license/fiware/tutorials.Time-Series-Data.svg)](https://opensource.org/licenses/MIT)
 [![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/fiware.svg)](https://stackoverflow.com/questions/tagged/fiware)
 [![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](https://fiware-ges.github.io/core.Orion/api/v2/stable/)
-<br/>
-[![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
+<br/> [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
 
 <!-- prettier-ignore -->
 
@@ -314,9 +313,7 @@ Bash スクリプトを実行することによって、コマンドラインか
     ports:
         - "4200:4200"
         - "4300:4300"
-    command:
-        -Ccluster.name=democluster -Chttp.cors.enabled=true
-        -Chttp.cors.allow-origin="*"
+    command: -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
 ```
 
 <a name="quantumleap-configuration"></a>
@@ -613,6 +610,7 @@ curl -X GET \
             "2018-10-29T14:27:28",
             "2018-10-29T14:27:29"
         ],
+        "index": ["2018-10-29T14:27:26", "2018-10-29T14:27:28", "2018-10-29T14:27:29
         "values": [2000, 1991, 1998]
     }
 }
@@ -646,6 +644,7 @@ curl -X GET \
             "2018-10-29T14:23:54.812000",
             "2018-10-29T14:24:00.849000"
         ],
+        "index": ["2018-10-29T14:23:53.804000", "2018-10-29T14:23:54.812000", "2018-10-29T14:24:00.849000"],
         "values": [0, 1, 0]
     }
 }
@@ -679,6 +678,7 @@ curl -X GET \
             "2018-10-29T15:03:46.118000",
             "2018-10-29T15:03:47.111000"
         ],
+        "index": ["2018-10-29T15:03:45.113000", "2018-10-29T15:03:46.118000", "2018-10-29T15:03:47.111000"],
         "values": [1, 0, 1]
     }
 }
@@ -721,6 +721,7 @@ curl -X GET \
             "2018-10-29T15:04:00.000000",
             "2018-10-29T15:05:00.000000"
         ],
+        "index": ["2018-10-29T15:03:00.000000", "2018-10-29T15:04:00.000000", "2018-10-29T15:05:00.000000"],
         "values": [21, 10, 11]
     }
 }
@@ -732,6 +733,8 @@ curl -X GET \
 
 この例では、1分ごとの `Lamp:001` からの最小 `luminosity` 値を示しています。
 
+<!--lint disable no-blockquote-without-marker-->
+
 > QuantumLeap **バージョン >= 0.4.1** 以上が必要です。次のような単純な GET
 > でバージョンを確認することができます :
 
@@ -740,6 +743,8 @@ curl -X GET \
 >   'http://localhost:8668/v2/version' \
 >   -H 'Accept: application/json'
 > ```
+
+<!--lint enable no-blockquote-without-marker-->
 
 #### :eight: リクエスト :
 
@@ -763,6 +768,7 @@ curl -X GET \
             "2018-10-29T15:04:00.000000",
             "2018-10-29T15:05:00.000000"
         ],
+        "index": ["2018-10-29T15:03:00.000000", "2018-10-29T15:04:00.000000", "2018-10-29T15:05:00.000000"],
         "values": [1720, 1878, 1443]
     }
 }
@@ -827,34 +833,22 @@ curl -X GET \
 
 ```json
 {
-  "data": {
-    "attrName": "luminosity",
-    "entities": [
-      {
-        "entityId": "Lamp:001",
-        "index": [
-          "2018-12-13T16:35:58.284",
-          "2018-12-13T16:36:58.216"
+    "data": {
+        "attrName": "luminosity",
+        "entities": [
+            {
+                "entityId": "Lamp:001",
+                "index": ["2018-12-13T16:35:58.284", "2018-12-13T16:36:58.216"],
+                "values": [999, 999]
+            },
+            {
+                "entityId": "Lamp:004",
+                "index": ["2018-12-13T16:35:04.351", "2018-12-13T16:36:04.282"],
+                "values": [948, 948]
+            }
         ],
-         "values": [
-          999,
-          999
-         ]
-      },
-      {
-        "entityId": "Lamp:004",
-        "index": [
-          "2018-12-13T16:35:04.351",
-          "2018-12-13T16:36:04.282"
-        ],
-        "values": [
-          948,
-          948
-        ]
-      }
-    ],
-    "entityType": "Lamp"
-  }
+        "entityType": "Lamp"
+    }
 }
 ```
 
@@ -887,27 +881,22 @@ curl -X GET \
 
 ```json
 {
-  "data": {
-    "attrName": "luminosity",
-    "entities": [
-      {
-        "entityId": "Lamp:001",
-        "index": [
-          "2018-12-13T17:08:56.041",
-          "2018-12-13T17:09:55.976",
-          "2018-12-13T17:10:55.907",
-          "2018-12-13T17:11:55.833"
+    "data": {
+        "attrName": "luminosity",
+        "entities": [
+            {
+                "entityId": "Lamp:001",
+                "index": [
+                    "2018-12-13T17:08:56.041",
+                    "2018-12-13T17:09:55.976",
+                    "2018-12-13T17:10:55.907",
+                    "2018-12-13T17:11:55.833"
+                ],
+                "values": [999, 999, 999, 999]
+            }
         ],
-        "values": [
-          999,
-          999,
-          999,
-          999
-        ]
-      }
-    ],
-    "entityType": "Lamp"
-  }
+        "entityType": "Lamp"
+    }
 }
 ```
 <a name="time-series-data-queries-cratedb"></a>
@@ -960,13 +949,7 @@ curl -iX POST \
 ```json
 {
     "cols": ["table_schema"],
-    "rows": [
-        ["doc"],
-        ["information_schema"],
-        ["sys"],
-        ["mtopeniot"],
-        ["pg_catalog"]
-    ],
+    "rows": [["doc"], ["information_schema"], ["sys"], ["mtopeniot"], ["pg_catalog"]],
     "rowcount": 5,
     "duration": 10.5146
 }
@@ -1030,13 +1013,7 @@ curl -iX POST \
 
 ```json
 {
-    "cols": [
-        "entity_id",
-        "entity_type",
-        "fiware_servicepath",
-        "luminosity",
-        "time_index"
-    ],
+    "cols": ["entity_id", "entity_type", "fiware_servicepath", "luminosity", "time_index"],
     "rows": [
         ["Lamp:001", "Lamp", "/", 1750, 1530262765000],
         ["Lamp:001", "Lamp", "/", 1507, 1530262770000],
@@ -1067,13 +1044,7 @@ curl -iX POST \
 
 ```json
 {
-    "cols": [
-        "count",
-        "entity_id",
-        "entity_type",
-        "fiware_servicepath",
-        "time_index"
-    ],
+    "cols": ["count", "entity_id", "entity_type", "fiware_servicepath", "time_index"],
     "rows": [
         [0, "Motion:001", "Motion", "/", 1530262791452],
         [1, "Motion:001", "Motion", "/", 1530262792469],
@@ -1105,13 +1076,7 @@ curl -iX POST \
 
 ```json
 {
-    "cols": [
-        "count",
-        "entity_id",
-        "entity_type",
-        "fiware_servicepath",
-        "time_index"
-    ],
+    "cols": ["count", "entity_id", "entity_type", "fiware_servicepath", "time_index"],
     "rows": [
         [0, "Motion:001", "Motion", "/", 1530263896550],
         [1, "Motion:001", "Motion", "/", 1530263894491],
