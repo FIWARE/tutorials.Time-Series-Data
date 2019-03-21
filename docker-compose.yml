@@ -92,7 +92,7 @@ services:
       - IOTA_HTTP_PORT=7896 # The port used for device traffic over HTTP
       - IOTA_PROVIDER_URL=http://iot-agent:4041
     healthcheck:
-      test: curl --fail -s http://localhost:4041/iot/about || exit 1
+      test: curl --fail -s http://iot-agent:4041/iot/about || exit 1
 
   tutorial:
     image: fiware/tutorials.context-provider
