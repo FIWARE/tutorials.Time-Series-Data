@@ -1,58 +1,41 @@
+# WARNING: Do not deploy this tutorial configuration directly to a production environment
+#
+# The tutorial docker-compose files have not been written for production deployment and will not 
+# scale. A proper architecture has been sacrificed to keep the narrative focused on the learning 
+# goals, they are just used to deploy everything onto a single Docker machine. All FIWARE components 
+# are running at full debug and extra ports have been exposed to allow for direct calls to services. 
+# They also contain various obvious security flaws - passwords in plain text, no load balancing,
+# no use of HTTPS and so on. 
+# 
+# This is all to avoid the need of multiple machines, generating certificates, encrypting secrets
+# and so on, purely so that a single docker-compose file can be read as an example to build on, 
+# not use directly. 
+# 
+# When deploying to a production environment, please looking at the SmartSDK Recipes
+# in order to scale up to a proper architecture:
+# 
+# see: https://smartsdk.github.io/smartsdk-recipes/
+#
 version: "3.5"
 services:
-  mongodb:
-    image: mongo:3.6
-    hostname: mongodb
-    container_name: db-mongo
-    ports:
-      - "27017:27017"
-    networks:
-      - default
-    command: --bind_ip_all --smallfiles
-    volumes:
-      - mongodb:/data
-
-  cratedb:
-    image: crate:2.3
-    hostname: cratedb
-    container_name: db-crate
-    ports:
-      # Admin UI
-      - "4200:4200"
-      # Transport protocol
-      - "4300:4300"
-    command: -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
-    volumes:
-      - cratedb:/data
-
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    depends_on:
-      - cratedb
-    ports:
-      - "3003:3000"
-    environment:
-      - GF_INSTALL_PLUGINS=crate-datasource,grafana-clock-panel,grafana-worldmap-panel
-    volumes:
-      - grafana:/var/lib/grafana
-
+  # Orion is the context broker
   orion:
     image: fiware/orion:2.2.0
     hostname: orion
     container_name: fiware-orion
     depends_on:
-      - mongodb
+      - mongo-db
     networks:
       - default
     expose:
       - "1026"
     ports:
       - "1026:1026"
-    command: -dbhost mongodb -logLevel DEBUG
+    command: -dbhost mongo-db -logLevel DEBUG
     healthcheck:
       test: curl --fail -s http://orion:1026/version || exit 1
 
+  # Quantum Leap is persisting Short Term History to Crate-DB
   quantumleap:
     image: smartsdk/quantumleap:0.6
     hostname: quantumleap
@@ -60,18 +43,19 @@ services:
     ports:
       - "8668:8668"
     depends_on:
-      - cratedb
+      - crate-db
     environment:
-      - CRATE_HOST=cratedb
+      - CRATE_HOST=crate-db
     healthcheck:
       test: curl --fail -s http://localhost:8668/v2/version || exit 1
-
+  
+  # IoT-Agent is configured for the UltraLight Protocol
   iot-agent:
     image: fiware/iotagent-ul:1.8.0
     hostname: iot-agent
     container_name: fiware-iot-agent
     depends_on:
-      - mongodb
+      - mongo-db
     networks:
       - default
     ports:
@@ -86,7 +70,7 @@ services:
       - IOTA_TIMESTAMP=true # Supply timestamp information with each measurement
       - IOTA_CB_NGSI_VERSION=v2 # use NGSIv2 when sending updates for active attributes
       - IOTA_AUTOCAST=true # Ensure Ultralight number values are read as numbers not strings
-      - IOTA_MONGO_HOST=mongodb # The host name of MongoDB
+      - IOTA_MONGO_HOST=mongo-db # The host name of MongoDB
       - IOTA_MONGO_PORT=27017 # The port mongoDB is listening on
       - IOTA_MONGO_DB=iotagentul # The name of the database used in mongoDB
       - IOTA_HTTP_PORT=7896 # The port used for device traffic over HTTP
@@ -94,6 +78,7 @@ services:
     healthcheck:
       test: curl --fail -s http://iot-agent:4041/iot/about || exit 1
 
+  # Tutorial acts as a series of dummy IoT Sensors over HTTP
   tutorial:
     image: fiware/tutorials.context-provider
     hostname: tutorial
@@ -123,12 +108,51 @@ services:
       - "DUMMY_DEVICES_API_KEY=4jggokgpepnvsb2uv4s40d59ov"
       - "CONTEXT_BROKER=http://orion:1026/v2" # URL of the context broker to update context
       - "NGSI_LD_PREFIX="
-      - "CRATE_DB_SERVICE_URL=http://cratedb:4200/_sql"
+      - "CRATE_DB_SERVICE_URL=http://crate-db:4200/_sql"
       - "OPENWEATHERMAP_KEY_ID=<ADD_YOUR_KEY_ID>"
       - "TWITTER_CONSUMER_KEY=<ADD_YOUR_CONSUMER_KEY>"
       - "TWITTER_CONSUMER_SECRET=<ADD_YOUR_CONSUMER_SECRET>"
     healthcheck:
       test: curl --fail -s http://tutorial:3000/version || exit 1
+
+  # Databases
+  mongo-db:
+    image: mongo:3.6
+    hostname: mongo-db
+    container_name: db-mongo
+    expose:
+      - "27017"
+    ports:
+      - "27017:27017"
+    networks:
+      - default
+    command: --bind_ip_all --smallfiles
+    volumes:
+      - mongo-db:/data
+
+  crate-db:
+    image: crate:${CRATE_VERSION:-3.1.2}
+    hostname: crate-db
+    container_name: db-crate
+    ports:
+      # Admin UI
+      - "4200:4200"
+      # Transport protocol
+      - "4300:4300"
+    command: crate -Clicense.enterprise=false -Cauth.host_based.enabled=false  -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+    volumes:
+      - crate-db:/data
+
+  # Other services
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    depends_on:
+      - crate-db
+    ports:
+      - "3003:3000"
+    volumes:
+      - grafana:/var/lib/grafana
 
 networks:
   default:
@@ -137,6 +161,6 @@ networks:
         - subnet: 172.18.1.0/24
 
 volumes:
-  mongodb: ~
-  cratedb: ~
+  mongo-db: ~
+  crate-db: ~
   grafana: ~

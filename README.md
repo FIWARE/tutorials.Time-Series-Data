@@ -249,13 +249,13 @@ Grafana analytics tool. The rest of the system providing the context data has be
 ## CrateDB Database Server Configuration
 
 ```yaml
-cratedb:
-    image: crate:2.3
-    hostname: cratedb
+crate-db:
+    image: crate:3.1.2
+    hostname: crate-db
     ports:
         - "4200:4200"
         - "4300:4300"
-    command: -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+    command: crate -Clicense.enterprise=false -Cauth.host_based.enabled=false  -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
 ```
 
 ## QuantumLeap Configuration
@@ -267,9 +267,9 @@ quantumleap:
     ports:
         - "8668:8668"
     depends_on:
-        - cratedb
+        - crate-db
     environment:
-        - CRATE_HOST=cratedb
+        - CRATE_HOST=crate-db
 ```
 
 ## Grafana Configuration
