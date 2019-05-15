@@ -151,6 +151,8 @@ services:
       - crate-db
     ports:
       - "3003:3000"
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-worldmap-panel
     volumes:
       - grafana:/var/lib/grafana
 
