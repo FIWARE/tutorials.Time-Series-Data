@@ -37,7 +37,7 @@ services:
 
   # Quantum Leap is persisting Short Term History to Crate-DB
   quantumleap:
-    image: smartsdk/quantumleap:0.6
+    image: smartsdk/quantumleap:0.6.1
     hostname: quantumleap
     container_name: fiware-quantumleap
     ports:
@@ -145,7 +145,7 @@ services:
 
   # Other services
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:6.1.6
     container_name: grafana
     depends_on:
       - crate-db

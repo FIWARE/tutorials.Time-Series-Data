@@ -25,45 +25,85 @@ The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also a
 <details>
 <summary><strong>Details</strong></summary>
 
--   [Persisting and Querying Time Series Data (CrateDB)](#persisting-and-querying-time-series-data-cratedb)
-    -   [Analyzing time series data](#analyzing-time-series-data)
--   [Architecture](#architecture)
--   [Prerequisites](#prerequisites)
-    -   [Docker and Docker Compose](#docker-and-docker-compose)
-    -   [Cygwin for Windows](#cygwin-for-windows)
--   [Start Up](#start-up)
--   [Connecting FIWARE to a CrateDB Database via QuantumLeap](#connecting-fiware-to-a-cratedb-database-via-quantumleap)
-    -   [CrateDB Database Server Configuration](#cratedb-database-server-configuration)
-    -   [QuantumLeap Configuration](#quantumleap-configuration)
-    -   [Grafana Configuration](#grafana-configuration)
-        -   [Generating Context Data](#generating-context-data)
-    -   [Setting up Subscriptions](#setting-up-subscriptions)
-        -   [Aggregate Motion Sensor Count Events](#aggregate-motion-sensor-count-events)
-        -   [Sample Lamp Luminosity](#sample-lamp-luminosity)
-        -   [Checking Subscriptions for QuantumLeap](#checking-subscriptions-for-quantumleap)
-    -   [Time Series Data Queries (QuantumLeap API)](#time-series-data-queries-quantumleap-api)
-        -   [QuantumLeap API - List the first N Sampled Values](#quantumleap-api---list-the-first-n-sampled-values)
-        -   [QuantumLeap API - List N Sampled Values at an Offset](#quantumleap-api---list-n-sampled-values-at-an-offset)
-        -   [QuantumLeap API - List the latest N Sampled Values](#quantumleap-api---list-the-latest-n-sampled-values)
-        -   [QuantumLeap API - List the Sum of values grouped by a time period](#quantumleap-api---list-the-sum-of-values-grouped-by-a-time-period)
-        -   [QuantumLeap API - List the Minimum Values grouped by a Time Period](#quantumleap-api---list-the-minimum-values-grouped-by-a-time-period)
-        -   [QuantumLeap API - List the Maximum Value over a Time Period](#quantumleap-api---list-the-maximum-value-over-a-time-period)
-        -   [QuantumLeap API - List the latest N Sampled Values of Devices near a Point](#quantumleap-api---list-the-latest-n-sampled-values-of-devices-near-a-point)
-        -   [QuantumLeap API - List the latest N Sampled Values of Devices in an Area](#quantumleap-api---list-the-latest-n-sampled-values-of-devices-in-an-area)
-    -   [Time Series Data Queries (CrateDB API)](#time-series-data-queries-cratedb-api)
-        -   [CrateDB API - Checking Data persistence](#cratedb-api---checking-data-persistence)
-        -   [CrateDB API - List the first N Sampled Values](#cratedb-api---list-the-first-n-sampled-values)
-        -   [CrateDB API - List N Sampled Values at an Offset](#cratedb-api---list-n-sampled-values-at-an-offset)
-        -   [CrateDB API - List the latest N Sampled Values](#cratedb-api---list-the-latest-n-sampled-values)
-        -   [CrateDB API - List the Sum of values grouped by a time period](#cratedb-api---list-the-sum-of-values-grouped-by-a-time-period)
-        -   [CrateDB API - List the Minimum Values grouped by a Time Period](#cratedb-api---list-the-minimum-values-grouped-by-a-time-period)
-        -   [CrateDB API - List the Maximum Value over a Time Period](#cratedb-api---list-the-maximum-value-over-a-time-period)
--   [Accessing Time Series Data Programmatically](#accessing-time-series-data-programmatically)
-    -   [Displaying CrateDB data as a Grafana Dashboard](#displaying-cratedb-data-as-a-grafana-dashboard)
-        -   [Logging in](#logging-in)
-        -   [Configuring a Data Source](#configuring-a-data-source)
-        -   [Configuring a Dashboard](#configuring-a-dashboard)
--   [Next Steps](#next-steps)
+- [Persisting and Querying Time Series Data (CrateDB)](#persisting-and-querying-time-series-data-cratedb)
+  - [Analyzing time series data](#analyzing-time-series-data)
+      - [Grafana](#grafana)
+      - [Device Monitor](#device-monitor)
+      - [Device History](#device-history)
+- [Architecture](#architecture)
+- [Prerequisites](#prerequisites)
+  - [Docker and Docker Compose](#docker-and-docker-compose)
+  - [Cygwin for Windows](#cygwin-for-windows)
+- [Start Up](#start-up)
+- [Connecting FIWARE to a CrateDB Database via QuantumLeap](#connecting-fiware-to-a-cratedb-database-via-quantumleap)
+  - [CrateDB Database Server Configuration](#cratedb-database-server-configuration)
+  - [QuantumLeap Configuration](#quantumleap-configuration)
+  - [Grafana Configuration](#grafana-configuration)
+    - [Generating Context Data](#generating-context-data)
+  - [Setting up Subscriptions](#setting-up-subscriptions)
+    - [Aggregate Motion Sensor Count Events](#aggregate-motion-sensor-count-events)
+      - [:one: Request:](#one-request)
+    - [Sample Lamp Luminosity](#sample-lamp-luminosity)
+      - [:two: Request:](#two-request)
+    - [Checking Subscriptions for QuantumLeap](#checking-subscriptions-for-quantumleap)
+      - [:three: Request:](#three-request)
+      - [Response:](#response)
+  - [Time Series Data Queries (QuantumLeap API)](#time-series-data-queries-quantumleap-api)
+    - [QuantumLeap API - List the first N Sampled Values](#quantumleap-api---list-the-first-n-sampled-values)
+      - [:four: Request:](#four-request)
+      - [Response:](#response-1)
+    - [QuantumLeap API - List N Sampled Values at an Offset](#quantumleap-api---list-n-sampled-values-at-an-offset)
+      - [:five: Request:](#five-request)
+      - [Response:](#response-2)
+    - [QuantumLeap API - List the latest N Sampled Values](#quantumleap-api---list-the-latest-n-sampled-values)
+      - [:six: Request:](#six-request)
+      - [Response:](#response-3)
+    - [QuantumLeap API - List the Sum of values grouped by a time period](#quantumleap-api---list-the-sum-of-values-grouped-by-a-time-period)
+      - [:seven: Request:](#seven-request)
+      - [Response:](#response-4)
+    - [QuantumLeap API - List the Minimum Values grouped by a Time Period](#quantumleap-api---list-the-minimum-values-grouped-by-a-time-period)
+      - [:eight: Request:](#eight-request)
+      - [Response:](#response-5)
+    - [QuantumLeap API - List the Maximum Value over a Time Period](#quantumleap-api---list-the-maximum-value-over-a-time-period)
+      - [:nine: Request:](#nine-request)
+      - [Response:](#response-6)
+    - [QuantumLeap API - List the latest N Sampled Values of Devices near a Point](#quantumleap-api---list-the-latest-n-sampled-values-of-devices-near-a-point)
+      - [:one::zero: Request:](#onezero-request)
+      - [Response:](#response-7)
+    - [QuantumLeap API - List the latest N Sampled Values of Devices in an Area](#quantumleap-api---list-the-latest-n-sampled-values-of-devices-in-an-area)
+      - [:one::one: Request:](#oneone-request)
+      - [Response:](#response-8)
+  - [Time Series Data Queries (CrateDB API)](#time-series-data-queries-cratedb-api)
+    - [CrateDB API - Checking Data persistence](#cratedb-api---checking-data-persistence)
+      - [:one::two: Request:](#onetwo-request)
+      - [Response:](#response-9)
+      - [:one::three: Request:](#onethree-request)
+      - [Response:](#response-10)
+    - [CrateDB API - List the first N Sampled Values](#cratedb-api---list-the-first-n-sampled-values)
+      - [:one::four: Request:](#onefour-request)
+      - [Response:](#response-11)
+    - [CrateDB API - List N Sampled Values at an Offset](#cratedb-api---list-n-sampled-values-at-an-offset)
+      - [:one::five: Request:](#onefive-request)
+      - [Response:](#response-12)
+    - [CrateDB API - List the latest N Sampled Values](#cratedb-api---list-the-latest-n-sampled-values)
+      - [:one::six: Request:](#onesix-request)
+      - [Response:](#response-13)
+    - [CrateDB API - List the Sum of values grouped by a time period](#cratedb-api---list-the-sum-of-values-grouped-by-a-time-period)
+      - [:one::seven: Request:](#oneseven-request)
+      - [Response:](#response-14)
+    - [CrateDB API - List the Minimum Values grouped by a Time Period](#cratedb-api---list-the-minimum-values-grouped-by-a-time-period)
+      - [:one::eight: Request:](#oneeight-request)
+      - [Response:](#response-15)
+    - [CrateDB API - List the Maximum Value over a Time Period](#cratedb-api---list-the-maximum-value-over-a-time-period)
+      - [:one::nine: Request:](#onenine-request)
+      - [Response:](#response-16)
+- [Accessing Time Series Data Programmatically](#accessing-time-series-data-programmatically)
+  - [Displaying CrateDB data as a Grafana Dashboard](#displaying-cratedb-data-as-a-grafana-dashboard)
+    - [Logging in](#logging-in)
+    - [Configuring a Data Source](#configuring-a-data-source)
+    - [Configuring a Dashboard](#configuring-a-dashboard)
+- [Next Steps](#next-steps)
+  - [License](#license)
 
 </details>
 
@@ -282,7 +322,7 @@ grafana:
     ports:
         - "3003:3000"
     environment:
-        - GF_INSTALL_PLUGINS=crate-datasource,grafana-clock-panel,grafana-worldmap-panel
+        - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-worldmap-panel
 ```
 
 The `quantumleap` container is listening on one port:
@@ -1024,11 +1064,11 @@ Once the JSON response for a specified time series has been retrieved, displayin
 end user. It must be manipulated to be displayed in a bar chart, line graph or table listing. This is not within the
 domain of **QuantumLeap** as it not a graphical tool, but can be delegated to a mashup or dashboard component such as
 [Wirecloud](https://github.com/FIWARE/catalogue/blob/master/processing/README.md#Wirecloud) or
-[Knowage](https://github.com/FIWARE/catalogue/blob/master/processing/README.md#Knowage)
+[Knowage](https://github.com/FIWARE/catalogue/blob/master/processing/README.md#Knowage).
 
 It can also be retrieved and displayed using a third-party graphing tool appropriate to your coding environment - for
 example [chartjs](http://www.chartjs.org/). An example of this can be found within the `history` controller in the
-[Git Repository](https://github.com/FIWARE/tutorials.Step-by-Step/blob/master/context-provider/controllers/history.js)
+[Git Repository](https://github.com/FIWARE/tutorials.Step-by-Step/blob/master/context-provider/controllers/history.js).
 
 The basic processing consists of two-step - retrieval and attribute mapping, sample code can be seen below:
 
@@ -1081,7 +1121,7 @@ function crateToTimeSeries(crateResponse, aggMethod, hexColor) {
 ```
 
 The modified data is then passed to the frontend to be processed by the third-party graphing tool. The result is shown
-here: `http://localhost:3000/device/history/urn:ngsi-ld:Store:001`
+here: `http://localhost:3000/device/history/urn:ngsi-ld:Store:001`.
 
 ## Displaying CrateDB data as a Grafana Dashboard
 
@@ -1094,41 +1134,33 @@ instructions below summarize how to connect and display a graph of the Lamp `lum
 ### Logging in
 
 The `docker-compose` file has started an instance of the Grafana UI listening on port `3003`, so the login page can be
-found at: `http://localhost:3003/login`. The default username is `admin` and the default password is `admin`
+found at: `http://localhost:3003/login`. The default username is `admin` and the default password is `admin`.
 
 ### Configuring a Data Source
 
-After logging in, a datasource must be set up at `http://localhost:3003/datasources` with the following values
+After logging in, a PostgreSQL datasource must be set up at `http://localhost:3003/datasources` with the following values
 
--   **Name** Lamp
--   **Type** Crate
+-   **Name** `CrateDB`
 
--   **URL** `http://cratedb:4200`
--   **Access** Server (Default)
-
--   **Schema** mtopeniot
--   **Table** etlamp
--   **Time column** time_index
-
-![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-settings.png)
+-   **Host** `crate-db:5432`
+-   **Database** `mtopeniot`
+-   **SSL Mode** `disable`
 
 ![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-crate-connect.png)
 
-Click on the Save and test button and the message _Data Source added_ will be returned
+Click on the Save and test button and make sure it says _Database Connection OK_.
 
 ### Configuring a Dashboard
 
-To display a new dashboard, you can either click the **+** button and select **New Dashboard** or go directly to
-`http://localhost:3003/dashboard/new?orgId=1`. Thereafter select the **Graph** dashboard type.
-
-To configure the dashboard click on Panel title and select edit from the dropdown list.
+To display a new dashboard, you can either click the **+** button and select **Dashboard** or go directly to
+`http://localhost:3003/dashboard/new?orgId=1`. Thereafter click **Add Query**.
 
 The following values in **bold text** need to be placed in the graphing wizard
 
--   Data Source **Lamp** (selected from the previously created Data Sources)
--   FROM **mtopeniot.etlamp** WHERE **entity_id** = **Lamp:001**
--   Select **Min** **luminosity**
--   Group By time Interval **Minute** Format as **Time Series**
+-   Queries to **CrateDB** (the previously created Data Source)
+-   FROM **etlamp**
+-   Time column **time_index**
+-   Metric column **entity_id**
 
 ![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-graph.png)
 
