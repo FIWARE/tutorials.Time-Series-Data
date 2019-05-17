@@ -30,45 +30,85 @@
 <details>
 <summary>詳細 <b>(クリックして拡大)</b></summary>
 
--   [時系列データの永続化とクエリ (CrateDB)](#persisting-and-querying-time-series-data-cratedb)
-    -   [時系列データの解析](#analyzing-time-series-data)
--   [アーキテクチャ](#architecture)
--   [前提条件](#prerequisites)
-    -   [Docker と Docker Compose](#docker-and-docker-compose)
-    -   [Cygwin for Windows](#cygwin-for-windows)
--   [起動](#start-up)
--   [QuantumLeap を介して FIWARE を CrateDB データベースに接続](#connecting-fiware-to-a-cratedb-database-via-quantumleap)
-    -   [CrateDB データベース・サーバの設定](#cratedb-database-server-configuration)
-    -   [QuantumLeap の設定](#quantumleap-configuration)
-    -   [Grafana の設定](#grafana-configuration)
-        -   [コンテキスト・データの生成](#generating-context-data)
-    -   [サブスクリプションのセットアップ](#setting-up-subscriptions)
-        -   [モーション・センサのカウント・イベントのアグリゲート](#aggregate-motion-sensor-count-events)
-        -   [ランプの明度のサンプリング](#sample-lamp-luminosity)
-        -   [QuantumLeap のサブスクリプションの確認](#checking-subscriptions-for-quantumleap)
-    -   [時系列データ・クエリ (QuantumLeap API)](#time-series-data-queries-quantumleap-api)
-        -   [QuantumLeap API - 最初の N個の サンプリング値のリスト](#quantumleap-api---list-the-first-n-sampled-values)
-        -   [QuantumLeap API - N 個のサンプリング値をオフセットでリスト](#quantumleap-api---list-n-sampled-values-at-an-offset)
-        -   [QuantumLeap API - 最新のN個のサンプリングされた値のリスト](#quantumleap-api---list-the-latest-n-sampled-values)
-        -   [QuantumLeap API - 期間別にグループ化された値の合計をリスト](#quantumleap-api---list-the-sum-of-values-grouped-by-a-time-period)
-        -   [QuantumLeap API - 期間別にグループ化された最小値をリスト](#quantumleap-api---list-the-minimum-values-grouped-by-a-time-period)
-        -   [QuantumLeap API - ある期間の最大値のリスト](#quantumleap-api---list-the-maximum-value-over-a-time-period)
-        -   [QuantumLeap API - ポイント付近のデバイスの最新の N 個のサンプル値をリスト](#quantumleap-api---list-the-latest-n-sampled-values-of-devices-near-a-point)
-        -   [QuantumLeap API - エリア内のデバイスの最新の N 個のサンプル値をリスト](#quantumleap-api---list-the-latest-n-sampled-values-of-devices-in-an-area)
-    -   [時系列データ・クエリ (CrateDB API)](#time-series-data-queries-cratedb-api)
-        -   [CrateDB API - データの永続性のチェック](#cratedb-api---checking-data-persistence)
-        -   [CrateDB API - 最初の N個の サンプリング値のリスト](#cratedb-api---list-the-first-n-sampled-values)
-        -   [CrateDB API - N 個のサンプリング値をオフセットでリスト](#cratedb-api---list-n-sampled-values-at-an-offset)
-        -   [CrateDB API - 最新のN個のサンプリングされた値のリスト](#cratedb-api---list-the-latest-n-sampled-values)
-        -   [CrateDB API - 期間別にグループ化された値の合計をリスト](#cratedb-api---list-the-sum-of-values-grouped-by-a-time-period)
-        -   [CrateDB API - 期間別にグループ化された最小値をリスト](#cratedb-api---list-the-minimum-values-grouped-by-a-time-period)
-        -   [CrateDB API - ある期間の最大値のリスト](#cratedb-api---list-the-maximum-value-over-a-time-period)
--   [プログラミングによる時系列データへのアクセス](#accessing-time-series-data-programmatically)
-    -   [CrateDB データを Grafana Dashboard として表示](#displaying-cratedb-data-as-a-grafana-dashboard)
-        -   [ログイン](#logging-in)
-        -   [データソースの設定](#configuring-a-data-source)
-        -   [ダッシュボードの設定](#configuring-a-dashboard)
--   [次のステップ](#next-steps)
+- [時系列データの永続化とクエリ (CrateDB)](#persisting-and-querying-time-series-data-cratedb)
+  - [時系列データの解析](#analyzing-time-series-data)
+      - [Grafana](#grafana)
+      - [デバイス・モニタ](#device-monitor)
+      - [デバイス・ヒストリ](#device-history)
+- [アーキテクチャ](#architecture)
+- [前提条件](#prerequisites)
+  - [Docker と Docker Compose](#docker-and-docker-compose)
+  - [Cygwin for Windows](#cygwin-for-windows)
+- [起動](#start-up)
+- [QuantumLeap を介して FIWARE を CrateDB データベースに接続](#connecting-fiware-to-a-cratedb-database-via-quantumleap)
+  - [CrateDB データベース・サーバの設定](#cratedb-database-server-configuration)
+  - [QuantumLeap の設定](#quantumleap-configuration)
+  - [Grafana の設定](#grafana-configuration)
+    - [コンテキスト・データの生成](#generating-context-data)
+  - [サブスクリプションのセットアップ](#setting-up-subscriptions)
+    - [モーション・センサのカウント・イベントのアグリゲート](#aggregate-motion-sensor-count-events)
+      - [:one: Request:](#one-request)
+    - [ランプの明度のサンプリング](#sample-lamp-luminosity)
+      - [:two: Request:](#two-request)
+    - [QuantumLeap のサブスクリプションの確認](#checking-subscriptions-for-quantumleap)
+      - [:three: Request:](#three-request)
+      - [Response:](#response)
+    - [時系列データ・クエリ (QuantumLeap API)](#time-series-data-queries-quantumleap-api)
+      - [QuantumLeap API - 最初の N個の サンプリング値のリスト](#quantumleap-api---list-the-first-n-sampled-values)
+      - [:four: Request:](#four-request)
+      - [Response:](#response-1)
+    - [QuantumLeap API - N 個のサンプリング値をオフセットでリスト](#quantumleap-api---list-n-sampled-values-at-an-offset)
+      - [:five: Request:](#five-request)
+      - [Response:](#response-2)
+    - [QuantumLeap API - 最新のN個のサンプリングされた値のリスト](#quantumleap-api---list-the-latest-n-sampled-values)
+      - [:six: Request:](#six-request)
+      - [Response:](#response-3)
+    - [QuantumLeap API - 期間別にグループ化された値の合計をリスト](#quantumleap-api---list-the-sum-of-values-grouped-by-a-time-period)
+      - [:seven: Request:](#seven-request)
+      - [Response:](#response-4)
+    - [QuantumLeap API - 期間別にグループ化された最小値をリスト](#quantumleap-api---list-the-minimum-values-grouped-by-a-time-period)
+      - [:eight: Request:](#eight-request)
+      - [Response:](#response-5)
+    - [QuantumLeap API - ある期間の最大値のリスト](#quantumleap-api---list-the-maximum-value-over-a-time-period)
+      - [:nine: Request:](#nine-request)
+      - [Response:](#response-6)
+    - [QuantumLeap API - ポイント付近のデバイスの最新の N 個のサンプル値をリスト](#quantumleap-api---list-the-latest-n-sampled-values-of-devices-near-a-point)
+      - [:one::zero: Request:](#onezero-request)
+      - [Response:](#response-7)
+    - [QuantumLeap API - エリア内のデバイスの最新の N 個のサンプル値をリスト](#quantumleap-api---list-the-latest-n-sampled-values-of-devices-in-an-area)
+      - [:one::one: Request:](#oneone-request)
+      - [Response:](#response-8)
+  - [時系列データ・クエリ (CrateDB API)](#time-series-data-queries-cratedb-api)
+    - [CrateDB API - データの永続性のチェック](#cratedb-api---checking-data-persistence)
+      - [:one::two: Request:](#onetwo-request)
+      - [Response:](#response-9)
+      - [:one::three: Request:](#onethree-request)
+      - [Response:](#response-10)
+    -   [CrateDB API - 最初の N個の サンプリング値のリスト](#cratedb-api---list-the-first-n-sampled-values)
+      - [:one::four: Request:](#onefour-request)
+      - [Response:](#response-11)
+    -   [CrateDB API - N 個のサンプリング値をオフセットでリスト](#cratedb-api---list-n-sampled-values-at-an-offset)
+      - [:one::five: Request:](#onefive-request)
+      - [Response:](#response-12)
+    -   [CrateDB API - 最新のN個のサンプリングされた値のリスト](#cratedb-api---list-the-latest-n-sampled-values)
+      - [:one::six: Request:](#onesix-request)
+      - [Response:](#response-13)
+    -   [CrateDB API - 期間別にグループ化された値の合計をリスト](#cratedb-api---list-the-sum-of-values-grouped-by-a-time-period)
+      - [:one::seven: Request:](#oneseven-request)
+      - [Response:](#response-14)
+    -   [CrateDB API - 期間別にグループ化された最小値をリスト](#cratedb-api---list-the-minimum-values-grouped-by-a-time-period)
+      - [:one::eight: Request:](#oneeight-request)
+      - [Response:](#response-15)
+    -   [CrateDB API - ある期間の最大値のリスト](#cratedb-api---list-the-maximum-value-over-a-time-period)
+      - [:one::nine: Request:](#onenine-request)
+      - [Response:](#response-16)
+- [プログラミングによる時系列データへのアクセス](#accessing-time-series-data-programmatically)
+  - [CrateDB データを Grafana Dashboard として表示](#displaying-cratedb-data-as-a-grafana-dashboard)
+    - [ログイン](#logging-in)
+    - [データソースの設定](#configuring-a-data-source)
+    - [ダッシュボードの設定](#configuring-a-dashboard)
+- [次のステップ](#next-steps)
+  - [License](#license)
 
 </details>
 
@@ -137,6 +177,8 @@ Generic Enabler であり、[STH-Comet](https://fiware-sth-comet.readthedocs.io/
 ベースと統合されています。Apache License 2.0 のライセンスで利用可能です。詳細は
 、https://grafana.com/ をご覧ください。
 
+<a name="device-monitor"></a>
+
 #### デバイス・モニタ
 
 このチュートリアルの目的のために、一連のダミー IoT デバイスが作成され、Context
@@ -146,6 +188,8 @@ Broker に接続されます。使用しているアーキテクチャとプロ�
 認できます : `http://localhost:3000/device/monitor`
 
 ![FIWARE Monitor](https://fiware.github.io/tutorials.Time-Series-Data/img/device-monitor.png)
+
+<a name="device-history"></a>
 
 #### デバイス履歴
 
@@ -344,7 +388,7 @@ grafana:
     ports:
         - "3003:3000"
     environment:
-        - GF_INSTALL_PLUGINS=crate-datasource,grafana-clock-panel,grafana-worldmap-panel
+        - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-worldmap-panel
 ```
 
 `quantumleap` コンテナは、1つのポートで待機しています：
@@ -416,6 +460,8 @@ grafana:
 Broker** が使用する **MongoDB** データベース内のデータと一致することが保証されま
 す。
 
+<a name="one-request"></a>
+
 #### :one: リクエスト :
 
 ```console
@@ -475,6 +521,8 @@ curl -iX POST \
 Broker** が使用する **MongoDB** データベース内のデータと一致することが保証されま
 す。
 
+<a name="two-request"></a>
+
 #### :two: リクエスト :
 
 ```console
@@ -517,6 +565,8 @@ curl -iX POST \
 何かをする前に、:one: と :two: のステップで作成したサブスクリプションを
 チェックしてください (すなわち、それぞれが少なくとも1つの通知が送信されたか)
 
+<a name="three-request"></a>
+
 #### :three: リクエスト:
 
 ```console
@@ -525,6 +575,8 @@ curl -X GET \
   -H 'fiware-service: openiot' \
   -H 'fiware-servicepath: /'
 ```
+
+<a name="response"></a>
 
 #### レスポンス:
 
@@ -587,6 +639,8 @@ curl -X GET \
 強制的にプッシュする場合にのみ必要です。これらのヘッダを追加しないと、
 データが返されません。
 
+<a name="four-request"></a>
+
 #### :four: リクエスト :
 
 ```console
@@ -596,6 +650,8 @@ curl -X GET \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
 ```
+
+<a name="response-1"></a>
 
 #### レスポンス :
 
@@ -621,6 +677,8 @@ curl -X GET \
 
 この例は、`Motion:001` の 4番目、5番目および6番目のサンプリングされた `count` 値を示しています。
 
+<a name="five-request"></a>
+
 #### :five: リクエスト :
 
 ```console
@@ -630,6 +688,8 @@ curl -X GET \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
 ```
+
+<a name="response-2"></a>
 
 #### レスポンス :
 
@@ -655,6 +715,8 @@ curl -X GET \
 
 この例は、`Motion:001` の最新の3個のサンプリングされた `count` 値を示しています。
 
+<a name="six-request"></a>
+
 #### :six: リクエスト :
 
 ```console
@@ -664,6 +726,8 @@ curl -X GET \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
 ```
+
+<a name="response-3"></a>
 
 #### レスポンス :
 
@@ -698,6 +762,8 @@ curl -X GET \
   -H 'Accept: application/json'
 ```
 
+<a name="seven-request"></a>
+
 #### :seven: リクエスト :
 
 ```console
@@ -707,6 +773,8 @@ curl -X GET \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
 ```
+
+<a name="response-4"></a>
 
 #### レスポンス :
 
@@ -745,6 +813,8 @@ curl -X GET \
 
 <!--lint enable no-blockquote-without-marker-->
 
+<a name="eight-request"></a>
+
 #### :eight: リクエスト :
 
 ```console
@@ -754,6 +824,8 @@ curl -X GET \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
 ```
+
+<a name="response-5"></a>
 
 #### レスポンス :
 
@@ -780,6 +852,8 @@ curl -X GET \
 この例では、`2018-06-27T09:00:00` から `2018-06-30T23:59:59` までの間に
 発生した、`Lamp:001` の最大の `luminosity` 値を示しています。
 
+<a name="nine-request"></a>
+
 #### :nine: リクエスト :
 
 ```console
@@ -789,6 +863,8 @@ curl -X GET \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
 ```
+
+<a name="response-6"></a>
 
 #### レスポンス :
 
@@ -818,6 +894,8 @@ curl -X GET \
 > の地理的クエリのセクションに詳述されている完全なクエリのセットを実装する、
 > QuantumLeap のバージョン `0.5` からのみ利用可能です。
 
+<a name="onezero-request"></a>
+
 #### :one::zero: リクエスト :
 
 ```console
@@ -827,6 +905,8 @@ curl -X GET \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
 ```
+
+<a name="response-7"></a>
 
 #### レスポンス :
 
@@ -866,6 +946,8 @@ curl -X GET \
 > の地理的クエリのセクションに詳述されている完全なクエリのセットを実装する、
 > QuantumLeap のバージョン `0.5` からのみ利用可能です。
 
+<a name="oneone-request"></a>
+
 #### :one::one: リクエスト :
 
 ```console
@@ -875,6 +957,8 @@ curl -X GET \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
 ```
+
+<a name="response-8"></a>
 
 #### レスポンス :
 
@@ -934,6 +1018,8 @@ SQL ステートメントは POST リクエストの本体として JSON 形式�
 作成されたことをチェックすることです。 次のように、**CrateDB**
 HTTP エンドポイントにリクエストすることでこれを行うことができます：
 
+<a name="onetwo-request"></a>
+
 #### :one::two: リクエスト :
 
 ```console
@@ -942,6 +1028,8 @@ curl -iX POST \
   -H 'Content-Type: application/json' \
   -d '{"stmt":"SHOW SCHEMAS"}'
 ```
+
+<a name="response-9"></a>
 
 #### レスポンス :
 
@@ -967,6 +1055,8 @@ curl -iX POST \
 ーブルにデータを永続化します。テーブル名は、`et` プレフィックスとエンティティ型
 の名前を小文字にして形成されます。
 
+<a name="onethree-request"></a>
+
 #### :one::three: リクエスト :
 
 ```console
@@ -975,6 +1065,8 @@ curl -X POST \
   -H 'Content-Type: application/json' \
   -d '{"stmt":"SHOW TABLES"}'
 ```
+
+<a name="response-10"></a>
 
 #### レスポンス :
 
@@ -999,6 +1091,8 @@ SQL 文は `ORDER BY` と `LIMIT` を使用してデータをソートします�
 の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を
 参照してください。
 
+<a name="onefour-request"></a>
+
 #### :one::four: リクエスト :
 
 ```console
@@ -1007,6 +1101,8 @@ curl -iX POST \
   -H 'Content-Type: application/json' \
   -d '{"stmt":"SELECT * FROM mtopeniot.etlamp WHERE entity_id = '\''Lamp:001'\'' ORDER BY time_index ASC LIMIT 3"}'
 ```
+
+<a name="response-11"></a>
 
 #### レスポンス :
 
@@ -1030,6 +1126,8 @@ SQL 文は、`OFFSET` 句を使用して必要な行を取り出します。詳�
 の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を
 参照してください。
 
+<a name="onefive-request"></a>
+
 #### :one::five: リクエスト :
 
 ```console
@@ -1038,6 +1136,8 @@ curl -iX POST \
   -H 'Content-Type: application/json' \
   -d '{"stmt":"SELECT * FROM mtopeniot.etmotion WHERE entity_id = '\''Motion:001'\'' order by time_index ASC LIMIT 3 OFFSET 3"}'
 ```
+
+<a name="response-12"></a>
 
 #### レスポンス :
 
@@ -1062,6 +1162,8 @@ SQL 文は、最後の N 行を取り出すために `LIMIT` 節と結合され�
 、**CrateDB**の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を
 参照してください。
 
+<a name="onesix-request"></a>
+
 #### :one::six: リクエスト :
 
 ```console
@@ -1070,6 +1172,8 @@ curl -iX POST \
   -H 'Content-Type: application/json' \
   -d '{"stmt":"SELECT * FROM mtopeniot.etmotion WHERE entity_id = '\''Motion:001'\''  ORDER BY time_index DESC LIMIT 3"}'
 ```
+
+<a name="response-13"></a>
 
 #### レスポンス :
 
@@ -1096,6 +1200,8 @@ SQL 文は、`SUM` 関数と `GROUP BY` 句を使用して関連するデータ�
 の[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を
 提供しています。
 
+<a name="oneseven-request"></a>
+
 #### :one::seven: リクエスト :
 
 ```console
@@ -1104,6 +1210,8 @@ curl -iX POST \
   -H 'Content-Type: application/json' \
   -d '{"stmt":"SELECT DATE_FORMAT (DATE_TRUNC ('\''minute'\'', time_index)) AS minute, SUM (count) AS sum FROM mtopeniot.etmotion WHERE entity_id = '\''Motion:001'\'' GROUP BY minute LIMIT 3"}'
 ```
+
+<a name="response-14"></a>
 
 #### レスポンス :
 
@@ -1131,6 +1239,8 @@ SQL 文は、`MIN` 関数と `GROUP BY` 句を使用して関連するデータ�
 [日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を
 提供しています。
 
+<a name="oneeight-request"></a>
+
 #### :one::eight: リクエスト :
 
 ```console
@@ -1139,6 +1249,8 @@ curl -iX POST \
   -H 'Content-Type: application/json' \
   -d '{"stmt":"SELECT DATE_FORMAT (DATE_TRUNC ('\''minute'\'', time_index)) AS minute, MIN (luminosity) AS min FROM mtopeniot.etlamp WHERE entity_id = '\''Lamp:001'\'' GROUP BY minute"}'
 ```
+
+<a name="response-15"></a>
 
 #### レスポンス :
 
@@ -1165,6 +1277,8 @@ SQL 文は、`MAX`関数と `WHERE` 句を使用して関連するデータを�
 [アグリゲーション関数](https://crate.io/docs/crate/reference/en/latest/general/dql/selects.html#data-aggregation)
 を提供しています。
 
+<a name="onenine-request"></a>
+
 #### :one::nine: リクエスト :
 
 ```console
@@ -1173,6 +1287,8 @@ curl -iX POST \
   -H 'Content-Type: application/json' \
   -d '{"stmt":"SELECT MAX(luminosity) AS max FROM mtopeniot.etlamp WHERE entity_id = '\''Lamp:001'\'' and time_index >= '\''2018-06-27T09:00:00'\'' and time_index < '\''2018-06-30T23:59:59'\''"}'
 ```
+
+<a name="response-16"></a>
 
 #### レスポンス :
 
@@ -1284,42 +1400,34 @@ Grafana を使用して、アグリゲートされたセンサ・データを表
 
 ### データソースの設定
 
-ログイン後、データソースは、`http://localhost:3003/datasources` において、次の値
-で設定する必要があります：
+ログイン後、PostgreSQL のデータソースは、`http://localhost:3003/datasources`
+において、次の値 で設定する必要があります：
 
--   **Name** Lamp
--   **Type** Crate
+-   **Name** `CrateDB`
 
--   **URL** `http://cratedb:4200`
--   **Access** Server (デフォルト)
-
--   **Schema** mtopeniot
--   **Table** etlamp
--   **Time column** time_index
-
-![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-settings.png)
+-   **Host** `crate-db:5432`
+-   **Database** `mtopeniot`
+-   **SSL Mode** `disable`
 
 ![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-crate-connect.png)
 
-Save をクリックすると、_Data Source added_ メッセージが返されます j
+Save をクリックし、_Database Connection OK_
+メッセージがと表示されていることを確認します。
 
 <a name="configuring-a-dashboard"></a>
 
 ### ダッシュボードの設定
 
-新しいダッシュボードを表示するには、**+** ボタンをクリックして **New Dashboard**
-を選択するか、直接 `http://localhost:3003/dashboard/new?orgId=1` に移動します。
-その後、**Graph** ダッシュボード・タイプを選択します。
-
-ダッシュボードを設定するには、Panel title をクリックし、ドロップ・ダウンリストか
-ら edit を選択します。
+新しいダッシュボードを表示するには、**+** ボタンをクリックして **Dashboard**
+を選択するか、直接 `http://localhost:3003/dashboard/new?orgId=1`
+にアクセスします。 その後、**Add Query** をクリックします。
 
 **太字のテキスト**の次の値は、グラフ作成ウィザードに配置する必要があります :
 
--   Data Source **Lamp** (以前に作成したデータソースから選択)
--   FROM **mtopeniot.etlamp** WHERE **entity_id** = **Lamp:001**
--   Select **Min** **luminosity**
--   Group By time Interval **Minute** Format as **Time Series**
+-   Queries to **CrateDB** (以前に作成したデータソースから選択)
+-   FROM **etlamp**
+-   Time column **time_index**
+-   Metric column **entity_id**
 
 ![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-graph.png)
 
