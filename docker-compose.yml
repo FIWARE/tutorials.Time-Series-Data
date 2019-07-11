@@ -51,7 +51,7 @@ services:
   
   # IoT-Agent is configured for the UltraLight Protocol
   iot-agent:
-    image: fiware/iotagent-ul:1.8.0
+    image: fiware/iotagent-ul:1.9.0
     hostname: iot-agent
     container_name: fiware-iot-agent
     depends_on:
