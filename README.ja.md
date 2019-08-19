@@ -3,7 +3,7 @@
 [![FIWARE Core Context Management](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/core.svg)](https://github.com/FIWARE/catalogue/blob/master/core/README.md)
 [![License: MIT](https://img.shields.io/github/license/fiware/tutorials.Time-Series-Data.svg)](https://opensource.org/licenses/MIT)
 [![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/fiware.svg)](https://stackoverflow.com/questions/tagged/fiware)
-[![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](https://fiware-ges.github.io/core.Orion/api/v2/stable/)
+[![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](https://fiware-ges.github.io/orion/api/v2/stable/)
 <br/> [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
 
 <!-- prettier-ignore -->
@@ -407,7 +407,7 @@ grafana:
 れは Grafana UI が通常はポート `3000` で使用できるためですが、このポートは ダミ
 ー IoT デバイスの UI によって既に取得されているため、別のポートに移動しています
 。Grafana 環境変数は、Grafana
-の[ドキュメント](http://docs.grafana.org/installation/configuration/)に記述され
+の[ドキュメント](https://grafana.com/docs/installation/configuration/)に記述され
 ています。この設定により、チュートリアルの後半で **CrateDB** データベースに接続
 できるようになります。
 

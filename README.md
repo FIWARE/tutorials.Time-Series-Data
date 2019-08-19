@@ -3,7 +3,7 @@
 [![FIWARE Core Context Management](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/core.svg)](https://github.com/FIWARE/catalogue/blob/master/core/README.md)
 [![License: MIT](https://img.shields.io/github/license/fiware/tutorials.Time-Series-Data.svg)](https://opensource.org/licenses/MIT)
 [![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/fiware.svg)](https://stackoverflow.com/questions/tagged/fiware)
-[![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](https://fiware-ges.github.io/core.Orion/api/v2/stable/)
+[![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](https://fiware-ges.github.io/orion/api/v2/stable/)
 <br/> [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
 
 This tutorial is an introduction to [FIWARE QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) - a generic
@@ -342,7 +342,7 @@ The `cratedb` container is listening on two ports:
 The `grafana` container has connected up port `3000` internally with port `3003` externally. This is because the Grafana
 UI is usually available on port `3000`, but this port has already been taken by the dummy devices UI so it has been
 shifted to another port. The Grafana Environment variables are described within their own
-[documentation](http://docs.grafana.org/installation/configuration/). The configuration ensures we will be able to
+[documentation](https://grafana.com/docs/installation/configuration/). The configuration ensures we will be able to
 connect to the **CrateDB** database later on in the tutorial
 
 ### Generating Context Data
