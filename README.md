@@ -25,7 +25,7 @@ The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also a
 <details>
 <summary><strong>Details</strong></summary>
 
--   [Persisting and Querying Time Series Data (CrateDB)](#persisting-and-querying-time-series-data-cratedb)
+-   [Persisting and Querying Time Series Data (QuantumLeap)](#persisting-and-querying-time-series-data-cratedb)
     -   [Analyzing time series data](#analyzing-time-series-data)
         -   [Grafana](#grafana)
         -   [Device Monitor](#device-monitor)
@@ -121,27 +121,32 @@ Previous tutorials have shown how to persist historic context data into a range 
 using a **MongoDB** database.
 
 FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) is an alternative generic enabler created
-specifically for data persistence into the **CrateDB** time-series database, and therefore offers an alternative to the
-[STH-Comet](https://fiware-sth-comet.readthedocs.io/).
+specifically that offers an API to persist and query time-series database (CrateDB and TimescaleDB as of today),
+and therefore offers an alternative to the [STH-Comet](https://fiware-sth-comet.readthedocs.io/).
 
 [CrateDB](https://crate.io/) is a distributed SQL DBMS designed for use with the internet of Things. It is capable of
 ingesting a large number of data points per second and can be queried in real-time. The database is designed for the
 execution of complex queries such as geospatial and time series data. Retrieval of this historic context data allows for
 the creation of graphs and dashboards displaying trends over time.
 
+[TimescaleDB](https://www.timescale.com/) scales PostgreSQL for time-series data via automatic partitioning across
+time and space (partitioning key), yet retains the standard PostgreSQL interface. In other words, TimescaleDB exposes
+what look like regular tables, but are actually only an abstraction (or a virtual view) of many individual tables
+comprising the actual data. In combination with [PostGIS](https://postgis.net/) extension can support geo-timeseries.
+
 A summary of the differences can be seen below:
 
 | QuantumLeap                                                                                            | STH-Comet                                                                                          |
 | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
 | Offers an NGSI v2 interface for notifications                                                          | Offers an NGSI v1 interface for notifications                                                      |
-| Persists Data to a CrateDB database                                                                    | Persists Data to MongoDB database                                                                  |
-| Offers its own HTTP endpoint for queries, but you can also query CrateDB                               | Offers its own HTTP endpoint for queries - MongoDB database cannot be accessed directly            |
-| QuantumLeap supports complex data queries (thanks to CrateDB)                                          | STH-Comet offers a limited set of queries                                                          |
-| CrateDB is a distributed and scalable SQL DBMS built atop NoSQL storage                                | MongoDB is a document based NoSQL database                                                         |
+| Persists Data to CrateDB or TimescaleDB database                                                                    | Persists Data to MongoDB database                                                                  |
+| Offers its own HTTP endpoint for queries (currently for CrateDB), but you can also query CrateDB and TimescaleDB                              | Offers its own HTTP endpoint for queries, you can also query MongoDB directly            |
+| QuantumLeap supports complex data queries (thanks to CrateDB and TimescaleDB)                                          | STH-Comet offers a limited set of queries                                                          |
+| QuantumLeap leverage two natives distributed and scalable SQL DBMS                               | MongoDB is a document based NoSQL database                                                         |
 | QuantumLeap's API is docummented in OpenAPI [here](https://app.swaggerhub.com/apis/smartsdk/ngsi-tsdb) | STH-Comet's API is explained in its docs [here](https://fiware-sth-comet.readthedocs.io/en/latest) |
 
 Further details about the differences between the underlying database engines can be found
-[here](https://db-engines.com/en/system/CrateDB%3BMongoDB).
+[here](https://db-engines.com/en/system/CrateDB%3BMongoDB%3BTimescaleDB).
 
 ## Analyzing time series data
 
@@ -157,7 +162,7 @@ It can also be used to reduce the significance of each individual data point to 
 #### Grafana
 
 [Grafana](https://grafana.com/) is an open source software for time series analytics tool which will be used during this
-tutorial. It integrates with a variety of time-series databases including **CrateDB**. It is available licensed under
+tutorial. It integrates with a variety of time-series databases including **CrateDB** and **TimescaleDB**. It is available licensed under
 the Apache License 2.0. More information can be found at `https://grafana.com/`.
 
 #### Device Monitor
@@ -343,7 +348,7 @@ The `grafana` container has connected up port `3000` internally with port `3003`
 UI is usually available on port `3000`, but this port has already been taken by the dummy devices UI so it has been
 shifted to another port. The Grafana Environment variables are described within their own
 [documentation](https://grafana.com/docs/installation/configuration/). The configuration ensures we will be able to
-connect to the **CrateDB** database later on in the tutorial
+connect to the **CrateDB** database later on in the tutorial.
 
 ### Generating Context Data
 
@@ -357,7 +362,7 @@ the same page:
 
 ## Setting up Subscriptions
 
-Once a dynamic context system is up and running, we need to inform **Quantum Leap** directly of changes in context. As
+Once a dynamic context system is up and running, we need to inform **QuantumLeap** directly of changes in context. As
 expected this is done using the subscription mechanism of the **Orion Context Broker**. The `attrsFormat=legacy`
 attribute is not required since **QuantumLeap** accepts NGSI v2 notifications directly.
 
@@ -524,7 +529,7 @@ curl -X GET \
 
 ## Time Series Data Queries (QuantumLeap API)
 
-**QuantumLeap** offfers an API wrapping CrateDB backend so you can also perform multiple types of queries. The
+**QuantumLeap** offers an API wrapping CrateDB backend so you can also perform multiple types of queries. The
 documentation of the API is [here](https://app.swaggerhub.com/apis/smartsdk/ngsi-tsdb/). Mind the versions. If you have
 access to your `quantumleap` container (e.g. it is running in `localhost` or port-forwarding to it), you can navigate
 its API via `http://localhost:8668/v2/ui`.
