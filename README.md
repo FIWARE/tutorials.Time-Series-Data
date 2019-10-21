@@ -349,7 +349,7 @@ UI is usually available on port `3000`, but this port has already been taken by 
 shifted to another port. The Grafana Environment variables are described within their own
 [documentation](https://grafana.com/docs/installation/configuration/). The configuration ensures we will be able to
 connect to the **CrateDB** database later on in the tutorial. The configuration also imports a custom map plugin that
-helps you in displaying NGSIv2 entities over a map.
+helps you in displaying NGSI v2 entities over a map.
 
 ### Generating Context Data
 
