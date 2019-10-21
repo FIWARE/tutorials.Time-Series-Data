@@ -329,7 +329,7 @@ grafana:
     ports:
         - "3003:3000"
     environment:
-        - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-worldmap-panel
+        - GF_INSTALL_PLUGINS=https://github.com/orchestracities/grafana-map-plugin/archive/master.zip;grafana-map-plugin,grafana-clock-panel,grafana-worldmap-panel
 ```
 
 The `quantumleap` container is listening on one port:
@@ -349,6 +349,7 @@ UI is usually available on port `3000`, but this port has already been taken by 
 shifted to another port. The Grafana Environment variables are described within their own
 [documentation](https://grafana.com/docs/installation/configuration/). The configuration ensures we will be able to
 connect to the **CrateDB** database later on in the tutorial.
+The configuration also imports a custom map plugin that helps you in displaying NGSIv2 entities over a map.
 
 ### Generating Context Data
 
@@ -1149,9 +1150,9 @@ After logging in, a PostgreSQL datasource must be set up at `http://localhost:30
 values
 
 -   **Name** `CrateDB`
-
 -   **Host** `crate-db:5432`
 -   **Database** `mtopeniot`
+-   **User** `crate`
 -   **SSL Mode** `disable`
 
 ![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-crate-connect.png)
@@ -1169,8 +1170,46 @@ The following values in **bold text** need to be placed in the graphing wizard
 -   FROM **etlamp**
 -   Time column **time_index**
 -   Metric column **entity_id**
+-   Select value **column:luminosity**
 
 ![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-graph.png)
+
+Then click on `ESC` on your keyboard and you will see a dashboard including the graph you created.
+
+The click on the `Add Panel` button and select `Choose Visualisation` and pick `Map panel`.
+
+In the map layout options set the following values:
+
+-   Center: **custom**
+-   Latitude: **52.5031**
+-   Longitude: **13.4447**
+-   Initial Zoom: **12**
+
+![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-map-config-1.png)
+
+Click on `Queries` tab on the left and set as follows:
+-   Format as: **Table**
+-   FROM **etlamp**
+-   Time column **time_index**
+-   Metric column **entity_id**
+-   Select value
+    -  **column:luminosity** **alias:value**
+    -  **column:location** **alias:geojson**
+    -  **column:entity_type** **alias:type**
+
+![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-map-config-2.png)
+
+Click on `Visualisation` tab on the left and set as follows:
+
+- Map Layers:
+  - Lamp:
+    - Icon: **lightbulb-o**
+    - ClusterType: **average**
+    - ColorType: **fix**
+    - Column for value: **value**
+    - Maker color: **red**
+
+![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-map-config-3.png)
 
 The final result can be seen below:
 
