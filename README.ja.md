@@ -645,7 +645,7 @@ curl -X GET \
 
 ```console
 curl -X GET \
-  'http://localhost:8668/v2/entities/Lamp:001/attrs/luminosity?=3&limit=3' \
+  'http://localhost:8668/v2/entities/Lamp:001/attrs/luminosity?limit=3' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
