@@ -65,7 +65,12 @@ curl -X POST \
        { "object_id": "c", "name":"count", "type":"Integer"}
       ],
       "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:001"}
+          {"name": "category", "type":"Text", "value": ["sensor"]},
+          {"name": "controlledProperty", "type": "Text", "value": "motion"},
+          {"name": "function", "type": "Text", "value":["sensing"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "supportedUnits", "type": "Text", "value": "C62"},
+          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"}
       ]
    },
    {
@@ -82,7 +87,11 @@ curl -X POST \
         }
        ],
        "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:001"}
+          {"name": "category", "type":"Text", "value": ["actuator"]},
+          {"name": "controlledProperty", "type": "Text", "value": "noiseLevel"},
+          {"name": "function", "type": "Text", "value":["onOff"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"}
       ]
     },
     {
@@ -102,7 +111,11 @@ curl -X POST \
         {"object_id": "s", "name": "state", "type":"Text"}
        ],
        "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:001"}
+          {"name": "category", "type":"Text", "value": ["actuator", "sensor"]},
+          {"name": "controlledProperty", "type": "Text", "value": "state"},
+          {"name": "function", "type": "Text", "value":["openClose", "eventNotification"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"}
        ]
     }, 
     {
@@ -116,12 +129,17 @@ curl -X POST \
         {"name": "on","type": "command"},
         {"name": "off","type": "command"}
        ],
-       "attributes": [
+      "attributes": [
        	{"object_id": "s", "name": "state", "type":"Text"},
         {"object_id": "l", "name": "luminosity", "type":"Integer"}
        ],
        "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:001"},
+          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
+          {"name": "controlledProperty", "type": "Text", "value": "light"},
+          {"name": "function", "type": "Text", "value":["onOff", "sensing"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "supportedUnits", "type": "Text", "value": "CDL"},
+          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"},
          {"name":"location", "type":"geo:point", "value":"52.5547,13.3986"}
     	]
     }
@@ -133,82 +151,9 @@ curl -X POST \
 ####################################
 
 
-#
-# Register Bell 001 commands with the Orion Context Broker
-#
-
-curl -X POST \
-  'http://orion:1026/v2/registrations' \
-  -H 'Content-Type: application/json' \
-  -H 'fiware-service: openiot' \
-  -H 'fiware-servicepath: /' \
-  -d '{
-  "description": "Bell Commands",
-  "dataProvided": {
-    "entities": [
-      {
-        "id": "Bell:001", "type": "Bell"
-      }
-    ],
-    "attrs": ["ring"]
-  },
-  "provider": {
-    "http": {"url": "http://orion:1026/v1"},
-    "legacyForwarding": true
-  }
-}'
 
 
-#
-# Register Smart Door 001 commands with the Orion Context Broker
-#
 
-curl -X POST \
-  'http://orion:1026/v2/registrations' \
-  -H 'Content-Type: application/json' \
-  -H 'fiware-service: openiot' \
-  -H 'fiware-servicepath: /' \
-  -d '{
-  "description": "Door Commands",
-  "dataProvided": {
-    "entities": [
-      {
-        "id": "Door:001", "type": "Door"
-      }
-    ],
-    "attrs": [ "lock", "unlock", "open", "close"]
-  },
-  "provider": {
-    "http": {"url": "http://orion:1026/v1"},
-    "legacyForwarding": true
-  }
-}'
-
-
-#
-# Register Smart Lamp 001 commands with the Orion Context Broker
-#
-
-curl -X POST \
-  'http://orion:1026/v2/registrations' \
-  -H 'Content-Type: application/json' \
-  -H 'fiware-service: openiot' \
-  -H 'fiware-servicepath: /' \
-  -d '{
-  "description": "Lamp Commands",
-  "dataProvided": {
-    "entities": [
-      {
-        "id": "Lamp:001","type": "Lamp"
-      }
-    ],
-    "attrs": [ "on", "off" ]
-  },
-  "provider": {
-    "http": {"url": "http://orion:1026/v1"},
-    "legacyForwarding": true
-  }
-}'
 
 
 
@@ -235,7 +180,12 @@ curl -X POST \
        { "object_id": "c", "name":"count", "type":"Integer"}
       ],
       "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:002"}
+          {"name": "category", "type":"Text", "value": ["sensor"]},
+          {"name": "controlledProperty", "type": "Text", "value": "motion"},
+          {"name": "function", "type": "Text", "value":["sensing"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "supportedUnits", "type": "Text", "value": "C62"},
+          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
       ]
    },
    {
@@ -252,7 +202,11 @@ curl -X POST \
         }
        ],
        "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:002"}
+          {"name": "category", "type":"Text", "value": ["actuator"]},
+          {"name": "controlledProperty", "type": "Text", "value": "noiseLevel"},
+          {"name": "function", "type": "Text", "value":["onOff"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
       ]
     },
     {
@@ -272,7 +226,11 @@ curl -X POST \
         {"object_id": "s", "name": "state", "type":"Text"}
        ],
        "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:002"}
+          {"name": "category", "type":"Text", "value": ["actuator", "sensor"]},
+          {"name": "controlledProperty", "type": "Text", "value": "state"},
+          {"name": "function", "type": "Text", "value":["openClose", "eventNotification"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
        ]
     },
     {
@@ -286,12 +244,17 @@ curl -X POST \
         {"name": "on","type": "command"},
         {"name": "off","type": "command"}
        ],
-       "attributes": [
+      "attributes": [
        	{"object_id": "s", "name": "state", "type":"Text"},
         {"object_id": "l", "name": "luminosity", "type":"Integer"}
        ],
        "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:002"},
+          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
+          {"name": "controlledProperty", "type": "Text", "value": "light"},
+          {"name": "function", "type": "Text", "value":["onOff", "sensing"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "supportedUnits", "type": "Text", "value": "CDL"},
+          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"},
          {"name":"location", "type":"geo:point", "value":"52.5075,13.3903"}
     	]
     }
@@ -300,85 +263,6 @@ curl -X POST \
 '
 
 
-####################################
-
-
-#
-# Register Bell 002 commands with the Orion Context Broker
-#
-
-curl -X POST \
-  'http://orion:1026/v2/registrations' \
-  -H 'Content-Type: application/json' \
-  -H 'fiware-service: openiot' \
-  -H 'fiware-servicepath: /' \
-  -d '{
-  "description": "Bell Commands",
-  "dataProvided": {
-    "entities": [
-      {
-        "id": "Bell:002", "type": "Bell"
-      }
-    ],
-    "attrs": ["ring"]
-  },
-  "provider": {
-    "http": {"url": "http://orion:1026/v1"},
-    "legacyForwarding": true
-  }
-}'
-
-
-#
-# Register Smart Door 002 commands with the Orion Context Broker
-#
-
-curl -X POST \
-  'http://orion:1026/v2/registrations' \
-  -H 'Content-Type: application/json' \
-  -H 'fiware-service: openiot' \
-  -H 'fiware-servicepath: /' \
-  -d '{
-  "description": "Door Commands",
-  "dataProvided": {
-    "entities": [
-      {
-        "id": "Door:002", "type": "Door"
-      }
-    ],
-    "attrs": [ "lock", "unlock", "open", "close"]
-  },
-  "provider": {
-    "http": {"url": "http://orion:1026/v1"},
-    "legacyForwarding": true
-  }
-}'
-
-
-#
-# Register Smart Lamp 002 commands with the Orion Context Broker
-#
-
-curl -X POST \
-  'http://orion:1026/v2/registrations' \
-  -H 'Content-Type: application/json' \
-  -H 'fiware-service: openiot' \
-  -H 'fiware-servicepath: /' \
-  -d '{
-  "description": "Lamp Commands",
-  "dataProvided": {
-    "entities": [
-      {
-        "id": "Lamp:002","type": "Lamp"
-      }
-    ],
-    "attrs": [ "on", "off" ]
-  },
-  "provider": {
-    "http": {"url": "http://orion:1026/v1"},
-    "legacyForwarding": true
-  }
-}'
 
 
 
@@ -405,7 +289,12 @@ curl -X POST \
        { "object_id": "c", "name":"count", "type":"Integer"}
       ],
       "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:003"}
+          {"name": "category", "type":"Text", "value": ["sensor"]},
+          {"name": "controlledProperty", "type": "Text", "value": "motion"},
+          {"name": "function", "type": "Text", "value":["sensing"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "supportedUnits", "type": "Text", "value": "C62"},
+          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
       ]
    },
    {
@@ -422,7 +311,11 @@ curl -X POST \
         }
        ],
        "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:003"}
+          {"name": "category", "type":"Text", "value": ["actuator"]},
+          {"name": "controlledProperty", "type": "Text", "value": "noiseLevel"},
+          {"name": "function", "type": "Text", "value":["onOff"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
       ]
     },
     {
@@ -442,7 +335,11 @@ curl -X POST \
         {"object_id": "s", "name": "state", "type":"Text"}
        ],
        "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:003"}
+          {"name": "category", "type":"Text", "value": ["actuator", "sensor"]},
+          {"name": "controlledProperty", "type": "Text", "value": "state"},
+          {"name": "function", "type": "Text", "value":["openClose", "eventNotification"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
        ]
     },
     {
@@ -456,12 +353,17 @@ curl -X POST \
         {"name": "on","type": "command"},
         {"name": "off","type": "command"}
        ],
-       "attributes": [
+      "attributes": [
        	{"object_id": "s", "name": "state", "type":"Text"},
         {"object_id": "l", "name": "luminosity", "type":"Integer"}
        ],
        "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:003"},
+          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
+          {"name": "controlledProperty", "type": "Text", "value": "light"},
+          {"name": "function", "type": "Text", "value":["onOff", "sensing"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "supportedUnits", "type": "Text", "value": "CDL"},
+          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"},
          {"name":"location", "type":"geo:point", "value":"52.5031,13.4447"}
     	]
     }
@@ -469,86 +371,6 @@ curl -X POST \
 }
 '
 
-
-####################################
-
-
-#
-# Register Bell 003 commands with the Orion Context Broker
-#
-
-curl -X POST \
-  'http://orion:1026/v2/registrations' \
-  -H 'Content-Type: application/json' \
-  -H 'fiware-service: openiot' \
-  -H 'fiware-servicepath: /' \
-  -d '{
-  "description": "Bell Commands",
-  "dataProvided": {
-    "entities": [
-      {
-        "id": "Bell:003", "type": "Bell"
-      }
-    ],
-    "attrs": ["ring"]
-  },
-  "provider": {
-    "http": {"url": "http://orion:1026/v1"},
-    "legacyForwarding": true
-  }
-}'
-
-
-#
-# Register Smart Door 003 commands with the Orion Context Broker
-#
-
-curl -X POST \
-  'http://orion:1026/v2/registrations' \
-  -H 'Content-Type: application/json' \
-  -H 'fiware-service: openiot' \
-  -H 'fiware-servicepath: /' \
-  -d '{
-  "description": "Door Commands",
-  "dataProvided": {
-    "entities": [
-      {
-        "id": "Door:003", "type": "Door"
-      }
-    ],
-    "attrs": [ "lock", "unlock", "open", "close"]
-  },
-  "provider": {
-    "http": {"url": "http://orion:1026/v1"},
-    "legacyForwarding": true
-  }
-}'
-
-
-#
-# Register Smart Lamp 003 commands with the Orion Context Broker
-#
-
-curl -X POST \
-  'http://orion:1026/v2/registrations' \
-  -H 'Content-Type: application/json' \
-  -H 'fiware-service: openiot' \
-  -H 'fiware-servicepath: /' \
-  -d '{
-  "description": "Lamp Commands",
-  "dataProvided": {
-    "entities": [
-      {
-        "id": "Lamp:003","type": "Lamp"
-      }
-    ],
-    "attrs": [ "on", "off" ]
-  },
-  "provider": {
-    "http": {"url": "http://orion:1026/v1"},
-    "legacyForwarding": true
-  }
-}'
 
 
 
@@ -575,7 +397,12 @@ curl -X POST \
        { "object_id": "c", "name":"count", "type":"Integer"}
       ],
       "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:004"}
+          {"name": "category", "type":"Text", "value": ["sensor"]},
+          {"name": "controlledProperty", "type": "Text", "value": "motion"},
+          {"name": "function", "type": "Text", "value":["sensing"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "supportedUnits", "type": "Text", "value": "C62"},
+          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
       ]
    },
    {
@@ -592,7 +419,11 @@ curl -X POST \
         }
        ],
        "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:004"}
+          {"name": "category", "type":"Text", "value": ["actuator"]},
+          {"name": "controlledProperty", "type": "Text", "value": "noiseLevel"},
+          {"name": "function", "type": "Text", "value":["onOff"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
       ]
     },
     {
@@ -612,7 +443,11 @@ curl -X POST \
         {"object_id": "s", "name": "state", "type":"Text"}
        ],
        "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:004"}
+          {"name": "category", "type":"Text", "value": ["actuator", "sensor"]},
+          {"name": "controlledProperty", "type": "Text", "value": "state"},
+          {"name": "function", "type": "Text", "value":["openClose", "eventNotification"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
        ]
     },
     {
@@ -626,12 +461,17 @@ curl -X POST \
         {"name": "on","type": "command"},
         {"name": "off","type": "command"}
        ],
-       "attributes": [
+      "attributes": [
        	{"object_id": "s", "name": "state", "type":"Text"},
         {"object_id": "l", "name": "luminosity", "type":"Integer"}
        ],
        "static_attributes": [
-         {"name":"refStore", "type": "Relationship","value": "Store:004"},
+          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
+          {"name": "controlledProperty", "type": "Text", "value": "light"},
+          {"name": "function", "type": "Text", "value":["onOff", "sensing"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "supportedUnits", "type": "Text", "value": "CDL"},
+          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"},
          {"name":"location", "type":"geo:point", "value":"52.5208,13.4094"}
     	]
     }
@@ -640,84 +480,5 @@ curl -X POST \
 '
 
 
-####################################
-
-
-#
-# Register Bell 004 commands with the Orion Context Broker
-#
-
-curl -X POST \
-  'http://orion:1026/v2/registrations' \
-  -H 'Content-Type: application/json' \
-  -H 'fiware-service: openiot' \
-  -H 'fiware-servicepath: /' \
-  -d '{
-  "description": "Bell Commands",
-  "dataProvided": {
-    "entities": [
-      {
-        "id": "Bell:004", "type": "Bell"
-      }
-    ],
-    "attrs": ["ring"]
-  },
-  "provider": {
-    "http": {"url": "http://orion:1026/v1"},
-    "legacyForwarding": true
-  }
-}'
-
-
-#
-# Register Smart Door 004 commands with the Orion Context Broker
-#
-
-curl -X POST \
-  'http://orion:1026/v2/registrations' \
-  -H 'Content-Type: application/json' \
-  -H 'fiware-service: openiot' \
-  -H 'fiware-servicepath: /' \
-  -d '{
-  "description": "Door Commands",
-  "dataProvided": {
-    "entities": [
-      {
-        "id": "Door:004", "type": "Door"
-      }
-    ],
-    "attrs": [ "lock", "unlock", "open", "close"]
-  },
-  "provider": {
-    "http": {"url": "http://orion:1026/v1"},
-    "legacyForwarding": true
-  }
-}'
-
-
-#
-# Register Smart Lamp 004 commands with the Orion Context Broker
-#
-
-curl -X POST \
-  'http://orion:1026/v2/registrations' \
-  -H 'Content-Type: application/json' \
-  -H 'fiware-service: openiot' \
-  -H 'fiware-servicepath: /' \
-  -d '{
-  "description": "Lamp Commands",
-  "dataProvided": {
-    "entities": [
-      {
-        "id": "Lamp:004","type": "Lamp"
-      }
-    ],
-    "attrs": [ "on", "off" ]
-  },
-  "provider": {
-    "http": {"url": "http://orion:1026/v1"},
-    "legacyForwarding": true
-  }
-}'
 
 echo -e " \033[1;32mdone\033[0m"
