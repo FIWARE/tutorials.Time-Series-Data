@@ -30,85 +30,85 @@
 <details>
 <summary>詳細 <b>(クリックして拡大)</b></summary>
 
-- [時系列データの永続化とクエリ (CrateDB)](#persisting-and-querying-time-series-data-cratedb)
-  - [時系列データの解析](#analyzing-time-series-data)
-      - [Grafana](#grafana)
-      - [デバイス・モニタ](#device-monitor)
-      - [デバイス・ヒストリ](#device-history)
-- [アーキテクチャ](#architecture)
-- [前提条件](#prerequisites)
-  - [Docker と Docker Compose](#docker-and-docker-compose)
-  - [Cygwin for Windows](#cygwin-for-windows)
-- [起動](#start-up)
-- [QuantumLeap を介して FIWARE を CrateDB データベースに接続](#connecting-fiware-to-a-cratedb-database-via-quantumleap)
-  - [CrateDB データベース・サーバの設定](#cratedb-database-server-configuration)
-  - [QuantumLeap の設定](#quantumleap-configuration)
-  - [Grafana の設定](#grafana-configuration)
-    - [コンテキスト・データの生成](#generating-context-data)
-  - [サブスクリプションのセットアップ](#setting-up-subscriptions)
-    - [モーション・センサのカウント・イベントのアグリゲート](#aggregate-motion-sensor-count-events)
-      - [:one: Request:](#one-request)
-    - [ランプの明度のサンプリング](#sample-lamp-luminosity)
-      - [:two: Request:](#two-request)
-    - [QuantumLeap のサブスクリプションの確認](#checking-subscriptions-for-quantumleap)
-      - [:three: Request:](#three-request)
-      - [Response:](#response)
-    - [時系列データ・クエリ (QuantumLeap API)](#time-series-data-queries-quantumleap-api)
-      - [QuantumLeap API - 最初の N個の サンプリング値のリスト](#quantumleap-api---list-the-first-n-sampled-values)
-      - [:four: Request:](#four-request)
-      - [Response:](#response-1)
-    - [QuantumLeap API - N 個のサンプリング値をオフセットでリスト](#quantumleap-api---list-n-sampled-values-at-an-offset)
-      - [:five: Request:](#five-request)
-      - [Response:](#response-2)
-    - [QuantumLeap API - 最新のN個のサンプリングされた値のリスト](#quantumleap-api---list-the-latest-n-sampled-values)
-      - [:six: Request:](#six-request)
-      - [Response:](#response-3)
-    - [QuantumLeap API - 期間別にグループ化された値の合計をリスト](#quantumleap-api---list-the-sum-of-values-grouped-by-a-time-period)
-      - [:seven: Request:](#seven-request)
-      - [Response:](#response-4)
-    - [QuantumLeap API - 期間別にグループ化された最小値をリスト](#quantumleap-api---list-the-minimum-values-grouped-by-a-time-period)
-      - [:eight: Request:](#eight-request)
-      - [Response:](#response-5)
-    - [QuantumLeap API - ある期間の最大値のリスト](#quantumleap-api---list-the-maximum-value-over-a-time-period)
-      - [:nine: Request:](#nine-request)
-      - [Response:](#response-6)
-    - [QuantumLeap API - ポイント付近のデバイスの最新の N 個のサンプル値をリスト](#quantumleap-api---list-the-latest-n-sampled-values-of-devices-near-a-point)
-      - [:one::zero: Request:](#onezero-request)
-      - [Response:](#response-7)
-    - [QuantumLeap API - エリア内のデバイスの最新の N 個のサンプル値をリスト](#quantumleap-api---list-the-latest-n-sampled-values-of-devices-in-an-area)
-      - [:one::one: Request:](#oneone-request)
-      - [Response:](#response-8)
-  - [時系列データ・クエリ (CrateDB API)](#time-series-data-queries-cratedb-api)
-    - [CrateDB API - データの永続性のチェック](#cratedb-api---checking-data-persistence)
-      - [:one::two: Request:](#onetwo-request)
-      - [Response:](#response-9)
-      - [:one::three: Request:](#onethree-request)
-      - [Response:](#response-10)
-    -   [CrateDB API - 最初の N個の サンプリング値のリスト](#cratedb-api---list-the-first-n-sampled-values)
-      - [:one::four: Request:](#onefour-request)
-      - [Response:](#response-11)
-    -   [CrateDB API - N 個のサンプリング値をオフセットでリスト](#cratedb-api---list-n-sampled-values-at-an-offset)
-      - [:one::five: Request:](#onefive-request)
-      - [Response:](#response-12)
-    -   [CrateDB API - 最新のN個のサンプリングされた値のリスト](#cratedb-api---list-the-latest-n-sampled-values)
-      - [:one::six: Request:](#onesix-request)
-      - [Response:](#response-13)
-    -   [CrateDB API - 期間別にグループ化された値の合計をリスト](#cratedb-api---list-the-sum-of-values-grouped-by-a-time-period)
-      - [:one::seven: Request:](#oneseven-request)
-      - [Response:](#response-14)
-    -   [CrateDB API - 期間別にグループ化された最小値をリスト](#cratedb-api---list-the-minimum-values-grouped-by-a-time-period)
-      - [:one::eight: Request:](#oneeight-request)
-      - [Response:](#response-15)
-    -   [CrateDB API - ある期間の最大値のリスト](#cratedb-api---list-the-maximum-value-over-a-time-period)
-      - [:one::nine: Request:](#onenine-request)
-      - [Response:](#response-16)
-- [プログラミングによる時系列データへのアクセス](#accessing-time-series-data-programmatically)
-  - [CrateDB データを Grafana Dashboard として表示](#displaying-cratedb-data-as-a-grafana-dashboard)
-    - [ログイン](#logging-in)
-    - [データソースの設定](#configuring-a-data-source)
-    - [ダッシュボードの設定](#configuring-a-dashboard)
-- [次のステップ](#next-steps)
-  - [License](#license)
+-   [時系列データの永続化とクエリ (CrateDB)](#persisting-and-querying-time-series-data-cratedb)
+    -   [時系列データの解析](#analyzing-time-series-data)
+        -   [Grafana](#grafana)
+        -   [デバイス・モニタ](#device-monitor)
+        -   [デバイス・ヒストリ](#device-history)
+-   [アーキテクチャ](#architecture)
+-   [前提条件](#prerequisites)
+    -   [Docker と Docker Compose](#docker-and-docker-compose)
+    -   [Cygwin for Windows](#cygwin-for-windows)
+-   [起動](#start-up)
+-   [QuantumLeap を介して FIWARE を CrateDB データベースに接続](#connecting-fiware-to-a-cratedb-database-via-quantumleap)
+    -   [CrateDB データベース・サーバの設定](#cratedb-database-server-configuration)
+    -   [QuantumLeap の設定](#quantumleap-configuration)
+    -   [Grafana の設定](#grafana-configuration)
+        -   [コンテキスト・データの生成](#generating-context-data)
+    -   [サブスクリプションのセットアップ](#setting-up-subscriptions)
+        -   [モーション・センサのカウント・イベントのアグリゲート](#aggregate-motion-sensor-count-events)
+            -   [:one: Request:](#one-request)
+        -   [ランプの明度のサンプリング](#sample-lamp-luminosity)
+            -   [:two: Request:](#two-request)
+        -   [QuantumLeap のサブスクリプションの確認](#checking-subscriptions-for-quantumleap)
+            -   [:three: Request:](#three-request)
+            -   [Response:](#response)
+    -   [時系列データ・クエリ (QuantumLeap API)](#time-series-data-queries-quantumleap-api)
+        -   [QuantumLeap API - 最初の N個の サンプリング値のリスト](#quantumleap-api---list-the-first-n-sampled-values)
+            -   [:four: Request:](#four-request)
+            -   [Response:](#response-1)
+        -   [QuantumLeap API - N 個のサンプリング値をオフセットでリスト](#quantumleap-api---list-n-sampled-values-at-an-offset)
+            -   [:five: Request:](#five-request)
+            -   [Response:](#response-2)
+        -   [QuantumLeap API - 最新のN個のサンプリングされた値のリスト](#quantumleap-api---list-the-latest-n-sampled-values)
+            -   [:six: Request:](#six-request)
+            -   [Response:](#response-3)
+        -   [QuantumLeap API - 期間別にグループ化された値の合計をリスト](#quantumleap-api---list-the-sum-of-values-grouped-by-a-time-period)
+            -   [:seven: Request:](#seven-request)
+            -   [Response:](#response-4)
+        -   [QuantumLeap API - 期間別にグループ化された最小値をリスト](#quantumleap-api---list-the-minimum-values-grouped-by-a-time-period)
+            -   [:eight: Request:](#eight-request)
+            -   [Response:](#response-5)
+        -   [QuantumLeap API - ある期間の最大値のリスト](#quantumleap-api---list-the-maximum-value-over-a-time-period)
+            -   [:nine: Request:](#nine-request)
+            -   [Response:](#response-6)
+        -   [QuantumLeap API - ポイント付近のデバイスの最新の N 個のサンプル値をリスト](#quantumleap-api---list-the-latest-n-sampled-values-of-devices-near-a-point)
+            -   [:one::zero: Request:](#onezero-request)
+            -   [Response:](#response-7)
+        -   [QuantumLeap API - エリア内のデバイスの最新の N 個のサンプル値をリスト](#quantumleap-api---list-the-latest-n-sampled-values-of-devices-in-an-area)
+            -   [:one::one: Request:](#oneone-request)
+            -   [Response:](#response-8)
+    -   [時系列データ・クエリ (CrateDB API)](#time-series-data-queries-cratedb-api)
+        -   [CrateDB API - データの永続性のチェック](#cratedb-api---checking-data-persistence)
+            -   [:one::two: Request:](#onetwo-request)
+            -   [Response:](#response-9)
+            -   [:one::three: Request:](#onethree-request)
+            -   [Response:](#response-10)
+        -   [CrateDB API - 最初の N個の サンプリング値のリスト](#cratedb-api---list-the-first-n-sampled-values)
+            -   [:one::four: Request:](#onefour-request)
+            -   [Response:](#response-11)
+        -   [CrateDB API - N 個のサンプリング値をオフセットでリスト](#cratedb-api---list-n-sampled-values-at-an-offset)
+            -   [:one::five: Request:](#onefive-request)
+            -   [Response:](#response-12)
+        -   [CrateDB API - 最新のN個のサンプリングされた値のリスト](#cratedb-api---list-the-latest-n-sampled-values)
+            -   [:one::six: Request:](#onesix-request)
+            -   [Response:](#response-13)
+        -   [CrateDB API - 期間別にグループ化された値の合計をリスト](#cratedb-api---list-the-sum-of-values-grouped-by-a-time-period)
+            -   [:one::seven: Request:](#oneseven-request)
+            -   [Response:](#response-14)
+        -   [CrateDB API - 期間別にグループ化された最小値をリスト](#cratedb-api---list-the-minimum-values-grouped-by-a-time-period)
+            -   [:one::eight: Request:](#oneeight-request)
+            -   [Response:](#response-15)
+        -   [CrateDB API - ある期間の最大値のリスト](#cratedb-api---list-the-maximum-value-over-a-time-period)
+            -   [:one::nine: Request:](#onenine-request)
+            -   [Response:](#response-16)
+-   [プログラミングによる時系列データへのアクセス](#accessing-time-series-data-programmatically)
+    -   [CrateDB データを Grafana Dashboard として表示](#displaying-cratedb-data-as-a-grafana-dashboard)
+        -   [ログイン](#logging-in)
+        -   [データソースの設定](#configuring-a-data-source)
+        -   [ダッシュボードの設定](#configuring-a-dashboard)
+-   [次のステップ](#next-steps)
+    -   [License](#license)
 
 </details>
 
@@ -129,10 +129,10 @@
 [STH-Comet](https://fiware-sth-comet.readthedocs.io/) Generic Enabler を導入しま
 した。
 
-FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) は
-、**CrateDB** 時系列データベースへのデータ永続性のために特別に作成された代替
-Generic Enabler であり、[STH-Comet](https://fiware-sth-comet.readthedocs.io/) に
-代わるものです。
+FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) は、
+永続化および時系列データベース (現在の CrateDB および TimescaleDB) をクエリする
+API を提供するために特別に作成された代替 Generic Enabler です。したがって、
+[STH-Comet](https://fiware-sth-comet.readthedocs.io/) の代替手段を提供します。
 
 [CrateDB](https://crate.io/) は、Internet of Things で使用するために設計された分
 散 SQL DBMS です。1 秒間に多数のデータ・ポイントを取り込むことができ、リアルタイ
@@ -140,19 +140,27 @@ Generic Enabler であり、[STH-Comet](https://fiware-sth-comet.readthedocs.io/
 どの複雑なクエリの実行用に設計されています。この履歴データを取得することで、グラ
 フやダッシュボードを作成し、時間の経過とともに傾向を表示することができます。
 
+[TimescaleDB](https://www.timescale.com/) は、時系列データの PostgreSQL を、
+時空間全体の自動パーティション分割 (パーティション・キー) でスケーリングしますが、
+標準の PostgreSQL インターフェイスを保持します。つまり、TimescaleDB は通常の
+テーブルのように見えるものを公開しますが、実際には、実際のデータを構成する多くの
+個々のテーブルの抽象化または仮想ビューにすぎません。
+[TimescaleDB](https://www.timescale.com/) 拡張機能と組み合わせて、
+geo-timeseries をサポートできます。
+
 違いの概要を以下に示します :
 
-| QuantumLeap                                                                                  | STH-Comet                                                                                                |
-| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| 通知のための NGSI v2 インタフェースを提供します                                              | 通知のための NGSI v1 インタフェースを提供します                                                          |
-| データを CrateDB データベースに保存します                                                    | データを MongoDB データベースに保存します                                                                |
-| クエリ用に独自の HTTP エンドポイントを提供しますが、CrateDB にクエリすることもできます | クエリ用に独自の HTTP エンドポイントを提供します。MongoDB データベースに直接アクセスすることはできません |
-| QuantumLeap は複雑なデータクエリを提供します (CrateDB のおかげで)                      | STH-Comet は限定された一連のクエリを提供しています                                                       |
-| CrateDB は、NoSQL ストレージの上に構築されたスケーラブルな分散 SQL DBMS です           | MongoDB は、ドキュメント・ベースの NoSQL データベースです                                                |
-| QuantumLeap の API は、[ここ](https://app.swaggerhub.com/apis/smartsdk/ngsi-tsdb)にある OpenAPI でドキュメント化されています | STH-Comet は、[ここ](https://fiware-sth-comet.readthedocs.io/en/latest)にあるドキュメントで説明されています |
+| QuantumLeap                                                                                                                   | STH-Comet                                                                                                    |
+| ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| 通知のための NGSI v2 インタフェースを提供します                                                                               | 通知のための NGSI v1 インタフェースを提供します                                                              |
+| データを CrateDB および TimescaleDB database  データベースに保存します                                                        | データを MongoDB データベースに保存します                                                                    |
+| クエリ用に独自の HTTP エンドポイント (現在は CrateDB用) を提供しますが、CrateDB および TimescaleDB にクエリすることもできます | クエリ用に独自の HTTP エンドポイントを提供します。MongoDB データベースに直接アクセスすることはできません     |
+| QuantumLeap は複雑なデータクエリを提供します (CrateDB および TimescaleDB のおかげで)                                          | STH-Comet は限定された一連のクエリを提供しています                                                           |
+| QuantumLeap は、2つのネイティブ分散およびスケーラブルなSQL DBMS を活用します                                                  | MongoDB は、ドキュメント・ベースの NoSQL データベースです                                                    |
+| QuantumLeap の API は、[ここ](https://app.swaggerhub.com/apis/smartsdk/ngsi-tsdb)にある OpenAPI でドキュメント化されています  | STH-Comet は、[ここ](https://fiware-sth-comet.readthedocs.io/en/latest)にあるドキュメントで説明されています |
 
-基盤となるデータベースエンジンの相違点の詳細は
-、[こちら](https://db-engines.com/en/system/CrateDB%3BMongoDB)を参照してください
+基盤となるデータベース・エンジンの相違点の詳細は
+、[こちら](https://db-engines.com/en/system/CrateDB%3BMongoDB%3BTimescaleDB)を参照してください
 。
 
 <a name="analyzing-time-series-data"></a>
@@ -173,9 +181,9 @@ Generic Enabler であり、[STH-Comet](https://fiware-sth-comet.readthedocs.io/
 #### Grafana
 
 [Grafana](https://grafana.com/) は、このチュートリアルで使用する時系列解析ツール
-用のオープンソースソフトウェアです。これは、**CrateDB** を含む様々な時系列データ
-ベースと統合されています。Apache License 2.0 のライセンスで利用可能です。詳細は
-、https://grafana.com/ をご覧ください。
+用のオープンソースソフトウェアです。これは、**CrateDB** および **TimescaleDB** を
+含むさまざまな時系列データベースと統合します。Apache License 2.0 の下でライセンス
+されています。詳細については、`https://grafana.com/` を参照してください。
 
 <a name="device-monitor"></a>
 
@@ -357,7 +365,9 @@ Bash スクリプトを実行することによって、コマンドラインか
     ports:
         - "4200:4200"
         - "4300:4300"
-    command: crate -Clicense.enterprise=false -Cauth.host_based.enabled=false  -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+    command:
+        crate -Clicense.enterprise=false -Cauth.host_based.enabled=false  -Ccluster.name=democluster
+        -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
 ```
 
 <a name="quantumleap-configuration"></a>
@@ -388,7 +398,7 @@ grafana:
     ports:
         - "3003:3000"
     environment:
-        - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-worldmap-panel
+        - GF_INSTALL_PLUGINS=https://github.com/orchestracities/grafana-map-plugin/archive/master.zip;grafana-map-plugin,grafana-clock-panel,grafana-worldmap-panel
 ```
 
 `quantumleap` コンテナは、1つのポートで待機しています：
@@ -409,7 +419,8 @@ grafana:
 。Grafana 環境変数は、Grafana
 の[ドキュメント](https://grafana.com/docs/installation/configuration/)に記述され
 ています。この設定により、チュートリアルの後半で **CrateDB** データベースに接続
-できるようになります。
+できるようになります。この設定では、NGSI v2 エンティティをマップ上に表示するのに
+役立つカスタム・マップ・プラグインもインポートします。
 
 <a name="generating-context-data"></a>
 
@@ -1407,6 +1418,7 @@ Grafana を使用して、アグリゲートされたセンサ・データを表
 
 -   **Host** `crate-db:5432`
 -   **Database** `mtopeniot`
+-   **User** `crate`
 -   **SSL Mode** `disable`
 
 ![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-crate-connect.png)
@@ -1428,8 +1440,47 @@ Save をクリックし、_Database Connection OK_
 -   FROM **etlamp**
 -   Time column **time_index**
 -   Metric column **entity_id**
+-   Select value **column:luminosity**
 
 ![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-graph.png)
+
+次に、キーボードの `ESC` をクリックすると、作成したグラフを含むダッシュボードが表示されます。
+
+`Add Panel` ボタンをクリックして `Choose Visualisation` を選択し、`Map panel` を選択します。
+
+マップ・レイアウト・オプションで、次の値を設定します :
+
+-   Center: **custom**
+-   Latitude: **52.5031**
+-   Longitude: **13.4447**
+-   Initial Zoom: **12**
+
+![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-map-config-1.png)
+
+左側の `Queries` タブをクリックして、次のように設定します :
+
+-   Format as: **Table**
+-   FROM **etlamp**
+-   Time column **time_index**
+-   Metric column **entity_id**
+-   Select value
+    -   **column:luminosity** **alias:value**
+    -   **column:location** **alias:geojson**
+    -   **column:entity_type** **alias:type**
+
+![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-map-config-2.png)
+
+左側の `Visualisation` タブをクリックして、次のように設定します : 
+
+-   Map Layers:
+    -   Lamp:
+        -   Icon: **lightbulb-o**
+        -   ClusterType: **average**
+        -   ColorType: **fix**
+        -   Column for value: **value**
+        -   Maker color: **red**
+
+![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-map-config-3.png)
 
 最終結果は以下の通りです :
 
