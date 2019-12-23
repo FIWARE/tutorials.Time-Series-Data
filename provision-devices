@@ -12,7 +12,6 @@ curl () {
     "$@"
 }
 
-
 echo -e "⏳ Waiting for \033[1;36mIoT-Agent\033[0m to be available\n"
 while [ `curl -s -o /dev/null -w %{http_code} 'http://iot-agent:4041/iot/about/'` -eq 000 ]
 do 
@@ -23,7 +22,7 @@ printf "⏳ Provisioning IoT devices "
 
 
 #
-# Create a service group for all UltraLight IoT devices
+# Create a service groups for all UltraLight IoT devices
 #
 
 curl -X POST \
@@ -36,16 +35,97 @@ curl -X POST \
    {
      "apikey":      "4jggokgpepnvsb2uv4s40d59ov",
      "cbroker":     "http://orion:1026",
-     "entity_type": "Thing",
-     "resource":    "/iot/d"
+     "entity_type": "Motion",
+     "resource":    "/iot/d/motion",
+     "protocol":    "PDI-IoTA-UltraLight",
+     "transport":   "HTTP",
+     "timezone":    "Europe/Berlin",
+     "attributes": [
+       { "object_id": "c", "name":"count", "type":"Integer"}
+      ],
+      "static_attributes": [
+          {"name": "category", "type":"Text", "value": ["sensor"]},
+          {"name": "controlledProperty", "type": "Text", "value": "motion"},
+          {"name": "function", "type": "Text", "value":["sensing"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "supportedUnits", "type": "Text", "value": "C62"}
+      ]
+   },
+   {
+     "apikey":      "4jggokgpepnvsb2uv4s40d59ov",
+     "cbroker":     "http://orion:1026",
+     "entity_type": "Bell",
+     "resource":    "/iot/d/bell",
+     "protocol":    "PDI-IoTA-UltraLight",
+     "transport":   "HTTP",
+     "timezone":    "Europe/Berlin",
+     "commands": [ 
+        {
+          "name": "ring",
+          "type": "command"
+        }
+      ],
+      "static_attributes": [
+          {"name": "category", "type":"Text", "value": ["actuator"]},
+          {"name": "controlledProperty", "type": "Text", "value": "noiseLevel"},
+          {"name": "function", "type": "Text", "value":["onOff"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]}
+      ]
+   },
+   {
+     "apikey":      "4jggokgpepnvsb2uv4s40d59ov",
+     "cbroker":     "http://orion:1026",
+     "entity_type": "Lamp",
+     "resource":    "/iot/d/lamp",
+     "protocol":    "PDI-IoTA-UltraLight",
+     "transport":   "HTTP",
+     "timezone":    "Europe/Berlin",
+     "commands": [ 
+        {"name": "on","type": "command"},
+        {"name": "off","type": "command"}
+     ],
+     "attributes": [
+        {"object_id": "s", "name": "state", "type":"Text"},
+        {"object_id": "l", "name": "luminosity", "type":"Integer"}
+     ],
+     "static_attributes": [
+          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
+          {"name": "controlledProperty", "type": "Text", "value": "light"},
+          {"name": "function", "type": "Text", "value":["onOff", "sensing"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+          {"name": "supportedUnits", "type": "Text", "value": "CDL"}
+     ]
+   },
+   {
+     "apikey":      "4jggokgpepnvsb2uv4s40d59ov",
+     "cbroker":     "http://orion:1026",
+     "entity_type": "Door",
+     "resource":    "/iot/d/door",
+     "protocol":    "PDI-IoTA-UltraLight",
+     "transport":   "HTTP",
+     "timezone":    "Europe/Berlin",
+     "commands": [ 
+        {"name": "unlock","type": "command"},
+        {"name": "open","type": "command"},
+        {"name": "close","type": "command"},
+        {"name": "lock","type": "command"}
+      ],
+     "attributes": [
+        {"object_id": "s", "name": "state", "type":"Text"}
+      ],
+     "static_attributes": [
+          {"name": "category", "type":"Text", "value": ["actuator", "sensor"]},
+          {"name": "controlledProperty", "type": "Text", "value": "state"},
+          {"name": "function", "type": "Text", "value":["openClose", "eventNotification"]},
+          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]}
+      ]
    }
  ]
 }'
 
 ####################################################
-
 #
-# Provision motion sensor 001
+# Provision sensors for Store 001
 #
 
 curl -X POST \
@@ -59,38 +139,16 @@ curl -X POST \
      "device_id":   "motion001",
      "entity_name": "Motion:001",
      "entity_type": "Motion",
-     "protocol":    "PDI-IoTA-UltraLight",
-     "timezone":    "Europe/Berlin",
-     "attributes": [
-       { "object_id": "c", "name":"count", "type":"Integer"}
-      ],
-      "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": "motion"},
-          {"name": "function", "type": "Text", "value":["sensing"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
-          {"name": "supportedUnits", "type": "Text", "value": "C62"},
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"}
-      ]
+     "static_attributes": [
+         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"}
+     ]
    },
    {
       "device_id": "bell001",
       "entity_name": "Bell:001",
       "entity_type": "Bell",
-      "protocol": "PDI-IoTA-UltraLight",
-      "transport": "HTTP",
       "endpoint": "http://iot-sensors:3001/iot/bell001",
-      "commands": [ 
-        {
-          "name": "ring",
-          "type": "command"
-        }
-       ],
-       "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator"]},
-          {"name": "controlledProperty", "type": "Text", "value": "noiseLevel"},
-          {"name": "function", "type": "Text", "value":["onOff"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+      "static_attributes": [
           {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"}
       ]
     },
@@ -98,23 +156,8 @@ curl -X POST \
       "device_id": "door001",
       "entity_name": "Door:001",
       "entity_type": "Door",
-      "protocol": "PDI-IoTA-UltraLight",
-      "transport": "HTTP",
       "endpoint": "http://iot-sensors:3001/iot/door001",
-      "commands": [ 
-        {"name": "unlock","type": "command"},
-        {"name": "open","type": "command"},
-        {"name": "close","type": "command"},
-        {"name": "lock","type": "command"}
-       ],
-       "attributes": [
-        {"object_id": "s", "name": "state", "type":"Text"}
-       ],
-       "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator", "sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": "state"},
-          {"name": "function", "type": "Text", "value":["openClose", "eventNotification"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
+      "static_attributes": [
           {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"}
        ]
     }, 
@@ -122,45 +165,19 @@ curl -X POST \
       "device_id": "lamp001",
       "entity_name": "Lamp:001",
       "entity_type": "Lamp",
-      "protocol": "PDI-IoTA-UltraLight",
-      "transport": "HTTP",
       "endpoint": "http://iot-sensors:3001/iot/lamp001",
-      "commands": [ 
-        {"name": "on","type": "command"},
-        {"name": "off","type": "command"}
-       ],
-      "attributes": [
-       	{"object_id": "s", "name": "state", "type":"Text"},
-        {"object_id": "l", "name": "luminosity", "type":"Integer"}
-       ],
        "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": "light"},
-          {"name": "function", "type": "Text", "value":["onOff", "sensing"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
-          {"name": "supportedUnits", "type": "Text", "value": "CDL"},
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"},
-         {"name":"location", "type":"geo:point", "value":"52.5547,13.3986"}
-    	]
+          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"}
+      ]
     }
   ]
 }
 '
 
-
-####################################
-
-
-
-
-
-
-
-
 ####################################################
-
 #
-# Provision motion sensor 002
+#
+# Provision sensors for Store 002
 #
 
 curl -X POST \
@@ -174,89 +191,36 @@ curl -X POST \
      "device_id":   "motion002",
      "entity_name": "Motion:002",
      "entity_type": "Motion",
-     "protocol":    "PDI-IoTA-UltraLight",
-     "timezone":    "Europe/Berlin",
-     "attributes": [
-       { "object_id": "c", "name":"count", "type":"Integer"}
-      ],
-      "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": "motion"},
-          {"name": "function", "type": "Text", "value":["sensing"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
-          {"name": "supportedUnits", "type": "Text", "value": "C62"},
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
-      ]
+     "static_attributes": [
+        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
+     ]
    },
    {
       "device_id": "bell002",
       "entity_name": "Bell:002",
       "entity_type": "Bell",
-      "protocol": "PDI-IoTA-UltraLight",
-      "transport": "HTTP",
       "endpoint": "http://iot-sensors:3001/iot/bell002",
-      "commands": [ 
-        {
-          "name": "ring",
-          "type": "command"
-        }
-       ],
-       "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator"]},
-          {"name": "controlledProperty", "type": "Text", "value": "noiseLevel"},
-          {"name": "function", "type": "Text", "value":["onOff"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
+      "static_attributes": [
+        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
       ]
     },
     {
       "device_id": "door002",
       "entity_name": "Door:002",
       "entity_type": "Door",
-      "protocol": "PDI-IoTA-UltraLight",
-      "transport": "HTTP",
       "endpoint": "http://iot-sensors:3001/iot/door002",
-      "commands": [ 
-        {"name": "unlock","type": "command"},
-        {"name": "open","type": "command"},
-        {"name": "close","type": "command"},
-        {"name": "lock","type": "command"}
-       ],
-       "attributes": [
-        {"object_id": "s", "name": "state", "type":"Text"}
-       ],
-       "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator", "sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": "state"},
-          {"name": "function", "type": "Text", "value":["openClose", "eventNotification"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
-       ]
+      "static_attributes": [
+        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
+      ]
     },
     {
       "device_id": "lamp002",
       "entity_name": "Lamp:002",
       "entity_type": "Lamp",
-      "protocol": "PDI-IoTA-UltraLight",
-      "transport": "HTTP",
       "endpoint": "http://iot-sensors:3001/iot/lamp002",
-      "commands": [ 
-        {"name": "on","type": "command"},
-        {"name": "off","type": "command"}
-       ],
-      "attributes": [
-       	{"object_id": "s", "name": "state", "type":"Text"},
-        {"object_id": "l", "name": "luminosity", "type":"Integer"}
-       ],
-       "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": "light"},
-          {"name": "function", "type": "Text", "value":["onOff", "sensing"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
-          {"name": "supportedUnits", "type": "Text", "value": "CDL"},
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"},
-         {"name":"location", "type":"geo:point", "value":"52.5075,13.3903"}
-    	]
+      "static_attributes": [
+        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
+      ]
     }
   ]
 }
@@ -267,9 +231,9 @@ curl -X POST \
 
 
 ####################################################
-
 #
-# Provision motion sensor 003
+#
+# Provision sensors for Store 3
 #
 
 curl -X POST \
@@ -283,89 +247,36 @@ curl -X POST \
      "device_id":   "motion003",
      "entity_name": "Motion:003",
      "entity_type": "Motion",
-     "protocol":    "PDI-IoTA-UltraLight",
-     "timezone":    "Europe/Berlin",
-     "attributes": [
-       { "object_id": "c", "name":"count", "type":"Integer"}
-      ],
-      "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": "motion"},
-          {"name": "function", "type": "Text", "value":["sensing"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
-          {"name": "supportedUnits", "type": "Text", "value": "C62"},
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
-      ]
+     "static_attributes": [
+        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
+     ]
    },
    {
       "device_id": "bell003",
       "entity_name": "Bell:003",
       "entity_type": "Bell",
-      "protocol": "PDI-IoTA-UltraLight",
-      "transport": "HTTP",
       "endpoint": "http://iot-sensors:3001/iot/bell003",
-      "commands": [ 
-        {
-          "name": "ring",
-          "type": "command"
-        }
-       ],
-       "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator"]},
-          {"name": "controlledProperty", "type": "Text", "value": "noiseLevel"},
-          {"name": "function", "type": "Text", "value":["onOff"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
+      "static_attributes": [
+        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
       ]
     },
     {
       "device_id": "door003",
       "entity_name": "Door:003",
       "entity_type": "Door",
-      "protocol": "PDI-IoTA-UltraLight",
-      "transport": "HTTP",
       "endpoint": "http://iot-sensors:3001/iot/door003",
-      "commands": [ 
-        {"name": "unlock","type": "command"},
-        {"name": "open","type": "command"},
-        {"name": "close","type": "command"},
-        {"name": "lock","type": "command"}
-       ],
-       "attributes": [
-        {"object_id": "s", "name": "state", "type":"Text"}
-       ],
-       "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator", "sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": "state"},
-          {"name": "function", "type": "Text", "value":["openClose", "eventNotification"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
-       ]
+      "static_attributes": [
+        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
+      ]
     },
     {
       "device_id": "lamp003",
       "entity_name": "Lamp:003",
       "entity_type": "Lamp",
-      "protocol": "PDI-IoTA-UltraLight",
-      "transport": "HTTP",
       "endpoint": "http://iot-sensors:3001/iot/lamp003",
-      "commands": [ 
-        {"name": "on","type": "command"},
-        {"name": "off","type": "command"}
-       ],
-      "attributes": [
-       	{"object_id": "s", "name": "state", "type":"Text"},
-        {"object_id": "l", "name": "luminosity", "type":"Integer"}
-       ],
-       "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": "light"},
-          {"name": "function", "type": "Text", "value":["onOff", "sensing"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
-          {"name": "supportedUnits", "type": "Text", "value": "CDL"},
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"},
-         {"name":"location", "type":"geo:point", "value":"52.5031,13.4447"}
-    	]
+      "static_attributes": [
+        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
+      ]
     }
   ]
 }
@@ -375,9 +286,9 @@ curl -X POST \
 
 
 ####################################################
-
 #
-# Provision motion sensor 004
+#
+# Provision sensors for Store 4
 #
 
 curl -X POST \
@@ -391,94 +302,39 @@ curl -X POST \
      "device_id":   "motion004",
      "entity_name": "Motion:004",
      "entity_type": "Motion",
-     "protocol":    "PDI-IoTA-UltraLight",
-     "timezone":    "Europe/Berlin",
-     "attributes": [
-       { "object_id": "c", "name":"count", "type":"Integer"}
-      ],
-      "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": "motion"},
-          {"name": "function", "type": "Text", "value":["sensing"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
-          {"name": "supportedUnits", "type": "Text", "value": "C62"},
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
-      ]
+     "static_attributes": [
+        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
+     ]
    },
    {
       "device_id": "bell004",
       "entity_name": "Bell:004",
       "entity_type": "Bell",
-      "protocol": "PDI-IoTA-UltraLight",
-      "transport": "HTTP",
       "endpoint": "http://iot-sensors:3001/iot/bell004",
-      "commands": [ 
-        {
-          "name": "ring",
-          "type": "command"
-        }
-       ],
-       "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator"]},
-          {"name": "controlledProperty", "type": "Text", "value": "noiseLevel"},
-          {"name": "function", "type": "Text", "value":["onOff"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
+      "static_attributes": [
+        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
       ]
     },
     {
       "device_id": "door004",
       "entity_name": "Door:004",
       "entity_type": "Door",
-      "protocol": "PDI-IoTA-UltraLight",
-      "transport": "HTTP",
       "endpoint": "http://iot-sensors:3001/iot/door004",
-      "commands": [ 
-        {"name": "unlock","type": "command"},
-        {"name": "open","type": "command"},
-        {"name": "close","type": "command"},
-        {"name": "lock","type": "command"}
-       ],
-       "attributes": [
-        {"object_id": "s", "name": "state", "type":"Text"}
-       ],
-       "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator", "sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": "state"},
-          {"name": "function", "type": "Text", "value":["openClose", "eventNotification"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
-       ]
+      "static_attributes": [
+        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
+      ]
     },
     {
       "device_id": "lamp004",
       "entity_name": "Lamp:004",
       "entity_type": "Lamp",
-      "protocol": "PDI-IoTA-UltraLight",
-      "transport": "HTTP",
       "endpoint": "http://iot-sensors:3001/iot/lamp004",
-      "commands": [ 
-        {"name": "on","type": "command"},
-        {"name": "off","type": "command"}
-       ],
-      "attributes": [
-       	{"object_id": "s", "name": "state", "type":"Text"},
-        {"object_id": "l", "name": "luminosity", "type":"Integer"}
-       ],
-       "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": "light"},
-          {"name": "function", "type": "Text", "value":["onOff", "sensing"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
-          {"name": "supportedUnits", "type": "Text", "value": "CDL"},
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"},
-         {"name":"location", "type":"geo:point", "value":"52.5208,13.4094"}
-    	]
+      "static_attributes": [
+        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
+      ]
     }
   ]
 }
 '
-
-
 
 echo -e " \033[1;32mdone\033[0m"
