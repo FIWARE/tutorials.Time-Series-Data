@@ -33,10 +33,10 @@ curl -X POST \
   -d '{
  "services": [
    {
-     "apikey":      "4jggokgpepnvsb2uv4s40d59ov",
+     "apikey":      "1068318794",
      "cbroker":     "http://orion:1026",
      "entity_type": "Motion",
-     "resource":    "/iot/d/motion",
+     "resource":    "/iot/d",
      "protocol":    "PDI-IoTA-UltraLight",
      "transport":   "HTTP",
      "timezone":    "Europe/Berlin",
@@ -52,10 +52,10 @@ curl -X POST \
       ]
    },
    {
-     "apikey":      "4jggokgpepnvsb2uv4s40d59ov",
+     "apikey":      "3020035",
      "cbroker":     "http://orion:1026",
      "entity_type": "Bell",
-     "resource":    "/iot/d/bell",
+     "resource":    "/iot/d",
      "protocol":    "PDI-IoTA-UltraLight",
      "transport":   "HTTP",
      "timezone":    "Europe/Berlin",
@@ -73,10 +73,10 @@ curl -X POST \
       ]
    },
    {
-     "apikey":      "4jggokgpepnvsb2uv4s40d59ov",
+     "apikey":      "3314136",
      "cbroker":     "http://orion:1026",
      "entity_type": "Lamp",
-     "resource":    "/iot/d/lamp",
+     "resource":    "/iot/d",
      "protocol":    "PDI-IoTA-UltraLight",
      "transport":   "HTTP",
      "timezone":    "Europe/Berlin",
@@ -97,10 +97,10 @@ curl -X POST \
      ]
    },
    {
-     "apikey":      "4jggokgpepnvsb2uv4s40d59ov",
+     "apikey":      "3089326",
      "cbroker":     "http://orion:1026",
      "entity_type": "Door",
-     "resource":    "/iot/d/door",
+     "resource":    "/iot/d",
      "protocol":    "PDI-IoTA-UltraLight",
      "transport":   "HTTP",
      "timezone":    "Europe/Berlin",
