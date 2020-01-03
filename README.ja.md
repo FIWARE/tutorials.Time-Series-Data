@@ -1470,7 +1470,7 @@ Save をクリックし、_Database Connection OK_
 
 ![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-map-config-2.png)
 
-左側の `Visualisation` タブをクリックして、次のように設定します : 
+左側の `Visualisation` タブをクリックして、次のように設定します :
 
 -   Map Layers:
     -   Lamp:
@@ -1499,4 +1499,4 @@ Save をクリックし、_Database Connection OK_
 
 ## License
 
-[MIT](LICENSE) © 2018-2019 FIWARE Foundation e.V.
+[MIT](LICENSE) © 2018-2020 FIWARE Foundation e.V.
