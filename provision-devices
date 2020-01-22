@@ -8,16 +8,12 @@ set -e
 
 
 curl () {
-  docker run --network fiware_default --rm appropriate/curl -s \
+  docker run --network fiware_default --rm appropriate/curl -s -o /dev/null \
     "$@"
+  printf "."
 }
 
-echo -e "⏳ Waiting for \033[1;36mIoT-Agent\033[0m to be available\n"
-while [ `curl -s -o /dev/null -w %{http_code} 'http://iot-agent:4041/iot/about/'` -eq 000 ]
-do 
-  echo -e "IoT Agent Server HTTP state: " `curl -s -o /dev/null -w %{http_code} 'http://iot-agent:4041/iot/about'` " (waiting for 200)"
-  sleep 1
-done
+
 printf "⏳ Provisioning IoT devices "
 
 
