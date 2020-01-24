@@ -67,7 +67,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"description\": \"Notify Quantum Leap to sample Lamp changes every five seconds\",\n  \"subject\": {\n    \"entities\": [\n      {\n        \"idPattern\": \"Lamp.*\"\n      }\n    ],\n    \"condition\": {\n      \"attrs\": [\n        \"luminosity\"\n      ]\n    }\n  },\n  \"notification\": {\n    \"http\": {\n      \"url\": \"http://quantumleap:8668/v2/notify\"\n    },\n    \"attrs\": [\n      \"luminosity\", \"location\"\n    ],\n    \"metadata\": [\"dateCreated\", \"dateModified\"]\n  },\n  \"throttling\": 5\n}"
+							"raw": "{\n  \"description\": \"Notify Quantum Leap to sample Lamp changes every five seconds\",\n  \"subject\": {\n    \"entities\": [\n      {\n        \"idPattern\": \"Lamp.*\"\n      }\n    ],\n    \"condition\": {\n      \"attrs\": [\n        \"luminosity\",\n        \"location\"\n      ]\n    }\n  },\n  \"notification\": {\n    \"http\": {\n      \"url\": \"http://quantumleap:8668/v2/notify\"\n    },\n    \"attrs\": [\n      \"luminosity\", \"location\"\n    ],\n    \"metadata\": [\"dateCreated\", \"dateModified\"]\n  },\n  \"throttling\": 5\n}"
 						},
 						"url": {
 							"raw": "http://{{orion}}/v2/subscriptions/",
@@ -956,22 +956,23 @@
 	],
 	"variable": [
 		{
-			"id": "f7ea4f04-d072-4eb3-bc82-1e75b7ef8d26",
+			"id": "cc8c257a-ac6f-47d1-9753-9f5b100e719a",
 			"key": "orion",
 			"value": "localhost:1026",
 			"type": "string"
 		},
 		{
-			"id": "c5f4c3c9-12a9-4bde-88e5-196f1500d6dc",
+			"id": "b51e19a3-a327-444a-9719-9d085e3b6038",
 			"key": "quantumleap",
 			"value": "localhost:8668",
 			"type": "string"
 		},
 		{
-			"id": "67dfb5d7-e70d-4a1a-9ec3-2e9b6153c7ba",
+			"id": "ef81cb5d-7aa4-4232-add9-002915da33a3",
 			"key": "crate",
 			"value": "localhost:4200",
 			"type": "string"
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
