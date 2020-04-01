@@ -14,9 +14,12 @@ if (( $# != 1 )); then
 fi
 
 loadData () {
+	addDatabaseIndex
+	waitForOrion
 	docker run --rm -v $(pwd)/import-data:/import-data \
 		--network fiware_default \
 		--entrypoint /bin/ash curlimages/curl import-data
+	waitForIoTAgent
 	docker run --rm -v $(pwd)/provision-devices:/provision-devices \
 		--network fiware_default \
 		--entrypoint /bin/ash curlimages/curl provision-devices
@@ -102,8 +105,6 @@ case "${command}" in
 		echo -e "- \033[1mTutorial\033[0m acts as a series of dummy IoT Sensors over HTTP"
 		echo ""
 		docker-compose --log-level ERROR -p fiware up -d --remove-orphans
-		addDatabaseIndex
-		waitForOrion
 		loadData
 		displayServices
 		echo -e "Now open \033[4mhttp://localhost:3000/device/monitor\033[0m"
