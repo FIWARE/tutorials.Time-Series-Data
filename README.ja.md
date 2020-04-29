@@ -186,13 +186,13 @@ FIWARE コンポーネントを使用します。
 
     -   FIWARE
         [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)
-        は、[NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使
+        は、[NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使
         用してリクエストを受信します
     -   FIWARE
         [IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/)
         は、Ultralight 2.0 形式のダミー IoT デバイスからノース・バウンドの測定値
         を受信し、Context Broker の
-        [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) リクエス
+        [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) リクエス
         トに変換してコンテキスト・エンティティの状態を変更します
     -   FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) は
         コンテキストの変更をサブスクライブし、**CrateDB** データベースに永続化し
