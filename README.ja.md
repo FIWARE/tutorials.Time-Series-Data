@@ -293,7 +293,7 @@ git checkout NGSI-v2
 ```
 
 その後、リポジトリ内で提供される
-[services](https://github.com/fisuda/tutorials.Time-Series-Data/blob/master/services)
+[services](https://github.com/fisuda/tutorials.Time-Series-Data/blob/NGSI-v2/services)
 Bash スクリプトを実行することによって、コマンドラインからすべてのサービスを初期
 化することができます :
 
