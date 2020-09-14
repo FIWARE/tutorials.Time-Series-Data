@@ -154,7 +154,7 @@ geo-timeseries をサポートできます。
 
 このチュートリアルの目的のために、一連のダミー IoT デバイスが作成され、Context
 Broker に接続されます。使用しているアーキテクチャとプロトコルの詳細は
-、[IoT Sensors チュートリアル](https://github.com/FIWARE/tutorials.IoT-Sensors)に
+、[IoT Sensors チュートリアル](https://github.com/FIWARE/tutorials.IoT-Sensors/tree/NGSI-v2)に
 あります。各デバイスの状態は、次の UltraLight デバイス・モニタの Web ページで確
 認できます : `http://localhost:3000/device/monitor`
 
@@ -216,7 +216,7 @@ FIWARE コンポーネントを使用します。
 -   **コンテキストプロバイダ** : - HTTP 上で動作する
     [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
     プロトコルを使用して、
-    [ダミー IoT デバイス](https://github.com/FIWARE/tutorials.IoT-Sensors)の
+    [ダミー IoT デバイス](https://github.com/FIWARE/tutorials.IoT-Sensors/tree/NGSI-v2)の
     セットとして機能する Web サーバです。 -  このチュートリアルでは、
     **コンテキスト・プロバイダの NGSI proxy** は使用しません
 

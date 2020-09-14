@@ -130,7 +130,7 @@ available licensed under the Apache License 2.0. More information can be found a
 
 For the purpose of this tutorial, a series of dummy IoT devices have been created, which will be attached to the context
 broker. Details of the architecture and protocol used can be found in the
-[IoT Sensors tutorial](https://github.com/FIWARE/tutorials.IoT-Sensors). The state of each device can be seen on the
+[IoT Sensors tutorial](https://github.com/FIWARE/tutorials.IoT-Sensors/tree/NGSI-v2). The state of each device can be seen on the
 UltraLight device monitor web page found at: `http://localhost:3000/device/monitor`
 
 ![FIWARE Monitor](https://fiware.github.io/tutorials.Time-Series-Data/img/device-monitor.png)
@@ -176,7 +176,7 @@ Therefore the overall architecture will consist of the following elements:
     -   offers an HTTP endpoint to interpret time-based data queries
 
 -   A **Context Provider**: - A webserver acting as set of
-    [dummy IoT devices](https://github.com/FIWARE/tutorials.IoT-Sensors) using the
+    [dummy IoT devices](https://github.com/FIWARE/tutorials.IoT-Sensors/tree/NGSI-v2) using the
     [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
     protocol running over HTTP. - Note the **Stock Management Frontend** and **Context Provider NGSI** proxy are not
     used in this tutorial.
