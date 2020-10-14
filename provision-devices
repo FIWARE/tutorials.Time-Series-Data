@@ -25,99 +25,162 @@ curl -s -o /dev/null -X POST \
   -d '{
  "services": [
    {
-     "apikey":      "1068318794",
+     "apikey":      "321701236",
      "cbroker":     "http://orion:1026",
-     "entity_type": "Motion",
+     "entity_type": "TemperatureSensor",
      "resource":    "/iot/d",
      "protocol":    "PDI-IoTA-UltraLight",
      "transport":   "HTTP",
      "timezone":    "Europe/Berlin",
      "attributes": [
-       { "object_id": "c", "name":"count", "type":"Integer"}
+       { "object_id": "t", "name":"temperature", "type": "Integer",
+         "metadata": {"unitCode": {"type": "Property","value": "CEL"}}
+       }
       ],
       "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": "motion"},
-          {"name": "function", "type": "Text", "value":["sensing"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
-          {"name": "supportedUnits", "type": "Text", "value": "C62"}
+        {"name": "description", "type":"Property", "value": "Temperature Sensor"},
+        {"name": "category", "type":"Property", "value": ["sensor"]},
+        {"name": "controlledProperty", "type": "Property", "value": "temperature"},
+        {"name": "supportedProtocol", "type": "Property", "value": ["ul20"]}
       ]
    },
    {
-     "apikey":      "3020035",
+     "apikey":      "548027571",
      "cbroker":     "http://orion:1026",
-     "entity_type": "Bell",
+     "entity_type": "SoilSensor",
      "resource":    "/iot/d",
      "protocol":    "PDI-IoTA-UltraLight",
      "transport":   "HTTP",
      "timezone":    "Europe/Berlin",
-     "commands": [ 
-        {
-          "name": "ring",
-          "type": "command"
-        }
+     "attributes": [
+       { "object_id": "h", "name":"humidity", "type": "Integer",
+         "metadata": {"unitCode": {"type": "Property","value": "P1"}}
+       }
       ],
       "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator"]},
-          {"name": "controlledProperty", "type": "Text", "value": "noiseLevel"},
-          {"name": "function", "type": "Text", "value":["onOff"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]}
+        {"name": "description", "type":"Property", "value": "Soil Humdity Sensor"},
+        {"name": "category", "type":"Property", "value": ["sensor"]},
+        {"name": "controlledProperty", "type": "Property", "value": "humidity"},
+        {"name": "supportedProtocol", "type": "Property", "value": ["ul20"]}
       ]
    },
    {
-     "apikey":      "3314136",
+     "apikey":      "854782081",
      "cbroker":     "http://orion:1026",
-     "entity_type": "Lamp",
+     "entity_type": "FillingSensor",
      "resource":    "/iot/d",
      "protocol":    "PDI-IoTA-UltraLight",
      "transport":   "HTTP",
      "timezone":    "Europe/Berlin",
-     "commands": [ 
-        {"name": "on","type": "command"},
-        {"name": "off","type": "command"}
-     ],
      "attributes": [
-        {"object_id": "s", "name": "state", "type":"Text"},
-        {"object_id": "l", "name": "luminosity", "type":"Integer"}
-     ],
-     "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": "light"},
-          {"name": "function", "type": "Text", "value":["onOff", "sensing"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]},
-          {"name": "supportedUnits", "type": "Text", "value": "CDL"}
-     ]
+       { "object_id": "f", "name":"filling", "type": "Number",
+         "metadata": {"unitCode": {"type": "Property","value": "C62"}}
+       }
+      ],
+      "commands": [
+        {"name": "add", "type": "command"},
+        {"name": "remove", "type": "command"}
+      ],
+      "static_attributes": [
+        {"name": "supportedProtocol", "type": "Property", "value": ["ul20"]},
+        {"name": "description", "type":"Property", "value": "Barn filling Sensor"},
+        {"name": "category", "type":"Property", "value": ["actuator", "sensor"]},
+        {"name": "controlledProperty", "type": "Property", "value": ["filling"]}
+      ]
    },
    {
-     "apikey":      "3089326",
+     "apikey":      "110990",
      "cbroker":     "http://orion:1026",
-     "entity_type": "Door",
+     "entity_type": "Device",
      "resource":    "/iot/d",
      "protocol":    "PDI-IoTA-UltraLight",
      "transport":   "HTTP",
      "timezone":    "Europe/Berlin",
-     "commands": [ 
-        {"name": "unlock","type": "command"},
-        {"name": "open","type": "command"},
-        {"name": "close","type": "command"},
-        {"name": "lock","type": "command"}
-      ],
      "attributes": [
-        {"object_id": "s", "name": "state", "type":"Text"}
+        {"object_id": "bpm","type": "Integer","name": "heartRate",
+        "metadata": {"unitCode": {"type": "Text","value": "5K"}}
+        },
+        {"object_id": "s", "name": "status", "type": "String"},
+        {"object_id": "gps", "name": "location", "type": "geo:point"}
       ],
-     "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator", "sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": "state"},
-          {"name": "function", "type": "Text", "value":["openClose", "eventNotification"]},
-          {"name": "supportedProtocol", "type": "Text", "value": ["ul20"]}
+      "static_attributes": [
+        {"name": "description", "type":"Property", "value": "Animal Collar"},
+        {"name": "category", "type":"Property", "value": ["sensor"]},
+        {"name": "controlledProperty", "type": "Property", "value": ["heartRate", "location", "status"]},
+        {"name": "supportedProtocol", "type": "Property", "value": ["ul20"]}
+      ]
+   },
+   {
+     "apikey":      "98699",
+     "cbroker":     "http://orion:1026",
+     "entity_type": "Device",
+     "resource":    "/iot/d",
+     "protocol":    "PDI-IoTA-UltraLight",
+     "transport":   "HTTP",
+     "timezone":    "Europe/Berlin",
+     "attributes": [
+        {"object_id": "bpm","type": "Integer","name": "heartRate",
+        "metadata": {"unitCode": {"type": "Text","value": "5K"}}
+        },
+        {"object_id": "s", "name": "status", "type": "String"},
+        {"object_id": "gps", "name": "location", "type": "geo:point"}
+      ],
+      "static_attributes": [
+        {"name": "description", "type":"Property", "value": "Animal Collar"},
+        {"name": "category", "type":"Property", "value": ["sensor"]},
+        {"name": "controlledProperty", "type": "Property", "value": ["heartRate", "location", "status"]},
+        {"name": "function", "type": "Property", "value":["sensing"]},
+        {"name": "supportedProtocol", "type": "Property", "value": ["ul20"]}
+      ]
+   },
+   {
+     "apikey":      "112903447",
+     "cbroker":     "http://orion:1026",
+     "entity_type": "Water",
+     "resource":    "/iot/d",
+     "protocol":    "PDI-IoTA-UltraLight",
+     "transport":   "HTTP",
+     "timezone":    "Europe/Berlin",
+     "commands": [
+        {"name": "on", "type": "command"},
+        {"name": "off", "type": "command"}
+      ],
+      "static_attributes": [
+        {"name": "description", "type":"Property", "value": "Irrigation System"},
+        {"name": "category", "type":"Property", "value": ["actuator"]},
+        {"name": "supportedProtocol", "type": "Property", "value": ["ul20"]}
+      ]
+   },
+   {
+     "apikey":      "1067386313",
+     "cbroker":     "http://orion:1026",
+     "entity_type": "Tractor",
+     "resource":    "/iot/d",
+     "protocol":    "PDI-IoTA-UltraLight",
+     "transport":   "HTTP",
+     "timezone":    "Europe/Berlin",
+     "attributes": [
+        {"object_id": "s", "name": "status", "type": "Property"},
+        {"object_id": "gps", "name": "location", "type": "geo:point"}
+      ],
+     "commands": [
+        {"name": "start", "type": "command"},
+        {"name": "stop", "type": "command"}
+      ],
+      "static_attributes": [
+        {"name": "description", "type":"Property", "value": "Tractor FMIS"},
+        {"name": "category", "type":"Property", "value": ["actuator", "sensor"]},
+        {"name": "controlledProperty", "type": "Property", "value": ["location", "status"]},
+        {"name": "supportedProtocol", "type": "Property", "value": ["ul20"]}
       ]
    }
+
  ]
 }'
 
 ####################################################
 #
-# Provision sensors for Store 001
+# Provision actuators for Farm 001
 #
 
 curl -s -o /dev/null -X POST \
@@ -128,209 +191,41 @@ curl -s -o /dev/null -X POST \
   -d '{
  "devices": [
    {
-     "device_id":   "motion001",
-     "entity_name": "Motion:001",
-     "entity_type": "Motion",
+     "device_id":   "temperature001",
+     "entity_name": "urn:ngsi-ld:Device:temperature001",
+     "entity_type": "TemperatureSensor",
      "static_attributes": [
-         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"}
+         {"name": "controllingAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:farm001"}
      ]
    },
    {
-      "device_id": "bell001",
-      "entity_name": "Bell:001",
-      "entity_type": "Bell",
-      "endpoint": "http://iot-sensors:3001/iot/bell001",
+      "device_id": "water001",
+      "entity_name": "urn:ngsi-ld:Device:water001",
+      "entity_type": "Water",
+      "endpoint": "http://context-provider:3001/iot/water001",
       "static_attributes": [
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"}
+        {"name": "controllingAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:barn001"}
       ]
     },
     {
-      "device_id": "door001",
-      "entity_name": "Door:001",
-      "entity_type": "Door",
-      "endpoint": "http://iot-sensors:3001/iot/door001",
+      "device_id": "filling001",
+      "entity_name": "urn:ngsi-ld:Device:filling001",
+      "entity_type": "FillingSensor",
+      "endpoint": "http://context-provider:3001/iot/filling001",
       "static_attributes": [
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"}
-       ]
+        {"name": "controllingAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:farm001"}
+      ]
     }, 
     {
-      "device_id": "lamp001",
-      "entity_name": "Lamp:001",
-      "entity_type": "Lamp",
-      "endpoint": "http://iot-sensors:3001/iot/lamp001",
-       "static_attributes": [
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"},
-          {"name":"location", "type":"geo:point", "value":"52.5547,13.3986"}
+      "device_id": "tractor001",
+      "entity_name": "urn:ngsi-ld:Device:tractor001",
+      "entity_type": "Tractor",
+      "endpoint": "http://context-provider:3001/iot/tractor001",
+      "static_attributes": [
+          {"name": "controllingAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:farm001"}
       ]
     }
   ]
 }
 '
-
-####################################################
-#
-#
-# Provision sensors for Store 002
-#
-
-curl -s -o /dev/null -X POST \
-  'http://iot-agent:4041/iot/devices' \
-  -H 'Content-Type: application/json' \
-  -H 'fiware-service: openiot' \
-  -H 'fiware-servicepath: /' \
-  -d '{
- "devices": [
-   {
-     "device_id":   "motion002",
-     "entity_name": "Motion:002",
-     "entity_type": "Motion",
-     "static_attributes": [
-        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
-     ]
-   },
-   {
-      "device_id": "bell002",
-      "entity_name": "Bell:002",
-      "entity_type": "Bell",
-      "endpoint": "http://iot-sensors:3001/iot/bell002",
-      "static_attributes": [
-        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
-      ]
-    },
-    {
-      "device_id": "door002",
-      "entity_name": "Door:002",
-      "entity_type": "Door",
-      "endpoint": "http://iot-sensors:3001/iot/door002",
-      "static_attributes": [
-        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
-      ]
-    },
-    {
-      "device_id": "lamp002",
-      "entity_name": "Lamp:002",
-      "entity_type": "Lamp",
-      "endpoint": "http://iot-sensors:3001/iot/lamp002",
-      "static_attributes": [
-        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"},
-        {"name":"location", "type":"geo:point", "value":"52.5075,13.3903"}
-      ]
-    }
-  ]
-}
-'
-
-
-
-
-
-####################################################
-#
-#
-# Provision sensors for Store 3
-#
-
-curl -s -o /dev/null -X POST \
-  'http://iot-agent:4041/iot/devices' \
-  -H 'Content-Type: application/json' \
-  -H 'fiware-service: openiot' \
-  -H 'fiware-servicepath: /' \
-  -d '{
- "devices": [
-   {
-     "device_id":   "motion003",
-     "entity_name": "Motion:003",
-     "entity_type": "Motion",
-     "static_attributes": [
-        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
-     ]
-   },
-   {
-      "device_id": "bell003",
-      "entity_name": "Bell:003",
-      "entity_type": "Bell",
-      "endpoint": "http://iot-sensors:3001/iot/bell003",
-      "static_attributes": [
-        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
-      ]
-    },
-    {
-      "device_id": "door003",
-      "entity_name": "Door:003",
-      "entity_type": "Door",
-      "endpoint": "http://iot-sensors:3001/iot/door003",
-      "static_attributes": [
-        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
-      ]
-    },
-    {
-      "device_id": "lamp003",
-      "entity_name": "Lamp:003",
-      "entity_type": "Lamp",
-      "endpoint": "http://iot-sensors:3001/iot/lamp003",
-      "static_attributes": [
-        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"},
-        {"name":"location", "type":"geo:point", "value":"52.5031,13.4447"}
-      ]
-    }
-  ]
-}
-'
-
-
-
-
-####################################################
-#
-#
-# Provision sensors for Store 4
-#
-
-curl -s -o /dev/null -X POST \
-  'http://iot-agent:4041/iot/devices' \
-  -H 'Content-Type: application/json' \
-  -H 'fiware-service: openiot' \
-  -H 'fiware-servicepath: /' \
-  -d '{
- "devices": [
-   {
-     "device_id":   "motion004",
-     "entity_name": "Motion:004",
-     "entity_type": "Motion",
-     "static_attributes": [
-        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
-     ]
-   },
-   {
-      "device_id": "bell004",
-      "entity_name": "Bell:004",
-      "entity_type": "Bell",
-      "endpoint": "http://iot-sensors:3001/iot/bell004",
-      "static_attributes": [
-        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
-      ]
-    },
-    {
-      "device_id": "door004",
-      "entity_name": "Door:004",
-      "entity_type": "Door",
-      "endpoint": "http://iot-sensors:3001/iot/door004",
-      "static_attributes": [
-        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
-      ]
-    },
-    {
-      "device_id": "lamp004",
-      "entity_name": "Lamp:004",
-      "entity_type": "Lamp",
-      "endpoint": "http://iot-sensors:3001/iot/lamp004",
-      "static_attributes": [
-        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"},
-        {"name":"location", "type":"geo:point", "value":"52.5208,13.4094"}
-      ]
-    }
-  ]
-}
-'
-
 echo -e " \033[1;32mdone\033[0m"
