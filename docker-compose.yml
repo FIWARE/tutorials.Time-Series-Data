@@ -61,7 +61,7 @@ services:
       - "${IOTA_SOUTH_PORT}:${IOTA_SOUTH_PORT}" # localhost:7896
     environment:
       - IOTA_CB_HOST=orion # name of the context broker to update context
-      - IOTA_CB_PORT=${ORION_PORT} # port the context broker listens on to update context
+      - IOTA_CB_PORT=${ORION_LD_PORT} # port the context broker listens on to update context
       - IOTA_NORTH_PORT=${IOTA_NORTH_PORT}
       - IOTA_REGISTRY_TYPE=mongodb #Whether to hold IoT device info in memory or in a database
       - IOTA_LOG_LEVEL=DEBUG # The log level of the IoT Agent
