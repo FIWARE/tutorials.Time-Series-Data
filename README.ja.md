@@ -324,14 +324,16 @@ Bash スクリプトを実行することによって、コマンドラインか
 
 ```yaml
   crate-db:
-    image: crate:3.1.2
+    image: crate:4.1.4
     hostname: crate-db
     ports:
         - "4200:4200"
         - "4300:4300"
     command:
-        crate -Clicense.enterprise=false -Cauth.host_based.enabled=false  -Ccluster.name=democluster
+        crate -Cauth.host_based.enabled=false  -Ccluster.name=democluster
         -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+    environment:
+      - CRATE_HEAP_SIZE=2g
 ```
 
 <a name="quantumleap-configuration"></a>

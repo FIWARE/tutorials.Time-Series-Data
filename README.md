@@ -4,8 +4,7 @@
 [![FIWARE Core Context Management](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/core.svg)](https://github.com/FIWARE/catalogue/blob/master/core/README.md)
 [![License: MIT](https://img.shields.io/github/license/fiware/tutorials.Time-Series-Data.svg)](https://opensource.org/licenses/MIT)
 [![Support badge](https://img.shields.io/badge/tag-fiware-orange.svg?logo=stackoverflow)](https://stackoverflow.com/questions/tagged/fiware)
- <br/>
-[![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
+<br/> [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
 
 This tutorial is an introduction to [FIWARE QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) - a generic
 enabler which is used to persist context data into a **CrateDB** database. The tutorial activates the IoT sensors
@@ -130,8 +129,8 @@ available licensed under the Apache License 2.0. More information can be found a
 
 For the purpose of this tutorial, a series of dummy IoT devices have been created, which will be attached to the context
 broker. Details of the architecture and protocol used can be found in the
-[IoT Sensors tutorial](https://github.com/FIWARE/tutorials.IoT-Sensors/tree/NGSI-v2). The state of each device can be seen on the
-UltraLight device monitor web page found at: `http://localhost:3000/device/monitor`
+[IoT Sensors tutorial](https://github.com/FIWARE/tutorials.IoT-Sensors/tree/NGSI-v2). The state of each device can be
+seen on the UltraLight device monitor web page found at: `http://localhost:3000/device/monitor`
 
 ![FIWARE Monitor](https://fiware.github.io/tutorials.Time-Series-Data/img/device-monitor.png)
 
@@ -257,7 +256,7 @@ Grafana analytics tool. The rest of the system providing the context data has be
 
 ```yaml
 crate-db:
-    image: crate:3.1.2
+    image: crate:4.1.4
     hostname: crate-db
     ports:
         - "4200:4200"
@@ -265,7 +264,16 @@ crate-db:
     command:
         crate -Clicense.enterprise=false -Cauth.host_based.enabled=false  -Ccluster.name=democluster
         -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+    environment:
+        - CRATE_HEAP_SIZE=2g
 ```
+
+If CrateDB exits immediately with a
+`max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]` error, this can be fixed
+by running the `sudo sysctl -w vm.max_map_count=262144` command on the host machine. For further information look within
+the CrateDB [documentation](https://crate.io/docs/crate/howtos/en/latest/admin/bootstrap-checks.html#bootstrap-checks)
+and Docker
+[troubleshooting guide](https://crate.io/docs/crate/howtos/en/latest/deployment/containers/docker.html#troubleshooting)
 
 ## QuantumLeap Configuration
 

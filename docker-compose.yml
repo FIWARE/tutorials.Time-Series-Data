@@ -136,7 +136,7 @@ services:
         mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1    
 
   crate-db:
-    image: crate:${CRATE_VERSION:-3.1.2}
+    image: crate:${CRATE_VERSION}
     hostname: crate-db
     container_name: db-crate
     ports:
@@ -144,7 +144,9 @@ services:
       - "4200:4200"
       # Transport protocol
       - "4300:4300"
-    command: crate -Clicense.enterprise=false -Cauth.host_based.enabled=false  -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+    command: crate -Cauth.host_based.enabled=false  -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+    environment:
+      - CRATE_HEAP_SIZE=2g # see https://crate.io/docs/crate/howtos/en/latest/deployment/containers/docker.html#troubleshooting
     volumes:
       - crate-db:/data
 
