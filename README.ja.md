@@ -4,7 +4,6 @@
 [![FIWARE Core Context Management](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/core.svg)](https://github.com/FIWARE/catalogue/blob/master/core/README.md)
 [![License: MIT](https://img.shields.io/github/license/fiware/tutorials.Time-Series-Data.svg)](https://opensource.org/licenses/MIT)
 [![Support badge](https://img.shields.io/badge/tag-fiware-orange.svg?logo=stackoverflow)](https://stackoverflow.com/questions/tagged/fiware)
-
 <br/> [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
 
 <!-- prettier-ignore -->
@@ -335,6 +334,13 @@ Bash スクリプトを実行することによって、コマンドラインか
     environment:
       - CRATE_HEAP_SIZE=2g
 ```
+
+CrateDB が `max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]`
+エラーで直ぐに終了する場合、ホストマシンで `sudo sysctl -w vm.max_map_count=262144` コマンドを実行する
+ことで修正できます。詳細については、CrateDB の
+[ドキュメント](https://crate.io/docs/crate/howtos/en/latest/admin/bootstrap-checks.html#bootstrap-checks)
+と、Docker [トラブルシューティング・ガイド](https://crate.io/docs/crate/howtos/en/latest/deployment/containers/docker.html#troubleshooting)
+を参照してください。
 
 <a name="quantumleap-configuration"></a>
 
