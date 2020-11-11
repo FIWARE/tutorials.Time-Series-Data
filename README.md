@@ -849,7 +849,10 @@ curl -X POST \
 ```json
 {
     "cols": ["table_schema", "table_name"],
-    "rows": [["mtopeniot", "etmotion"], ["mtopeniot", "etlamp"]],
+    "rows": [
+        ["mtopeniot", "etmotion"],
+        ["mtopeniot", "etlamp"]
+    ],
     "rowcount": 2,
     "duration": 14.2762
 }
@@ -1053,7 +1056,7 @@ The basic processing consists of two-step - retrieval and attribute mapping, sam
 
 ```javascript
 function readCrateLampLuminosity(id, aggMethod) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         const sqlStatement =
             "SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, " +
             aggMethod +
@@ -1083,7 +1086,7 @@ function crateToTimeSeries(crateResponse, aggMethod, hexColor) {
     const color = [];
 
     if (crateResponse && crateResponse.rows && crateResponse.rows.length > 0) {
-        _.forEach(crateResponse.rows, element => {
+        _.forEach(crateResponse.rows, (element) => {
             const date = moment(element[0]);
             data.push({ t: date, y: element[1] });
             labels.push(date.format("HH:mm"));
