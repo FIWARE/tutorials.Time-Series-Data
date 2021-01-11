@@ -78,7 +78,9 @@ curl -s -o /dev/null -X POST \
      ],
      "attributes": [
         {"object_id": "s", "name": "state", "type":"Text"},
-        {"object_id": "l", "name": "luminosity", "type":"Integer"}
+        {"object_id": "l", "name": "luminosity", "type":"Integer",
+          "metadata": {"unitCode": {"type": "Text","value": "CDL"}}
+        }
      ],
      "static_attributes": [
           {"name": "category", "type":"Text", "value": ["actuator","sensor"]},

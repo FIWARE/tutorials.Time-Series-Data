@@ -14,6 +14,7 @@ if (( $# != 1 )); then
 fi
 
 loadData () {
+	waitForMongo
 	addDatabaseIndex
 	waitForOrion
 	docker run --rm -v $(pwd)/import-data:/import-data \
@@ -70,10 +71,19 @@ addDatabaseIndex () {
 	echo -e " \033[1;32mdone\033[0m"
 }
 
+waitForMongo () {
+	echo -e "\n⏳ Waiting for \033[1mMongoDB\033[0m to be available\n"
+	while ! [ `docker inspect --format='{{.State.Health.Status}}' db-mongo` == "healthy" ]
+	do 
+		sleep 1
+	done
+}
+
 waitForOrion () {
 	echo -e "\n⏳ Waiting for \033[1;34mOrion\033[0m to be available\n"
-	while [ `docker run --network fiware_default --rm curlimages/curl -s -o /dev/null -w %{http_code} 'http://orion:1026/version'` -eq 000 ]
-	do 
+
+	while ! [ `docker inspect --format='{{.State.Health.Status}}' fiware-orion` == "healthy" ]
+	do
 	  echo -e "Context Broker HTTP state: " `curl -s -o /dev/null -w %{http_code} 'http://localhost:1026/version'` " (waiting for 200)"
 	  sleep 1
 	done
