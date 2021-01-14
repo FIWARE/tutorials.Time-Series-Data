@@ -77,7 +77,8 @@ services:
       - IOTA_HTTP_PORT=${IOTA_SOUTH_PORT} # The port used for device traffic over HTTP
       - IOTA_PROVIDER_URL=http://iot-agent:${IOTA_NORTH_PORT}
     healthcheck:
-      test: curl --fail -s http://iot-agent:${IOTA_NORTH_PORT}/iot/about || exit 1
+      interval: 5s
+
 
   # Tutorial acts as a series of dummy IoT Sensors over HTTP
   tutorial:
