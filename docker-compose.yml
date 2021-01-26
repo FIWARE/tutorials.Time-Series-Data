@@ -30,14 +30,14 @@ services:
       - default
     ports:
       - "${ORION_LD_PORT}:${ORION_LD_PORT}" # localhost:1026
-    command: -dbhost mongo-db -logLevel DEBUG
+    command: -dbhost mongo-db -logLevel DEBUG -forwarding
     healthcheck:
       test: curl --fail -s http://orion:${ORION_LD_PORT}/version || exit 1
       interval: 5s
 
   # Quantum Leap is persisting Short Term History to Crate-DB
   quantumleap:
-    image: smartsdk/quantumleap:${QUANTUMLEAP_VERSION}
+    image: smartsdk/quantumleap #:${QUANTUMLEAP_VERSION}
     hostname: quantumleap
     container_name: fiware-quantumleap
     ports:
