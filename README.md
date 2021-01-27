@@ -72,8 +72,9 @@ The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also a
 >
 > — Emily Dickinson
 
-FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) is an time-based data-persistence generic enabler created
-specifically to persist and query time-series database (currently CrateDB and TimescaleDB). The component can respond to NGSI-v2 or NGSI-LD subscriptions.
+FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) is an time-based data-persistence generic enabler
+created specifically to persist and query time-series database (currently CrateDB and TimescaleDB). The component can
+respond to NGSI-v2 or NGSI-LD subscriptions.
 
 [CrateDB](https://crate.io/) is a distributed SQL DBMS designed for use with the internet of Things. It is capable of
 ingesting a large number of data points per second and can be queried in real-time. The database is designed for the
@@ -84,7 +85,6 @@ the creation of graphs and dashboards displaying trends over time.
 and space (partitioning key), yet retains the standard PostgreSQL interface. In other words, TimescaleDB exposes what
 look like regular tables, but are actually only an abstraction (or a virtual view) of many individual tables comprising
 the actual data. In combination with [PostGIS](https://postgis.net/) extension can support geo-timeseries.
-
 
 ## Analyzing time series data
 
@@ -132,13 +132,13 @@ Therefore the overall architecture will consist of the following elements:
 -   The **FIWARE Generic Enablers**:
 
     -   The [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/) which will receive requests using
-    [NGSI-LD](https://forge.etsi.org/swagger/ui/?url=https://forge.etsi.org/gitlab/NGSI-LD/NGSI-LD/raw/master/spec/updated/full_api.json)
-    -   The FIWARE [IoT Agent for UltraLight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/) which will receive
-    southbound requests using
-    [NGSI-LD](https://forge.etsi.org/swagger/ui/?url=https://forge.etsi.org/gitlab/NGSI-LD/NGSI-LD/raw/master/spec/updated/full_api.json)
-    and convert them to
-    [UltraLight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
-    commands for the devices
+        [NGSI-LD](https://forge.etsi.org/swagger/ui/?url=https://forge.etsi.org/gitlab/NGSI-LD/NGSI-LD/raw/master/spec/updated/full_api.json)
+    -   The FIWARE [IoT Agent for UltraLight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/) which will
+        receive southbound requests using
+        [NGSI-LD](https://forge.etsi.org/swagger/ui/?url=https://forge.etsi.org/gitlab/NGSI-LD/NGSI-LD/raw/master/spec/updated/full_api.json)
+        and convert them to
+        [UltraLight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
+        commands for the devices
     -   FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) subscribed to context changes and
         persisting them into a **CrateDB** database
 
@@ -250,9 +250,9 @@ crate-db:
 
 If CrateDB exits immediately with a
 `max virtual memory areas vm.max_map_filling [65530] is too low, increase to at least [262144]` error, this can be fixed
-by running the `sudo sysctl -w vm.max_map_filling=262144` command on the host machine. For further information look within
-the CrateDB [documentation](https://crate.io/docs/crate/howtos/en/latest/admin/bootstrap-checks.html#bootstrap-checks)
-and Docker
+by running the `sudo sysctl -w vm.max_map_filling=262144` command on the host machine. For further information look
+within the CrateDB
+[documentation](https://crate.io/docs/crate/howtos/en/latest/admin/bootstrap-checks.html#bootstrap-checks) and Docker
 [troubleshooting guide](https://crate.io/docs/crate/howtos/en/latest/deployment/containers/docker.html#troubleshooting)
 
 ## QuantumLeap Configuration
@@ -312,10 +312,10 @@ and thermostat.
 
 ![](https://fiware.github.io/tutorials.Subscriptions/img/fmis.png)
 
-Remove some hay from the barn, update the thermostat and open the device monitor page at `http://localhost:3000/device/monitor` and
-start a **Tractor** and switch on a **Smart Lamp**. This can be done by selecting an appropriate command from the
-drop down list and pressing the `send` button. The stream of measurements coming from the devices can then be seen on
-the same page.
+Remove some hay from the barn, update the thermostat and open the device monitor page at
+`http://localhost:3000/device/monitor` and start a **Tractor** and switch on a **Smart Lamp**. This can be done by
+selecting an appropriate command from the drop down list and pressing the `send` button. The stream of measurements
+coming from the devices can then be seen on the same page.
 
 ## Setting up Subscriptions
 
@@ -333,15 +333,16 @@ able to aggregate the results.
 
 This is done by making a POST request to the `/ngsi-ld/v1/subscriptions/` endpoint of the **Orion-LD Context Broker**.
 
--   The `NGSILD-Tenant` headers is used to filter the subscription to only listen to
-    measurements from the attached IoT Sensors
--   The `entities`  `type` in the request body ensures that **QuantumLeap** will be informed of all **FillingSensor** data
-    changes.
+-   The `NGSILD-Tenant` headers is used to filter the subscription to only listen to measurements from the attached IoT
+    Sensors
+-   The `entities` `type` in the request body ensures that **QuantumLeap** will be informed of all **FillingSensor**
+    data changes.
 -   The `notification` URL must match the exposed port.
 
-With NGSI-LD the `observedAt` _property-of-property_ holds the timestamp of the measure.  Because the attribute being monitored contains this   _property-of-property_,  the  the `time_index` column within the **CrateDB** database will match the data found
-within the **MongoDB** database used by the **Orion Context Broker** rather than using the creation time of the record
-within the **CrateDB** itself.
+With NGSI-LD the `observedAt` _property-of-property_ holds the timestamp of the measure. Because the attribute being
+monitored contains this _property-of-property_, the `time_index` column within the **CrateDB** database will match the
+data found within the **MongoDB** database used by the **Orion Context Broker** rather than using the creation time of
+the record within the **CrateDB** itself.
 
 #### :one: Request:
 
@@ -368,15 +369,15 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 
 ### Sample GPS Readings
 
-The heart rate and GPS reading of the Animal Collars on the animals on the farm are constantly changing, we only need to sample the values to be able to work out
-relevant statistics such as minimum and maximum values and rates of change.
+The heart rate and GPS reading of the Animal Collars on the animals on the farm are constantly changing, we only need to
+sample the values to be able to work out relevant statistics such as minimum and maximum values and rates of change.
 
-This is done by making a POST request to the `/ngsi-ld/v1/subscriptions/` endpoint of the **Orion Context Broker** and including
-the `throttling` attribute in the request body.
+This is done by making a POST request to the `/ngsi-ld/v1/subscriptions/` endpoint of the **Orion Context Broker** and
+including the `throttling` attribute in the request body.
 
--   The `NGSILD-Tenant` headers is used to filter the subscription to only listen to
-    measurements from the attached IoT Sensors
--   The `entities`  `type` in the request body ensures that **QuantumLeap** will be informed of all **Device** data
+-   The `NGSILD-Tenant` headers is used to filter the subscription to only listen to measurements from the attached IoT
+    Sensors
+-   The `entities` `type` in the request body ensures that **QuantumLeap** will be informed of all **Device** data
     changes.
 -   The `notification` URL must match the exposed port.
 -   The `throttling` value defines the rate that changes are sampled.
@@ -422,51 +423,47 @@ curl -X GET \
 
 ```json
 [
-  {
-    "id": "urn:ngsi-ld:Subscription:601157b4bc8ec912978db6e4",
-    "type": "Subscription",
-    "description": "Notify me of all feedstock changes",
-    "entities": [
-      {
-        "type": "FillingSensor"
-      }
-    ],
-    "watchedAttributes": ["filling"],
-    "notification": {
-      "attributes": ["filling"],
-      "format": "normalized",
-      "endpoint": {
-        "uri": "http://quantumleap:8668/v2/notify",
-        "accept": "application/json"
-      }
+    {
+        "id": "urn:ngsi-ld:Subscription:601157b4bc8ec912978db6e4",
+        "type": "Subscription",
+        "description": "Notify me of all feedstock changes",
+        "entities": [
+            {
+                "type": "FillingSensor"
+            }
+        ],
+        "watchedAttributes": ["filling"],
+        "notification": {
+            "attributes": ["filling"],
+            "format": "normalized",
+            "endpoint": {
+                "uri": "http://quantumleap:8668/v2/notify",
+                "accept": "application/json"
+            }
+        },
+        "@context": "http://context-provider:3000/data-models/ngsi-context.jsonld"
     },
-    "@context": "http://context-provider:3000/data-models/ngsi-context.jsonld"
-  },
-  {
-    "id": "urn:ngsi-ld:Subscription:601157e3bc8ec912978db6e5",
-    "type": "Subscription",
-    "description": "Notify me of animal locations",
-    "entities": [
-      {
-        "type": "Device"
-      }
-    ],
-    "watchedAttributes": ["location", "state", "heartRate"],
-    "notification": {
-      "attributes": [
-        "location",
-        "state",
-        "heartRate"
-      ],
-      "format": "normalized",
-      "endpoint": {
-        "uri": "http://quantumleap:8668/v2/notify",
-        "accept": "application/json"
-      }
-    },
-    "throttling": 10,
-    "@context": "http://context-provider:3000/data-models/ngsi-context.jsonld"
-  }
+    {
+        "id": "urn:ngsi-ld:Subscription:601157e3bc8ec912978db6e5",
+        "type": "Subscription",
+        "description": "Notify me of animal locations",
+        "entities": [
+            {
+                "type": "Device"
+            }
+        ],
+        "watchedAttributes": ["location", "state", "heartRate"],
+        "notification": {
+            "attributes": ["location", "state", "heartRate"],
+            "format": "normalized",
+            "endpoint": {
+                "uri": "http://quantumleap:8668/v2/notify",
+                "accept": "application/json"
+            }
+        },
+        "throttling": 10,
+        "@context": "http://context-provider:3000/data-models/ngsi-context.jsonld"
+    }
 ]
 ```
 
@@ -482,8 +479,9 @@ its API via `http://localhost:8668/v2/ui`.
 Now, to check QuantumLeap is persisting values, let's get started with our first query. This example shows the first 3
 sampled `filling` values from `urn:ngsi-ld:Device:filling001`.
 
-Note the use of  the `Fiware-Service` header which is the NGSI-v2 equivalent of `NGSILD-Tenant`. These are required only when data are pushed to orion
-using such headers (in multitenancy scenarios). Failing to align these headers will result in no data being returned.
+Note the use of the `Fiware-Service` header which is the NGSI-v2 equivalent of `NGSILD-Tenant`. These are required only
+when data are pushed to orion using such headers (in multitenancy scenarios). Failing to align these headers will result
+in no data being returned.
 
 #### :four: Request:
 
@@ -638,8 +636,8 @@ curl -X GET \
 
 ### QuantumLeap API - List the Maximum Value over a Time Period
 
-This example shows maximum `filling` value of `urn:ngsi-ld:Device:filling001` that occurred between from `2018-06-27T09:00:00` to
-`2018-06-30T23:59:59`.
+This example shows maximum `filling` value of `urn:ngsi-ld:Device:filling001` that occurred between from
+`2018-06-27T09:00:00` to `2018-06-30T23:59:59`.
 
 #### :nine: Request:
 
@@ -667,8 +665,9 @@ curl -X GET \
 ### QuantumLeap API - List the latest N Sampled Values of Devices near a Point
 
 This example shows the latest heart rate sampled `bpm` values of animal that are within a 5 km radius from
-`52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, Berlin, Germany). If you have turned on a device the animals will wander around the Berlin Tiergarten and on
-the device monitor page, you should be able to see data for `urn:ngsi-ld:Device:cow001` and `urn:ngsi-ld:Device:pig001` .
+`52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, Berlin, Germany). If you have turned on a device the animals will
+wander around the Berlin Tiergarten and on the device monitor page, you should be able to see data for
+`urn:ngsi-ld:Device:cow001` and `urn:ngsi-ld:Device:pig001` .
 
 > :information_source: **Note:** Geographical queries are only available starting from version `0.5` of QuantumLeap
 > which implements the full set of queries detailed in the Geographical Queries section of the
@@ -709,9 +708,9 @@ curl -X GET \
 
 ### QuantumLeap API - List the latest N Sampled Values of Devices in an Area
 
-This example shows the latest four sampled `filling` values of fillins sensors that are inside a square of side 200 m centred
-at `52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, Berlin, Germany). Even if you have turned on all the filling sensors
-available on the device monitor page, you should only see data for `urn:ngsi-ld:Device:filling001`.
+This example shows the latest four sampled `filling` values of fillins sensors that are inside a square of side 200 m
+centred at `52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, Berlin, Germany). Even if you have turned on all the
+filling sensors available on the device monitor page, you should only see data for `urn:ngsi-ld:Device:filling001`.
 
 > :information_source: **Note:** Geographical queries are only available starting from version `0.5` of QuantumLeap
 > which implements the full set of queries detailed in the Geographical Queries section of the
@@ -789,20 +788,16 @@ curl -iX POST \
 
 ```json
 {
-  "cols": [
-    "schema_name"
-  ],
-  "rows": [
-    ["blob"], ["doc"], ["information_schema"], ["mtopeniot"], ["pg_catalog"], ["sys"]
-  ],
-  "rowcount": 6,
-  "duration": 20.3418
+    "cols": ["schema_name"],
+    "rows": [["blob"], ["doc"], ["information_schema"], ["mtopeniot"], ["pg_catalog"], ["sys"]],
+    "rowcount": 6,
+    "duration": 20.3418
 }
 ```
 
 Schema names are formed with the `mt` prefix followed by `NGSILD-Tenant` header in lower case. The IoT Agent is
-forwarding measurements from the dummy IoT devices, with the `NGSILD-Tenant` header `openiot`. These are being
-persisted under the `mtopeniot` schema.
+forwarding measurements from the dummy IoT devices, with the `NGSILD-Tenant` header `openiot`. These are being persisted
+under the `mtopeniot` schema.
 
 If the `mtopeniot` does not exist, then the subscription to **QuantumLeap** has not been set up correctly. Check that
 the subscription exists, and has been configured to send data to the correct location.
@@ -824,13 +819,17 @@ curl -X POST \
 ```json
 {
     "cols": ["table_schema", "table_name"],
-    "rows": [["mtopeniot", "etfillingsensor"], ["mtopeniot", "etdevice"]],
+    "rows": [
+        ["mtopeniot", "etfillingsensor"],
+        ["mtopeniot", "etdevice"]
+    ],
     "rowcount": 3,
     "duration": 14.2762
 }
 ```
 
-The response shows that both **Filling Sensor** data and **Animal Collar Device** data are being persisted in the database.
+The response shows that both **Filling Sensor** data and **Animal Collar Device** data are being persisted in the
+database.
 
 ### CrateDB API - List the first N Sampled Values
 
@@ -854,7 +853,7 @@ curl -iX POST \
     "rows": [
         ["urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 0.87, 1530262765000],
         ["urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 0.65, 1530262770000],
-        ["urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 0.60, 1530262775000]
+        ["urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 0.6, 1530262775000]
     ],
     "rowcount": 3,
     "duration": 21.8338
@@ -883,7 +882,7 @@ curl -iX POST \
     "rows": [
         [0.75, "urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 1530262791452],
         [0.63, "urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 1530262792469],
-        [0.50, "urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 1530262793472]
+        [0.5, "urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 1530262793472]
     ],
     "rowcount": 3,
     "duration": 54.215
@@ -913,7 +912,7 @@ curl -iX POST \
     "rows": [
         [0.51, "urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 1530263896550],
         [0.43, "urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 1530263894491],
-        [0.40, "urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 1530263892483]
+        [0.4, "urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 1530263892483]
     ],
     "rowcount": 3,
     "duration": 18.591
@@ -1028,7 +1027,7 @@ The basic processing consists of two-step - retrieval and attribute mapping, sam
 
 ```javascript
 function readCrateSensorfilling(id, aggMethod) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         const sqlStatement =
             "SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, " +
             aggMethod +
@@ -1042,7 +1041,7 @@ function readCrateSensorfilling(id, aggMethod) {
             url: crateUrl,
             headers: { "Content-Type": "application/json" },
             body: { stmt: sqlStatement },
-            json: true
+            json: true,
         };
         request(options, (error, response, body) => {
             return error ? reject(error) : resolve(body);
@@ -1058,7 +1057,7 @@ function crateToTimeSeries(crateResponse, aggMethod, hexColor) {
     const color = [];
 
     if (crateResponse && crateResponse.rows && crateResponse.rows.length > 0) {
-        _.forEach(crateResponse.rows, element => {
+        _.forEach(crateResponse.rows, (element) => {
             const date = moment(element[0]);
             data.push({ t: date, y: element[1] });
             labels.push(date.format("HH:mm"));
@@ -1069,7 +1068,7 @@ function crateToTimeSeries(crateResponse, aggMethod, hexColor) {
     return {
         labels,
         data,
-        color
+        color,
     };
 }
 ```
