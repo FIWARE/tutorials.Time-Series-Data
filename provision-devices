@@ -100,8 +100,8 @@ curl -s -o /dev/null -X POST \
         {"object_id": "bpm","type": "Integer","name": "heartRate",
         "metadata": {"unitCode": {"type": "Text","value": "5K"}}
         },
-        {"object_id": "s", "name": "status", "type": "String"},
-        {"object_id": "gps", "name": "location", "type": "geo:point"}
+        {"object_id": "s", "name": "status", "type": "Integer"},
+        {"object_id": "gps", "name": "locationx", "type": "geo:point"}
       ],
       "static_attributes": [
         {"name": "description", "type":"Property", "value": "Animal Collar"},
@@ -122,7 +122,8 @@ curl -s -o /dev/null -X POST \
         {"object_id": "bpm","type": "Integer","name": "heartRate",
         "metadata": {"unitCode": {"type": "Text","value": "5K"}}
         },
-        {"object_id": "s", "name": "status", "type": "String"},
+        {"object_id": "s", "name": "status", "type": "Integer"},
+        {"object_id": "d", "name": "statusDescription", "type": "Property"},
         {"object_id": "gps", "name": "location", "type": "geo:point"}
       ],
       "static_attributes": [
@@ -160,7 +161,8 @@ curl -s -o /dev/null -X POST \
      "transport":   "HTTP",
      "timezone":    "Europe/Berlin",
      "attributes": [
-        {"object_id": "s", "name": "status", "type": "Property"},
+        {"object_id": "s", "name": "status", "type": "Integer"},
+        {"object_id": "d", "name": "statusDescription", "type": "Property"},
         {"object_id": "gps", "name": "location", "type": "geo:point"}
       ],
      "commands": [
