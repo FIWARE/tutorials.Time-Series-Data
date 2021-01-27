@@ -392,9 +392,9 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
   "description": "Notify me of animal locations",
   "type": "Subscription",
   "entities": [{"type": "Device"}],
-  "watchedAttributes": ["location", "state", "heartRate"],
+  "watchedAttributes": ["location", "status", "heartRate"],
   "notification": {
-    "attributes": ["location", "state", "heartRate"],
+    "attributes": ["location", "status", "heartRate"],
     "format": "normalized",
     "endpoint": {
       "uri": "http://quantumleap:8668/v2/notify",
@@ -415,7 +415,7 @@ notification for each was sent).
 
 ```console
 curl -X GET \
-  'http://localhost:1026/v2/ngsi-ld/v1/subscriptions/' \
+  'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
   -H 'NGSILD-Tenant: openiot'
 ```
 
@@ -664,8 +664,8 @@ curl -X GET \
 
 ### QuantumLeap API - List the latest N Sampled Values of Devices near a Point
 
-This example shows the latest heart rate sampled `bpm` values of animal that are within a 5 km radius from
-`52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, Berlin, Germany). If you have turned on a device the animals will
+This example shows the latest heart rate sampled `heartRate` values of animal that are within a 5 km radius from
+`52°31'04.8"N 13°21'25.2"E` (Tiergarten, Berlin, Germany). If you have turned on any device the animals will
 wander around the Berlin Tiergarten and on the device monitor page, you should be able to see data for
 `urn:ngsi-ld:Device:cow001` and `urn:ngsi-ld:Device:pig001` .
 
@@ -677,7 +677,7 @@ wander around the Berlin Tiergarten and on the device monitor page, you should b
 
 ```console
 curl -X GET \
-  'http://localhost:8668/v2/types/Device/attrs/bpm?lastN=4&georel=near;maxDistance:5000&geometry=point&coords=52.5547,13.3986' \
+  'http://localhost:8668/v2/types/Device/attrs/heartRate?lastN=4&georel=near;maxDistance:5000&geometry=point&coords=52.518,13.357' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
@@ -687,22 +687,28 @@ curl -X GET \
 
 ```json
 {
-    "data": {
-        "attrName": "bpm",
-        "entities": [
-            {
-                "entityId": "urn:ngsi-ld:Device:cow001",
-                "index": ["2018-12-13T16:35:58.284", "2018-12-13T16:36:58.216"],
-                "values": [63, 61]
-            },
-            {
-                "entityId": "urn:ngsi-ld:Device:pig001",
-                "index": ["2018-12-13T16:35:04.351", "2018-12-13T16:36:04.282"],
-                "values": [53, 55]
-            }
-        ],
-        "entityType": "Device"
+  "attrName": "heartRate",
+  "entities": [
+    {
+      "entityId": "urn:ngsi-ld:Device:cow001",
+      "index": [
+        "2021-01-27T16:52:05.925+00:00",
+        "2021-01-27T16:52:30.769+00:00"
+      ],
+      "values": [53, 50]
+    },
+    {
+      "entityId": "urn:ngsi-ld:Device:cow002",
+      "index": ["2021-01-27T16:50:50.792+00:00"],
+      "values": [53]
+    },
+    {
+      "entityId": "urn:ngsi-ld:Device:cow004",
+      "index": ["2021-01-27T16:51:55.798+00:00"],
+      "values": [51]
     }
+  ],
+  "entityType": "Device"
 }
 ```
 
@@ -932,7 +938,7 @@ to truncate and convert the timestamps into data which can be grouped.
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT DATE_FORMAT (DATE_TRUNC ('\''minute'\'', time_index)) AS minute, SUM (filling) AS sum FROM mtopeniot.etfillingSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' GROUP BY minute LIMIT 3"}'
+  -d '{"stmt":"SELECT DATE_FORMAT (DATE_TRUNC ('\''minute'\'', time_index)) AS minute, SUM (filling) AS sum FROM mtopeniot.etfillingsensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' GROUP BY minute LIMIT 3"}'
 ```
 
 #### Response:
@@ -1135,7 +1141,7 @@ In the map layout options set the following values:
 Click on `Queries` tab on the left and set as follows:
 
 -   Format as: **Table**
--   FROM **etfilling**
+-   FROM **etfillingsensor**
 -   Time column **time_index**
 -   Metric column **entity_id**
 -   Select value
