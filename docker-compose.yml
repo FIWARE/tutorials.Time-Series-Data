@@ -37,17 +37,24 @@ services:
 
   # Quantum Leap is persisting Short Term History to Crate-DB
   quantumleap:
-    image: smartsdk/quantumleap #:${QUANTUMLEAP_VERSION}
+    image: smartsdk/quantumleap:${QUANTUMLEAP_VERSION}
     hostname: quantumleap
     container_name: fiware-quantumleap
-    ports:
-      - "${QUANTUMLEAP_PORT}:${QUANTUMLEAP_PORT}"
     depends_on:
       - crate-db
+      - redis-db
+    networks:
+      - default
+    ports:
+      - "${QUANTUMLEAP_PORT}:${QUANTUMLEAP_PORT}"
     environment:
       - CRATE_HOST=crate-db
+      - REDIS_HOST=redis-db
+      - REDIS_PORT=${REDIS_PORT}
+      - LOGLEVEL=DEBUG
+
     healthcheck:
-      test: curl --fail -s http://quantumleap:${QUANTUMLEAP_PORT}/v2/version || exit 1
+      test: curl --fail -s http://quantumleap:${QUANTUMLEAP_PORT}/v2 || exit 1
   
   # IoT-Agent is configured for the UltraLight Protocol
   iot-agent:
@@ -139,6 +146,17 @@ services:
       interval: 5s
     
 
+  redis-db:
+    image: redis:${REDIS_VERSION}
+    hostname: redis-db
+    container_name: db-redis
+    networks:
+      - default
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}" # localhost:6379
+    volumes:
+      - redis-db:/data
+
   crate-db:
     image: crate:${CRATE_VERSION}
     hostname: crate-db
@@ -161,7 +179,7 @@ services:
     depends_on:
       - crate-db
     ports:
-      - "3003:${TUTORIAL_APP_PORT}"
+      - "3003:3000"
     environment:
       - GF_INSTALL_PLUGINS=https://github.com/orchestracities/grafana-map-plugin/archive/master.zip;grafana-map-plugin,grafana-clock-panel,grafana-worldmap-panel
     volumes:
@@ -176,4 +194,5 @@ networks:
 volumes:
   mongo-db: ~
   crate-db: ~
+  redis-db: ~
   grafana: ~
