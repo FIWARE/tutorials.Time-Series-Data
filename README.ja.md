@@ -742,7 +742,7 @@ QuantumLeap **バージョン >= 0.4.1** 以上が必要です。次のような
 
 ```console
 curl -X GET \
-  'http://localhost:8668/v2/version' \
+  'http://localhost:8668/version' \
   -H 'Accept: application/json'
 ```
 
@@ -791,7 +791,7 @@ curl -X GET \
 
 > ```console
 > curl -X GET \
->   'http://localhost:8668/v2/version' \
+>   'http://localhost:8668/version' \
 >   -H 'Accept: application/json'
 > ```
 

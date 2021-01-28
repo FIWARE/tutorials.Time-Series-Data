@@ -599,7 +599,7 @@ You need QuantumLeap **version >= 0.4.1**. You can check your version with a sim
 
 ```console
 curl -X GET \
-  'http://localhost:8668/v2/version' \
+  'http://localhost:8668/version' \
   -H 'Accept: application/json'
 ```
 
@@ -636,7 +636,7 @@ This example shows minimum `luminosity` values from `Lamp:001` over each minute.
 
 > ```console
 > curl -X GET \
->   'http://localhost:8668/v2/version' \
+>   'http://localhost:8668/version' \
 >   -H 'Accept: application/json'
 > ```
 

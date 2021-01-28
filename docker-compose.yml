@@ -45,10 +45,14 @@ services:
       - "${QUANTUMLEAP_PORT}:${QUANTUMLEAP_PORT}"
     depends_on:
       - crate-db
+      - redis-db
     environment:
       - CRATE_HOST=crate-db
+      - REDIS_HOST=redis-db
+      - REDIS_PORT=${REDIS_PORT}
+      - LOGLEVEL=DEBUG
     healthcheck:
-      test: curl --fail -s http://quantumleap:${QUANTUMLEAP_PORT}/v2/version || exit 1
+      test: curl --fail -s http://quantumleap:${QUANTUMLEAP_PORT}/version || exit 1
   
   # IoT-Agent is configured for the UltraLight Protocol
   iot-agent:
@@ -153,6 +157,17 @@ services:
     volumes:
       - crate-db:/data
 
+  redis-db:
+    image: redis:${REDIS_VERSION}
+    hostname: redis-db
+    container_name: db-redis
+    networks:
+      - default
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}" # localhost:6379
+    volumes:
+      - redis-db:/data
+
   # Other services
   grafana:
     image: grafana/grafana:6.1.6
@@ -175,4 +190,5 @@ networks:
 volumes:
   mongo-db: ~
   crate-db: ~
+  redis-db: ~
   grafana: ~
