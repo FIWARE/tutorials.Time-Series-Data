@@ -141,7 +141,7 @@ services:
       - mongo-db:/data
     healthcheck:
       test: |
-        host=`hostname --ip-address || echo '127.0.0.1'`; 
+        host=`hostname --i || echo '127.0.0.1'`; 
         mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1
       interval: 5s
     
@@ -156,6 +156,11 @@ services:
       - "${REDIS_PORT}:${REDIS_PORT}" # localhost:6379
     volumes:
       - redis-db:/data
+    healthcheck:
+      test: |
+        host=`hostname -i || echo '127.0.0.1'`;
+        ping=`redis-cli -h "$host" ping` && [ "$ping" = 'PONG' ] && echo 0 || echo 1
+      interval: 5s
 
   crate-db:
     image: crate:${CRATE_VERSION}

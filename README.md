@@ -356,7 +356,7 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
   "entities": [{"type": "FillingSensor"}],
   "watchedAttributes": ["filling"],
   "notification": {
-    "attributes": ["filling"],
+    "attributes": ["filling", "location"],
     "format": "normalized",
     "endpoint": {
       "uri": "http://quantumleap:8668/v2/notify",
