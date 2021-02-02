@@ -726,7 +726,7 @@ filling sensors available on the device monitor page, you should only see data f
 
 ```console
 curl -X GET \
-  'http://localhost:8668/v2/types/Device/attrs/bpm?lastN=4&georel=coveredBy&geometry=polygon&coords=52.5537,13.3996;52.5557,13.3996;52.5557,13.3976;52.5537,13.3976;52.5537,13.3996' \
+  'http://localhost:8668/v2/types/Device/attrs/heartRate?lastN=4&georel=coveredBy&geometry=polygon&coords=52.5537,13.3996;52.5557,13.3996;52.5557,13.3976;52.5537,13.3976;52.5537,13.3996' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot' \
   -H 'Fiware-ServicePath: /'
