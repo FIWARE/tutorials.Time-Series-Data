@@ -121,9 +121,11 @@ case "${command}" in
 		echo -e "Now open \033[4mhttp://localhost:3000/device/monitor\033[0m"
 		;;
 	"stop")
+		export $(cat .env | grep "#" -v)
 		stoppingContainers
 		;;
 	"create")
+		export $(cat .env | grep "#" -v)
 		echo "Pulling Docker images"
 		docker-compose --log-level ERROR -p fiware pull
 		;;
