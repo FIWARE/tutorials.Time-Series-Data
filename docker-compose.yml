@@ -52,13 +52,12 @@ services:
       - REDIS_HOST=redis-db
       - REDIS_PORT=${REDIS_PORT}
       - LOGLEVEL=DEBUG
-
     healthcheck:
-      test: curl --fail -s http://quantumleap:${QUANTUMLEAP_PORT}/v2 || exit 1
+      test: curl --fail -s http://quantumleap:${QUANTUMLEAP_PORT}/version || exit 1
   
   # IoT-Agent is configured for the UltraLight Protocol
   iot-agent:
-    image: fiware/iotagent-ul #:${ULTRALIGHT_VERSION}
+    image: fiware/iotagent-ul:${ULTRALIGHT_VERSION}
     hostname: iot-agent
     container_name: fiware-iot-agent
     depends_on:
@@ -176,6 +175,17 @@ services:
       - CRATE_HEAP_SIZE=2g # see https://crate.io/docs/crate/howtos/en/latest/deployment/containers/docker.html#troubleshooting
     volumes:
       - crate-db:/data
+
+  redis-db:
+    image: redis:${REDIS_VERSION}
+    hostname: redis-db
+    container_name: db-redis
+    networks:
+      - default
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}" # localhost:6379
+    volumes:
+      - redis-db:/data
 
   # Other services
   grafana:
