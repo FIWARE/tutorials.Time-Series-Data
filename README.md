@@ -16,7 +16,9 @@ series analytics tool.
 The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also available as
 [Postman documentation](https://fiware.github.io/tutorials.Time-Series-Data/ngsi-ld.html)
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/d24facc3c430bb5d5aaf)。
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/d24facc3c430bb5d5aaf)
+
+-   このチュートリアルは[日本語](README.ja.md)でもご覧いただけます。
 
 ## Contents
 
@@ -36,8 +38,8 @@ The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also a
     -   [Grafana Configuration](#grafana-configuration)
         -   [Generating Context Data](#generating-context-data)
     -   [Setting up Subscriptions](#setting-up-subscriptions)
-        -   [Aggregate Filling Sensor filling Events](#aggregate-filling-sensor-filling-events)
-        -   [Sample Filling Level](#sample-filling-level)
+        -   [Aggregate Filling Events](#aggregate-filling-events)
+        -   [Sample GPS Readings](#sample-gps-readings)
         -   [Checking Subscriptions for QuantumLeap](#checking-subscriptions-for-quantumleap)
     -   [Time Series Data Queries (QuantumLeap API)](#time-series-data-queries-quantumleap-api)
         -   [QuantumLeap API - List the first N Sampled Values](#quantumleap-api---list-the-first-n-sampled-values)
@@ -178,7 +180,7 @@ technology which allows to different components isolated into their respective e
 -   To install Docker on Linux follow the instructions [here](https://docs.docker.com/install/)
 
 **Docker Compose** is a tool for defining and running multi-container Docker applications. A series of
-[YAML files](https://raw.githubusercontent.com/Fiware/tutorials.Time-Series-Data/master/docker-compose.yml) are used to
+[YAML files](https://raw.githubusercontent.com/FIWARE/tutorials.Time-Series-Data/NGSI-LD/docker-compose.yml) are used to
 configure the required services for the application. This means all container services can be brought up in a single
 command. Docker Compose is installed by default as part of Docker for Windows and Docker for Mac, however Linux users
 will need to follow the instructions found [here](https://docs.docker.com/compose/install/)
@@ -212,7 +214,7 @@ git checkout NGSI-LD
 ```
 
 Thereafter, all services can be initialized from the command-line by running the
-[services](https://github.com/FIWARE/tutorials.Time-Series-Data/blob/NGSI-v2/services) Bash script provided within the
+[services](https://github.com/FIWARE/tutorials.Time-Series-Data/blob/NGSI-LD/services) Bash script provided within the
 repository:
 
 ```console
@@ -229,7 +231,7 @@ repository:
 
 In the configuration, **QuantumLeap** listens to NGSI LD notifications on port `8868` and persists historic context data
 to the **CrateDB**. **CrateDB** is accessible using port `4200` and can either be queried directly or attached to the
-Grafana analytics tool. The rest of the system providing the context data has been described in previous tutorials
+Grafana analytics tool. The rest of the system providing the context data has been described in previous tutorials.
 
 ## CrateDB Database Server Configuration
 
@@ -313,19 +315,19 @@ and thermostat.
 
 Remove some hay from the barn, update the thermostat and open the device monitor page at
 `http://localhost:3000/device/monitor` and start a **Tractor** and switch on a **Smart Lamp**. This can be done by
-selecting an appropriate command from the drop down list and pressing the `send` button. The stream of measurements
+selecting an appropriate command from the drop-down list and pressing the `send` button. The stream of measurements
 coming from the devices can then be seen on the same page.
 
 ## Setting up Subscriptions
 
 Once a dynamic context system is up and running, we need to inform **QuantumLeap** directly of changes in context. As
-expected this is done using the subscription mechanism of the **Orion Context Broker**.
+expected, this is done using the subscription mechanism of the **Orion Context Broker**.
 
 Subscriptions will be covered in the next subsections. More details about subscriptions can be found in previous
 tutorials or in the [subscriptions section](https://quantumleap.readthedocs.io/en/latest/user/#orion-subscription) of
 QuantumLeap docs.
 
-### Aggregate Filling Sensor filling Events
+### Aggregate Filling Events
 
 The rate of change of the **Filling Sensor** is driven by events in the real-world. We need to receive every event to be
 able to aggregate the results.
@@ -470,7 +472,7 @@ curl -X GET \
 
 **QuantumLeap** offers an API wrapping CrateDB backend so you can also perform multiple types of queries. The
 documentation of the API is [here](https://app.swaggerhub.com/apis/smartsdk/ngsi-tsdb/). Mind the versions. If you have
-access to your `quantumleap` container (e.g. it is running in `localhost` or port-forwarding to it), you can navigate
+access to your `quantumleap` container (e.g., it is running in `localhost` or port-forwarding to it), you can navigate
 its API via `http://localhost:8668/v2/ui`.
 
 ### QuantumLeap API - List the first N Sampled Values
@@ -479,7 +481,7 @@ Now, to check QuantumLeap is persisting values, let's get started with our first
 sampled `filling` values from `urn:ngsi-ld:Device:filling001`.
 
 Note the use of the `Fiware-Service` header which is the NGSI-v2 equivalent of `NGSILD-Tenant`. These are required only
-when data are pushed to orion using such headers (in multitenancy scenarios). Failing to align these headers will result
+when data are pushed to Orion using such headers (in multitenancy scenarios). Failing to align these headers will result
 in no data being returned.
 
 #### :four: Request:
@@ -713,8 +715,8 @@ curl -X GET \
 
 ### QuantumLeap API - List the latest N Sampled Values of Devices in an Area
 
-This example shows the latest four sampled `filling` values of fillins sensors that are inside a square of side 200 m
-centred at `52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, Berlin, Germany). Even if you have turned on all the
+This example shows the latest four sampled `filling` values of filling sensors that are inside a square of side 200 m
+centered at `52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, Berlin, Germany). Even if you have turned on all the
 filling sensors available on the device monitor page, you should only see data for `urn:ngsi-ld:Device:filling001`.
 
 > :information_source: **Note:** Geographical queries are only available starting from version `0.5` of QuantumLeap
@@ -772,8 +774,8 @@ attribute.
 > -   If your deployment is distributed, you won't need to expose the ports of your database to the outside.
 
 If your are sure your query is not supported by **QuantumLeap**, you may have to end up querying **CrateDB**, however,
-please open an issue in [QuantumLeap's GitHub repository](https://github.com/smartsdk/ngsi-timeseries-api/issues) so the
-team is aware.
+please open an issue in [QuantumLeap's GitHub repository](https://github.com/orchestracities/ngsi-timeseries-api/issues)
+so the team is aware.
 
 ### CrateDB API - Checking Data persistence
 
@@ -1086,7 +1088,7 @@ here: `http://localhost:3000/device/history/urn:ngsi-ld:Farm:001`.
 **CrateDB** has been chosen as the time-series data sink for QuantumLeap, because, among
 [many other benefits](https://quantumleap.readthedocs.io/en/latest/), it integrates seamlessly with the
 [Grafana](https://grafana.com/) time series analytics tool. Grafana can be used to display the aggregated sensor data -
-a full tutorial on building dashboards can be found [here](https://www.youtube.com/watch?v=sKNZMtoSHN4). The simpified
+a full tutorial on building dashboards can be found [here](https://www.youtube.com/watch?v=sKNZMtoSHN4). The simplified
 instructions below summarize how to connect and display a graph of the FillingSensor `filling` data.
 
 ### Logging in
@@ -1097,7 +1099,7 @@ found at: `http://localhost:3003/login`. The default username is `admin` and the
 ### Configuring a Data Source
 
 After logging in, a PostgreSQL datasource must be set up at `http://localhost:3003/datasources` with the following
-values
+values:
 
 -   **Name** `CrateDB`
 -   **Host** `crate-db:5432`
@@ -1114,7 +1116,7 @@ Click on the Save and test button and make sure it says _Database Connection OK_
 To display a new dashboard, you can either click the **+** button and select **Dashboard** or go directly to
 `http://localhost:3003/dashboard/new?orgId=1`. Thereafter click **Add Query**.
 
-The following values in **bold text** need to be placed in the graphing wizard
+The following values in **bold text** need to be placed in the graphing wizard:
 
 -   Queries to **CrateDB** (the previously created Data Source)
 -   FROM **etfillingsensor**
@@ -1169,7 +1171,7 @@ The final result can be seen below:
 # Next Steps
 
 Want to learn how to add more complexity to your application by adding advanced features? You can find out by reading
-the other [tutorials in this series](https://fiware-tutorials.rtfd.io)
+the other [tutorials in this series](https://ngsi-ld-tutorials.readthedocs.io/)
 
 ---
 
