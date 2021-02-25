@@ -100,6 +100,7 @@ curl -s -o /dev/null -X POST \
         {"object_id": "bpm","type": "Integer","name": "heartRate",
         "metadata": {"unitCode": {"type": "Text","value": "5K"}}
         },
+        {"object_id": "d", "name": "statusDescription", "type": "Property"},
         {"object_id": "s", "name": "status", "type": "Integer"},
         {"object_id": "gps", "name": "location", "type": "geo:point"}
       ],
@@ -338,7 +339,7 @@ curl -s -o /dev/null -X POST \
 
 ####################################################
 #
-# Provision actuators for Farm 002
+# Provision actuators for Farm 004
 #
 
 curl -s -o /dev/null -X POST \
