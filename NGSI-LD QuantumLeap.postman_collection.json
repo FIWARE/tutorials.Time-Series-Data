@@ -29,7 +29,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"description\": \"Notify me of all feedstock changes\",\n  \"type\": \"Subscription\",\n  \"entities\": [{\"type\": \"FillingSensor\"}],\n  \"watchedAttributes\": [\"filling\"],\n  \"notification\": {\n    \"attributes\": [\"filling\", \"location\"],\n    \"format\": \"normalized\",\n    \"endpoint\": {\n      \"uri\": \"http://quantumleap:8668/v2/notify\",\n      \"accept\": \"application/json\"\n    }\n  },\n   \"@context\": \"http://context-provider:3000/data-models/ngsi-context.jsonld\"\n}"
+							"raw": "{\n  \"description\": \"Notify me of all feedstock changes\",\n  \"type\": \"Subscription\",\n  \"entities\": [{\"type\": \"FillingLevelSensor\"}],\n  \"watchedAttributes\": [\"filling\"],\n  \"notification\": {\n    \"attributes\": [\"filling\", \"location\"],\n    \"format\": \"normalized\",\n    \"endpoint\": {\n      \"uri\": \"http://quantumleap:8668/v2/notify\",\n      \"accept\": \"application/json\"\n    }\n  },\n   \"@context\": \"http://context-provider:3000/data-models/ngsi-context.jsonld\"\n}"
 						},
 						"url": {
 							"raw": "http://{{orion}}/ngsi-ld/v1/subscriptions/",
@@ -44,7 +44,7 @@
 								""
 							]
 						},
-						"description": "The rate of change of the **Filling Sensor** is driven by events in the real-world. We need to receive every event to be\nable to aggregate the results.\n\nThis is done by making a POST request to the `/ngsi-ld/v1/subscriptions/` endpoint of the **Orion-LD Context Broker**.\n\n-   The `NGSILD-Tenant` headers is used to filter the subscription to only listen to measurements from the attached IoT\n    Sensors\n-   The `entities` `type` in the request body ensures that **QuantumLeap** will be informed of all **FillingSensor**\n    data changes.\n-   The `notification` URL must match the exposed port.\n\nWith NGSI-LD the `observedAt` _property-of-property_ holds the timestamp of the measure. Because the attribute being\nmonitored contains this _property-of-property_, the `time_index` column within the **CrateDB** database will match the\ndata found within the **MongoDB** database used by the **Orion Context Broker** rather than using the creation time of\nthe record within the **CrateDB** itself."
+						"description": "The rate of change of the **Filling Sensor** is driven by events in the real-world. We need to receive every event to be\nable to aggregate the results.\n\nThis is done by making a POST request to the `/ngsi-ld/v1/subscriptions/` endpoint of the **Orion-LD Context Broker**.\n\n-   The `NGSILD-Tenant` headers is used to filter the subscription to only listen to measurements from the attached IoT\n    Sensors\n-   The `entities` `type` in the request body ensures that **QuantumLeap** will be informed of all **FillingLevelSensor**\n    data changes.\n-   The `notification` URL must match the exposed port.\n\nWith NGSI-LD the `observedAt` _property-of-property_ holds the timestamp of the measure. Because the attribute being\nmonitored contains this _property-of-property_, the `time_index` column within the **CrateDB** database will match the\ndata found within the **MongoDB** database used by the **Orion Context Broker** rather than using the creation time of\nthe record within the **CrateDB** itself."
 					},
 					"response": []
 				},
@@ -721,7 +721,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.etfillingsensor WHERE entity_id = 'urn:ngsi-ld:Device:filling001'  ORDER BY time_index ASC LIMIT 3\"}"
+							"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.etFillingLevelSensor WHERE entity_id = 'urn:ngsi-ld:Device:filling001'  ORDER BY time_index ASC LIMIT 3\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",
@@ -861,7 +861,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, MAX (filling) AS max FROM mtopeniot.etfillingsensor WHERE entity_id = 'urn:ngsi-ld:Device:filling001' GROUP BY minute ORDER BY minute\"}"
+							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, MAX (filling) AS max FROM mtopeniot.etFillingLevelSensor WHERE entity_id = 'urn:ngsi-ld:Device:filling001' GROUP BY minute ORDER BY minute\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",
@@ -889,7 +889,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, AVG (filling) AS average FROM mtopeniot.etfillingsensor WHERE entity_id = 'urn:ngsi-ld:Device:filling001' GROUP BY minute ORDER BY minute\"}"
+							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, AVG (filling) AS average FROM mtopeniot.etFillingLevelSensor WHERE entity_id = 'urn:ngsi-ld:Device:filling001' GROUP BY minute ORDER BY minute\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",

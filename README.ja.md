@@ -374,7 +374,7 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 --data-raw '{
   "description": "Notify me of all feedstock changes",
   "type": "Subscription",
-  "entities": [{"type": "FillingSensor"}],
+  "entities": [{"type": "FillingLevelSensor"}],
   "watchedAttributes": ["filling"],
   "notification": {
     "attributes": ["filling", "location"],
@@ -452,7 +452,7 @@ curl -X GET \
         "description": "Notify me of all feedstock changes",
         "entities": [
             {
-                "type": "FillingSensor"
+                "type": "FillingLevelSensor"
             }
         ],
         "watchedAttributes": ["filling"],
@@ -872,7 +872,7 @@ curl -X POST \
 {
     "cols": ["table_schema", "table_name"],
     "rows": [
-        ["mtopeniot", "etfillingsensor"],
+        ["mtopeniot", "etFillingLevelSensor"],
         ["mtopeniot", "etdevice"]
     ],
     "rowcount": 3,
@@ -896,7 +896,7 @@ SQL ステートメントは、 `ORDERBY` 句 と `LIMIT` 句を使用してデ�
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT * FROM mtopeniot.etfillingsensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' ORDER BY time_index ASC LIMIT 3"}'
+  -d '{"stmt":"SELECT * FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' ORDER BY time_index ASC LIMIT 3"}'
 ```
 
 #### レスポンス:
@@ -905,9 +905,9 @@ curl -iX POST \
 {
     "cols": ["entity_id", "entity_type", "fiware_servicepath", "filling", "time_index"],
     "rows": [
-        ["urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 0.87, 1530262765000],
-        ["urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 0.65, 1530262770000],
-        ["urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 0.6, 1530262775000]
+        ["urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 0.87, 1530262765000],
+        ["urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 0.65, 1530262770000],
+        ["urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 0.6, 1530262775000]
     ],
     "rowcount": 3,
     "duration": 21.8338
@@ -927,7 +927,7 @@ SQL ステートメントは、`OFFSET` 句を使用して必要な行 (rows) �
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT * FROM mtopeniot.etfillingsensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' order by time_index ASC LIMIT 3 OFFSET 3"}'
+  -d '{"stmt":"SELECT * FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' order by time_index ASC LIMIT 3 OFFSET 3"}'
 ```
 
 #### レスポンス:
@@ -936,9 +936,9 @@ curl -iX POST \
 {
     "cols": ["filling", "entity_id", "entity_type", "fiware_servicepath", "time_index"],
     "rows": [
-        [0.75, "urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 1530262791452],
-        [0.63, "urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 1530262792469],
-        [0.5, "urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 1530262793472]
+        [0.75, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530262791452],
+        [0.63, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530262792469],
+        [0.5, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530262793472]
     ],
     "rowcount": 3,
     "duration": 54.215
@@ -959,7 +959,7 @@ SQL ステートメントは、`ORDER BY ... DESC` 句を `LIMIT` 句と組み�
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT * FROM mtopeniot.etfillingsensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\''  ORDER BY time_index DESC LIMIT 3"}'
+  -d '{"stmt":"SELECT * FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\''  ORDER BY time_index DESC LIMIT 3"}'
 ```
 
 #### レスポンス:
@@ -968,9 +968,9 @@ curl -iX POST \
 {
     "cols": ["filling", "entity_id", "entity_type", "fiware_servicepath", "time_index"],
     "rows": [
-        [0.51, "urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 1530263896550],
-        [0.43, "urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 1530263894491],
-        [0.4, "urn:ngsi-ld:Device:filling001", "FillingSensor", "/", 1530263892483]
+        [0.51, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530263896550],
+        [0.43, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530263894491],
+        [0.4, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530263892483]
     ],
     "rowcount": 3,
     "duration": 18.591
@@ -991,7 +991,7 @@ SQL ステートメントは、`SUM` 関数と `GROUPBY` 句を使用して関�
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT DATE_FORMAT (DATE_TRUNC ('\''minute'\'', time_index)) AS minute, SUM (filling) AS sum FROM mtopeniot.etfillingsensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' GROUP BY minute LIMIT 3"}'
+  -d '{"stmt":"SELECT DATE_FORMAT (DATE_TRUNC ('\''minute'\'', time_index)) AS minute, SUM (filling) AS sum FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' GROUP BY minute LIMIT 3"}'
 ```
 
 #### レスポンス:
@@ -1025,7 +1025,7 @@ SQL ステートメントは、`MIN` 関数と `GROUPBY` 句を使用して関�
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT DATE_FORMAT (DATE_TRUNC ('\''minute'\'', time_index)) AS minute, MIN (filling) AS min FROM mtopeniot.etfillingsensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' GROUP BY minute"}'
+  -d '{"stmt":"SELECT DATE_FORMAT (DATE_TRUNC ('\''minute'\'', time_index)) AS minute, MIN (filling) AS min FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' GROUP BY minute"}'
 ```
 
 #### レスポンス:
@@ -1060,7 +1060,7 @@ SQL ステートメントは、`MAX` 関数と `WHERE` 句を使用して関連�
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT MAX(filling) AS max FROM mtopeniot.etfillingsensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' and time_index >= '\''2018-06-27T09:00:00'\'' and time_index < '\''2018-06-30T23:59:59'\''"}'
+  -d '{"stmt":"SELECT MAX(filling) AS max FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' and time_index >= '\''2018-06-27T09:00:00'\'' and time_index < '\''2018-06-30T23:59:59'\''"}'
 ```
 
 #### レスポンス:
@@ -1100,7 +1100,7 @@ function readCrateSensorfilling(id, aggMethod) {
             aggMethod +
             "(filling) AS " +
             aggMethod +
-            " FROM mtopeniot.etfillingsensor WHERE entity_id = 'urn:ngsi-ld:Device:" +
+            " FROM mtopeniot.etFillingLevelSensor WHERE entity_id = 'urn:ngsi-ld:Device:" +
             id +
             "' GROUP BY minute ORDER BY minute";
         const options = {
@@ -1188,7 +1188,7 @@ Save and test ボタンをクリックし、_Database Connection OK_ と表示�
 **太字のテキスト**の次の値は、グラフ作成ウィザードに配置する必要があります:
 
 -   Queries to **CrateDB** (以前に作成したデータソースから選択)
--   FROM **etfillingsensor**
+-   FROM **etFillingLevelSensor**
 -   Time column **time_index**
 -   Metric column **entity_id**
 -   Select value **column:filling**
@@ -1211,7 +1211,7 @@ Save and test ボタンをクリックし、_Database Connection OK_ と表示�
 左側の `Queries` タブをクリックして、次のように設定します:
 
 -   Format as: **Table**
--   FROM **etfillingsensor**
+-   FROM **etFillingLevelSensor**
 -   Time column **time_index**
 -   Metric column **entity_id**
 -   Select value
@@ -1224,7 +1224,7 @@ Save and test ボタンをクリックし、_Database Connection OK_ と表示�
 左側の `Visualisation` タブをクリックして、次のように設定します:
 
 -   Map Layers:
-    -   FillingSensor:
+    -   FillingLevelSensor:
         -   Icon: **lightbulb-o**
         -   ClusterType: **average**
         -   ColorType: **fix**

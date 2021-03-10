@@ -67,7 +67,7 @@ curl -s -o /dev/null -X POST \
    {
      "apikey":      "854782081",
      "cbroker":     "http://orion:1026",
-     "entity_type": "FillingSensor",
+     "entity_type": "FillingLevelSensor",
      "resource":    "/iot/d",
      "protocol":    "PDI-IoTA-UltraLight",
      "transport":   "HTTP",
@@ -213,7 +213,7 @@ curl -s -o /dev/null -X POST \
     {
       "device_id": "filling001",
       "entity_name": "urn:ngsi-ld:Device:filling001",
-      "entity_type": "FillingSensor",
+      "entity_type": "FillingLevelSensor",
       "endpoint": "http://context-provider:3001/iot/filling001",
       "static_attributes": [
         {"name": "controllingAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:farm001"},
@@ -265,7 +265,7 @@ curl -s -o /dev/null -X POST \
     {
       "device_id": "filling002",
       "entity_name": "urn:ngsi-ld:Device:filling002",
-      "entity_type": "FillingSensor",
+      "entity_type": "FillingLevelSensor",
       "endpoint": "http://context-provider:3001/iot/filling002",
       "static_attributes": [
         {"name": "controllingAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:barn002"},
@@ -317,7 +317,7 @@ curl -s -o /dev/null -X POST \
     {
       "device_id": "filling003",
       "entity_name": "urn:ngsi-ld:Device:filling003",
-      "entity_type": "FillingSensor",
+      "entity_type": "FillingLevelSensor",
       "endpoint": "http://context-provider:3001/iot/filling003",
       "static_attributes": [
         {"name": "controllingAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:tower003"},
@@ -369,7 +369,7 @@ curl -s -o /dev/null -X POST \
     {
       "device_id": "filling004",
       "entity_name": "urn:ngsi-ld:Device:filling004",
-      "entity_type": "FillingSensor",
+      "entity_type": "FillingLevelSensor",
       "endpoint": "http://context-provider:3001/iot/filling004",
       "static_attributes": [
         {"name": "controllingAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:farm002"},
