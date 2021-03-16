@@ -6,7 +6,7 @@
 <br/> [![JSON LD](https://img.shields.io/badge/JSON--LD-1.1-f06f38.svg)](https://w3c.github.io/json-ld-syntax/)
 [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
 
-This tutorial is an introduction to [FIWARE QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) - a generic
+This tutorial is an introduction to [FIWARE QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) - a generic
 enabler which is used to persist context data into a **CrateDB** database. The tutorial activates the IoT sensors
 connected in the [previous tutorial](https://github.com/FIWARE/tutorials.IoT-Agent) and persists measurements from those
 sensors into the database. To retrieve time-based aggregations of such data, users can either use **QuantumLeap** query

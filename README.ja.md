@@ -73,7 +73,7 @@ API を使用するか、**CrateDB** HTTP エンドポイントに直接接続�
 >
 > — Emily Dickinson
 
-FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) は、時系列データベース (現在は CrateDB および
+FIWARE [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) は、時系列データベース (現在は CrateDB および
 TimescaleDB) を永続化およびクエリするために特別に作成された時間ベースのデータベース永続化汎用イネーブラーです。
 コンポーネントは、NGSI-v2 または NGSI-LD サブスクリプションにレスポンスできます。
 
