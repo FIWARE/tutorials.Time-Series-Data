@@ -6,7 +6,7 @@
 [![Support badge](https://img.shields.io/badge/tag-fiware-orange.svg?logo=stackoverflow)](https://stackoverflow.com/questions/tagged/fiware)
 <br/> [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
 
-This tutorial is an introduction to [FIWARE QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) - a generic
+This tutorial is an introduction to [FIWARE QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) - a generic
 enabler which is used to persist context data into a **CrateDB** database. The tutorial activates the IoT sensors
 connected in the [previous tutorial](https://github.com/FIWARE/tutorials.IoT-Agent) and persists measurements from those
 sensors into the database. To retrieve time-based aggregations of such data, users can either use **QuantumLeap** query
@@ -160,7 +160,7 @@ Therefore the overall architecture will consist of the following elements:
         [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
         format and convert them to [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) requests for the
         context broker to alter the state of the context entities
-    -   FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) subscribed to context changes and
+    -   FIWARE [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) subscribed to context changes and
         persisting them into a **CrateDB** database
 
 -   A [MongoDB](https://www.mongodb.com/) database:
