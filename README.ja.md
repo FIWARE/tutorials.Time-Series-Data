@@ -91,7 +91,7 @@
 [STH-Comet](https://fiware-sth-comet.readthedocs.io/) Generic Enabler を導入しま
 した。
 
-FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) は、
+FIWARE [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) は、
 永続化および時系列データベース (現在の CrateDB および TimescaleDB) をクエリする
 API を提供するために特別に作成された代替 Generic Enabler です。したがって、
 [STH-Comet](https://fiware-sth-comet.readthedocs.io/) の代替手段を提供します。
