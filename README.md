@@ -336,8 +336,8 @@ This is done by making a POST request to the `/ngsi-ld/v1/subscriptions/` endpoi
 
 -   The `NGSILD-Tenant` headers is used to filter the subscription to only listen to measurements from the attached IoT
     Sensors
--   The `entities` `type` in the request body ensures that **QuantumLeap** will be informed of all **FillingLevelSensor**
-    data changes.
+-   The `entities` `type` in the request body ensures that **QuantumLeap** will be informed of all
+    **FillingLevelSensor** data changes.
 -   The `notification` URL must match the exposed port.
 
 With NGSI-LD the `observedAt` _property-of-property_ holds the timestamp of the measure. Because the attribute being
@@ -666,8 +666,8 @@ curl -X GET \
 ### QuantumLeap API - List the latest N Sampled Values of Devices near a Point
 
 This example shows the latest heart rate sampled `heartRate` values of animal that are within a 5 km radius from
-`52°31'04.8"N 13°21'25.2"E` (Tiergarten, Berlin, Germany). If you have turned on any device the animals will
-wander around the Berlin Tiergarten and on the device monitor page, you should be able to see data for
+`52°31'04.8"N 13°21'25.2"E` (Tiergarten, Berlin, Germany). If you have turned on any device the animals will wander
+around the Berlin Tiergarten and on the device monitor page, you should be able to see data for
 `urn:ngsi-ld:Device:cow001` and `urn:ngsi-ld:Device:pig001` .
 
 > :information_source: **Note:** Geographical queries are only available starting from version `0.5` of QuantumLeap
@@ -688,28 +688,25 @@ curl -X GET \
 
 ```json
 {
-  "attrName": "heartRate",
-  "entities": [
-    {
-      "entityId": "urn:ngsi-ld:Device:cow001",
-      "index": [
-        "2021-01-27T16:52:05.925+00:00",
-        "2021-01-27T16:52:30.769+00:00"
-      ],
-      "values": [53, 50]
-    },
-    {
-      "entityId": "urn:ngsi-ld:Device:cow002",
-      "index": ["2021-01-27T16:50:50.792+00:00"],
-      "values": [53]
-    },
-    {
-      "entityId": "urn:ngsi-ld:Device:cow004",
-      "index": ["2021-01-27T16:51:55.798+00:00"],
-      "values": [51]
-    }
-  ],
-  "entityType": "Device"
+    "attrName": "heartRate",
+    "entities": [
+        {
+            "entityId": "urn:ngsi-ld:Device:cow001",
+            "index": ["2021-01-27T16:52:05.925+00:00", "2021-01-27T16:52:30.769+00:00"],
+            "values": [53, 50]
+        },
+        {
+            "entityId": "urn:ngsi-ld:Device:cow002",
+            "index": ["2021-01-27T16:50:50.792+00:00"],
+            "values": [53]
+        },
+        {
+            "entityId": "urn:ngsi-ld:Device:cow004",
+            "index": ["2021-01-27T16:51:55.798+00:00"],
+            "values": [51]
+        }
+    ],
+    "entityType": "Device"
 }
 ```
 
