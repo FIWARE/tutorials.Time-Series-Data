@@ -160,8 +160,8 @@ Therefore the overall architecture will consist of the following elements:
         [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
         format and convert them to [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) requests for the
         context broker to alter the state of the context entities
-    -   FIWARE [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) subscribed to context changes and
-        persisting them into a **CrateDB** database
+    -   FIWARE [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) subscribed to context changes and persisting
+        them into a **CrateDB** database
 
 -   A [MongoDB](https://www.mongodb.com/) database:
 
@@ -849,7 +849,10 @@ curl -X POST \
 ```json
 {
     "cols": ["table_schema", "table_name"],
-    "rows": [["mtopeniot", "etmotion"], ["mtopeniot", "etlamp"]],
+    "rows": [
+        ["mtopeniot", "etmotion"],
+        ["mtopeniot", "etlamp"]
+    ],
     "rowcount": 2,
     "duration": 14.2762
 }
@@ -1053,7 +1056,7 @@ The basic processing consists of two-step - retrieval and attribute mapping, sam
 
 ```javascript
 function readCrateLampLuminosity(id, aggMethod) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         const sqlStatement =
             "SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, " +
             aggMethod +
@@ -1067,7 +1070,7 @@ function readCrateLampLuminosity(id, aggMethod) {
             url: crateUrl,
             headers: { "Content-Type": "application/json" },
             body: { stmt: sqlStatement },
-            json: true
+            json: true,
         };
         request(options, (error, response, body) => {
             return error ? reject(error) : resolve(body);
@@ -1083,7 +1086,7 @@ function crateToTimeSeries(crateResponse, aggMethod, hexColor) {
     const color = [];
 
     if (crateResponse && crateResponse.rows && crateResponse.rows.length > 0) {
-        _.forEach(crateResponse.rows, element => {
+        _.forEach(crateResponse.rows, (element) => {
             const date = moment(element[0]);
             data.push({ t: date, y: element[1] });
             labels.push(date.format("HH:mm"));
@@ -1094,7 +1097,7 @@ function crateToTimeSeries(crateResponse, aggMethod, hexColor) {
     return {
         labels,
         data,
-        color
+        color,
     };
 }
 ```
