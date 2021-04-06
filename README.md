@@ -229,7 +229,7 @@ repository:
 
 # Connecting FIWARE to a CrateDB Database via QuantumLeap
 
-In the configuration, **QuantumLeap** listens to NGSI LD notifications on port `8868` and persists historic context data
+In the configuration, **QuantumLeap** listens to NGSI LD notifications on port `8668` and persists historic context data
 to the **CrateDB**. **CrateDB** is accessible using port `4200` and can either be queried directly or attached to the
 Grafana analytics tool. The rest of the system providing the context data has been described in previous tutorials.
 
