@@ -125,6 +125,9 @@ services:
       - IOTA_JSON_LD_CONTEXT=http://context:3000/data-models/ngsi-context.jsonld
       - NGSI_LD_TENANT=openiot
 
+      - PIG_COUNT=4
+      - COW_COUNT=4
+
   # Databases
   mongo-db:
     image: mongo:${MONGO_DB_VERSION}
