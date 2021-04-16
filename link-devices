@@ -5,7 +5,7 @@
 #
 
 set -e
-
+echo
 echo -e "⏳ Link Devices to Animal entities"
 
 
@@ -15,6 +15,9 @@ generate_post_data()
   $devices
 EOF
 }
+
+
+# Associate 100 cow collar Devices to Animal entities
 
 devices="{\"devices\":[";
 for number in 001 002 003 004 005 006 007 008 009 010 011 012 013 014 015 016 017 018 019 020 021 022 023 024 025 026 027 028 029 030 031 032 033 034 035 036 037 038 039 040 041 042 043 044 045 046 047 048 049 050 051 052 053 054 055 056 057 058 059 060 061 062 063 064 065 066 067 068 069 070 071 072 073 074 075 076 077 078 079 080 081 082 083 084 085 086 087 088 089 090 091 092 093 094 095 096 097 098 099 100
@@ -39,7 +42,39 @@ do
   fi
 done
 
-curl -v -X POST \
+curl -s -o /dev/null -X POST \
+   'http://iot-agent:4041/iot/devices' \
+   -H 'Content-Type: application/json' \
+   -H 'fiware-service: openiot' \
+   -H 'fiware-servicepath: /' \
+   -d "$(generate_post_data)"
+
+# Associate 100 pig collar Devices to Animal entities
+
+devices="{\"devices\":[";
+for number in 001 002 003 004 005 006 007 008 009 010 011 012 013 014 015 016 017 018 019 020 021 022 023 024 025 026 027 028 029 030 031 032 033 034 035 036 037 038 039 040 041 042 043 044 045 046 047 048 049 050 051 052 053 054 055 056 057 058 059 060 061 062 063 064 065 066 067 068 069 070 071 072 073 074 075 076 077 078 079 080 081 082 083 084 085 086 087 088 089 090 091 092 093 094 095 096 097 098 099 100
+do
+
+  devices="$devices {\"device_id\":\"pig$number\", \"entity_type\": \"Device\" , \"entity_name\": \"urn:ngsi-ld:Device:pig$number\",";
+  devices="$devices \"static_attributes\": [
+         {
+          \"name\": \"controlledAsset\", 
+          \"type\": \"Relationship\", \"link\": {
+             \"attributes\": [\"heartRate\", \"location\"],
+             \"name\": \"providedBy\",
+             \"type\": \"Animal\"
+          },
+          \"value\": \"urn:ngsi-ld:Animal:pig$number\"}]}";
+
+  if [ $number == '100' ]
+  then
+    devices="$devices]}";
+  else 
+    devices="$devices,";
+  fi
+done
+
+curl -s -o /dev/null -X POST \
    'http://iot-agent:4041/iot/devices' \
    -H 'Content-Type: application/json' \
    -H 'fiware-service: openiot' \

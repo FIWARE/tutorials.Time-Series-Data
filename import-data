@@ -10,6 +10,61 @@ echo -e "⏳ Loading context data in \033[1mNGSI-LD\033[0m format"
 echo -e "    - all entity data models are defined referencing the" 
 echo -e "      \033[1m"${TUTORIAL_DATA_MODELS_CONTEXT}"\033[0m JSON-LD context"
 
+
+generate_post_data()
+{
+  cat <<EOF
+  $animals
+EOF
+}
+
+count=0;
+for cowNames in Beany Trotter Petal River Sun Twilight Diamond Pollen Juicey Tulip Oats Rain Silver Stamps Button Lacey Fisher Rice Eenie Chalky Joy Feather Happy Fluffy Bug Opal Fresian Star Bumble Blossom Buttercup Clover Flower Grape Citrus Hero Cloud Jersey Cream Marble Sugar Pepsi Spots Milky Blue Dales Gorgeous Pitta Harvest Arnie Ermantrude Clarabelle Annabelle Elsie Elmer Ferdinand Laughing Cow Milky White Otis Toro  Kai Heffer Wolfe Benny Betsy Taurus Bulba Clemantine Clovis Zippy Harley Oakley Bead Bree Astro Galaxy Drone Fig Reef Palm Ursula Wazowski Dumpling Imp Tinker Titch Clifford Wade Hulk Moose Sherman Nemo Zorro Vache Mucca Speedy Zoomer Cleopatra Diablo Hiccup Viper Smithy Lolly Popsicle Summer Trident Horniman Moses Flynn Cinders Mouse Ego Slapper Flipper Denim Boyce Loops Racer Axe Blade Spice Fury Tyson Diesel Axel Chopper Viking Mystery Buzz Stark Brute Sabre Reaper Rebel Psycho Tank Gunner Bolt Bullet Shot Titan Sumo Kong Bruiser Ursula Drone Cracker Arrow Warrior Major Razor Spud Trip Slicer Charcoal Grill Gangster Boss Brute Don Danger Pepper Ton Python Poison Ace Woody Blade Hero Oreo Checkers Chess Dalmatian Soccer Puzzle Dice Orca Piano Penguin Panda Skunk Vintage Domino Yin Yang Badger Butler Patches Snoopy Pongo Perdita Freckles Tuxedo Cruella Keys Harlequin Banksy Coca-Cola Dot Lemur Sushi Shadow Silhouette Doodle Retro Polka Paisley Blackberry Pepper Zebra Magpie Newt Swan Pebble Storm Chocolate Coco Hershey Dairymilk Oak Wicker Bear Teddy Pine Conker Mushroom Coffee Toffee Fudge Mocha Peanut Gingerbread Walnut Cookie Acorn Cello Camel Fawn Chestnut Pheasant Muddy Toast Tea Biscuit Monkey Coconut Beaver Tawny Espresso Umber Brunette Cinnamon Cedar Penny Goomba Malteaser Brownie Pretzel Brunette Tanner Auburn Copper Bronze Liver Hazel
+do
+    eval cowName$count="$cowNames";
+    count=$((count + 1));
+done
+count=0
+
+animals="[";
+for number in 001 002 003 004 005 006 007 008 009 010 011 012 013 014 015 016 017 018 019 020 021 022 023 024 025 026 027 028 029 030 031 032 033 034 035 036 037 038 039 040 041 042 043 044 045 046 047 048 049 050 051 052 053 054 055 056 057 058 059 060 061 062 063 064 065 066 067 068 069 070 071 072 073 074 075 076 077 078 079 080 081 082 083 084 085 086 087 088 089 090 091 092 093 094 095 096 097 098 099 100
+do
+  eval cowName="\$cowName$count";
+  animals="$animals {\"id\":\"urn:ngsi-ld:Animal:cow$number\", \"type\": \"Animal\",";
+  animals="$animals \"species\": { \"type\": \"Property\", \"value\": \"dairy cattle\"},";
+  animals="$animals \"name\": { \"type\": \"Property\", \"value\": \"$cowName\"},";
+  animals="$animals \"sex\": { \"type\": \"Property\", \"value\": "
+  if [ "$count" -lt 4 ]; then
+   animals="$animals \"male\" },"
+  else 
+   animals="$animals \"female\" },"
+  fi
+  
+  animals="$animals \"legalID\": { \"type\": \"Property\", \"value\": "
+  if [ "$count" -lt 4 ]; then
+   animals="$animals \"M-bull$number-$cowName\" }"
+  else 
+   animals="$animals \"F-cow$number-$cowName\" }"
+  fi
+
+  count=$((count + 1));
+  
+  if [ $number == '100' ]; then
+    animals="$animals}]";
+  else 
+    animals="$animals},";
+  fi
+done
+
+
+curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOperations/upsert?options=update' \
+-H 'NGSILD-Tenant: openiot' \
+-H 'Content-Type: application/json' \
+-H 'Link: <'"${TUTORIAL_DATA_MODELS_CONTEXT}"'>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
+-H 'Accept: application/ld+json' \
+-H 'fiware-servicepath: /' \
+-d "$(generate_post_data)"
+
 #
 # Create four Farm Entities in various locations across Berlin
 #
@@ -90,7 +145,7 @@ curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOper
   {
     "id": "urn:ngsi-ld:Person:person002",
     "type": "Person",
-    "name": {"type": "Property","value": "Napoleon the Pig"}
+    "name": {"type": "Property","value": "Napoleon"}
   }
 ]'
 
