@@ -7,6 +7,9 @@
 set -e
 
 
+echo "http://iot-agent:$IOTA_NORTH_PORT/iot/services"
+echo "http://orion:$ORION_PORT"
+echo "http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/door004"
 
 
 
@@ -18,7 +21,7 @@ printf "⏳ Provisioning IoT devices "
 #
 
 curl -s -o /dev/null -X POST \
-  'http://iot-agent:4041/iot/services' \
+  "http://iot-agent:$IOTA_NORTH_PORT/iot/services" \
   -H 'Content-Type: application/json' \
   -H 'fiware-service: openiot' \
   -H 'fiware-servicepath: /' \
@@ -26,7 +29,7 @@ curl -s -o /dev/null -X POST \
  "services": [
    {
      "apikey":      "1068318794",
-     "cbroker":     "http://orion:1026",
+     "cbroker":     "'"http://orion:$ORION_PORT"'",
      "entity_type": "Motion",
      "resource":    "/iot/d",
      "protocol":    "PDI-IoTA-UltraLight",
@@ -45,7 +48,7 @@ curl -s -o /dev/null -X POST \
    },
    {
      "apikey":      "3020035",
-     "cbroker":     "http://orion:1026",
+     "cbroker":     "'"http://orion:$ORION_PORT"'",
      "entity_type": "Bell",
      "resource":    "/iot/d",
      "protocol":    "PDI-IoTA-UltraLight",
@@ -66,7 +69,7 @@ curl -s -o /dev/null -X POST \
    },
    {
      "apikey":      "3314136",
-     "cbroker":     "http://orion:1026",
+     "cbroker":     "'"http://orion:$ORION_PORT"'",
      "entity_type": "Lamp",
      "resource":    "/iot/d",
      "protocol":    "PDI-IoTA-UltraLight",
@@ -92,7 +95,7 @@ curl -s -o /dev/null -X POST \
    },
    {
      "apikey":      "3089326",
-     "cbroker":     "http://orion:1026",
+     "cbroker":     "'"http://orion:$ORION_PORT"'",
      "entity_type": "Door",
      "resource":    "/iot/d",
      "protocol":    "PDI-IoTA-UltraLight",
@@ -123,7 +126,7 @@ curl -s -o /dev/null -X POST \
 #
 
 curl -s -o /dev/null -X POST \
-  'http://iot-agent:4041/iot/devices' \
+  "http://iot-agent:$IOTA_NORTH_PORT/iot/devices" \
   -H 'Content-Type: application/json' \
   -H 'fiware-service: openiot' \
   -H 'fiware-servicepath: /' \
@@ -141,7 +144,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "bell001",
       "entity_name": "Bell:001",
       "entity_type": "Bell",
-      "endpoint": "http://iot-sensors:3001/iot/bell001",
+      "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/bell001"'",
       "static_attributes": [
           {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"}
       ]
@@ -150,7 +153,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "door001",
       "entity_name": "Door:001",
       "entity_type": "Door",
-      "endpoint": "http://iot-sensors:3001/iot/door001",
+      "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/door001"'",
       "static_attributes": [
           {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"}
        ]
@@ -159,8 +162,8 @@ curl -s -o /dev/null -X POST \
       "device_id": "lamp001",
       "entity_name": "Lamp:001",
       "entity_type": "Lamp",
-      "endpoint": "http://iot-sensors:3001/iot/lamp001",
-       "static_attributes": [
+      "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/lamp001"'",
+      "static_attributes": [
           {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"},
           {"name":"location", "type":"geo:point", "value":"52.5547,13.3986"}
       ]
@@ -176,7 +179,7 @@ curl -s -o /dev/null -X POST \
 #
 
 curl -s -o /dev/null -X POST \
-  'http://iot-agent:4041/iot/devices' \
+  "http://iot-agent:$IOTA_NORTH_PORT/iot/devices" \
   -H 'Content-Type: application/json' \
   -H 'fiware-service: openiot' \
   -H 'fiware-servicepath: /' \
@@ -194,7 +197,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "bell002",
       "entity_name": "Bell:002",
       "entity_type": "Bell",
-      "endpoint": "http://iot-sensors:3001/iot/bell002",
+      "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/bell002"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
       ]
@@ -203,7 +206,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "door002",
       "entity_name": "Door:002",
       "entity_type": "Door",
-      "endpoint": "http://iot-sensors:3001/iot/door002",
+      "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/door002"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
       ]
@@ -212,7 +215,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "lamp002",
       "entity_name": "Lamp:002",
       "entity_type": "Lamp",
-      "endpoint": "http://iot-sensors:3001/iot/lamp002",
+      "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/lamp002"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"},
         {"name":"location", "type":"geo:point", "value":"52.5075,13.3903"}
@@ -233,7 +236,7 @@ curl -s -o /dev/null -X POST \
 #
 
 curl -s -o /dev/null -X POST \
-  'http://iot-agent:4041/iot/devices' \
+  "http://iot-agent:$IOTA_NORTH_PORT/iot/devices" \
   -H 'Content-Type: application/json' \
   -H 'fiware-service: openiot' \
   -H 'fiware-servicepath: /' \
@@ -251,7 +254,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "bell003",
       "entity_name": "Bell:003",
       "entity_type": "Bell",
-      "endpoint": "http://iot-sensors:3001/iot/bell003",
+      "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/bell003"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
       ]
@@ -260,7 +263,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "door003",
       "entity_name": "Door:003",
       "entity_type": "Door",
-      "endpoint": "http://iot-sensors:3001/iot/door003",
+      "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/door003"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
       ]
@@ -269,7 +272,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "lamp003",
       "entity_name": "Lamp:003",
       "entity_type": "Lamp",
-      "endpoint": "http://iot-sensors:3001/iot/lamp003",
+      "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/lamp003"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"},
         {"name":"location", "type":"geo:point", "value":"52.5031,13.4447"}
@@ -289,7 +292,7 @@ curl -s -o /dev/null -X POST \
 #
 
 curl -s -o /dev/null -X POST \
-  'http://iot-agent:4041/iot/devices' \
+  "http://iot-agent:$IOTA_NORTH_PORT/iot/devices" \
   -H 'Content-Type: application/json' \
   -H 'fiware-service: openiot' \
   -H 'fiware-servicepath: /' \
@@ -307,7 +310,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "bell004",
       "entity_name": "Bell:004",
       "entity_type": "Bell",
-      "endpoint": "http://iot-sensors:3001/iot/bell004",
+      "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/bell004"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
       ]
@@ -316,7 +319,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "door004",
       "entity_name": "Door:004",
       "entity_type": "Door",
-      "endpoint": "http://iot-sensors:3001/iot/door004",
+      "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/door004"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
       ]
@@ -325,7 +328,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "lamp004",
       "entity_name": "Lamp:004",
       "entity_type": "Lamp",
-      "endpoint": "http://iot-sensors:3001/iot/lamp004",
+      "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/lamp004"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"},
         {"name":"location", "type":"geo:point", "value":"52.5208,13.4094"}

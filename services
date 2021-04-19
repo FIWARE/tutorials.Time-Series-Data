@@ -19,10 +19,16 @@ loadData () {
 	waitForOrion
 	docker run --rm -v $(pwd)/import-data:/import-data \
 		--network fiware_default \
+		-e ORION_PORT="${ORION_PORT}" \
+		-e TUTORIAL_APP_PORT="${TUTORIAL_APP_PORT}" \
 		--entrypoint /bin/ash curlimages/curl import-data
 	waitForIoTAgent
 	docker run --rm -v $(pwd)/provision-devices:/provision-devices \
 		--network fiware_default \
+		-e ORION_PORT="${ORION_PORT}" \
+		-e TUTORIAL_APP_PORT="${TUTORIAL_APP_PORT}" \
+		-e TUTORIAL_DUMMY_DEVICE_PORT="${TUTORIAL_DUMMY_DEVICE_PORT}" \
+		-e IOTA_NORTH_PORT="${IOTA_NORTH_PORT}" \
 		--entrypoint /bin/ash curlimages/curl provision-devices
 	echo ""
 }
@@ -107,6 +113,7 @@ case "${command}" in
         echo "usage: services [create|start|stop]"
         ;;
 	 "start")
+		export $(cat .env | grep "#" -v)
 		stoppingContainers
 		echo -e "Starting eight containers \033[1;34mOrion\033[0m, \033[1;34mQuantumLeap\033[0m, \033[1;36mIoT-Agent\033[0m, \033[1mTutorial\033[0m, a \033[1mGrafana\033[0m metrics dashboard, \033[1mCrateDB\033[0m and \033[1mMongoDB\033[0m databases and a \033[1mRedis\033[0m cache."
 		echo -e "- \033[1;34mOrion\033[0m is the context broker"
