@@ -1,4 +1,4 @@
-# Time-Series-Data (QuantumLeap)[<img src="https://img.shields.io/badge/NGSI-LD-d6604d.svg" width="90"  align="left" />]("https://www.etsi.org/deliver/etsi_gs/CIM/001_099/009/01.03.01_60/gs_cim009v010301p.pdf)[<img src="https://fiware.github.io/tutorials.Time-Series-Data/img/fiware.png" align="left" width="162">](https://www.fiware.org/)<br/>
+# Time-Series-Data (QuantumLeap)[<img src="https://img.shields.io/badge/NGSI-LD-d6604d.svg" width="90"  align="left" />](https://www.etsi.org/deliver/etsi_gs/CIM/001_099/009/01.04.01_60/gs_cim009v010401p.pdf)[<img src="https://fiware.github.io/tutorials.Time-Series-Data/img/fiware.png" align="left" width="162">](https://www.fiware.org/)<br/>
 
 [![FIWARE Core Context Management](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/core.svg)](https://github.com/FIWARE/catalogue/blob/master/core/README.md)
 [![License: MIT](https://img.shields.io/github/license/fiware/tutorials.Time-Series-Data.svg)](https://opensource.org/licenses/MIT)
@@ -137,13 +137,13 @@ TimescaleDB は通常のテーブルのように見えるものを公開しま�
 したがって、アーキテクチャ全体は次の要素で構成されます:
     -   FIWARE
         [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/) は、
-        [NGSI-LD](https://forge.etsi.org/swagger/ui/?url=https://forge.etsi.org/gitlab/NGSI-LD/NGSI-LD/raw/master/spec/updated/full_api.json)
+        [NGSI-LD](https://forge.etsi.org/swagger/ui/?url=https://forge.etsi.org/rep/NGSI-LD/NGSI-LD/raw/master/spec/updated/generated/full_api.json)
         を使用してリクエストを受信します
     -   FIWARE
         [IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/)
         は、Ultralight 2.0 形式のダミー IoT デバイスからノース・バウンドの測定値
         を受信し、Context Broker の
-        [NGSI-LD](https://forge.etsi.org/swagger/ui/?url=https://forge.etsi.org/gitlab/NGSI-LD/NGSI-LD/raw/master/spec/updated/full_api.json)
+        [NGSI-LD](https://forge.etsi.org/swagger/ui/?url=https://forge.etsi.org/rep/NGSI-LD/NGSI-LD/raw/master/spec/updated/generated/full_api.json)
         リクエストに変換してコンテキスト・エンティティの状態を変更します
     -   FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) はコンテキストの変更をサブスクライブし、
         **CrateDB** データベースに永続化します
