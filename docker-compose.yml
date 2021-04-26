@@ -19,6 +19,15 @@
 version: "3.5"
 services:
 
+  ld-context:
+    image: httpd:alpine
+    hostname: context
+    container_name: fiware-ld-context
+    ports:
+        - "3004:80"
+    volumes:
+        - ./data-models:/usr/local/apache2/htdocs/
+
   # Orion is the context broker
   orion:
     image: fiware/orion-ld:${ORION_LD_VERSION}
@@ -33,7 +42,7 @@ services:
     command: -dbhost mongo-db -logLevel DEBUG -forwarding
     healthcheck:
       test: curl --fail -s http://orion:${ORION_LD_PORT}/version || exit 1
-      interval: 5s
+      interval: 10s
 
   # Quantum Leap is persisting Short Term History to Crate-DB
   quantumleap:
@@ -62,6 +71,7 @@ services:
     container_name: fiware-iot-agent
     depends_on:
       - mongo-db
+      - ld-context
     networks:
       - default
     ports:
@@ -81,11 +91,11 @@ services:
       - IOTA_HTTP_PORT=${IOTA_SOUTH_PORT} # The port used for device traffic over HTTP
       - IOTA_PROVIDER_URL=http://iot-agent:${IOTA_NORTH_PORT}
       - IOTA_CB_NGSI_VERSION=ld # use NGSI-LD when sending updates for active attributes
-      - IOTA_JSON_LD_CONTEXT=http://context:3000/data-models/ngsi-context.jsonld
+      - IOTA_JSON_LD_CONTEXT=http://context/ngsi-context.jsonld
       - IOTA_FALLBACK_TENANT=openiot
-
     healthcheck:
-      interval: 5s
+      interval: 10s
+      start_period: 300s 
 
 
   # Tutorial acts as a series of dummy IoT Sensors over HTTP
@@ -122,11 +132,19 @@ services:
       - TWITTER_CONSUMER_KEY=<ADD_YOUR_CONSUMER_KEY>
       - TWITTER_CONSUMER_SECRET=<ADD_YOUR_CONSUMER_SECRET>
       - MONGO_URL=mongodb://mongo-db:27017
-      - IOTA_JSON_LD_CONTEXT=http://context:3000/data-models/ngsi-context.jsonld
+      - IOTA_JSON_LD_CONTEXT=http://context/ngsi-context.jsonld
       - NGSI_LD_TENANT=openiot
 
-      - PIG_COUNT=4
-      - COW_COUNT=4
+      - PIG_COUNT=${PIG_COUNT}
+      - COW_COUNT=${COW_COUNT}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 160M
+        reservations:
+          cpus: '0.1'
+          memory: 40M
 
   # Databases
   mongo-db:
@@ -145,7 +163,7 @@ services:
       test: |
         host=`hostname --i || echo '127.0.0.1'`; 
         mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1
-      interval: 5s
+      interval: 10s
     
 
   redis-db:
@@ -162,7 +180,7 @@ services:
       test: |
         host=`hostname -i || echo '127.0.0.1'`;
         ping=`redis-cli -h "$host" ping` && [ "$ping" = 'PONG' ] && echo 0 || echo 1
-      interval: 5s
+      interval: 10s
 
   crate-db:
     image: crate:${CRATE_VERSION}
@@ -178,17 +196,6 @@ services:
       - CRATE_HEAP_SIZE=2g # see https://crate.io/docs/crate/howtos/en/latest/deployment/containers/docker.html#troubleshooting
     volumes:
       - crate-db:/data
-
-  redis-db:
-    image: redis:${REDIS_VERSION}
-    hostname: redis-db
-    container_name: db-redis
-    networks:
-      - default
-    ports:
-      - "${REDIS_PORT}:${REDIS_PORT}" # localhost:6379
-    volumes:
-      - redis-db:/data
 
   # Other services
   grafana:

@@ -9,13 +9,34 @@ set -e
 echo -e "⏳ Loading context data in \033[1mNGSI-LD\033[0m format"
 echo -e "    - all entity data models are defined referencing the" 
 echo -e "      \033[1m"${TUTORIAL_DATA_MODELS_CONTEXT}"\033[0m JSON-LD context"
-
+echo -e "\nCreating ${COW_COUNT:-4} cows and ${COW_COUNT:-4} pigs"
 
 generate_post_data()
 {
   cat <<EOF
   $animals
 EOF
+}
+
+function addCondition()
+{
+  animals="$animals \"sex\": { \"type\": \"Property\", \"value\": \"$1\"},"
+  if [ "$1" == "male" ]; then
+    animals="$animals \"phenologicalCondition\": { \"type\": \"Property\", \"value\": \"maleAdult\"},";
+    animals="$animals \"reproductiveCondition\": { \"type\": \"Property\", \"value\": \"active\"},";
+  else
+    animals="$animals \"phenologicalCondition\": { \"type\": \"Property\", \"value\": \"femaleAdult\"},";
+
+    if [ $((count%11)) -eq 0 ]; then
+       animals="$animals \"reproductiveCondition\": { \"type\": \"Property\", \"value\": \"inactive\"},";
+    elif [ $((count%7)) -eq 0 ]; then
+       animals="$animals \"reproductiveCondition\": { \"type\": \"Property\", \"value\": \"inHeat\"},";
+    elif [ $((count%5)) -eq 0 ]; then
+       animals="$animals \"reproductiveCondition\": { \"type\": \"Property\", \"value\": \"inCalf\"},";
+    else 
+      animals="$animals \"reproductiveCondition\": { \"type\": \"Property\", \"value\": \"active\"},";
+    fi
+  fi
 }
 
 count=0;
@@ -32,54 +53,48 @@ do
 done
 count=0;
 
-
 animals="[";
 for number in 001 002 003 004 005 006 007 008 009 010 011 012 013 014 015 016 017 018 019 020 021 022 023 024 025 026 027 028 029 030 031 032 033 034 035 036 037 038 039 040 041 042 043 044 045 046 047 048 049 050 051 052 053 054 055 056 057 058 059 060 061 062 063 064 065 066 067 068 069 070 071 072 073 074 075 076 077 078 079 080 081 082 083 084 085 086 087 088 089 090 091 092 093 094 095 096 097 098 099 100
 do
-  eval cowName="\$cowName$count";
-  animals="$animals {\"id\":\"urn:ngsi-ld:Animal:cow$number\", \"type\": \"Animal\",";
-  animals="$animals \"species\": { \"type\": \"Property\", \"value\": \"dairy cattle\"},";
-  animals="$animals \"name\": { \"type\": \"Property\", \"value\": \"$cowName\"},";
-  animals="$animals \"sex\": { \"type\": \"Property\", \"value\": "
-  if [ "$count" -lt 4 ]; then
-   animals="$animals \"male\" },"
-  else 
-   animals="$animals \"female\" },"
-  fi
-  
-  animals="$animals \"legalID\": { \"type\": \"Property\", \"value\": "
-  if [ "$count" -lt 4 ]; then
-   animals="$animals \"M-bull$number-$cowName\" }"
-  else 
-   animals="$animals \"F-cow$number-$cowName\" }"
-  fi
 
-  eval pigName="\$pigName$count";
-  animals="$animals },{\"id\":\"urn:ngsi-ld:Animal:pig$number\", \"type\": \"Animal\",";
-  animals="$animals \"species\": { \"type\": \"Property\", \"value\": \"pig\"},";
-  animals="$animals \"name\": { \"type\": \"Property\", \"value\": \"$pigName\"},";
-  animals="$animals \"sex\": { \"type\": \"Property\", \"value\": "
-  if [ "$count" -lt 50 ]; then
-   animals="$animals \"male\" },"
-  else 
-   animals="$animals \"female\" },"
-  fi
-  
-  animals="$animals \"legalID\": { \"type\": \"Property\", \"value\": "
-  if [ "$count" -lt 50 ]; then
-   animals="$animals \"M-boar$number-$pigName\" }"
-  else 
-   animals="$animals \"F-sow$number-$pigName\" }"
-  fi
+  if [ $count -lt ${COW_COUNT:-4} ]; then
+      eval cowName="\$cowName$count";
+      animals="$animals {\"id\":\"urn:ngsi-ld:Animal:cow$number\", \"type\": \"Animal\",";
+      animals="$animals \"species\": { \"type\": \"Property\", \"value\": \"dairy cattle\"},";
+      animals="$animals \"name\": { \"type\": \"Property\", \"value\": \"$cowName\"},";
+      if [ $((count%20)) -eq 0 ]; then
+       addCondition "male" "bull";
+       animals="$animals \"legalID\": { \"type\": \"Property\", \"value\": \"M-bull$number-$cowName\" }"
+      else 
+       addCondition "female" "cow";
+       animals="$animals \"legalID\": { \"type\": \"Property\", \"value\": \"F-cow$number-$cowName\" }"
+      fi
+      animals="$animals },"
+    fi
+
+    if [ $count -lt ${PIG_COUNT:-4} ]; then
+      eval pigName="\$pigName$count";
+      animals="$animals {\"id\":\"urn:ngsi-ld:Animal:pig$number\", \"type\": \"Animal\",";
+      animals="$animals \"species\": { \"type\": \"Property\", \"value\": \"pig\"},";
+      animals="$animals \"name\": { \"type\": \"Property\", \"value\": \"$pigName\"},";
+     
+      if [ $((count%2)) -eq 0 ]; then
+       addCondition "male" "boar";
+       animals="$animals \"legalID\": { \"type\": \"Property\", \"value\": \"M-boar$number-$pigName\" }"
+      else 
+       addCondition "female" "sow";
+       animals="$animals \"legalID\": { \"type\": \"Property\", \"value\": \"M-sow$number-$pigName\" }"
+      fi
+      animals="$animals },"
+    fi
 
   count=$((count + 1));
-  
-  if [ $number == '100' ]; then
-    animals="$animals}]";
-  else 
-    animals="$animals},";
-  fi
 done
+
+animals="${animals::-1} ]"
+
+#echo $animals;
+#exit 0;
 
 
 curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOperations/upsert?options=update' \
@@ -87,11 +102,10 @@ curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOper
 -H 'Content-Type: application/json' \
 -H 'Link: <'"${TUTORIAL_DATA_MODELS_CONTEXT}"'>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
 -H 'Accept: application/ld+json' \
--H 'fiware-servicepath: /' \
 -d "$(generate_post_data)"
 
 
-
+echo -e "Creating farm workers and buildings"
 #
 # Create four Farm Entities in various locations across Berlin
 #

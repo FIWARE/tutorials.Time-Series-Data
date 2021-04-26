@@ -6,7 +6,7 @@
 
 set -e
 echo
-echo -e "⏳ Link Devices to Animal entities"
+printf "⏳ Link Devices to Animal entities"
 
 
 generate_post_data()
