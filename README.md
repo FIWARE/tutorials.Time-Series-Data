@@ -1070,7 +1070,7 @@ function readCrateLampLuminosity(id, aggMethod) {
             url: crateUrl,
             headers: { "Content-Type": "application/json" },
             body: { stmt: sqlStatement },
-            json: true,
+            json: true
         };
         request(options, (error, response, body) => {
             return error ? reject(error) : resolve(body);
@@ -1097,7 +1097,7 @@ function crateToTimeSeries(crateResponse, aggMethod, hexColor) {
     return {
         labels,
         data,
-        color,
+        color
     };
 }
 ```
