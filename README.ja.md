@@ -384,7 +384,7 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
       "accept": "application/json"
     }
   },
-   "@context": "http://context-provider:3000/data-models/ngsi-context.jsonld"
+   "@context": "http://context/ngsi-context.jsonld"
 }'
 ```
 <a name="sample-gps-readings"></a>
@@ -423,7 +423,7 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
     }
   },
    "throttling": 10,
-   "@context": "http://context-provider:3000/data-models/ngsi-context.jsonld"
+   "@context": "http://context/ngsi-context.jsonld"
 }'
 ```
 
@@ -464,7 +464,7 @@ curl -X GET \
                 "accept": "application/json"
             }
         },
-        "@context": "http://context-provider:3000/data-models/ngsi-context.jsonld"
+        "@context": "http://context/ngsi-context.jsonld"
     },
     {
         "id": "urn:ngsi-ld:Subscription:601157e3bc8ec912978db6e5",
@@ -485,7 +485,7 @@ curl -X GET \
             }
         },
         "throttling": 10,
-        "@context": "http://context-provider:3000/data-models/ngsi-context.jsonld"
+        "@context": "http://context/ngsi-context.jsonld"
     }
 ]
 ```
