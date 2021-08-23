@@ -2,12 +2,17 @@
 #
 #  Command Line Interface to start all services associated with the Getting-Started Tutorial
 #
-#  For this tutorial the commands are merely a convenience script to run docker-compose
+#  For this tutorial the commands are merely a convenience script to run docker compose
 #
 
 set -e
 
-if (( $# != 1 )); then
+dockerCmd="docker compose"
+if (( $# == 2 )); then
+    dockerCmd="docker-compose"
+fi
+
+if (( $# < 1 )); then
     echo "Illegal number of parameters"
     echo "usage: services [create|start|stop]"
     exit 1
@@ -41,7 +46,7 @@ loadData () {
 
 stoppingContainers () {
 	echo "Stopping containers"
-	docker-compose --env-file=.env --log-level ERROR -p fiware down -v --remove-orphans
+	${dockerCmd} --env-file=.env down -v --remove-orphans
 }
 
 displayServices () {
@@ -138,7 +143,7 @@ case "${command}" in
 		echo -e "- \033[1mTutorial\033[0m is a context provide and acts as a series of dummy IoT Sensors over HTTP"
 		echo -e "- \033[1mContext\033[0m holds the linked data @context files"
 		echo ""
-		docker-compose --env-file=.env --log-level ERROR -p fiware up -d --remove-orphans
+		${dockerCmd} --env-file=.env up -d --remove-orphans
 		loadData orion:1026
 		displayServices
 		echo -e "Now open \033[4mhttp://localhost:3000/device/monitor\033[0m"
@@ -151,7 +156,7 @@ case "${command}" in
 		export $(cat .env | grep "#" -v)
 		echo "Pulling Docker images"
 		docker pull curlimages/curl
-		docker-compose --env-file=.env --log-level ERROR -p fiware pull
+		${dockerCmd} --env-file=.env pull
 		;;
 	*)
 		echo "Command not Found."
