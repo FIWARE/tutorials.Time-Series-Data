@@ -102,7 +102,7 @@ services:
   # Tutorial acts as a series of dummy IoT Sensors over HTTP
   tutorial:
     image: fiware/tutorials.ngsi-ld
-    hostname: tutorial
+    hostname: iot-sensors
     container_name: fiware-tutorial
     depends_on:
       - orion
@@ -111,7 +111,7 @@ services:
     networks:
       default:
         aliases:
-          - iot-sensors
+          - tutorial
           - context-provider
           - context
     expose:

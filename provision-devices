@@ -205,7 +205,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "water001",
       "entity_name": "urn:ngsi-ld:Device:water001",
       "entity_type": "Water",
-      "endpoint": "http://context-provider:3001/iot/water001",
+      "endpoint": "http://iot-sensors:3001/iot/water001",
       "static_attributes": [
         {"name": "controlledAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:farm001"}
       ]
@@ -214,7 +214,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "filling001",
       "entity_name": "urn:ngsi-ld:Device:filling001",
       "entity_type": "FillingLevelSensor",
-      "endpoint": "http://context-provider:3001/iot/filling001",
+      "endpoint": "http://iot-sensors:3001/iot/filling001",
       "static_attributes": [
         {"name": "controlledAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:farm001"},
         {"name": "location", "type": "GeoProperty", "value": [13.3505, 52.5144]}
@@ -224,7 +224,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "tractor001",
       "entity_name": "urn:ngsi-ld:Device:tractor001",
       "entity_type": "Tractor",
-      "endpoint": "http://context-provider:3001/iot/tractor001",
+      "endpoint": "http://iot-sensors:3001/iot/tractor001",
       "static_attributes": [
           {"name": "controlledAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:farm001"}
       ]
@@ -257,7 +257,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "water002",
       "entity_name": "urn:ngsi-ld:Device:water002",
       "entity_type": "Water",
-      "endpoint": "http://context-provider:3001/iot/water002",
+      "endpoint": "http://iot-sensors:3001/iot/water002",
       "static_attributes": [
         {"name": "controlledAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:barn002"}
       ]
@@ -266,7 +266,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "filling002",
       "entity_name": "urn:ngsi-ld:Device:filling002",
       "entity_type": "FillingLevelSensor",
-      "endpoint": "http://context-provider:3001/iot/filling002",
+      "endpoint": "http://iot-sensors:3001/iot/filling002",
       "static_attributes": [
         {"name": "controlledAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:barn002"},
         {"name": "location", "type": "GeoProperty", "value": [13.3698, 52.5163]}
@@ -276,7 +276,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "tractor002",
       "entity_name": "urn:ngsi-ld:Device:tractor002",
       "entity_type": "Tractor",
-      "endpoint": "http://context-provider:3001/iot/tractor002",
+      "endpoint": "http://iot-sensors:3001/iot/tractor002",
       "static_attributes": [
           {"name": "controlledAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:barn002"}
       ]
@@ -309,7 +309,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "water003",
       "entity_name": "urn:ngsi-ld:Device:water003",
       "entity_type": "Water",
-      "endpoint": "http://context-provider:3001/iot/water003",
+      "endpoint": "http://iot-sensors:3001/iot/water003",
       "static_attributes": [
         {"name": "controlledAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:tower003"}
       ]
@@ -318,7 +318,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "filling003",
       "entity_name": "urn:ngsi-ld:Device:filling003",
       "entity_type": "FillingLevelSensor",
-      "endpoint": "http://context-provider:3001/iot/filling003",
+      "endpoint": "http://iot-sensors:3001/iot/filling003",
       "static_attributes": [
         {"name": "controlledAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:tower003"},
         {"name": "location", "type": "GeoProperty", "value": [13.3598, 52.5165]}
@@ -328,7 +328,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "tractor003",
       "entity_name": "urn:ngsi-ld:Device:tractor003",
       "entity_type": "Tractor",
-      "endpoint": "http://context-provider:3001/iot/tractor003",
+      "endpoint": "http://iot-sensors:3001/iot/tractor003",
       "static_attributes": [
           {"name": "controlledAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:tower003"}
       ]
@@ -361,7 +361,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "water004",
       "entity_name": "urn:ngsi-ld:Device:water004",
       "entity_type": "Water",
-      "endpoint": "http://context-provider:3001/iot/water004",
+      "endpoint": "http://iot-sensors:3001/iot/water004",
       "static_attributes": [
         {"name": "controlledAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:farm002"}
       ]
@@ -370,7 +370,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "filling004",
       "entity_name": "urn:ngsi-ld:Device:filling004",
       "entity_type": "FillingLevelSensor",
-      "endpoint": "http://context-provider:3001/iot/filling004",
+      "endpoint": "http://iot-sensors:3001/iot/filling004",
       "static_attributes": [
         {"name": "controlledAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:farm002"},
         {"name": "location", "type": "GeoProperty", "value": [13.3127, 52.4893]}
@@ -380,7 +380,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "tractor004",
       "entity_name": "urn:ngsi-ld:Device:tractor004",
       "entity_type": "Tractor",
-      "endpoint": "http://context-provider:3001/iot/tractor004",
+      "endpoint": "http://iot-sensors:3001/iot/tractor004",
       "static_attributes": [
           {"name": "controlledAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:farm002"}
       ]
