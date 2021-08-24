@@ -29,7 +29,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"description\": \"Notify me of all feedstock changes\",\n  \"type\": \"Subscription\",\n  \"entities\": [{\"type\": \"FillingLevelSensor\"}],\n  \"watchedAttributes\": [\"filling\"],\n  \"notification\": {\n    \"attributes\": [\"filling\", \"location\"],\n    \"format\": \"normalized\",\n    \"endpoint\": {\n      \"uri\": \"http://quantumleap:8668/v2/notify\",\n      \"accept\": \"application/json\"\n    }\n  },\n   \"@context\": \"http://context//ngsi-context.jsonld\"\n}"
+							"raw": "{\n  \"description\": \"Notify me of all feedstock changes\",\n  \"type\": \"Subscription\",\n  \"entities\": [{\"type\": \"FillingLevelSensor\"}],\n  \"watchedAttributes\": [\"filling\"],\n  \"notification\": {\n    \"attributes\": [\"filling\", \"location\"],\n    \"format\": \"normalized\",\n    \"endpoint\": {\n      \"uri\": \"http://quantumleap:8668/v2/notify\",\n      \"accept\": \"application/json\"\n    }\n  },\n   \"@context\": \"http://context/ngsi-context.jsonld\"\n}"
 						},
 						"url": {
 							"raw": "http://{{orion}}/ngsi-ld/v1/subscriptions/",
@@ -68,7 +68,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"description\": \"Notify me of animal locations\",\n  \"type\": \"Subscription\",\n  \"entities\": [{\"type\": \"Device\"}],\n  \"watchedAttributes\": [\"location\", \"status\", \"heartRate\"],\n  \"notification\": {\n    \"attributes\": [\"location\", \"status\", \"heartRate\"],\n    \"format\": \"normalized\",\n    \"endpoint\": {\n      \"uri\": \"http://quantumleap:8668/v2/notify\",\n      \"accept\": \"application/json\"\n    }\n  },\n   \"throttling\": 10,\n   \"@context\": \"http://context//ngsi-context.jsonld\"\n}"
+							"raw": "{\n  \"description\": \"Notify me of animal locations\",\n  \"type\": \"Subscription\",\n  \"entities\": [{\"type\": \"Device\"}],\n  \"watchedAttributes\": [\"location\", \"status\", \"heartRate\"],\n  \"notification\": {\n    \"attributes\": [\"location\", \"status\", \"heartRate\"],\n    \"format\": \"normalized\",\n    \"endpoint\": {\n      \"uri\": \"http://quantumleap:8668/v2/notify\",\n      \"accept\": \"application/json\"\n    }\n  },\n   \"throttling\": 10,\n   \"@context\": \"http://context/ngsi-context.jsonld\"\n}"
 						},
 						"url": {
 							"raw": "http://{{orion}}/ngsi-ld/v1/subscriptions/",
