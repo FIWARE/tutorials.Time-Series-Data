@@ -6,13 +6,6 @@
 
 set -e
 
-
-echo "http://iot-agent:$IOTA_NORTH_PORT/iot/services"
-echo "http://orion:$ORION_PORT"
-echo "http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/door004"
-
-
-
 printf "⏳ Provisioning IoT devices "
 
 
