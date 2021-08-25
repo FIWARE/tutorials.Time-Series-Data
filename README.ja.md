@@ -454,7 +454,7 @@ curl -iX POST \
   -H 'fiware-service: openiot' \
   -H 'fiware-servicepath: /' \
   -d '{
-  "description": "description": "Notify QuantumLeap of count changes of any Motion Sensor",
+  "description": "Notify QuantumLeap of count changes of any Motion Sensor",
   "subject": {
     "entities": [
       {
