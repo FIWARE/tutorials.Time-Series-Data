@@ -109,6 +109,16 @@ waitForIoTAgent () {
 	done
 }
 
+waitForCrateDB () {
+	echo -e "\n⏳ Waiting for \033[1mCrateDB\033[0m to be available\n"
+	while ! [ `docker inspect --format='{{.State.Status}}' db-crate` == "running" ]
+
+	do 
+	  echo -e "CrateDB HTTP state: " `curl -iX POST -s -o /dev/null -w %{http_code} 'http://localhost:4200/_sql' -H 'Content-Type: application/json' -d '{"stmt": "select health from sys.health order by severity desc limit 1;"}'` " (waiting for 200)"
+	  sleep 1
+	done
+}
+
 
 
 command="$1"
@@ -128,6 +138,7 @@ case "${command}" in
 		echo ""
 		${dockerCmd} up -d --remove-orphans
 		loadData
+		waitForCrateDB
 		displayServices
 		echo -e "Now open \033[4mhttp://localhost:3000/device/monitor\033[0m"
 		;;
