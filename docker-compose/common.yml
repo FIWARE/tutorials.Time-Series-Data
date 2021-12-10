@@ -18,7 +18,6 @@
 #
 version: "3.5"
 services:
-
   # @context file is served from here
   ld-context:
     image: httpd:alpine
@@ -27,25 +26,93 @@ services:
     ports:
         - "3004:80"
     volumes:
-        - ./data-models:/usr/local/apache2/htdocs/
+        - data-models:/usr/local/apache2/htdocs/
     healthcheck:
       test: (wget --server-response --spider --quiet  http://ld-context/ngsi-context.jsonld 2>&1 | awk 'NR==1{print $$2}'|  grep -q -e "200") || exit 1
 
-  # Orion is the context broker
-  orion:
-    image: fiware/orion-ld:${ORION_LD_VERSION}
-    hostname: orion
-    container_name: fiware-orion
+  # Databases
+  mongo-db:
+    image: mongo:${MONGO_DB_VERSION}
+    hostname: mongo-db
+    container_name: db-mongo
+    expose:
+      - "${MONGO_DB_PORT}"
+    ports:
+      - "${MONGO_DB_PORT}:${MONGO_DB_PORT}" # localhost:27017
+    networks:
+      - default
+    volumes:
+      - mongo-db:/data/db
+      - mongo-config:/data/configdb
+    healthcheck:
+      test: |
+        host=`hostname --ip-address || echo '127.0.0.1'`; 
+        mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1    
+      interval: 5s
+
+  # IoT-Agent is configured for the UltraLight Protocol
+  iot-agent:
+    image: fiware/iotagent-ul:${ULTRALIGHT_VERSION}
+    hostname: iot-agent
+    container_name: fiware-iot-agent
     depends_on:
       - mongo-db
+      - ld-context
     networks:
       - default
     ports:
-      - "${ORION_LD_PORT}:${ORION_LD_PORT}" # localhost:1026
-    command: -dbhost mongo-db -logLevel DEBUG -forwarding
+      - "${IOTA_NORTH_PORT}:${IOTA_NORTH_PORT}" # localhost:4041
+      - "${IOTA_SOUTH_PORT}:${IOTA_SOUTH_PORT}" # localhost:7896
+    environment:
+      - IOTA_NORTH_PORT=${IOTA_NORTH_PORT}
+      - IOTA_REGISTRY_TYPE=mongodb #Whether to hold IoT device info in memory or in a database
+      - IOTA_LOG_LEVEL=DEBUG # The log level of the IoT Agent
+      - IOTA_TIMESTAMP=true # Supply timestamp information with each measurement
+      - IOTA_AUTOCAST=true # Ensure Ultralight number values are read as numbers not strings
+      - IOTA_MONGO_HOST=mongo-db # The host name of MongoDB
+      - IOTA_MONGO_PORT=${MONGO_DB_PORT} # The port mongoDB is listening on
+      - IOTA_MONGO_DB=iotagentul # The name of the database used in mongoDB
+      - IOTA_HTTP_PORT=${IOTA_SOUTH_PORT} # The port used for device traffic over HTTP
+      - IOTA_PROVIDER_URL=http://iot-agent:${IOTA_NORTH_PORT}
+      - IOTA_CB_NGSI_VERSION=ld # use NGSI-LD when sending updates for active attributes
+      - IOTA_JSON_LD_CONTEXT=http://context/ngsi-context.jsonld
+      - IOTA_FALLBACK_TENANT=openiot
     healthcheck:
-      test: curl --fail -s http://orion:${ORION_LD_PORT}/version || exit 1
-      interval: 10s
+      interval: 30s
+
+
+  # Tutorial acts as a series of dummy IoT Sensors over HTTP
+  tutorial:
+    image: fiware/tutorials.ngsi-ld
+    hostname: iot-sensors
+    container_name: fiware-tutorial
+    depends_on:
+      - mongo-db
+    networks:
+      default:
+        aliases:
+          - tutorial
+          - context-provider
+    expose:
+      - "${TUTORIAL_APP_PORT}"
+      - "${TUTORIAL_DUMMY_DEVICE_PORT}"
+    ports:
+      - "${TUTORIAL_APP_PORT}:${TUTORIAL_APP_PORT}" # localhost:3000
+      - "${TUTORIAL_DUMMY_DEVICE_PORT}:${TUTORIAL_DUMMY_DEVICE_PORT}" # localhost:3001
+    environment:
+      - DEBUG=tutorial:*
+      - WEB_APP_PORT=${TUTORIAL_APP_PORT} # Port used by the content provider proxy and web-app for viewing data
+      - IOTA_HTTP_HOST=iot-agent
+      - IOTA_HTTP_PORT=${IOTA_SOUTH_PORT}
+      - OPENWEATHERMAP_KEY_ID=<ADD_YOUR_KEY_ID>
+      - TWITTER_CONSUMER_KEY=<ADD_YOUR_CONSUMER_KEY>
+      - TWITTER_CONSUMER_SECRET=<ADD_YOUR_CONSUMER_SECRET>
+      - MONGO_URL=mongodb://mongo-db:27017
+      - IOTA_JSON_LD_CONTEXT=http://context/ngsi-context.jsonld
+
+      - PIG_COUNT=${PIG_COUNT}
+      - COW_COUNT=${COW_COUNT}
+
 
   # Quantum Leap is persisting Short Term History to Crate-DB
   quantumleap:
@@ -66,108 +133,6 @@ services:
       - LOGLEVEL=DEBUG
     healthcheck:
       test: curl --fail -s http://quantumleap:${QUANTUMLEAP_PORT}/version || exit 1
-  
-  # IoT-Agent is configured for the UltraLight Protocol
-  iot-agent:
-    image: fiware/iotagent-ul:${ULTRALIGHT_VERSION}
-    hostname: iot-agent
-    container_name: fiware-iot-agent
-    depends_on:
-      - mongo-db
-      - ld-context
-    networks:
-      - default
-    ports:
-      - "${IOTA_NORTH_PORT}:${IOTA_NORTH_PORT}" # localhost:4041
-      - "${IOTA_SOUTH_PORT}:${IOTA_SOUTH_PORT}" # localhost:7896
-    environment:
-      - IOTA_CB_HOST=orion # name of the context broker to update context
-      - IOTA_CB_PORT=${ORION_LD_PORT} # port the context broker listens on to update context
-      - IOTA_NORTH_PORT=${IOTA_NORTH_PORT}
-      - IOTA_REGISTRY_TYPE=mongodb #Whether to hold IoT device info in memory or in a database
-      - IOTA_LOG_LEVEL=DEBUG # The log level of the IoT Agent
-      - IOTA_TIMESTAMP=true # Supply timestamp information with each measurement
-      - IOTA_AUTOCAST=true # Ensure Ultralight number values are read as numbers not strings
-      - IOTA_MONGO_HOST=mongo-db # The host name of MongoDB
-      - IOTA_MONGO_PORT=${MONGO_DB_PORT} # The port mongoDB is listening on
-      - IOTA_MONGO_DB=iotagentul # The name of the database used in mongoDB
-      - IOTA_HTTP_PORT=${IOTA_SOUTH_PORT} # The port used for device traffic over HTTP
-      - IOTA_PROVIDER_URL=http://iot-agent:${IOTA_NORTH_PORT}
-      - IOTA_CB_NGSI_VERSION=ld # use NGSI-LD when sending updates for active attributes
-      - IOTA_JSON_LD_CONTEXT=http://context/ngsi-context.jsonld
-      - IOTA_FALLBACK_TENANT=openiot
-    healthcheck:
-      interval: 10s
-      start_period: 300s 
-
-
-  # Tutorial acts as a series of dummy IoT Sensors over HTTP
-  tutorial:
-    image: fiware/tutorials.ngsi-ld
-    hostname: iot-sensors
-    container_name: fiware-tutorial
-    depends_on:
-      - orion
-      - iot-agent
-      - quantumleap
-    networks:
-      default:
-        aliases:
-          - tutorial
-          - context-provider
-          - context
-    expose:
-      - "${TUTORIAL_APP_PORT}"
-      - "${TUTORIAL_DUMMY_DEVICE_PORT}"
-    ports:
-      - "${TUTORIAL_APP_PORT}:${TUTORIAL_APP_PORT}" # localhost:3000
-      - "${TUTORIAL_DUMMY_DEVICE_PORT}:${TUTORIAL_DUMMY_DEVICE_PORT}" # localhost:3001
-    environment:
-      - DEBUG=tutorial:*
-      - WEB_APP_PORT=${TUTORIAL_APP_PORT} # Port used by the content provider proxy and web-app for viewing data
-      - IOTA_HTTP_HOST=iot-agent
-      - IOTA_HTTP_PORT=${IOTA_SOUTH_PORT}
-      - IOTA_DEFAULT_RESOURCE=/iot/d
-      - DUMMY_DEVICES_PORT=${TUTORIAL_DUMMY_DEVICE_PORT} # Port used by the dummy IOT devices to receive commands
-      - DUMMY_DEVICES_TRANSPORT=HTTP # Default transport used by dummy Io devices
-      - CONTEXT_BROKER=http://orion:${ORION_LD_PORT}/ngsi-ld/v1 # URL of the context broker to update context
-      - OPENWEATHERMAP_KEY_ID=<ADD_YOUR_KEY_ID>
-      - TWITTER_CONSUMER_KEY=<ADD_YOUR_CONSUMER_KEY>
-      - TWITTER_CONSUMER_SECRET=<ADD_YOUR_CONSUMER_SECRET>
-      - MONGO_URL=mongodb://mongo-db:27017
-      - IOTA_JSON_LD_CONTEXT=http://context/ngsi-context.jsonld
-      - NGSI_LD_TENANT=openiot
-
-      - PIG_COUNT=${PIG_COUNT}
-      - COW_COUNT=${COW_COUNT}
-    deploy:
-      resources:
-        limits:
-          cpus: '0.2'
-          memory: 160M
-        reservations:
-          cpus: '0.1'
-          memory: 40M
-
-  # Databases
-  mongo-db:
-    image: mongo:${MONGO_DB_VERSION}
-    hostname: mongo-db
-    container_name: db-mongo
-    expose:
-      - "${MONGO_DB_PORT}"
-    ports:
-      - "${MONGO_DB_PORT}:${MONGO_DB_PORT}" # localhost:27017
-    networks:
-      - default
-    volumes:
-      - mongo-db:/data
-    healthcheck:
-      test: |
-        host=`hostname --i || echo '127.0.0.1'`; 
-        mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1
-      interval: 10s
-    
 
   redis-db:
     image: redis:${REDIS_VERSION}
@@ -220,7 +185,14 @@ networks:
         - subnet: 172.18.1.0/24
 
 volumes:
-  mongo-db: ~
   crate-db: ~
   redis-db: ~
   grafana: ~
+  mongo-db: ~
+  mongo-config: ~
+  data-models:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/data-models
