@@ -29,6 +29,8 @@ services:
   api-gateway:
     container_name: stellio-api-gateway
     hostname: stellio
+    labels:
+      org.fiware: 'tutorial'
     image: stellio/stellio-api-gateway:${STELLIO_DOCKER_TAG}
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -37,6 +39,8 @@ services:
 
   entity-service:
     container_name: stellio-entity-service
+    labels:
+      org.fiware: 'tutorial'
     image: stellio/stellio-entity-service:${STELLIO_DOCKER_TAG}
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -49,6 +53,8 @@ services:
 
   search-service:
     container_name: stellio-search-service
+    labels:
+      org.fiware: 'tutorial'
     image: stellio/stellio-search-service:${STELLIO_DOCKER_TAG}
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -65,6 +71,8 @@ services:
 
   subscription-service:
     container_name: stellio-subscription-service
+    labels:
+      org.fiware: 'tutorial'
     image: stellio/stellio-subscription-service:${STELLIO_DOCKER_TAG}
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -97,6 +105,8 @@ services:
       - 7687:7687
 
   postgres:
+    labels:
+      org.fiware: 'tutorial'
     image: stellio/stellio-timescale-postgis:2.3.0-pg13
     hostname: postgres
     container_name: db-postgres
