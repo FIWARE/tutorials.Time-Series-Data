@@ -157,8 +157,12 @@ curl -s -o /dev/null -X POST \
       "entity_type": "Lamp",
       "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/lamp001"'",
       "static_attributes": [
-          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"},
-          {"name":"location", "type":"geo:point", "value":"52.5547,13.3986"}
+        {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"},
+        {"name":"location", "type":"geo:json", "value": {
+            "coordinates": [52.5547,13.3986],
+            "type": "Point"
+          }
+        }
       ]
     }
   ]
@@ -211,7 +215,10 @@ curl -s -o /dev/null -X POST \
       "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/lamp002"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"},
-        {"name":"location", "type":"geo:point", "value":"52.5075,13.3903"}
+        {"name":"location", "type":"geo:json", "value": {
+          "coordinates": [52.5075,13.3903],
+          "type": "Point"}
+        }
       ]
     }
   ]
@@ -268,7 +275,10 @@ curl -s -o /dev/null -X POST \
       "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/lamp003"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"},
-        {"name":"location", "type":"geo:point", "value":"52.5031,13.4447"}
+        {"name":"location", "type":"geo:json", "value": {
+          "coordinates": [52.5031,13.4447],
+          "type": "Point"}
+        }
       ]
     }
   ]
@@ -324,7 +334,10 @@ curl -s -o /dev/null -X POST \
       "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/lamp004"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"},
-        {"name":"location", "type":"geo:point", "value":"52.5208,13.4094"}
+        {"name":"location", "type":"geo:json", "value": {
+          "coordinates": [52.5208,13.4094],
+          "type": "Point"}
+        }
       ]
     }
   ]
