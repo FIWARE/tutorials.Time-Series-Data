@@ -20,10 +20,10 @@ version: "3.8"
 services:
   # Orion is the context broker
   orion:
-    #labels:
+    labels:
       org.fiware: 'tutorial'
     image: fiware/orion:${ORION_VERSION}
-    image: telefonicaiot/fiware-orion:issue3884
+    # image: telefonicaiot/fiware-orion:issue3884
     hostname: orion
     container_name: fiware-orion
     depends_on:
