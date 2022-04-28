@@ -6,7 +6,7 @@
 <br/> [![JSON LD](https://img.shields.io/badge/JSON--LD-1.1-f06f38.svg)](https://w3c.github.io/json-ld-syntax/)
 [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
 
-このチュートリアルは、[FIWARE QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) の概要です。これは、
+このチュートリアルは、[FIWARE QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) の概要です。これは、
 コンテキスト・データを **CrateDB** データベースに永続化するために使用される汎用イネーブラーです。このチュートリアルは、
 [以前のチュートリアル](https://github.com/FIWARE/tutorials.IoT-Agent)で接続された IoT センサをアクティブにし、それらの
 センサからの測定値をデータベースに保持します。このようなデータの時間ベースの集計を取得するには、**QuantumLeap** クエリ
@@ -159,8 +159,8 @@ TimescaleDB は通常のテーブルのように見えるものを公開しま�
     -   時間ベースの履歴コンテキスト・データを保持するデータシンクとして使用されます
     -   時間ベースのデータクエリを解釈する HTTP エンドポイントを提供します
 
+-   HTTP **Web-Server** は、システム内のコンテキスト・エンティティを定義する静的な `@context` ファイルを提供します
 -   **チュートリアルアプリケーション** は次のことを行います:
-    -   システム内のコンテキスト・エンティティを定義する静的な `@context` ファイルを提供します
     -   HTTP上で実行される [UltraLight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
         プロトコルを使用して、ダミーの[農業用 IoT デバイス](https://github.com/FIWARE/tutorials.IoT-Sensors/tree/NGSI-LD)
         のセットとして機能します
@@ -199,7 +199,7 @@ docker-compose -v
 docker version
 ```
 
-Docker バージョン 18.03 以降と Docker Compose 1.21 以上を使用していることを確認し、必要に応じてアップグレードしてください。
+Docker バージョン 20.10 以降と Docker Compose 1.29 以上を使用していることを確認し、必要に応じてアップグレードしてください。
 
 <a name="cygwin-for-windows"></a>
 
@@ -357,7 +357,7 @@ Grafana 環境変数は、Grafana の[ドキュメント](https://grafana.com/do
 
 -   `NGSILD-Tenant` ヘッダは、サブスクリプションをフィルタリングして、接続された IoT センサからの測定値のみをリッスンするため
     に使用されます
--   リクエスト・ボディの `entities` `type` は、**QuantumLeap**にすべての **Filling Sensor** データの変更が通知されるように
+-   リクエスト・ボディの `entities` `type` は、**QuantumLeap**にすべての **FillingLevelSensor** データの変更が通知されるように
     します
 -   `notification` URL は公開されたポートと一致する必要があります
 
@@ -726,28 +726,25 @@ curl -X GET \
 
 ```json
 {
-  "attrName": "heartRate",
-  "entities": [
-    {
-      "entityId": "urn:ngsi-ld:Device:cow001",
-      "index": [
-        "2021-01-27T16:52:05.925+00:00",
-        "2021-01-27T16:52:30.769+00:00"
-      ],
-      "values": [53, 50]
-    },
-    {
-      "entityId": "urn:ngsi-ld:Device:cow002",
-      "index": ["2021-01-27T16:50:50.792+00:00"],
-      "values": [53]
-    },
-    {
-      "entityId": "urn:ngsi-ld:Device:cow004",
-      "index": ["2021-01-27T16:51:55.798+00:00"],
-      "values": [51]
-    }
-  ],
-  "entityType": "Device"
+    "attrName": "heartRate",
+    "entities": [
+        {
+            "entityId": "urn:ngsi-ld:Device:cow001",
+            "index": ["2021-01-27T16:52:05.925+00:00", "2021-01-27T16:52:30.769+00:00"],
+            "values": [53, 50]
+        },
+        {
+            "entityId": "urn:ngsi-ld:Device:cow002",
+            "index": ["2021-01-27T16:50:50.792+00:00"],
+            "values": [53]
+        },
+        {
+            "entityId": "urn:ngsi-ld:Device:cow004",
+            "index": ["2021-01-27T16:51:55.798+00:00"],
+            "values": [51]
+        }
+    ],
+    "entityType": "Device"
 }
 ```
 
