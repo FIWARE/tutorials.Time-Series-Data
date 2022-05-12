@@ -10,7 +10,7 @@
 
 このチュートリアルでは、コンテキスト・データを **CrateDB** データベースに保存す
 るために使用される、Generic Enabler である
-[FIWARE QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) について紹
+[FIWARE QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) について紹
 介します。このチュートリアルでは
 、[以前のチュートリアル](https://github.com/FIWARE/tutorials.IoT-Agent)で接続し
 た IoT センサを有効にし、それらのセンサからの測定値をデータベースに保存します。
@@ -25,7 +25,7 @@
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/d24facc3c430bb5d5aaf)
 
-## 内容
+## コンテンツ
 
 <details>
 <summary>詳細 <b>(クリックして拡大)</b></summary>
@@ -177,7 +177,7 @@ Broker に接続されます。使用しているアーキテクチャとプロ�
 、[以前のチュートリアル](https://github.com/FIWARE/tutorials.IoT-Agent/) で作成
 したコンポーネントとダミー IoT デバイスをベースにしています
 。[Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)，[IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/)
-および [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) の 3 つの
+および [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) の 3 つの
 FIWARE コンポーネントを使用します。
 
 したがって、全体的なアーキテクチャは次の要素で構成されます :
@@ -194,7 +194,7 @@ FIWARE コンポーネントを使用します。
         を受信し、Context Broker の
         [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) リクエス
         トに変換してコンテキスト・エンティティの状態を変更します
-    -   FIWARE [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) は
+    -   FIWARE [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) は
         コンテキストの変更をサブスクライブし、**CrateDB** データベースに永続化し
         ます
 
@@ -248,7 +248,7 @@ FIWARE コンポーネントを使用します。
 
 **Docker Compose** は、マルチコンテナ Docker アプリケーションを定義して実行する
 ためのツールです
-。[YAML file](https://raw.githubusercontent.com/Fiware/tutorials.Time-Series-Data/master/docker-compose.yml)
+。[YAML file](https://raw.githubusercontent.com/FIWARE/tutorials.Time-Series-Data/NGSI-v2/docker-compose.yml)
 ファイルは、アプリケーションのために必要なサービスを構成するために使用します。つ
 まり、すべてのコンテナ・サービスは 1 つのコマンドで呼び出すことができます
 。Docker Compose は、デフォルトで Docker for Windows と Docker for Mac の一部と
@@ -264,7 +264,7 @@ docker-compose -v
 docker version
 ```
 
-Docker バージョン 18.03 以降と Docker Compose 1.29 以上を使用していることを確認
+Docker バージョン 20.10 以降と Docker Compose 1.29 以上を使用していることを確認
 し、必要に応じてアップグレードしてください。
 
 <a name="cygwin-for-windows"></a>
@@ -292,7 +292,7 @@ git checkout NGSI-v2
 ```
 
 その後、リポジトリ内で提供される
-[services](https://github.com/fisuda/tutorials.Time-Series-Data/blob/NGSI-v2/services)
+[services](https://github.com/FIWARE/tutorials.Time-Series-Data/blob/NGSI-v2/services)
 Bash スクリプトを実行することによって、コマンドラインからすべてのサービスを初期
 化することができます :
 
@@ -353,9 +353,9 @@ CrateDB が `max virtual memory areas vm.max_map_count [65530] is too low, incre
     ports:
         - "8668:8668"
     depends_on:
-      - cratedb
+      - crate-db
     environment:
-      - CRATE_HOST=cratedb
+      - CRATE_HOST=crate-db
 ```
 
 <a name="grafana-configuration"></a>
@@ -1057,7 +1057,10 @@ curl -X POST \
 ```json
 {
     "cols": ["table_schema", "table_name"],
-    "rows": [["mtopeniot", "etmotion"], ["mtopeniot", "etlamp"]],
+    "rows": [
+        ["mtopeniot", "etmotion"],
+        ["mtopeniot", "etlamp"]
+    ],
     "rowcount": 2,
     "duration": 14.2762
 }
@@ -1309,7 +1312,7 @@ curl -iX POST \
 
 ```javascript
 function readCrateLampLuminosity(id, aggMethod) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         const sqlStatement =
             "SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, " +
             aggMethod +
@@ -1339,7 +1342,7 @@ function crateToTimeSeries(crateResponse, aggMethod, hexColor) {
     const color = [];
 
     if (crateResponse && crateResponse.rows && crateResponse.rows.length > 0) {
-        _.forEach(crateResponse.rows, element => {
+        _.forEach(crateResponse.rows, (element) => {
             const date = moment(element[0]);
             data.push({ t: date, y: element[1] });
             labels.push(date.format("HH:mm"));
@@ -1388,7 +1391,6 @@ Grafana を使用して、アグリゲートされたセンサ・データを表
 において、次の値 で設定する必要があります：
 
 -   **Name** `CrateDB`
-
 -   **Host** `crate-db:5432`
 -   **Database** `mtopeniot`
 -   **User** `crate`
@@ -1472,4 +1474,4 @@ Save をクリックし、_Database Connection OK_
 
 ## License
 
-[MIT](LICENSE) © 2018-2020 FIWARE Foundation e.V.
+[MIT](LICENSE) © 2018-2022 FIWARE Foundation e.V.
