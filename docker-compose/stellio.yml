@@ -1,31 +1,5 @@
-version: '3.5'
+version: '3.9'
 services:
-  zookeeper:
-    image: confluentinc/cp-zookeeper:5.4.1
-    container_name: zookeeper
-    ports:
-      - 2181:2181
-    environment:
-      ZOOKEEPER_SERVER_ID: 1
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-
-  kafka:
-    image: confluentinc/cp-kafka:5.4.1
-    container_name: kafka
-    ports:
-      - 29092:29092
-    environment:
-      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:29092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_BROKER_ID: 1
-      KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    depends_on:
-      - zookeeper
-
   api-gateway:
     container_name: stellio-api-gateway
     hostname: stellio
@@ -38,6 +12,7 @@ services:
       - "${STELLIO_PORT}:8080"
 
   entity-service:
+    restart: always
     container_name: stellio-entity-service
     labels:
       org.fiware: 'tutorial'
@@ -48,8 +23,10 @@ services:
     ports:
       - 8082:8082
     depends_on:
-      - neo4j
-      - kafka
+      neo4j:
+        condition: service_healthy
+      kafka:
+        condition: service_started
 
   search-service:
     container_name: stellio-search-service
@@ -66,8 +43,10 @@ services:
     ports:
       - 8083:8083
     depends_on:
-      - postgres
-      - kafka
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
 
   subscription-service:
     container_name: stellio-subscription-service
@@ -84,12 +63,50 @@ services:
     ports:
       - 8084:8084
     depends_on:
-      - postgres
-      - kafka
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+
+  zookeeper:
+    labels:
+      org.fiware: 'tutorial'
+    image: confluentinc/cp-zookeeper:5.5.7
+    container_name: zookeeper
+    ports:
+      - 2181:2181
+    restart: always
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    labels:
+      org.fiware: 'tutorial'
+    image: confluentinc/cp-kafka:5.5.7
+    container_name: kafka
+    ports:
+      - 29092:29092
+    restart: always
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_BROKER_ID: 1
+      KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+
+
 
   # Databases
   neo4j:
-    image: neo4j:4.2
+    labels:
+      org.fiware: 'tutorial'
+    image: neo4j:4.4
     hostname: neo4j
     container_name: db-neo4j
     volumes:
@@ -103,6 +120,13 @@ services:
     ports:
       - 7474:7474
       - 7687:7687
+    # following https://github.com/neo4j/neo4j/issues/7203#issuecomment-898511474
+    healthcheck:
+      test: wget -qO- http://localhost:7474 || exit 1
+      interval: 1s
+      timeout: 10s
+      retries: 20
+      start_period: 3s
 
   postgres:
     labels:
@@ -118,6 +142,12 @@ services:
       - 5432:5432
     volumes:
       - postgres-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
 
 
   # IoT-Agent connects to the Stellio Broker
@@ -134,7 +164,7 @@ services:
       - DUMMY_DEVICES_PORT=${TUTORIAL_DUMMY_DEVICE_PORT} # Port used by the dummy IOT devices to receive commands
       - DUMMY_DEVICES_TRANSPORT=HTTP # Default transport used by dummy Io devices
       - DUMMY_DEVICES_PAYLOAD=ULTRALIGHT
-      - CONTEXT_BROKER=http://api-gateway:${STELLIO_PORT}/ngsi-ld/v1 # URL of the context broker to update context
+      - CONTEXT_BROKER=http://stellio:${STELLIO_PORT}/ngsi-ld/v1 # URL of the context broker to update context
      
 volumes:
   neo4j-db: ~
