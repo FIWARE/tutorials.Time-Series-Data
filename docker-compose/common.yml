@@ -126,23 +126,33 @@ services:
   quantumleap:
     labels:
       org.fiware: 'tutorial'
-    image: orchestracities/quantumleap:${QUANTUMLEAP_VERSION}
+    # there is an issue with the health-check in the latest ql release. I fixed it a couple of weeks ago, but there is no official release     
+    # yet. Therefore you can use this snapshot image
+    image: quay.io/fiware/quantumleap:0.9.0-PRE
     hostname: quantumleap
     container_name: fiware-quantumleap
     depends_on:
-      - crate-db
+      - timescale
       - redis-db
     networks:
       - default
     ports:
-      - "${QUANTUMLEAP_PORT}:${QUANTUMLEAP_PORT}"
+      - "8668:8668"
     environment:
-      - CRATE_HOST=crate-db
+      # ql needs this file to make timescale the default db 
+      - QL_CONFIG=/config/config.yaml
+      # timescale is an extension to postgres, thus we need to configure the postgres env vars
+      - POSTGRES_HOST=timescale
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB_NAME=ql
+      - POSTGRES_DB_USER=ql
+      - POSTGRES_DB_PASS=ql
       - REDIS_HOST=redis-db
-      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PORT=6379
       - LOGLEVEL=DEBUG
-    healthcheck:
-      test: curl --fail -s http://quantumleap:${QUANTUMLEAP_PORT}/version || exit 1
+    volumes:
+     # mount the config file. It only contains one line
+      - ${PWD}/config.yaml:/config/config.yaml
 
   redis-db:
     labels:
@@ -162,22 +172,29 @@ services:
         ping=`redis-cli -h "$host" ping` && [ "$ping" = 'PONG' ] && echo 0 || echo 1
       interval: 10s
 
-  crate-db:
+  # replacement for crate db
+  timescale:
     labels:
       org.fiware: 'tutorial'
-    image: crate:${CRATE_VERSION}
-    hostname: crate-db
-    container_name: db-crate
-    ports:
-      # Admin UI
-      - "4200:4200"
-      # Transport protocol
-      - "4300:4300"
-    command: crate -Cauth.host_based.enabled=false  -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+    image: timescale/timescaledb-postgis:1.7.5-pg12
+    hostname: timescale
+    container_name: timescale
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ql" ]
+      interval: 15s
+      timeout: 15s
+      retries: 5
+      start_period: 60s
     environment:
-      - CRATE_HEAP_SIZE=2g # see https://crate.io/docs/crate/howtos/en/latest/deployment/containers/docker.html#troubleshooting
-    volumes:
-      - crate-db:/data
+      - POSTGRES_USER=ql
+      - POSTGRES_PASSWORD=ql
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    networks:
+      - default
 
   # Other services
   grafana:
@@ -203,7 +220,6 @@ networks:
         - subnet: 172.18.1.0/24
 
 volumes:
-  crate-db: ~
   redis-db: ~
   grafana: ~
   mongo-db: ~
