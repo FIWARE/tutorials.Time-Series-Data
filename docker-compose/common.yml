@@ -117,6 +117,7 @@ services:
       - TWITTER_CONSUMER_SECRET=<ADD_YOUR_CONSUMER_SECRET>
       - MONGO_URL=mongodb://mongo-db:27017
       - IOTA_JSON_LD_CONTEXT=http://context/ngsi-context.jsonld
+      - "CRATE_DB_SERVICE_URL=http://crate-db:4200/_sql"
 
       - PIG_COUNT=${PIG_COUNT}
       - COW_COUNT=${COW_COUNT}
