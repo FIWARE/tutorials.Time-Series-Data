@@ -737,7 +737,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.etfillingsensor WHERE entity_id = 'urn:ngsi-ld:Device:filling001'  ORDER BY time_index ASC LIMIT 3\"}"
+							"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.etfillinglevelsensor WHERE entity_id = 'urn:ngsi-ld:Device:filling001'  ORDER BY time_index ASC LIMIT 3\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",
@@ -765,7 +765,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.etmotion WHERE entity_id = 'Motion:001' ORDER BY time_index ASC  LIMIT 3 OFFSET 3\"}"
+							"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.etdevice WHERE entity_id = 'urn:ngsi-ld:Device:pig001' ORDER BY time_index ASC  LIMIT 3 OFFSET 3\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",
@@ -793,7 +793,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.etmotion WHERE entity_id = 'Motion:001'  ORDER BY time_index DESC LIMIT 3\"}"
+							"raw": "{\"stmt\":\"SELECT * FROM mtopeniot.etdevice WHERE entity_id = 'urn:ngsi-ld:Device:pig001'  ORDER BY time_index DESC LIMIT 3\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",
@@ -821,7 +821,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, SUM (count) AS sum FROM mtopeniot.etmotion WHERE entity_id = 'Motion:001' GROUP BY minute ORDER BY minute\"}"
+							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, SUM (heartRate) AS sum FROM mtopeniot.etdevice WHERE entity_id = 'urn:ngsi-ld:Device:pig001' GROUP BY minute ORDER BY minute\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",
@@ -849,7 +849,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, MIN (luminosity) AS min FROM mtopeniot.etlamp WHERE entity_id = 'Lamp:001' GROUP BY minute ORDER BY minute\"}"
+							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, MIN (heartRate) AS min FROM mtopeniot.etdevice WHERE entity_id = 'urn:ngsi-ld:Device:pig001' GROUP BY minute ORDER BY minute\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",
@@ -877,7 +877,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, MAX (filling) AS max FROM mtopeniot.etfillingsensor WHERE entity_id = 'urn:ngsi-ld:Device:filling001' GROUP BY minute ORDER BY minute\"}"
+							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, MAX (filling) AS max FROM mtopeniot.etfillinglevelsensor WHERE entity_id = 'urn:ngsi-ld:Device:filling001' GROUP BY minute ORDER BY minute\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",
@@ -905,7 +905,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, AVG (filling) AS average FROM mtopeniot.etfillingsensor WHERE entity_id = 'urn:ngsi-ld:Device:filling001' GROUP BY minute ORDER BY minute\"}"
+							"raw": "{\"stmt\":\"SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, AVG (filling) AS average FROM mtopeniot.etfillinglevelsensor WHERE entity_id = 'urn:ngsi-ld:Device:filling001' GROUP BY minute ORDER BY minute\"}"
 						},
 						"url": {
 							"raw": "http://{{crate}}/_sql",

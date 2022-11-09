@@ -78,8 +78,8 @@ curl -s -o /dev/null -X POST \
        }
       ],
       "commands": [
-        {"name": "add", "type": "command"},
-        {"name": "remove", "type": "command"}
+        {"name": "add", "type": "Property"},
+        {"name": "remove", "type": "Property"}
       ],
       "static_attributes": [
         {"name": "supportedProtocol", "type": "Property", "value": ["ul20"]},
@@ -144,8 +144,8 @@ curl -s -o /dev/null -X POST \
      "transport":   "HTTP",
      "timezone":    "Europe/Berlin",
      "commands": [
-        {"name": "on", "type": "command"},
-        {"name": "off", "type": "command"}
+        {"name": "on", "type": "Property"},
+        {"name": "off", "type": "Property"}
       ],
       "static_attributes": [
         {"name": "description", "type":"Property", "value": "Irrigation System"},
@@ -167,8 +167,8 @@ curl -s -o /dev/null -X POST \
         {"object_id": "gps", "name": "location", "type": "geo:point"}
       ],
      "commands": [
-        {"name": "start", "type": "command"},
-        {"name": "stop", "type": "command"}
+        {"name": "start", "type": "Property"},
+        {"name": "stop", "type": "Property"}
       ],
       "static_attributes": [
         {"name": "description", "type":"Property", "value": "Tractor FMIS"},

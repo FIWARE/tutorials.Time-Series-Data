@@ -16,7 +16,7 @@ API を使用するか、**CrateDB** HTTP エンドポイントに直接接続�
 このチュートリアルでは、全体で [cUrl](https://ec.haxx.se/) コマンドを使用していますが、
 [Postman documentation](https://fiware.github.io/tutorials.Time-Series-Data/ngsi-ld.html) も利用できます。
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/d24facc3c430bb5d5aaf)。
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/513743-86151708-fb9d-42f2-a2fe-e40b4ea38861?action=collection%2Ffork&collection-url=entityId%3D513743-86151708-fb9d-42f2-a2fe-e40b4ea38861%26entityType%3Dcollection%26workspaceId%3Db6e7fcf4-ff0c-47cb-ada4-e222ddeee5ac)。
 
 ## コンテンツ
 
