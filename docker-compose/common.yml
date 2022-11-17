@@ -49,9 +49,7 @@ services:
       - mongo-db:/data/db
       - mongo-config:/data/configdb
     healthcheck:
-      test: |
-        host=`hostname --ip-address || echo '127.0.0.1'`; 
-        mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1    
+      test: [ "CMD", "mongo", "--quiet", "127.0.0.1/test", "--eval", "'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)'"]
       interval: 5s
 
   # IoT-Agent is configured for the UltraLight Protocol
@@ -158,9 +156,7 @@ services:
     volumes:
       - redis-db:/data
     healthcheck:
-      test: |
-        host=`hostname -i || echo '127.0.0.1'`;
-        ping=`redis-cli -h "$host" ping` && [ "$ping" = 'PONG' ] && echo 0 || echo 1
+      test: ["CMD", "redis-cli","ping"]
       interval: 10s
 
   crate-db:
