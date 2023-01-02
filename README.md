@@ -192,7 +192,7 @@ docker-compose -v
 docker version
 ```
 
-Please ensure that you are using Docker version 20.10 or higher and Docker Compose 1.29  or higher and upgrade if
+Please ensure that you are using Docker version 20.10 or higher and Docker Compose 1.29 or higher and upgrade if
 necessary.
 
 ## Cygwin for Windows
@@ -1174,4 +1174,4 @@ the other [tutorials in this series](https://ngsi-ld-tutorials.readthedocs.io/)
 
 ## License
 
-[MIT](LICENSE) © 2018-2023 FIWARE Foundation e.V.
+[MIT](LICENSE) © 2018-2020 FIWARE Foundation e.V.
