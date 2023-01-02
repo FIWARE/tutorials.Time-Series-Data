@@ -1475,4 +1475,4 @@ Save をクリックし、_Database Connection OK_
 
 ## License
 
-[MIT](LICENSE) © 2018-2022 FIWARE Foundation e.V.
+[MIT](LICENSE) © 2018-2023 FIWARE Foundation e.V.
