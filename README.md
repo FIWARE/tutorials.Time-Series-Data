@@ -468,32 +468,61 @@ curl -X GET \
 ```json
 [
     {
-        "id": "5be07427be9a2d09cf677f08",
-        "description": "Notify QuantumLeap of count changes of any Motion Sensor",
+        "id": "63b6f5f620234924bd5ae19a",
+        "description": "Notify QuantumLeap of all Motion Sensor count changes",
         "status": "active",
-        "subject": { ...ETC },
-        "notification": {
-            "timesSent": 6,
-            "lastNotification": "2018-09-02T08:36:04.00Z",
-            "attrs": ["count"],
-            "attrsFormat": "normalized",
-            "http": { "url": "http://quantumleap:8668/v2/notify" },
-            "lastSuccess": "2018-09-02T08:36:04.00Z"
+        "subject": {
+            "entities": [
+                {
+                    "idPattern": "Motion.*"
+                }
+            ],
+            "condition": {
+                "attrs": ["count"]
+            }
         },
-        "throttling": 1
+        "notification": {
+            "timesSent": 2,
+            "lastNotification": "2023-01-05T16:09:03.000Z",
+            "attrs": ["count"],
+            "onlyChangedAttrs": false,
+            "attrsFormat": "normalized",
+            "http": {
+                "url": "http://quantumleap:8668/v2/notify"
+            },
+            "metadata": ["dateCreated", "dateModified"],
+            "lastSuccess": "2023-01-05T16:09:04.000Z",
+            "lastSuccessCode": 200,
+            "covered": false
+        }
     },
     {
-        "id": "5be07427be9a2d09cf677f09",
-        "description": "Notify QuantumLeap on luminosity changes on any Lamp",
+        "id": "63b6f5f920234924bd5ae19b",
+        "description": "Notify Quantum Leap to sample Lamp changes every five seconds",
         "status": "active",
-        "subject": { ...ETC },
+        "subject": {
+            "entities": [
+                {
+                    "idPattern": "Lamp.*"
+                }
+            ],
+            "condition": {
+                "attrs": ["luminosity", "location"]
+            }
+        },
         "notification": {
-            "timesSent": 4,
-            "lastNotification": "2018-09-02T08:36:00.00Z",
-            "attrs": ["luminosity"],
+            "timesSent": 3,
+            "lastNotification": "2023-01-05T16:09:05.000Z",
+            "attrs": ["luminosity", "location"],
+            "onlyChangedAttrs": false,
             "attrsFormat": "normalized",
-            "http": { "url": "http://quantumleap:8668/v2/notify" },
-            "lastSuccess": "2018-09-02T08:36:01.00Z"
+            "http": {
+                "url": "http://quantumleap:8668/v2/notify"
+            },
+            "metadata": ["dateCreated", "dateModified"],
+            "lastSuccess": "2023-01-05T16:09:06.000Z",
+            "lastSuccessCode": 200,
+            "covered": false
         },
         "throttling": 1
     }

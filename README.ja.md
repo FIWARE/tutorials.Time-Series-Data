@@ -7,7 +7,6 @@
 <br/> [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
 
 <!-- prettier-ignore -->
-
 このチュートリアルでは、コンテキスト・データを **CrateDB** データベースに保存す
 るために使用される、Generic Enabler である
 [FIWARE QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) について紹
@@ -18,10 +17,8 @@
 使用するか、**CrateDB** HTTP エンドポイントに直接接続します。
 結果は、グラフまたは **Grafana** 時系列分析ツールを介して視覚化されます。
 
-このチュートリアルでは、全体で [cUrl](https://ec.haxx.se/) コマンドを使用してい
-ますが、
-[Postman documentation](https://fiware.github.io/tutorials.Time-Series-Data/)
-も利用できます。
+このチュートリアルでは、全体で [cUrl](https://ec.haxx.se/) コマンドを使用していますが、
+[Postman documentation](https://fiware.github.io/tutorials.Time-Series-Data/) も利用できます。
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/d24facc3c430bb5d5aaf)
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/FIWARE/tutorials.Time-Series-Data/tree/NGSI-v2)
@@ -51,9 +48,9 @@
         -   [ランプの明度のサンプリング](#sample-lamp-luminosity)
         -   [QuantumLeap のサブスクリプションの確認](#checking-subscriptions-for-quantumleap)
     -   [時系列データ・クエリ (QuantumLeap API)](#time-series-data-queries-quantumleap-api)
-        -   [QuantumLeap API - 最初の N個の サンプリング値のリスト](#quantumleap-api---list-the-first-n-sampled-values)
+        -   [QuantumLeap API - 最初の N 個の サンプリング値のリスト](#quantumleap-api---list-the-first-n-sampled-values)
         -   [QuantumLeap API - N 個のサンプリング値をオフセットでリスト](#quantumleap-api---list-n-sampled-values-at-an-offset)
-        -   [QuantumLeap API - 最新のN個のサンプリングされた値のリスト](#quantumleap-api---list-the-latest-n-sampled-values)
+        -   [QuantumLeap API - 最新の N 個のサンプリングされた値のリスト](#quantumleap-api---list-the-latest-n-sampled-values)
         -   [QuantumLeap API - 期間別にグループ化された値の合計をリスト](#quantumleap-api---list-the-sum-of-values-grouped-by-a-time-period)
         -   [QuantumLeap API - 期間別にグループ化された最小値をリスト](#quantumleap-api---list-the-minimum-values-grouped-by-a-time-period)
         -   [QuantumLeap API - ある期間の最大値のリスト](#quantumleap-api---list-the-maximum-value-over-a-time-period)
@@ -61,9 +58,9 @@
         -   [QuantumLeap API - エリア内のデバイスの最新の N 個のサンプル値をリスト](#quantumleap-api---list-the-latest-n-sampled-values-of-devices-in-an-area)
     -   [時系列データ・クエリ (CrateDB API)](#time-series-data-queries-cratedb-api)
         -   [CrateDB API - データの永続性のチェック](#cratedb-api---checking-data-persistence)
-        -   [CrateDB API - 最初の N個の サンプリング値のリスト](#cratedb-api---list-the-first-n-sampled-values)
+        -   [CrateDB API - 最初の N 個の サンプリング値のリスト](#cratedb-api---list-the-first-n-sampled-values)
         -   [CrateDB API - N 個のサンプリング値をオフセットでリスト](#cratedb-api---list-n-sampled-values-at-an-offset)
-        -   [CrateDB API - 最新のN個のサンプリングされた値のリスト](#cratedb-api---list-the-latest-n-sampled-values)
+        -   [CrateDB API - 最新の N 個のサンプリングされた値のリスト](#cratedb-api---list-the-latest-n-sampled-values)
         -   [CrateDB API - 期間別にグループ化された値の合計をリスト](#cratedb-api---list-the-sum-of-values-grouped-by-a-time-period)
         -   [CrateDB API - 期間別にグループ化された最小値をリスト](#cratedb-api---list-the-minimum-values-grouped-by-a-time-period)
         -   [CrateDB API - ある期間の最大値のリスト](#cratedb-api---list-the-maximum-value-over-a-time-period)
@@ -83,80 +80,67 @@
 >
 > — Emily Dickinson
 
-[以前のチュートリアル](https://github.com/FIWARE/tutorials.Historic-Context-Flume)では
-、履歴コンテキスト・データを MySQL や PostgreSQL などのデータベースに永続化する
-方法を示しました。さらに
-、[Short Term Historic](https://github.com/FIWARE/tutorials.Short-Term-History)
-のチュートリアルでは、**MongoDB** データベースを使用して履歴コンテキスト・データ
-を永続化およびクエリするための
-[STH-Comet](https://fiware-sth-comet.readthedocs.io/) Generic Enabler を導入しま
-した。
+[以前のチュートリアル](https://github.com/FIWARE/tutorials.Historic-Context-Flume)では、履歴コンテキスト・データを MySQL
+や PostgreSQL などのデータベースに永続化する方法を示しました。さらに
+、[Short Term Historic](https://github.com/FIWARE/tutorials.Short-Term-History) のチュートリアルでは、**MongoDB** データ
+ベースを使用して履歴コンテキスト・データを永続化およびクエリするための
+[STH-Comet](https://fiware-sth-comet.readthedocs.io/) Generic Enabler を導入しました。
 
-FIWARE [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) は、
-永続化および時系列データベース (現在の CrateDB および TimescaleDB) をクエリする
-API を提供するために特別に作成された代替 Generic Enabler です。したがって、
+FIWARE [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) は、永続化および時系列データベース (現在の CrateDB
+および TimescaleDB) をクエリする API を提供するために特別に作成された代替 Generic Enabler です。したがって、
 [STH-Comet](https://fiware-sth-comet.readthedocs.io/) の代替手段を提供します。
 
-[CrateDB](https://crate.io/) は、Internet of Things で使用するために設計された分
-散 SQL DBMS です。1 秒間に多数のデータ・ポイントを取り込むことができ、リアルタイ
-ムでクエリすることができます。このデータベースは、地理空間データや時系列データな
-どの複雑なクエリの実行用に設計されています。この履歴データを取得することで、グラ
-フやダッシュボードを作成し、時間の経過とともに傾向を表示することができます。
+[CrateDB](https://crate.io/) は、Internet of Things で使用するために設計された分散 SQL DBMS です。1 秒間に多数のデータ・
+ポイントを取り込むことができ、リアルタイムでクエリすることができます。このデータベースは、地理空間データや時系列データな
+どの複雑なクエリの実行用に設計されています。この履歴データを取得することで、グラフやダッシュボードを作成し、時間の経過と
+ともに傾向を表示することができます。
 
-[TimescaleDB](https://www.timescale.com/) は、時系列データの PostgreSQL を、
-時空間全体の自動パーティション分割 (パーティション・キー) でスケーリングしますが、
-標準の PostgreSQL インターフェイスを保持します。つまり、TimescaleDB は通常の
-テーブルのように見えるものを公開しますが、実際には、実際のデータを構成する多くの
-個々のテーブルの抽象化または仮想ビューにすぎません。
-[TimescaleDB](https://www.timescale.com/) 拡張機能と組み合わせて、
-geo-timeseries をサポートできます。
+[TimescaleDB](https://www.timescale.com/) は、時系列データの PostgreSQL を、時空間全体の自動パーティション分割 (パーティ
+ション・キー) でスケーリングしますが、標準の PostgreSQL インターフェイスを保持します。つまり、TimescaleDB は通常のテーブ
+ルのように見えるものを公開しますが、実際には、実際のデータを構成する多くの個々のテーブルの抽象化または仮想ビューにすぎま
+せん。 [TimescaleDB](https://www.timescale.com/) 拡張機能と組み合わせて、 geo-timeseries をサポートできます。
 
 違いの概要を以下に示します :
 
-| QuantumLeap                                                                                                                   | STH-Comet                                                                                                    |
-| ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| 通知のための NGSI v2 インタフェースを提供します                                                                               | 通知のための NGSI v1 インタフェースを提供します                                                              |
-| データを CrateDB および TimescaleDB database  データベースに保存します                                                        | データを MongoDB データベースに保存します                                                                    |
-| クエリ用に独自の HTTP エンドポイント (現在は CrateDB用) を提供しますが、CrateDB および TimescaleDB にクエリすることもできます | クエリ用に独自の HTTP エンドポイントを提供します。MongoDB データベースに直接アクセスすることはできません     |
-| QuantumLeap は複雑なデータクエリを提供します (CrateDB および TimescaleDB のおかげで)                                          | STH-Comet は限定された一連のクエリを提供しています                                                           |
-| QuantumLeap は、2つのネイティブ分散およびスケーラブルなSQL DBMS を活用します                                                  | MongoDB は、ドキュメント・ベースの NoSQL データベースです                                                    |
-| QuantumLeap の API は、[ここ](https://app.swaggerhub.com/apis/smartsdk/ngsi-tsdb)にある OpenAPI でドキュメント化されています  | STH-Comet は、[ここ](https://fiware-sth-comet.readthedocs.io/en/latest)にあるドキュメントで説明されています |
+| QuantumLeap                                                                                                                    | STH-Comet                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| 通知のための NGSI v2 インタフェースを提供します                                                                                | 通知のための NGSI v1 インタフェースを提供します                                                             |
+| データを CrateDB および TimescaleDB database データベースに保存します                                                          | データを MongoDB データベースに保存します                                                                   |
+| クエリ用に独自の HTTP エンドポイント (現在は CrateDB 用) を提供しますが、CrateDB および TimescaleDB にクエリすることもできます | クエリ用に独自の HTTP エンドポイントを提供します。MongoDB データベースに直接アクセスすることはできません    |
+| QuantumLeap は複雑なデータクエリを提供します (CrateDB および TimescaleDB のおかげで)                                           | STH-Comet は限定された一連のクエリを提供しています                                                          |
+| QuantumLeap は、2 つのネイティブ分散およびスケーラブルな SQL DBMS を活用します                                                 | MongoDB は、ドキュメント・ベースの NoSQL データベースです                                                   |
+| QuantumLeap の API は、[ここ](https://app.swaggerhub.com/apis/smartsdk/ngsi-tsdb)にある OpenAPI でドキュメント化されています   | STH-Comet は、[ここ](https://fiware-sth-comet.readthedocs.io/en/latest)にあるドキュメントで説明されています |
 
 基盤となるデータベース・エンジンの相違点の詳細は
-、[こちら](https://db-engines.com/en/system/CrateDB%3BMongoDB%3BTimescaleDB)を参照してください
-。
+、[こちら](https://db-engines.com/en/system/CrateDB%3BMongoDB%3BTimescaleDB)を参照してください。
 
 <a name="analyzing-time-series-data"></a>
 
 ## 時系列データの解析
 
-時系列データ分析を適切に使用するかどうかは、ユースケースと受け取るデータ測定の信
-頼性によって異なります。時系列データ分析を使用すると、次のような質問に答えること
-ができます。
+時系列データ分析を適切に使用するかどうかは、ユースケースと受け取るデータ測定の信頼性によって異なります。時系列データ分析
+を使用すると、次のような質問に答えることができます。
 
 -   一定期間内のデバイスの最大測定値はどれくらいでしたか？
 -   一定期間内のデバイスの平均測定値はどれくらいでしたか？
 -   一定期間内にデバイスから送信された測定値の合計はどれくらいですか？
 
-また、個々のデータポイントの重要性を減らして、スムージングによって外れ値を除外す
-るために使用することもできます。
+また、個々のデータポイントの重要性を減らして、スムージングによって外れ値を除外するために使用することもできます。
 
 #### Grafana
 
-[Grafana](https://grafana.com/) は、このチュートリアルで使用する時系列解析ツール
-用のオープンソースソフトウェアです。これは、**CrateDB** および **TimescaleDB** を
-含むさまざまな時系列データベースと統合します。Apache License 2.0 の下でライセンス
-されています。詳細については、`https://grafana.com/` を参照してください。
+[Grafana](https://grafana.com/) は、このチュートリアルで使用する時系列解析ツール用のオープンソースソフトウェアです。これ
+は、**CrateDB** および **TimescaleDB** を含むさまざまな時系列データベースと統合します。Apache License 2.0 の下でライセン
+スされています。詳細については、`https://grafana.com/` を参照してください。
 
 <a name="device-monitor"></a>
 
 #### デバイス・モニタ
 
-このチュートリアルの目的のために、一連のダミー IoT デバイスが作成され、Context
-Broker に接続されます。使用しているアーキテクチャとプロトコルの詳細は
-、[IoT Sensors チュートリアル](https://github.com/FIWARE/tutorials.IoT-Sensors/tree/NGSI-v2)に
-あります。各デバイスの状態は、次の UltraLight デバイス・モニタの Web ページで確
-認できます : `http://localhost:3000/device/monitor`
+このチュートリアルの目的のために、一連のダミー IoT デバイスが作成され、Context Broker に接続されます。使用しているアーキ
+テクチャとプロトコルの詳細は
+、[IoT Sensors チュートリアル](https://github.com/FIWARE/tutorials.IoT-Sensors/tree/NGSI-v2)にあります。各デバイスの状態
+は、次の UltraLight デバイス・モニタの Web ページで確認できます : `http://localhost:3000/device/monitor`
 
 ![FIWARE Monitor](https://fiware.github.io/tutorials.Time-Series-Data/img/device-monitor.png)
 
@@ -164,8 +148,7 @@ Broker に接続されます。使用しているアーキテクチャとプロ�
 
 #### デバイス履歴
 
-**QuantumLeap** がデータの集計を開始すると、各デバイスの履歴の状態は、デバイス履
-歴の Web ページに表示されます :
+**QuantumLeap** がデータの集計を開始すると、各デバイスの履歴の状態は、デバイス履歴の Web ページに表示されます :
 `http://localhost:3000/device/history/urn:ngsi-ld:Store:001`
 
 ![](https://fiware.github.io/tutorials.Time-Series-Data/img/history-graphs.png)
@@ -174,54 +157,42 @@ Broker に接続されます。使用しているアーキテクチャとプロ�
 
 # アーキテクチャ
 
-このアプリケーションは
-、[以前のチュートリアル](https://github.com/FIWARE/tutorials.IoT-Agent/) で作成
-したコンポーネントとダミー IoT デバイスをベースにしています
+このアプリケーションは、[以前のチュートリアル](https://github.com/FIWARE/tutorials.IoT-Agent/) で作成したコンポーネント
+とダミー IoT デバイスをベースにしています
 。[Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)，[IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/)
-および [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) の 3 つの
-FIWARE コンポーネントを使用します。
+および [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) の 3 つの FIWARE コンポーネントを使用します。
 
 したがって、全体的なアーキテクチャは次の要素で構成されます :
 
 -   **FIWARE Generic Enablers** :
 
-    -   FIWARE
-        [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)
-        は、[NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使
-        用してリクエストを受信します
-    -   FIWARE
-        [IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/)
-        は、Ultralight 2.0 形式のダミー IoT デバイスからノース・バウンドの測定値
-        を受信し、Context Broker の
-        [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) リクエス
-        トに変換してコンテキスト・エンティティの状態を変更します
-    -   FIWARE [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) は
-        コンテキストの変更をサブスクライブし、**CrateDB** データベースに永続化し
-        ます
+    -   FIWARE [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/) は
+        、[NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使用してリクエストを受信します
+    -   FIWARE [IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/) は、Ultralight 2.0
+        形式のダミー IoT デバイスからノース・バウンドの測定値を受信し、Context Broker の
+        [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) リクエストに変換してコンテキスト・エンティティ
+        の状態を変更します
+    -   FIWARE [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) はコンテキストの変更をサブスクライブし
+        、**CrateDB** データベースに永続化します
 
 -   [MongoDB](https://www.mongodb.com/) データベース :
 
-    -   **Orion Context Broker** が、データ・エンティティ、サブスクリプション、
-        レジストレーションなどのコンテキスト・データ情報を保持するために使用しま
-        す
-    -   デバイスの URLs や Keys などのデバイス情報を保持するために **IoT Agent**
-        によって使用されます
+    -   **Orion Context Broker** が、データ・エンティティ、サブスクリプション、レジストレーションなどのコンテキスト・デ
+        ータ情報を保持するために使用します
+    -   デバイスの URLs や Keys などのデバイス情報を保持するために **IoT Agent** によって使用されます
 
 -   [CrateDB](https://crate.io/) データベース：
 
-    -   時間ベースの履歴コンテキスト・データを保持するデータシンクとして使用され
-        ます
+    -   時間ベースの履歴コンテキスト・データを保持するデータシンクとして使用されます
     -   時間ベースのデータクエリを解釈する HTTP エンドポイントを提供します
 
 -   **コンテキストプロバイダ** : - HTTP 上で動作する
     [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
-    プロトコルを使用して、
-    [ダミー IoT デバイス](https://github.com/FIWARE/tutorials.IoT-Sensors/tree/NGSI-v2)の
-    セットとして機能する Web サーバです。 -  このチュートリアルでは、
-    **コンテキスト・プロバイダの NGSI proxy** は使用しません
+    プロトコルを使用して、 [ダミー IoT デバイス](https://github.com/FIWARE/tutorials.IoT-Sensors/tree/NGSI-v2)のセットと
+    して機能する Web サーバです。 - このチュートリアルでは、 **コンテキスト・プロバイダの NGSI proxy** は使用しません
 
-要素間のすべての対話は HTTP リクエストによって開始されるため、エンティティはコン
-テナ化され、公開されたポートから実行されます。
+要素間のすべての対話は HTTP リクエストによって開始されるため、エンティティはコンテナ化され、公開されたポートから実行され
+ます。
 
 全体的なアーキテクチャを以下に示します :
 
@@ -235,54 +206,42 @@ FIWARE コンポーネントを使用します。
 
 ## Docker と Docker Compose
 
-物事を単純にするために、両方のコンポーネントが [Docker](https://www.docker.com)
-を使用して実行されます。**Docker** は、さまざまコンポーネントをそれぞれの環境に
-分離することを可能にするコンテナ・テクノロジです。
+物事を単純にするために、両方のコンポーネントが [Docker](https://www.docker.com) を使用して実行されます。**Docker** は、
+さまざまコンポーネントをそれぞれの環境に分離することを可能にするコンテナ・テクノロジです。
 
--   Docker Windows にインストールするには
-    、[こちら](https://docs.docker.com/docker-for-windows/)の手順に従ってくださ
-    い
--   Docker Mac にインストールするには
-    、[こちら](https://docs.docker.com/docker-for-mac/)の手順に従ってください
--   Docker Linux にインストールするには
-    、[こちら](https://docs.docker.com/install/)の手順に従ってください
+-   Docker Windows にインストールするには、[こちら](https://docs.docker.com/docker-for-windows/)の手順に従ってください
+-   Docker Mac にインストールするには、[こちら](https://docs.docker.com/docker-for-mac/)の手順に従ってください
+-   Docker Linux にインストールするには、[こちら](https://docs.docker.com/install/)の手順に従ってください
 
-**Docker Compose** は、マルチコンテナ Docker アプリケーションを定義して実行する
-ためのツールです
-。[YAML file](https://raw.githubusercontent.com/FIWARE/tutorials.Time-Series-Data/NGSI-v2/docker-compose.yml)
-ファイルは、アプリケーションのために必要なサービスを構成するために使用します。つ
-まり、すべてのコンテナ・サービスは 1 つのコマンドで呼び出すことができます
-。Docker Compose は、デフォルトで Docker for Windows と Docker for Mac の一部と
-してインストールされますが、Linux ユーザ
-は[ここ](https://docs.docker.com/compose/install/)に記載されている手順に従う必要
-があります。
+**Docker Compose** は、マルチコンテナ Docker アプリケーションを定義して実行するためのツールです
+。[YAML file](https://raw.githubusercontent.com/FIWARE/tutorials.Time-Series-Data/NGSI-v2/docker-compose.yml) ファイルは
+、アプリケーションのために必要なサービスを構成するために使用します。つまり、すべてのコンテナ・サービスは 1 つのコマンド
+で呼び出すことができます。Docker Compose は、デフォルトで Docker for Windows と Docker for Mac の一部としてインストール
+されますが、Linux ユーザは[ここ](https://docs.docker.com/compose/install/)に記載されている手順に従う必要があります。
 
-次のコマンドを使用して、現在の **Docker** バージョンと **Docker Compose** バージ
-ョンを確認できます :
+次のコマンドを使用して、現在の **Docker** バージョンと **Docker Compose** バージョンを確認できます :
 
 ```console
 docker-compose -v
 docker version
 ```
 
-Docker バージョン 20.10 以降と Docker Compose 1.29 以上を使用していることを確認
-し、必要に応じてアップグレードしてください。
+Docker バージョン 20.10 以降と Docker Compose 1.29 以上を使用していることを確認し、必要に応じてアップグレードしてくださ
+い。
 
 <a name="cygwin-for-windows"></a>
 
 ## Cygwin for Windows
 
-シンプルな bash スクリプトを使用してサービスを開始します。Windows ユーザは
-[cygwin](http://www.cygwin.com/) をダウンロードして、Windows 上の Linux ディスト
-リビューションと同様のコマンドライン機能を提供する必要があります。
+シンプルな bash スクリプトを使用してサービスを開始します。Windows ユーザは [cygwin](http://www.cygwin.com/) をダウンロー
+ドして、Windows 上の Linux ディストリビューションと同様のコマンドライン機能を提供する必要があります。
 
 <a name="start-up"></a>
 
 # 起動
 
-開始する前に、必要な Docker イメージをローカルで取得または構築しておく必要があり
-ます。リポジトリを複製し、以下のコマンドを実行して必要なイメージを作成してくださ
-い :
+開始する前に、必要な Docker イメージをローカルで取得または構築しておく必要があります。リポジトリを複製し、以下のコマンド
+を実行して必要なイメージを作成してください :
 
 ```console
 git clone https://github.com/FIWARE/tutorials.Time-Series-Data.git
@@ -292,17 +251,14 @@ git checkout NGSI-v2
 ./services create
 ```
 
-その後、リポジトリ内で提供される
-[services](https://github.com/FIWARE/tutorials.Time-Series-Data/blob/NGSI-v2/services)
-Bash スクリプトを実行することによって、コマンドラインからすべてのサービスを初期
-化することができます :
+その後、リポジトリ内で提供される [services](https://github.com/FIWARE/tutorials.Time-Series-Data/blob/NGSI-v2/services)
+Bash スクリプトを実行することによって、コマンドラインからすべてのサービスを初期化することができます :
 
 ```console
 ./services start
 ```
 
-> :information_source: **注:** クリーンアップをやり直したい場合は、次のコマンド
-> を使用して再起動することができます :
+> :information_source: **注:** クリーンアップをやり直したい場合は、次のコマンドを使用して再起動することができます :
 >
 > ```console
 > ./services stop
@@ -312,35 +268,33 @@ Bash スクリプトを実行することによって、コマンドラインか
 
 # QuantumLeap を介して FIWARE を CrateDB データベースに接続
 
-この設定では、**QuantumLeap** は、ポート `8668` 上の NGSI v2 通知を待ち受け、履
-歴データを **CrateDB** に永続化します。**CrateDB** は、ポート `4200` を使用して
-アクセスでき、直接クエリすることも、Grafana 分析ツールに接続することもできます。
-コンテキスト・データを提供するシステムの残りの部分は、以前のチュートリアルで説明
-しています。
+この設定では、**QuantumLeap** は、ポート `8668` 上の NGSI v2 通知を待ち受け、履歴データを **CrateDB** に永続化します
+。**CrateDB** は、ポート `4200` を使用してアクセスでき、直接クエリすることも、Grafana 分析ツールに接続することもできます
+。コンテキスト・データを提供するシステムの残りの部分は、以前のチュートリアルで説明しています。
 
 <a name="cratedb-database-server-configuration"></a>
 
 ## CrateDB データベース・サーバの設定
 
 ```yaml
-  crate-db:
+crate-db:
     image: crate:4.1.4
     hostname: crate-db
     ports:
         - "4200:4200"
         - "4300:4300"
     command:
-        crate -Cauth.host_based.enabled=false  -Ccluster.name=democluster
-        -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+        crate -Cauth.host_based.enabled=false  -Ccluster.name=democluster -Chttp.cors.enabled=true
+        -Chttp.cors.allow-origin="*"
     environment:
-      - CRATE_HEAP_SIZE=2g
+        - CRATE_HEAP_SIZE=2g
 ```
 
-CrateDB が `max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]`
-エラーで直ぐに終了する場合、ホストマシンで `sudo sysctl -w vm.max_map_count=262144` コマンドを実行する
-ことで修正できます。詳細については、CrateDB の
-[ドキュメント](https://crate.io/docs/crate/howtos/en/latest/admin/bootstrap-checks.html#bootstrap-checks)
-と、Docker [トラブルシューティング・ガイド](https://crate.io/docs/crate/howtos/en/latest/deployment/containers/docker.html#troubleshooting)
+CrateDB が `max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]` エラーで直ぐに
+終了する場合、ホストマシンで `sudo sysctl -w vm.max_map_count=262144` コマンドを実行することで修正できます。詳細について
+は、CrateDB の [ドキュメント](https://crate.io/docs/crate/howtos/en/latest/admin/bootstrap-checks.html#bootstrap-checks)
+と、Docker
+[トラブルシューティング・ガイド](https://crate.io/docs/crate/howtos/en/latest/deployment/containers/docker.html#troubleshooting)
 を参照してください。
 
 <a name="quantumleap-configuration"></a>
@@ -348,15 +302,15 @@ CrateDB が `max virtual memory areas vm.max_map_count [65530] is too low, incre
 ## QuantumLeap の設定
 
 ```yaml
-  quantumleap:
+quantumleap:
     image: smartsdk/quantumleap
     hostname: quantumleap
     ports:
         - "8668:8668"
     depends_on:
-      - crate-db
+        - crate-db
     environment:
-      - CRATE_HOST=crate-db
+        - CRATE_HOST=crate-db
 ```
 
 <a name="grafana-configuration"></a>
@@ -367,44 +321,39 @@ CrateDB が `max virtual memory areas vm.max_map_count [65530] is too low, incre
 grafana:
     image: grafana/grafana
     depends_on:
-      - cratedb
+        - cratedb
     ports:
         - "3003:3000"
     environment:
         - GF_INSTALL_PLUGINS=https://github.com/orchestracities/grafana-map-plugin/archive/master.zip;grafana-map-plugin,grafana-clock-panel,grafana-worldmap-panel
 ```
 
-`quantumleap` コンテナは、1つのポートで待機しています：
+`quantumleap` コンテナは、1 つのポートで待機しています：
 
--   QuantumLeap のポートの操作 - ポート `8668` サービスは、Orion Context Broker
-    からの通知をリッスンするポートで、ここからユーザはデータをクエリできます。
+-   QuantumLeap のポートの操作 - ポート `8668` サービスは、Orion Context Broker からの通知をリッスンするポートで、ここか
+    らユーザはデータをクエリできます。
 
 `CRATE_HOST` 環境変数は、データが永続化される場所を定義します。
 
-`cratedb` コンテナは、2つのポートでリッスンしています：
+`cratedb` コンテナは、2 つのポートでリッスンしています：
 
 -   Admin UI は、ポート `4200` で利用できます
 -   トランスポートプロトコルは、ポート `4300` で利用できます
 
-`grafana` コンテナは、内部ポート `3000` を外部ポート `3003` に接続しています。こ
-れは Grafana UI が通常はポート `3000` で使用できるためですが、このポートは ダミ
-ー IoT デバイスの UI によって既に取得されているため、別のポートに移動しています
-。Grafana 環境変数は、Grafana
-の[ドキュメント](https://grafana.com/docs/installation/configuration/)に記述され
-ています。この設定により、チュートリアルの後半で **CrateDB** データベースに接続
-できるようになります。この設定では、NGSI v2 エンティティをマップ上に表示するのに
-役立つカスタム・マップ・プラグインもインポートします。
+`grafana` コンテナは、内部ポート `3000` を外部ポート `3003` に接続しています。これは Grafana UI が通常はポート `3000` で
+使用できるためですが、このポートは ダミー IoT デバイスの UI によって既に取得されているため、別のポートに移動しています
+。Grafana 環境変数は、Grafana の[ドキュメント](https://grafana.com/docs/installation/configuration/)に記述されています。
+この設定により、チュートリアルの後半で **CrateDB** データベースに接続できるようになります。この設定では、NGSI v2 エンテ
+ィティをマップ上に表示するのに役立つカスタム・マップ・プラグインもインポートします。
 
 <a name="generating-context-data"></a>
 
 ### コンテキスト・データの生成
 
-このチュートリアルでは、コンテキストが定期的に更新されるシステムを監視する必要が
-あります。ダミー IoT センサを使用してこれを行うことができます
-。`http://localhost:3000/device/monitor` でデバイス・モニタのページを開き、**ス
-マート・ドア**のロックを解除し、**スマート・ランプ**をオンにします。これは、ドロ
-ップ・ダウン・リストから適切なコマンドを選択し、`send` ボタンを押すことによって
-行うことができます。デバイスからの測定の流れは、同じページに表示されます :
+このチュートリアルでは、コンテキストが定期的に更新されるシステムを監視する必要があります。ダミー IoT センサを使用してこ
+れを行うことができます。`http://localhost:3000/device/monitor` でデバイス・モニタのページを開き、**スマート・ドア**のロ
+ックを解除し、**スマート・ランプ**をオンにします。これは、ドロップ・ダウン・リストから適切なコマンドを選択し、`send` ボ
+タンを押すことによって行うことができます。デバイスからの測定の流れは、同じページに表示されます :
 
 ![](https://fiware.github.io/tutorials.IoT-Sensors/img/door-open.gif)
 
@@ -412,37 +361,32 @@ grafana:
 
 ## サブスクリプションのセットアップ
 
-動的コンテキスト・システムが起動したら、コンテキストの変更を直接 **QuantumLeap**
-に通知する必要があります。予想通り、これは **Orion Context Broker** のサブスクリ
-プション・メカニズムを使用して行われます。**QuantumLeap** は、NGSI v2 通知を直接
-受け入れるため、`attrsFormat=legacy` 属性は不要です。
+動的コンテキスト・システムが起動したら、コンテキストの変更を直接 **QuantumLeap** に通知する必要があります。予想通り、こ
+れは **Orion Context Broker** のサブスクリプション・メカニズムを使用して行われます。**QuantumLeap** は、NGSI v2 通知を直
+接受け入れるため、`attrsFormat=legacy` 属性は不要です。
 
-サブスクリプションについては、次のサブセクションで説明します。サブスクリプション
-の詳細については、以前のチュートリアルや QuantumLeap のドキュメントの
-[サブスクリプション・セクション](https://quantumleap.readthedocs.io/en/latest/user/#orion-subscription)
-を参照してください。
+サブスクリプションについては、次のサブセクションで説明します。サブスクリプションの詳細については、以前のチュートリアルや
+QuantumLeap のドキュメントの
+[サブスクリプション・セクション](https://quantumleap.readthedocs.io/en/latest/user/#orion-subscription) を参照してくださ
+い。
 
 <a name="aggregate-motion-sensor-count-events"></a>
 
 ### モーション・センサのカウント・イベントの集計
 
-**モーション・センサ**の変化率は、現実世界の事象によって引き起こされます。結果を
-集約するためには、すべてのイベントを受け取る必要があります。
+**モーション・センサ**の変化率は、現実世界の事象によって引き起こされます。結果を集約するためには、すべてのイベントを受け
+取る必要があります。
 
-これは、**Orion Context Broker** の `/v2/subscription` エンドポイントに POST リ
-クエストをすることで行われます。
+これは、**Orion Context Broker** の `/v2/subscription` エンドポイントに POST リクエストをすることで行われます。
 
--   `fiware-service` と `fiware-servicepath` ヘッダは、サブスクリプションをフィ
-    ルタリングして、接続された IoT センサからの測定値のみをリッスンためにするた
-    めに使用されます
--   リクエストのボディの `idPattern` は、すべての**モーション・センサ**のデータ
-    変更を **QuantumLeap** に通知されるようにします
+-   `fiware-service` と `fiware-servicepath` ヘッダは、サブスクリプションをフィルタリングして、接続された IoT センサから
+    の測定値のみをリッスンためにするために使用されます
+-   リクエストのボディの `idPattern` は、すべての**モーション・センサ**のデータ変更を **QuantumLeap** に通知されるように
+    します
 -   `notification` URL は、公開されたポートと一致する必要があります
 
-`metadata` 属性により、**CrateDB** データベース内の `time_index` 列が
-、**CrateDB** 自体のレコードの作成時間を使用するのではなく、**Orion Context
-Broker** が使用する **MongoDB** データベース内のデータと一致することが保証されま
-す。
+`metadata` 属性により、**CrateDB** データベース内の `time_index` 列が、**CrateDB** 自体のレコードの作成時間を使用するの
+ではなく、**Orion Context Broker** が使用する **MongoDB** データベース内のデータと一致することが保証されます。
 
 <a name="one-request"></a>
 
@@ -485,25 +429,21 @@ curl -iX POST \
 
 ### ランプの明度のサンプリング
 
-**スマート・ランプ**の明るさは常に変化していますので、最小値や最大値、変化率など
-の関連する統計値を計算するために値を**サンプリング**するだけです。
+**スマート・ランプ**の明るさは常に変化していますので、最小値や最大値、変化率などの関連する統計値を計算するために値を**サ
+ンプリング**するだけです。
 
-これは、**Orion Context Broker** の `/v2/subscription` エンドポイントに POST リ
-クエストを行い、リクエストのボディに `throttling` 属性 を含めることによって行わ
-れます。
+これは、**Orion Context Broker** の `/v2/subscription` エンドポイントに POST リクエストを行い、リクエストのボディに
+`throttling` 属性 を含めることによって行われます。
 
--   `fiware-service` と `fiware-servicepath` ヘッダは、サブスクリプションをフィ
-    ルタリングして、接続された IoT センサからの測定値のみをリッスンためにするた
-    めに使用されます
--   リクエストのボディの `idPattern` は、すべての**モーション・センサ**のデータ
-    変更を **QuantumLeap** に通知されるようにします
+-   `fiware-service` と `fiware-servicepath` ヘッダは、サブスクリプションをフィルタリングして、接続された IoT センサから
+    の測定値のみをリッスンためにするために使用されます
+-   リクエストのボディの `idPattern` は、すべての**モーション・センサ**のデータ変更を **QuantumLeap** に通知されるように
+    します
 -   `notification` URL は、公開されたポートと一致する必要があります
 -   `throttling` 値は、変更がサンプリングされる割合を定義します
 
-`metadata` 属性により、**CrateDB** データベース内の `time_index` 列が
-、**CrateDB** 自体のレコードの作成時間を使用するのではなく、**Orion Context
-Broker** が使用する **MongoDB** データベース内のデータと一致することが保証されま
-す。
+`metadata` 属性により、**CrateDB** データベース内の `time_index` 列が、**CrateDB** 自体のレコードの作成時間を使用するの
+ではなく、**Orion Context Broker** が使用する **MongoDB** データベース内のデータと一致することが保証されます。
 
 <a name="two-request"></a>
 
@@ -547,8 +487,8 @@ curl -iX POST \
 
 ### QuantumLeap のサブスクリプションの確認
 
-何かをする前に、:one: と :two: のステップで作成したサブスクリプションを
-チェックしてください (すなわち、それぞれが少なくとも1つの通知が送信されたか)
+何かをする前に、:one: と :two: のステップで作成したサブスクリプションをチェックしてください (すなわち、それぞれが少なく
+とも 1 つの通知が送信されたか)
 
 <a name="three-request"></a>
 
@@ -604,25 +544,20 @@ curl -X GET \
 
 ## 時系列データ・クエリ (QuantumLeap API)
 
-**QuantumLeap**は、CrateDB バックエンドをラッピングする API を提供し、
-複数のタイプのクエリを実行することもできます。API のドキュメントは
-[こちら](https://app.swaggerhub.com/apis/smartsdk/ngsi-tsdb/)です。
-バージョンに注意してください。`quantumleap` コンテナへのアクセス権がある場合
-(例えば、`localhost` で実行中、またはポート・フォワーディングしている)、
-`http://localhost:8668/v2/ui` を介して API をナビゲートできます。
+**QuantumLeap**は、CrateDB バックエンドをラッピングする API を提供し、複数のタイプのクエリを実行することもできます。API
+のドキュメントは [こちら](https://app.swaggerhub.com/apis/smartsdk/ngsi-tsdb/)です。バージョンに注意してください
+。`quantumleap` コンテナへのアクセス権がある場合 (例えば、`localhost` で実行中、またはポート・フォワーディングしている
+)、 `http://localhost:8668/v2/ui` を介して API をナビゲートできます。
 
 <a name="quantumleap-api---list-the-first-n-sampled-values"></a>
 
-### QuantumLeap API - 最初の N個の サンプリング値のリスト
+### QuantumLeap API - 最初の N 個の サンプリング値のリスト
 
-さて、QuantumLeap が永続的な値であることを確認するために、最初のクエリを
-始めましょう。この例は、`Lamp:001` から、最初にサンプリングされた
-3つの `luminosity` 値を示しています。
+さて、QuantumLeap が永続的な値であることを確認するために、最初のクエリを始めましょう。この例は、`Lamp:001` から、最初に
+サンプリングされた 3 つの `luminosity` 値を示しています。
 
-`Fiware-Service` と `Fiware-ServicePath` ヘッダの使用に注意してください。
-これらは、マルチテナント・シナリオでこのようなヘッダを使用してデータを
-強制的にプッシュする場合にのみ必要です。これらのヘッダを追加しないと、
-データが返されません。
+`Fiware-Service` と `Fiware-ServicePath` ヘッダの使用に注意してください。これらは、マルチテナント・シナリオでこのような
+ヘッダを使用してデータを強制的にプッシュする場合にのみ必要です。これらのヘッダを追加しないと、データが返されません。
 
 <a name="four-request"></a>
 
@@ -660,7 +595,7 @@ curl -X GET \
 
 ### QuantumLeap API - N 個のサンプリング値をオフセットでリスト
 
-この例は、`Motion:001` の 4番目、5番目および6番目のサンプリングされた `count` 値を示しています。
+この例は、`Motion:001` の 4 番目、5 番目および 6 番目のサンプリングされた `count` 値を示しています。
 
 <a name="five-request"></a>
 
@@ -683,11 +618,7 @@ curl -X GET \
     "data": {
         "attrName": "count",
         "entityId": "Motion:001",
-        "index": [
-            "2018-10-29T14:23:53.804000",
-            "2018-10-29T14:23:54.812000",
-            "2018-10-29T14:24:00.849000"
-        ],
+        "index": ["2018-10-29T14:23:53.804000", "2018-10-29T14:23:54.812000", "2018-10-29T14:24:00.849000"],
         "index": ["2018-10-29T14:23:53.804000", "2018-10-29T14:23:54.812000", "2018-10-29T14:24:00.849000"],
         "values": [0, 1, 0]
     }
@@ -696,9 +627,9 @@ curl -X GET \
 
 <a name="quantumleap-api---list-the-latest-n-sampled-values"></a>
 
-### QuantumLeap API - 最新のN個のサンプリングされた値のリスト
+### QuantumLeap API - 最新の N 個のサンプリングされた値のリスト
 
-この例は、`Motion:001` の最新の3個のサンプリングされた `count` 値を示しています。
+この例は、`Motion:001` の最新の 3 個のサンプリングされた `count` 値を示しています。
 
 <a name="six-request"></a>
 
@@ -721,11 +652,7 @@ curl -X GET \
     "data": {
         "attrName": "count",
         "entityId": "Motion:001",
-        "index": [
-            "2018-10-29T15:03:45.113000",
-            "2018-10-29T15:03:46.118000",
-            "2018-10-29T15:03:47.111000"
-        ],
+        "index": ["2018-10-29T15:03:45.113000", "2018-10-29T15:03:46.118000", "2018-10-29T15:03:47.111000"],
         "index": ["2018-10-29T15:03:45.113000", "2018-10-29T15:03:46.118000", "2018-10-29T15:03:47.111000"],
         "values": [1, 0, 1]
     }
@@ -736,10 +663,9 @@ curl -X GET \
 
 ### QuantumLeap API - 期間別にグループ化された値の合計をリスト
 
-この例では、`Motion:001` の1分ごとの最後の3個の合計 `count` 値を示しています。
+この例では、`Motion:001` の 1 分ごとの最後の 3 個の合計 `count` 値を示しています。
 
-QuantumLeap **バージョン >= 0.4.1** 以上が必要です。次のような単純な GET
-でバージョンを確認することができます :
+QuantumLeap **バージョン >= 0.4.1** 以上が必要です。次のような単純な GET でバージョンを確認することができます :
 
 ```console
 curl -X GET \
@@ -768,11 +694,7 @@ curl -X GET \
     "data": {
         "attrName": "count",
         "entityId": "Motion:001",
-        "index": [
-            "2018-10-29T15:03:00.000000",
-            "2018-10-29T15:04:00.000000",
-            "2018-10-29T15:05:00.000000"
-        ],
+        "index": ["2018-10-29T15:03:00.000000", "2018-10-29T15:04:00.000000", "2018-10-29T15:05:00.000000"],
         "index": ["2018-10-29T15:03:00.000000", "2018-10-29T15:04:00.000000", "2018-10-29T15:05:00.000000"],
         "values": [21, 10, 11]
     }
@@ -783,12 +705,11 @@ curl -X GET \
 
 ### QuantumLeap API - 期間別にグループ化された最小値をリスト
 
-この例では、1分ごとの `Lamp:001` からの最小 `luminosity` 値を示しています。
+この例では、1 分ごとの `Lamp:001` からの最小 `luminosity` 値を示しています。
 
 <!--lint disable no-blockquote-without-marker-->
 
-> QuantumLeap **バージョン >= 0.4.1** 以上が必要です。次のような単純な GET
-> でバージョンを確認することができます :
+> QuantumLeap **バージョン >= 0.4.1** 以上が必要です。次のような単純な GET でバージョンを確認することができます :
 
 > ```console
 > curl -X GET \
@@ -819,11 +740,7 @@ curl -X GET \
     "data": {
         "attrName": "count",
         "entityId": "Motion:001",
-        "index": [
-            "2018-10-29T15:03:00.000000",
-            "2018-10-29T15:04:00.000000",
-            "2018-10-29T15:05:00.000000"
-        ],
+        "index": ["2018-10-29T15:03:00.000000", "2018-10-29T15:04:00.000000", "2018-10-29T15:05:00.000000"],
         "index": ["2018-10-29T15:03:00.000000", "2018-10-29T15:04:00.000000", "2018-10-29T15:05:00.000000"],
         "values": [1720, 1878, 1443]
     }
@@ -834,8 +751,8 @@ curl -X GET \
 
 ### QuantumLeap API - ある期間の最大値のリスト
 
-この例では、`2018-06-27T09:00:00` から `2018-06-30T23:59:59` までの間に
-発生した、`Lamp:001` の最大の `luminosity` 値を示しています。
+この例では、`2018-06-27T09:00:00` から `2018-06-30T23:59:59` までの間に発生した、`Lamp:001` の最大の `luminosity` 値を示
+しています。
 
 <a name="nine-request"></a>
 
@@ -868,16 +785,13 @@ curl -X GET \
 
 ### QuantumLeap API - ポイント付近のデバイスの最新の N 個のサンプル値をリスト
 
-この例は、
-`52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, Berlin, Germany)
-から半径5km以内にある最新の４つのサンプリングされたランプの `luminosity`
-値を示しています。デバイス・モニタのページで利用可能なすべてのランプをつけると、
+この例は、 `52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, Berlin, Germany) から半径 5km 以内にある最新の４つのサンプ
+リングされたランプの `luminosity` 値を示しています。デバイス・モニタのページで利用可能なすべてのランプをつけると、
 `Lamp:001` と `Lamp:004` のデータを見ることができるはずです。
 
-> :information_source: **注:** 地理的クエリは、
-> [NGSI v2 仕様](http://fiware.github.io/specifications/ngsiv2/stable/)
-> の地理的クエリのセクションに詳述されている完全なクエリのセットを実装する、
-> QuantumLeap のバージョン `0.5` からのみ利用可能です。
+> :information_source: **注:** 地理的クエリは、 [NGSI v2 仕様](http://fiware.github.io/specifications/ngsiv2/stable/) の
+> 地理的クエリのセクションに詳述されている完全なクエリのセットを実装する、 QuantumLeap のバージョン `0.5` からのみ利用可
+> 能です。
 
 <a name="onezero-request"></a>
 
@@ -920,16 +834,13 @@ curl -X GET \
 
 ### QuantumLeap API - エリア内のデバイスの最新の N 個のサンプル値をリスト
 
-この例は、
-`52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, Berlin, Germany)
-を中心とする一辺 200 m の正方形の内側にあるランプの最新の4つのサンプリング
-された `luminosity` 値を示しています。デバイス・モニタのページで利用可能な
-すべてのランプをつけたとしても、`Lamp:001` のデータだけを見るべきです。
+この例は、 `52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, Berlin, Germany) を中心とする一辺 200 m の正方形の内側にあ
+るランプの最新の 4 つのサンプリングされた `luminosity` 値を示しています。デバイス・モニタのページで利用可能なすべてのラ
+ンプをつけたとしても、`Lamp:001` のデータだけを見るべきです。
 
-> :information_source: **注:** 地理的クエリは、
-> [NGSI v2 仕様](http://fiware.github.io/specifications/ngsiv2/stable/)
-> の地理的クエリのセクションに詳述されている完全なクエリのセットを実装する、
-> QuantumLeap のバージョン `0.5` からのみ利用可能です。
+> :information_source: **注:** 地理的クエリは、 [NGSI v2 仕様](http://fiware.github.io/specifications/ngsiv2/stable/) の
+> 地理的クエリのセクションに詳述されている完全なクエリのセットを実装する、 QuantumLeap のバージョン `0.5` からのみ利用可
+> 能です。
 
 <a name="oneone-request"></a>
 
@@ -967,41 +878,36 @@ curl -X GET \
     }
 }
 ```
+
 <a name="time-series-data-queries-cratedb"></a>
 
 ## 時系列データ・クエリ (CrateDB API)
 
 **CrateDB** は、SQL クエリを送信するために使用できる
-[HTTP エンドポイント](https://crate.io/docs/crate/reference/en/latest/interfaces/http.html)を
-提供します。エンドポイントは、`<servername:port>/_sql` 下でアクセス可能です。
+[HTTP エンドポイント](https://crate.io/docs/crate/reference/en/latest/interfaces/http.html)を提供します。エンドポイント
+は、`<servername:port>/_sql` 下でアクセス可能です。
 
-SQL ステートメントは POST リクエストの本体として JSON 形式で送信されます。ここで
-、SQL ステートメントは `stmt` 属性の値です。
+SQL ステートメントは POST リクエストの本体として JSON 形式で送信されます。ここで、SQL ステートメントは `stmt` 属性の値で
+す。
 
-> **CrateDB** にクエリするときと、**QuantumLeap** にするとき?
-> 経験則として、**QuantumLeap** で常に作業することを好む理由は
-> 次のとおりです。
+> **CrateDB** にクエリするときと、**QuantumLeap** にするとき? 経験則として、**QuantumLeap** で常に作業することを好む理由
+> は次のとおりです。
 >
 > -   あなたの経験は Orion のような FIWARE NGSI API に近いでしょう
-> -   あなたのアプリケーションは、CrateDB の仕様や QuantumLeap の実装の
->     詳細に結びつくことはありません
-> -   QuantumLeap は他のバックエンドにも簡単に拡張でき、あなたのアプリは
->     フリーで互換性を得ることができます
-> -   デプロイメントが配布されている場合は、データベースのポートを外部に
->     公開する必要はありません
+> -   あなたのアプリケーションは、CrateDB の仕様や QuantumLeap の実装の詳細に結びつくことはありません
+> -   QuantumLeap は他のバックエンドにも簡単に拡張でき、あなたのアプリはフリーで互換性を得ることができます
+> -   デプロイメントが配布されている場合は、データベースのポートを外部に公開する必要はありません
 
-**QuantumLeap** で実行したいクエリがサポートされていないことが確かな場合は、
-**CrateDB** でクエリする必要がありますが、開発チームが認識できるように
-[QuantumLeap の GitHub リポジトリ](https://github.com/smartsdk/ngsi-timeseries-api/issues)
+**QuantumLeap** で実行したいクエリがサポートされていないことが確かな場合は、 **CrateDB** でクエリする必要がありますが、
+開発チームが認識できるように [QuantumLeap の GitHub リポジトリ](https://github.com/smartsdk/ngsi-timeseries-api/issues)
 で、issue をオープンしてください。
 
 <a name="cratedb-api---checking-data-persistence"></a>
 
 ### CrateDB API - データの永続性のチェック
 
-データが永続化されているかどうかを確認する別の方法は、`table_schema` が
-作成されたことをチェックすることです。 次のように、**CrateDB**
-HTTP エンドポイントにリクエストすることでこれを行うことができます：
+データが永続化されているかどうかを確認する別の方法は、`table_schema` が作成されたことをチェックすることです。 次のように
+、**CrateDB** HTTP エンドポイントにリクエストすることでこれを行うことができます：
 
 <a name="onetwo-request"></a>
 
@@ -1027,18 +933,15 @@ curl -iX POST \
 }
 ```
 
-スキーマ名は、`mt` プレフィックスとそれに続く、小文字の `fiware-service` ヘッダ
-で構成されます。IoT Agent は、`FIWARE-Service` ヘッダ `openiot` を使用して、
-ダミー IoT デバイスから測定値を転送します。これらは `mtopeniot` スキーマの下に
-保持されています。
+スキーマ名は、`mt` プレフィックスとそれに続く、小文字の `fiware-service` ヘッダで構成されます。IoT Agent は
+、`FIWARE-Service` ヘッダ `openiot` を使用して、ダミー IoT デバイスから測定値を転送します。これらは `mtopeniot` スキーマ
+の下に保持されています。
 
-`mtopeniot` が存在しない場合は、**QuantumLeap** のサブスクリプションが正しく設定
-されていません。サブスクリプションが存在し、データを正しい場所に送信するように設
-定されていることを確認します。
+`mtopeniot` が存在しない場合は、**QuantumLeap** のサブスクリプションが正しく設定されていません。サブスクリプションが存在
+し、データを正しい場所に送信するように設定されていることを確認します。
 
-**QuantumLeap** は、エンティティ型に基づいて **CrateDB** データベース内の別のテ
-ーブルにデータを永続化します。テーブル名は、`et` プレフィックスとエンティティ型
-の名前を小文字にして形成されます。
+**QuantumLeap** は、エンティティ型に基づいて **CrateDB** データベース内の別のテーブルにデータを永続化します。テーブル名
+は、`et` プレフィックスとエンティティ型の名前を小文字にして形成されます。
 
 <a name="onethree-request"></a>
 
@@ -1067,17 +970,15 @@ curl -X POST \
 }
 ```
 
-レスポンスは、**モーション・センサ**のデータと**スマート・ランプ**のデータの両方
-がデータベースに保持されていることを示します。
+レスポンスは、**モーション・センサ**のデータと**スマート・ランプ**のデータの両方がデータベースに保持されていることを示し
+ます。
 
 <a name="cratedb-api---list-the-first-n-sampled-values"></a>
 
-### CrateDB API - 最初の N個の サンプリング値のリスト
+### CrateDB API - 最初の N 個の サンプリング値のリスト
 
-SQL 文は `ORDER BY` と `LIMIT` を使用してデータをソートします。
-詳細は、**CrateDB**
-の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を
-参照してください。
+SQL 文は `ORDER BY` と `LIMIT` を使用してデータをソートします。詳細は、**CrateDB**
+の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を参照してください。
 
 <a name="onefour-request"></a>
 
@@ -1106,13 +1007,13 @@ curl -iX POST \
     "duration": 21.8338
 }
 ```
+
 <a name="cratedb-api---list-n-sampled-values-at-an-offset"></a>
 
 ### CrateDB API - N 個のサンプリング値をオフセットでリスト
 
 SQL 文は、`OFFSET` 句を使用して必要な行を取り出します。詳細は、**CrateDB**
-の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を
-参照してください。
+の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を参照してください。
 
 <a name="onefive-request"></a>
 
@@ -1141,14 +1042,14 @@ curl -iX POST \
     "duration": 54.215
 }
 ```
+
 <a name="cratedb-api---list-the-latest-n-sampled-values"></a>
 
-### CrateDB API - 最新のN個のサンプリングされた値のリスト
+### CrateDB API - 最新の N 個のサンプリングされた値のリスト
 
-SQL 文は、最後の N 行を取り出すために `LIMIT` 節と結合された
-、`ORDER BY ... DESC` 節を使用します。詳細は
-、**CrateDB**の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を
-参照してください。
+SQL 文は、最後の N 行を取り出すために `LIMIT` 節と結合された、`ORDER BY ... DESC` 節を使用します。詳細は
+、**CrateDB**の[ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)を参照してくだ
+さい。
 
 <a name="onesix-request"></a>
 
@@ -1182,11 +1083,10 @@ curl -iX POST \
 
 ### CrateDB API - 期間別にグループ化された値の合計をリスト
 
-SQL 文は、`SUM` 関数と `GROUP BY` 句を使用して関連するデータを取得します。
-**CrateDB** は、タイムスタンプを切り捨ててグループ化できるデータに変換するための
-一連
-の[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を
-提供しています。
+SQL 文は、`SUM` 関数と `GROUP BY` 句を使用して関連するデータを取得します。 **CrateDB** は、タイムスタンプを切り捨ててグ
+ループ化できるデータに変換するための一連
+の[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を提供
+しています。
 
 <a name="oneseven-request"></a>
 
@@ -1217,15 +1117,15 @@ curl -iX POST \
     "duration": 22.9832
 }
 ```
+
 <a name="cratedb-api---list-the-minimum-values-grouped-by-a-time-period"></a>
 
 ### CrateDB API - 期間別にグループ化された最小値をリスト
 
-SQL 文は、`MIN` 関数と `GROUP BY` 句を使用して関連するデータを取得します。
-**CrateDB** は、タイムスタンプを切り捨ててグループ化できるデータに変換するための
-一連の
-[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を
-提供しています。
+SQL 文は、`MIN` 関数と `GROUP BY` 句を使用して関連するデータを取得します。 **CrateDB** は、タイムスタンプを切り捨ててグ
+ループ化できるデータに変換するための一連の
+[日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)を提供し
+ています。
 
 <a name="oneeight-request"></a>
 
@@ -1256,14 +1156,15 @@ curl -iX POST \
     "duration": 13.1854
 }
 ```
+
 <a name="cratedb-api---list-the-maximum-value-over-a-time-period"></a>
 
 ### CrateDB API - ある期間の最大値のリスト
 
-SQL 文は、`MAX`関数と `WHERE` 句を使用して関連するデータを取得します
-。**CrateDB** は、さまざまな方法でデータをアグリゲーションするため、一連の
-[アグリゲーション関数](https://crate.io/docs/crate/reference/en/latest/general/dql/selects.html#data-aggregation)
-を提供しています。
+SQL 文は、`MAX`関数と `WHERE` 句を使用して関連するデータを取得します。**CrateDB** は、さまざまな方法でデータをアグリゲー
+ションするため、一連の
+[アグリゲーション関数](https://crate.io/docs/crate/reference/en/latest/general/dql/selects.html#data-aggregation) を提供
+しています。
 
 <a name="onenine-request"></a>
 
@@ -1293,23 +1194,19 @@ curl -iX POST \
 
 # プログラミングによる時系列データへのアクセス
 
-指定された時系列の JSON レスポンスが取得されると、生のデータを表示することはエン
-ドユーザにとってほとんど役に立たちません。これは、棒グラフ、折れ線グラフ、または
-テーブル・リストに表示するために操作する必要があります。これは、グラフィカルなツ
+指定された時系列の JSON レスポンスが取得されると、生のデータを表示することはエンドユーザにとってほとんど役に立たちません
+。これは、棒グラフ、折れ線グラフ、またはテーブル・リストに表示するために操作する必要があります。これは、グラフィカルなツ
 ールではないため、**QuantumLeap** のドメイン内にはありませんが
-、[Wirecloud](https://github.com/FIWARE/catalogue/blob/master/processing/README.md#Wirecloud)
-や
-[Knowage](https://github.com/FIWARE/catalogue/blob/master/processing/README.md#Knowage)
-などのマッシュアップやダッシュボード・コンポーネントに任せることができます。
+、[Wirecloud](https://github.com/FIWARE/catalogue/blob/master/processing/README.md#Wirecloud) や
+[Knowage](https://github.com/FIWARE/catalogue/blob/master/processing/README.md#Knowage) などのマッシュアップやダッシュボ
+ード・コンポーネントに任せることができます。
 
-また、コーディング環境に適したサード・パーティのグラフ作成ツール
-([chartjs](http://www.chartjs.org/) など) を使用して、検索して表示することもでき
-ます。この例は
+また、コーディング環境に適したサード・パーティのグラフ作成ツール ([chartjs](http://www.chartjs.org/) など) を使用して、
+検索して表示することもできます。この例は
 、[Git Repository](https://github.com/FIWARE/tutorials.Step-by-Step/blob/master/context-provider/controllers/history.js)
 の `history` コントローラ内にあります。
 
-基本的な処理は、検索と属性マッピングの 2 つのステップで構成されています。サンプ
-ルコードは以下のとおりです :
+基本的な処理は、検索と属性マッピングの 2 つのステップで構成されています。サンプルコードは以下のとおりです :
 
 ```javascript
 function readCrateLampLuminosity(id, aggMethod) {
@@ -1327,7 +1224,7 @@ function readCrateLampLuminosity(id, aggMethod) {
             url: crateUrl,
             headers: { "Content-Type": "application/json" },
             body: { stmt: sqlStatement },
-            json: true
+            json: true,
         };
         request(options, (error, response, body) => {
             return error ? reject(error) : resolve(body);
@@ -1354,42 +1251,36 @@ function crateToTimeSeries(crateResponse, aggMethod, hexColor) {
     return {
         labels,
         data,
-        color
+        color,
     };
 }
 ```
 
-変更されたデータは、フロント・エンドに渡され、サード・パーティのグラフ作成ツール
-によって処理されます。結果は次のとおりです :
-`http://localhost:3000/device/history/urn:ngsi-ld:Store:001`
+変更されたデータは、フロント・エンドに渡され、サード・パーティのグラフ作成ツールによって処理されます。結果は次のとおりで
+す : `http://localhost:3000/device/history/urn:ngsi-ld:Store:001`
 
 <a name="displaying-cratedb-data-as-a-grafana-dashboard"></a>
 
 ## CrateDB データを Grafana Dashboard として表示
 
 **CrateDB** は、QuantumLeap の時系列データ・シンクとして選択されています。
-[他の多くのメリット](https://quantumleap.readthedocs.io/en/latest/)の中でも、
-[Grafana](https://grafana.com/) 時系列分析ツールとシームレスに統合されています。
-Grafana を使用して、アグリゲートされたセンサ・データを表示することができます。
-[ここ](https://www.youtube.com/watch?v=sKNZMtoSHN4)でダッシュボードを構築する
-ための完全なチュートリアルを見つけることができます。次の簡単な手順では、ランプの
-`luminosity` データのグラフを接続して表示する方法をまとめています。
+[他の多くのメリット](https://quantumleap.readthedocs.io/en/latest/)の中でも、 [Grafana](https://grafana.com/) 時系列分析
+ツールとシームレスに統合されています。 Grafana を使用して、アグリゲートされたセンサ・データを表示することができます。
+[ここ](https://www.youtube.com/watch?v=sKNZMtoSHN4)でダッシュボードを構築するための完全なチュートリアルを見つけることが
+できます。次の簡単な手順では、ランプの `luminosity` データのグラフを接続して表示する方法をまとめています。
 
 <a name="logging-in"></a>
 
 ### ログイン
 
-`docker-compose` ファイルは Grafana UI のインスタンスをポート `3003` でリッスン
-しているので、ログイン・ページは次の場所にあります:
-`http://localhost:3003/login`。デフォルトのユーザー名は `admin` で、デフォルトの
-パスワードは `admin` です。
+`docker-compose` ファイルは Grafana UI のインスタンスをポート `3003` でリッスンしているので、ログイン・ページは次の場所
+にあります: `http://localhost:3003/login`。デフォルトのユーザー名は `admin` で、デフォルトのパスワードは `admin` です。
 
 <a name="configuring-a-data-source"></a>
 
 ### データソースの設定
 
-ログイン後、PostgreSQL のデータソースは、`http://localhost:3003/datasources`
-において、次の値 で設定する必要があります：
+ログイン後、PostgreSQL のデータソースは、`http://localhost:3003/datasources` において、次の値 で設定する必要があります：
 
 -   **Name** `CrateDB`
 -   **Host** `crate-db:5432`
@@ -1399,16 +1290,14 @@ Grafana を使用して、アグリゲートされたセンサ・データを表
 
 ![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-crate-connect.png)
 
-Save をクリックし、_Database Connection OK_
-メッセージがと表示されていることを確認します。
+Save をクリックし、_Database Connection OK_ メッセージがと表示されていることを確認します。
 
 <a name="configuring-a-dashboard"></a>
 
 ### ダッシュボードの設定
 
-新しいダッシュボードを表示するには、**+** ボタンをクリックして **Dashboard**
-を選択するか、直接 `http://localhost:3003/dashboard/new?orgId=1`
-にアクセスします。 その後、**Add Query** をクリックします。
+新しいダッシュボードを表示するには、**+** ボタンをクリックして **Dashboard** を選択するか、直接
+`http://localhost:3003/dashboard/new?orgId=1` にアクセスします。 その後、**Add Query** をクリックします。
 
 **太字のテキスト**の次の値は、グラフ作成ウィザードに配置する必要があります :
 
@@ -1466,10 +1355,8 @@ Save をクリックし、_Database Connection OK_
 
 # 次のステップ
 
-高度な機能を追加することで、アプリケーションに複雑さを加える方法を知りたいですか
-？このシリーズ
-の[他のチュートリアル](https://www.letsfiware.jp/fiware-tutorials)を読むことで見
-つけることができます
+高度な機能を追加することで、アプリケーションに複雑さを加える方法を知りたいですか？このシリーズ
+の[他のチュートリアル](https://www.letsfiware.jp/fiware-tutorials)を読むことで見つけることができます
 
 ---
 
