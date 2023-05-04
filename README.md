@@ -490,8 +490,7 @@ in no data being returned.
 curl -X GET \
   'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?limit=3' \
   -H 'Accept: application/json' \
-  -H 'Fiware-Service: openiot' \
-  -H 'Fiware-ServicePath: /'
+  -H 'Fiware-Service: openiot'
 ```
 
 #### Response:
@@ -517,8 +516,7 @@ This example shows the fourth, fifth and sixth sampled `filling` values of `urn:
 curl -X GET \
   'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?offset=3&limit=3' \
   -H 'Accept: application/json' \
-  -H 'Fiware-Service: openiot' \
-  -H 'Fiware-ServicePath: /'
+  -H 'Fiware-Service: openiot'
 ```
 
 #### Response:
@@ -544,8 +542,7 @@ This example shows the latest three sampled `filling` values from `urn:ngsi-ld:D
 curl -X GET \
   'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?lastN=3' \
   -H 'Accept: application/json' \
-  -H 'Fiware-Service: openiot' \
-  -H 'Fiware-ServicePath: /'
+  -H 'Fiware-Service: openiot'
 ```
 
 #### Response:
@@ -579,8 +576,7 @@ curl -X GET \
 curl -X GET \
   'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?aggrMethod=count&aggrPeriod=minute&lastN=3' \
   -H 'Accept: application/json' \
-  -H 'Fiware-Service: openiot' \
-  -H 'Fiware-ServicePath: /'
+  -H 'Fiware-Service: openiot'
 ```
 
 #### Response:
@@ -618,8 +614,7 @@ This example shows minimum `filling` values from `urn:ngsi-ld:Device:filling001`
 curl -X GET \
   'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?aggrMethod=min&aggrPeriod=minute&lastN=3' \
   -H 'Accept: application/json' \
-  -H 'Fiware-Service: openiot' \
-  -H 'Fiware-ServicePath: /'
+  -H 'Fiware-Service: openiot'
 ```
 
 #### Response:
@@ -646,8 +641,7 @@ This example shows maximum `filling` value of `urn:ngsi-ld:Device:filling001` th
 curl -X GET \
   'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?aggrMethod=max&fromDate=2018-06-27T09:00:00&toDate=2018-06-30T23:59:59' \
   -H 'Accept: application/json' \
-  -H 'Fiware-Service: openiot' \
-  -H 'Fiware-ServicePath: /'
+  -H 'Fiware-Service: openiot'
 ```
 
 #### Response:
@@ -680,8 +674,7 @@ around the Berlin Tiergarten and on the device monitor page, you should be able 
 curl -X GET \
   'http://localhost:8668/v2/types/Device/attrs/heartRate?lastN=4&georel=near;maxDistance:5000&geometry=point&coords=52.518,13.357' \
   -H 'Accept: application/json' \
-  -H 'Fiware-Service: openiot' \
-  -H 'Fiware-ServicePath: /'
+  -H 'Fiware-Service: openiot'
 ```
 
 #### Response:
@@ -726,8 +719,7 @@ filling sensors available on the device monitor page, you should only see data f
 curl -X GET \
   'http://localhost:8668/v2/types/Device/attrs/heartRate?lastN=4&georel=coveredBy&geometry=polygon&coords=52.5537,13.3996;52.5557,13.3996;52.5557,13.3976;52.5537,13.3976;52.5537,13.3996' \
   -H 'Accept: application/json' \
-  -H 'Fiware-Service: openiot' \
-  -H 'Fiware-ServicePath: /'
+  -H 'Fiware-Service: openiot'
 ```
 
 #### Response:
