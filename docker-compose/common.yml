@@ -89,7 +89,8 @@ services:
   tutorial:
     labels:
       org.fiware: 'tutorial'
-    image: quay.io/fiware/tutorials.ngsi-ld
+    #image: quay.io/fiware/tutorials.ngsi-ld
+    image: app
     hostname: iot-sensors
     container_name: fiware-tutorial
     depends_on:
