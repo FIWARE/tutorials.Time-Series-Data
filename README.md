@@ -260,8 +260,8 @@ crate-db:
     image: crate:4.1.4
     hostname: crate-db
     ports:
-        - "4200:4200"
-        - "4300:4300"
+        - '4200:4200'
+        - '4300:4300'
     command:
         crate -Clicense.enterprise=false -Cauth.host_based.enabled=false  -Ccluster.name=democluster
         -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
@@ -283,7 +283,7 @@ quantumleap:
     image: smartsdk/quantumleap
     hostname: quantumleap
     ports:
-        - "8668:8668"
+        - '8668:8668'
     depends_on:
         - crate-db
     environment:
@@ -298,7 +298,7 @@ grafana:
     depends_on:
         - cratedb
     ports:
-        - "3003:3000"
+        - '3003:3000'
     environment:
         - GF_INSTALL_PLUGINS=https://github.com/orchestracities/grafana-map-plugin/archive/master.zip;grafana-map-plugin,grafana-clock-panel,grafana-worldmap-panel
 ```
@@ -1090,15 +1090,15 @@ function readCrateLampLuminosity(id, aggMethod) {
         const sqlStatement =
             "SELECT DATE_FORMAT (DATE_TRUNC ('minute', time_index)) AS minute, " +
             aggMethod +
-            "(luminosity) AS " +
+            '(luminosity) AS ' +
             aggMethod +
             " FROM mtopeniot.etlamp WHERE entity_id = 'Lamp:" +
             id +
             "' GROUP BY minute ORDER BY minute";
         const options = {
-            method: "POST",
+            method: 'POST',
             url: crateUrl,
-            headers: { "Content-Type": "application/json" },
+            headers: { 'Content-Type': 'application/json' },
             body: { stmt: sqlStatement },
             json: true
         };
@@ -1119,7 +1119,7 @@ function crateToTimeSeries(crateResponse, aggMethod, hexColor) {
         _.forEach(crateResponse.rows, (element) => {
             const date = moment(element[0]);
             data.push({ t: date, y: element[1] });
-            labels.push(date.format("HH:mm"));
+            labels.push(date.format('HH:mm'));
             color.push(hexColor);
         });
     }
