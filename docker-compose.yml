@@ -42,6 +42,8 @@ services:
   # Quantum Leap is persisting Short Term History to Crate-DB
   quantumleap:
     image: orchestracities/quantumleap:${QUANTUMLEAP_VERSION}
+    labels:
+      org.fiware: 'tutorial'
     hostname: quantumleap
     container_name: fiware-quantumleap
     ports:
@@ -149,6 +151,8 @@ services:
     
 
   crate-db:
+    labels:
+      org.fiware: 'tutorial'
     image: crate:${CRATE_VERSION}
     hostname: crate-db
     container_name: db-crate
@@ -164,6 +168,8 @@ services:
       - crate-db:/data
 
   redis-db:
+    labels:
+      org.fiware: 'tutorial'
     image: redis:${REDIS_VERSION}
     hostname: redis-db
     container_name: db-redis
@@ -179,6 +185,8 @@ services:
 
   # Other services
   grafana:
+    labels:
+      org.fiware: 'tutorial'
     image: grafana/grafana:6.1.6
     container_name: grafana
     depends_on:
