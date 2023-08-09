@@ -237,6 +237,7 @@ case "${command}" in
 		addDatabaseIndex
 		waitForOrion
 		loadData orion:1026
+		echo -e "\033[1;34m${command}\033[0m is now running and exposed on localhost:${EXPOSED_PORT}"
 		echo -e "Now open \033[4mhttp://localhost:3000/device/monitor\033[0m"
 		;;
 
@@ -256,6 +257,7 @@ case "${command}" in
 		addIoTDatabaseIndex
 		waitForScorpio
 		loadData scorpio:9090
+		echo -e "\033[1;34m${command}\033[0m is now running and exposed on localhost:${EXPOSED_PORT}"
 		echo -e "Now open \033[4mhttp://localhost:3000/device/monitor\033[0m"
 		;;
 	"stellio")
@@ -274,6 +276,7 @@ case "${command}" in
 		addIoTDatabaseIndex
 		waitForStellio
 		loadData stellio:8080
+		echo -e "\033[1;34m${command}\033[0m is now running and exposed on localhost:${EXPOSED_PORT}"
 		echo -e "Now open \033[4mhttp://localhost:3000/device/monitor\033[0m"
 		;;
 	"stop")
@@ -282,9 +285,8 @@ case "${command}" in
 		;;
 	"start")
 		export $(cat .env | grep "#" -v)
-		./services orion
-		;;
-	"create")
+		./services ${CONTEXT_BROKER:=orion} $2
+ 		;;	"create")
 		export $(cat .env | grep "#" -v)
 		echo "Pulling Docker images"
 		docker pull quay.io/curl/curl

@@ -218,7 +218,7 @@ Thereafter, all services can be initialized from the command-line by running the
 repository:
 
 ```console
-./services start
+./services [orion|scorpio|stellio]
 ```
 
 > :information_source: **Note:** If you want to clean up and start over again you can do so with the following command:
