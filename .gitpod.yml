@@ -27,3 +27,19 @@ ports:
     description: Database for Orion + IoT Agent
     port: 27017
     onOpen: ignore
+  - name: CrateDB (Transport)
+    description: Database for QuantumLeap
+    port: 4200
+    onOpen: ignore
+  - name: CrateDB (Admin)
+    description: Database for QuantumLeap
+    port: 4300
+    onOpen: ignore
+  - name: Redis
+    description: Database for QuantumLeap
+    port: 6379
+    onOpen: ignore
+  - name: Grafana
+    description: Graphing Tool
+    port: 3003
+    onOpen: open-preview
