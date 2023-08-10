@@ -170,7 +170,7 @@ services:
       - "4200:4200"
       # Transport protocol
       - "4300:4300"
-    command: crate -Cauth.host_based.enabled=false  -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*"
+    command: crate -Cauth.host_based.enabled=false  -Ccluster.name=democluster -Chttp.cors.enabled=true -Chttp.cors.allow-origin="*" -Cdiscovery.type=single-node
     environment:
       - CRATE_HEAP_SIZE=2g # see https://crate.io/docs/crate/howtos/en/latest/deployment/containers/docker.html#troubleshooting
     volumes:
