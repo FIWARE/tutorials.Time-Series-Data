@@ -42,4 +42,4 @@ ports:
   - name: Grafana
     description: Graphing Tool
     port: 3003
-    onOpen: open-browser
+    onOpen: open-preview
