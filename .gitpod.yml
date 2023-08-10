@@ -10,7 +10,7 @@ ports:
   - name: Tutorial App
     description: Web app displaying context data
     port: 3000
-    onOpen: open-preview
+    onOpen: open-browser
   - name: Tutorial Devices
     description: Dummy IoT Sensors over HTTP
     port: 3001
@@ -42,4 +42,4 @@ ports:
   - name: Grafana
     description: Graphing Tool
     port: 3003
-    onOpen: open-preview
+    onOpen: open-browser
