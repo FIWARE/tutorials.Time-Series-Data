@@ -36,10 +36,14 @@ ports:
     port: 4300
     onOpen: ignore
   - name: Redis
-    description: Database for QuantumLeap
+    description: Data cache for QuantumLeap
     port: 6379
     onOpen: ignore
   - name: Grafana
     description: Graphing Tool
     port: 3003
     onOpen: open-preview
+  - name: QuantumLeap
+    description: Timeseries Data Persistence
+    port: 6379
+    onOpen: ignore
