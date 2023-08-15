@@ -286,10 +286,11 @@ case "${command}" in
 	"start")
 		export $(cat .env | grep "#" -v)
 		./services ${CONTEXT_BROKER:=orion} $2
- 		;;	"create")
+ 		;;
+ 	"create")
 		export $(cat .env | grep "#" -v)
 		echo "Pulling Docker images"
-		docker pull quay.io/curl/curl
+		docker pull -q quay.io/curl/curl
 		${dockerCmd} -f docker-compose/common.yml -f docker-compose/common.yml -f docker-compose/scorpio-aaio.yml -f docker-compose/orion-ld.yml -f docker-compose/stellio.yml pull
 		;;
 	*)
