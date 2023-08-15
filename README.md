@@ -281,7 +281,8 @@ grafana:
     ports:
         - "3003:3000"
     environment:
-        - GF_INSTALL_PLUGINS=https://github.com/orchestracities/grafana-map-plugin/archive/master.zip;grafana-map-plugin,grafana-clock-panel,grafana-worldmap-panel
+        - GF_INSTALL_PLUGINS=orchestracities-map-panel,grafana-clock-panel,grafana-worldmap-panel
+
 ```
 
 The `quantumleap` container is listening on one port:
@@ -301,7 +302,7 @@ UI is usually available on port `3000`, but this port has already been taken by 
 shifted to another port. The Grafana Environment variables are described within their own
 [documentation](https://grafana.com/docs/installation/configuration/). The configuration ensures we will be able to
 connect to the **CrateDB** database later on in the tutorial. The configuration also imports a custom map plugin that
-helps you in displaying NGSI v2 entities over a map.
+helps you in displaying NGSI LD entities over a map.
 
 ### Generating Context Data
 
