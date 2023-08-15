@@ -325,7 +325,7 @@ grafana:
     ports:
         - "3003:3000"
     environment:
-        - GF_INSTALL_PLUGINS=https://github.com/orchestracities/grafana-map-plugin/archive/master.zip;grafana-map-plugin,grafana-clock-panel,grafana-worldmap-panel
+        - GF_INSTALL_PLUGINS=orchestracities-map-panel,grafana-clock-panel,grafana-worldmap-panel
 ```
 
 `quantumleap` コンテナは、1 つのポートで待機しています：

@@ -187,14 +187,14 @@ services:
   grafana:
     labels:
       org.fiware: 'tutorial'
-    image: grafana/grafana:6.1.6
+    image: grafana/grafana:8.5.27
     container_name: grafana
     depends_on:
       - crate-db
     ports:
       - "3003:${TUTORIAL_APP_PORT}"
     environment:
-      - GF_INSTALL_PLUGINS=https://github.com/orchestracities/grafana-map-plugin/archive/master.zip;grafana-map-plugin,grafana-clock-panel,grafana-worldmap-panel
+      - GF_INSTALL_PLUGINS=orchestracities-map-panel,grafana-clock-panel,grafana-worldmap-panel
     volumes:
       - grafana:/var/lib/grafana
 
