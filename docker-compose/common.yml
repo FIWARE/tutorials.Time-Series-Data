@@ -70,7 +70,7 @@ services:
     environment:
       - IOTA_NORTH_PORT=${IOTA_NORTH_PORT}
       - IOTA_REGISTRY_TYPE=mongodb #Whether to hold IoT device info in memory or in a database
-      - IOTA_LOG_LEVEL=DEBUG # The log level of the IoT Agent
+      - IOTA_LOG_LEVEL=INFO # The log level of the IoT Agent
       - IOTA_TIMESTAMP=true # Supply timestamp information with each measurement
       - IOTA_AUTOCAST=true # Ensure Ultralight number values are read as numbers not strings
       - IOTA_MONGO_HOST=mongo-db # The host name of MongoDB
