@@ -300,8 +300,7 @@ grafana:
     ports:
         - '3003:3000'
     environment:
-      - GF_INSTALL_PLUGINS=orchestracities-map-panel,grafana-clock-panel,grafana-worldmap-panel
-
+        - GF_INSTALL_PLUGINS=orchestracities-map-panel,grafana-clock-panel,grafana-worldmap-panel
 ```
 
 The `quantumleap` container is listening on one port:
