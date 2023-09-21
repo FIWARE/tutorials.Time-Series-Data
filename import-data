@@ -423,5 +423,101 @@ curl -s -o /dev/null -X POST \
    
   ]
 }'
+#
+# Ensure that actuators are minimally provisioned.
+#
+curl -X POST \
+  'http://orion:1026/v2/op/update' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -d '{
+  "actionType":"APPEND",
+  "entities":[
+    {
+      "id": "Bell:001",
+      "type": "Bell",
+      "refStore": {
+        "type": "Relationship","value": "urn:ngsi-ld:Store:001"
+      }
+    },
+    {
+      "id": "Door:001",
+      "type": "Door",
+      "refStore": {
+        "type": "Relationship","value": "urn:ngsi-ld:Store:001"
+      }
+    }, 
+    {
+      "id": "Lamp:001",
+      "type": "Lamp",
+      "refStore": {
+        "type": "Relationship","value": "urn:ngsi-ld:Store:001"
+      }
+    },
+    {
+      "id": "Bell:002",
+      "type": "Bell",
+      "refStore": {
+        "type": "Relationship","value": "urn:ngsi-ld:Store:002"
+      }
+    },
+    {
+      "id": "Door:002",
+      "type": "Door",
+      "refStore": {
+        "type": "Relationship","value": "urn:ngsi-ld:Store:002"
+      }
+    }, 
+    {
+      "id": "Lamp:002",
+      "type": "Lamp",
+      "refStore": {
+        "type": "Relationship","value": "urn:ngsi-ld:Store:002"
+      }
+    },
+    {
+      "id": "Bell:003",
+      "type": "Bell",
+      "refStore": {
+        "type": "Relationship","value": "urn:ngsi-ld:Store:003"
+      }
+    },
+    {
+      "id": "Door:003",
+      "type": "Door",
+      "refStore": {
+        "type": "Relationship","value": "urn:ngsi-ld:Store:003"
+      }
+    }, 
+    {
+      "id": "Lamp:003",
+      "type": "Lamp",
+      "refStore": {
+        "type": "Relationship","value": "urn:ngsi-ld:Store:003"
+      }
+    },
+    {
+      "id": "Bell:004",
+      "type": "Bell",
+      "refStore": {
+        "type": "Relationship","value": "urn:ngsi-ld:Store:004"
+      }
+    },
+    {
+      "id": "Door:004",
+      "type": "Door",
+      "refStore": {
+        "type": "Relationship","value": "urn:ngsi-ld:Store:004"
+      }
+    }, 
+    {
+      "id": "Lamp:004",
+      "type": "Lamp",
+      "refStore": {
+        "type": "Relationship","value": "urn:ngsi-ld:Store:004"
+      }
+    }
+  ]
+}'  
 
 echo -e " \033[1;32mdone\033[0m"
