@@ -383,7 +383,13 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
     "format": "normalized",
     "endpoint": {
       "uri": "http://quantumleap:8668/v2/notify",
-      "accept": "application/json"
+      "accept": "application/json",
+      "receiverInfo": [
+        {
+          "key": "fiware-service",
+          "value": "openiot"
+        }
+      ]
     }
   },
    "@context": "http://context/ngsi-context.jsonld"
@@ -421,7 +427,13 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
     "format": "normalized",
     "endpoint": {
       "uri": "http://quantumleap:8668/v2/notify",
-      "accept": "application/json"
+      "accept": "application/json",
+      "receiverInfo": [
+        {
+          "key": "fiware-service",
+          "value": "openiot"
+        }
+      ]
     }
   },
    "throttling": 10,
@@ -463,7 +475,13 @@ curl -X GET \
             "format": "normalized",
             "endpoint": {
                 "uri": "http://quantumleap:8668/v2/notify",
-                "accept": "application/json"
+                "accept": "application/json",
+                "receiverInfo": [
+                    {
+                      "key": "fiware-service",
+                      "value": "openiot"
+                    }
+                ]
             }
         },
         "@context": "http://context/ngsi-context.jsonld"
@@ -483,7 +501,13 @@ curl -X GET \
             "format": "normalized",
             "endpoint": {
                 "uri": "http://quantumleap:8668/v2/notify",
-                "accept": "application/json"
+                "accept": "application/json",
+                "receiverInfo": [
+                    {
+                      "key": "fiware-service",
+                      "value": "openiot"
+                    }
+                ]
             }
         },
         "throttling": 10,
