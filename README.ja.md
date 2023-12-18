@@ -367,7 +367,7 @@ NGSI-LD では、`observedAt` _property-of-property_ は測定値のタイムス
 _property-of-property_ が含まれているため、**CrateDB**データベース内の `time_index` 列は、**CrateDB** 自体の中でレコードの
 作成時間を使用するよりも、**Orion Context Broker** によって使用される **MongoDB** データベース内にあるデータと一致します。
 
-#### :one: リクエスト:
+#### 1️⃣ リクエスト:
 
 ```console
 curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
@@ -411,7 +411,7 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 -   `notification` URL は公開されたポートと一致する必要があります
 -   `throttling` 値は、変更がサンプリングされるレートを定義します
 
-#### :two: リクエスト:
+#### 2️⃣ リクエスト:
 
 ```console
 curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
@@ -445,10 +445,10 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 
 ### QuantumLeap のサブスクリプションの確認
 
-何よりもまず、ステップ :one: と :two: で作成したサブスクリプションが機能していることを確認します (つまり、それぞれに
+何よりもまず、ステップ 1️⃣ と 2️⃣ で作成したサブスクリプションが機能していることを確認します (つまり、それぞれに
 少なくとも1つの通知が送信されました)。
 
-#### :three: リクエスト:
+#### 3️⃣ リクエスト:
 
 ```console
 curl -X GET \
@@ -536,7 +536,7 @@ API のドキュメントは[こちら](https://app.swaggerhub.com/apis/smartsdk
 使用してデータが Orion にプッシュされる場合にのみ必要です (マルチテナンシー・シナリオの場合)。これらのヘッダの整合に
 失敗すると、データは返されません。
 
-#### :four: リクエスト:
+#### 4️⃣ リクエスト:
 
 ```console
 curl -X GET \
@@ -564,7 +564,7 @@ curl -X GET \
 
 この例は、`urn:ngsi-ld:Device:filling001` の4番目, 5番目, 6番目のサンプルの `filling` 値を示しています。
 
-#### :five: リクエスト:
+#### 5️⃣ リクエスト:
 
 ```console
 curl -X GET \
@@ -592,7 +592,7 @@ curl -X GET \
 
 この例は、`urn:ngsi-ld:Device:filling001` からサンプリングされた最新の3つの `filling` 値を示しています。
 
-#### :six: リクエスト:
+#### 6️⃣ リクエスト:
 
 ```console
 curl -X GET \
@@ -628,7 +628,7 @@ curl -X GET \
   -H 'Accept: application/json'
 ```
 
-#### :seven: リクエスト:
+#### 7️⃣ リクエスト:
 
 ```console
 curl -X GET \
@@ -668,7 +668,7 @@ curl -X GET \
 
 <!--lint enable no-blockquote-without-marker-->
 
-#### :eight: リクエスト:
+#### 8️⃣ リクエスト:
 
 ```console
 curl -X GET \
@@ -697,7 +697,7 @@ curl -X GET \
 この例は、`2018-06-27T09:00:00` から `2018-06-30T23:59:59` の間に発生した `urn:ngsi-ld:Device:filling001` の
 最大 `filling` 値を示しています。
 
-#### :nine: リクエスト:
+#### 9️⃣ リクエスト:
 
 ```console
 curl -X GET \
@@ -732,7 +732,7 @@ curl -X GET \
 > [NGSI v2 specification](http://fiware.github.io/specifications/ngsiv2/stable/) の地理的クエリのセクションで詳しく
 > 説明されているクエリの完全なセットを実装します。
 
-#### :one::zero: リクエスト:
+#### 1️⃣0️⃣ リクエスト:
 
 ```console
 curl -X GET \
@@ -779,7 +779,7 @@ curl -X GET \
 > [NGSI v2 specification](http://fiware.github.io/specifications/ngsiv2/stable/) の地理的クエリのセクションで詳しく
 > 説明されているクエリの完全なセットを実装します。
 
-#### :one::one: リクエスト:
+#### 1️⃣1️⃣ リクエスト:
 
 ```console
 curl -X GET \
@@ -842,7 +842,7 @@ SQL ステートメントは JSON 形式で POST リクエストのボディと�
 データが永続化されているかどうかを確認するもう1つの方法は、`table_schema` が作成されているかどうかを確認することです。
 これは、次のように **CrateDB** HTTP エンドポイントにリクエストを送信することで実行できます:
 
-#### :one::two: リクエスト:
+#### 1️⃣2️⃣ リクエスト:
 
 ```console
 curl -iX POST \
@@ -872,7 +872,7 @@ curl -iX POST \
 **QuantumLeap**は、エンティティ・タイプに基づいて、**CrateDB**データベース内の個別のテーブルにデータを永続化します。
 テーブル名は、プレフィックス `et` とエンティティ・タイプ名を小文字で使用して構成されます。
 
-#### :one::three: リクエスト:
+#### 1️⃣3️⃣ リクエスト:
 
 ```console
 curl -X POST \
@@ -905,7 +905,7 @@ curl -X POST \
 SQL ステートメントは、 `ORDERBY` 句 と `LIMIT` 句を使用してデータを並べ替えます。詳細については、**CrateDB**
 [ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)をご覧ください。
 
-#### :one::four: リクエスト:
+#### 1️⃣4️⃣ リクエスト:
 
 ```console
 curl -iX POST \
@@ -936,7 +936,7 @@ curl -iX POST \
 SQL ステートメントは、`OFFSET` 句を使用して必要な行 (rows) を取得します。詳細については、**CrateDB**
 [ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)をご覧ください。
 
-#### :one::five: リクエスト:
+#### 1️⃣5️⃣ リクエスト:
 
 ```console
 curl -iX POST \
@@ -968,7 +968,7 @@ SQL ステートメントは、`ORDER BY ... DESC` 句を `LIMIT` 句と組み�
 詳細については、**CrateDB**
 [ドキュメント](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)をご覧ください。
 
-#### :one::six: リクエスト:
+#### 1️⃣6️⃣ リクエスト:
 
 ```console
 curl -iX POST \
@@ -1000,7 +1000,7 @@ SQL ステートメントは、`SUM` 関数と `GROUPBY` 句を使用して関�
 [日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)
 (Date-Time Functions) を提供します。タイムスタンプを切り捨てて、グループ化できるデータに変換します。
 
-#### :one::seven: リクエスト:
+#### 1️⃣7️⃣ リクエスト:
 
 ```console
 curl -iX POST \
@@ -1034,7 +1034,7 @@ SQL ステートメントは、`MIN` 関数と `GROUPBY` 句を使用して関�
 [日時関数](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)
 (Date-Time Functions) を提供します。タイムスタンプを切り捨てて、グループ化できるデータに変換します。
 
-#### :one::eight: リクエスト:
+#### 1️⃣8️⃣ リクエスト:
 
 ```console
 curl -iX POST \
@@ -1069,7 +1069,7 @@ SQL ステートメントは、`MAX` 関数と `WHERE` 句を使用して関連�
 [集約関数](https://crate.io/docs/crate/reference/en/latest/general/dql/selects.html#data-aggregation)
 (Aggregate Functions) を提供します。
 
-#### :one::nine: リクエスト:
+#### 1️⃣9️⃣ リクエスト:
 
 ```console
 curl -iX POST \

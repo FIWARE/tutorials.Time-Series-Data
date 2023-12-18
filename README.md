@@ -222,7 +222,8 @@ repository:
 ./services [orion|scorpio|stellio]
 ```
 
-> :information_source: **Note:** If you want to clean up and start over again you can do so with the following command:
+> [!NOTE]
+> If you want to clean up and start over again you can do so with the following command:
 >
 > ```console
 > ./services stop
@@ -347,7 +348,7 @@ monitored contains this _property-of-property_, the `time_index` column within t
 data found within the **MongoDB** database used by the **Orion Context Broker** rather than using the creation time of
 the record within the **CrateDB** itself.
 
-#### :one: Request:
+#### 1️⃣ Request:
 
 ```console
 curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
@@ -391,7 +392,7 @@ including the `throttling` attribute in the request body.
 -   The `notification` URL must match the exposed port.
 -   The `throttling` value defines the rate that changes are sampled.
 
-#### :two: Request:
+#### 2️⃣ Request:
 
 ```console
 curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
@@ -423,10 +424,10 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 
 ### Checking Subscriptions for QuantumLeap
 
-Before anything, check the subscriptions you created in steps :one: and :two: are working (i.e., at least one
+Before anything, check the subscriptions you created in steps 1️⃣ and 2️⃣ are working (i.e., at least one
 notification for each was sent).
 
-#### :three: Request:
+#### 3️⃣ Request:
 
 ```console
 curl -X GET \
@@ -510,7 +511,7 @@ Note the use of the `Fiware-Service` header which is the NGSI-v2 equivalent of `
 when data are pushed to Orion using such headers (in multitenancy scenarios). Failing to align these headers will result
 in no data being returned.
 
-#### :four: Request:
+#### 4️⃣ Request:
 
 ```console
 curl -X GET \
@@ -536,7 +537,7 @@ curl -X GET \
 
 This example shows the fourth, fifth and sixth sampled `filling` values of `urn:ngsi-ld:Device:filling001`.
 
-#### :five: Request:
+#### 5️⃣ Request:
 
 ```console
 curl -X GET \
@@ -562,7 +563,7 @@ curl -X GET \
 
 This example shows the latest three sampled `filling` values from `urn:ngsi-ld:Device:filling001`.
 
-#### :six: Request:
+#### 6️⃣ Request:
 
 ```console
 curl -X GET \
@@ -596,7 +597,7 @@ curl -X GET \
   -H 'Accept: application/json'
 ```
 
-#### :seven: Request:
+#### 7️⃣ Request:
 
 ```console
 curl -X GET \
@@ -634,7 +635,7 @@ This example shows minimum `filling` values from `urn:ngsi-ld:Device:filling001`
 
 <!--lint enable no-blockquote-without-marker-->
 
-#### :eight: Request:
+#### 8️⃣ Request:
 
 ```console
 curl -X GET \
@@ -661,7 +662,7 @@ curl -X GET \
 This example shows maximum `filling` value of `urn:ngsi-ld:Device:filling001` that occurred between from
 `2018-06-27T09:00:00` to `2018-06-30T23:59:59`.
 
-#### :nine: Request:
+#### 9️⃣ Request:
 
 ```console
 curl -X GET \
@@ -690,11 +691,12 @@ This example shows the latest heart rate sampled `heartRate` values of animal th
 around the Berlin Tiergarten and on the device monitor page, you should be able to see data for
 `urn:ngsi-ld:Device:cow001` and `urn:ngsi-ld:Device:pig001` .
 
-> :information_source: **Note:** Geographical queries are only available starting from version `0.5` of QuantumLeap
+> [!NOTE]
+>  Geographical queries are only available starting from version `0.5` of QuantumLeap
 > which implements the full set of queries detailed in the Geographical Queries section of the
 > [NGSI v2 specification](http://fiware.github.io/specifications/ngsiv2/stable/).
 
-#### :one::zero: Request:
+#### 1️⃣0️⃣ Request:
 
 ```console
 curl -X GET \
@@ -735,11 +737,12 @@ This example shows the latest four sampled `filling` values of filling sensors t
 centered at `52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, Berlin, Germany). Even if you have turned on all the
 filling sensors available on the device monitor page, you should only see data for `urn:ngsi-ld:Device:filling001`.
 
-> :information_source: **Note:** Geographical queries are only available starting from version `0.5` of QuantumLeap
+> [!NOTE]
+>  Geographical queries are only available starting from version `0.5` of QuantumLeap
 > which implements the full set of queries detailed in the Geographical Queries section of the
 > [NGSI v2 specification](http://fiware.github.io/specifications/ngsiv2/stable/).
 
-#### :one::one: Request:
+#### 1️⃣1️⃣ Request:
 
 ```console
 curl -X GET \
@@ -797,7 +800,7 @@ so the team is aware.
 Another way to see if data are being persisted is to check if a `table_schema` has been created. This can be done by
 making a request to the **CrateDB** HTTP endpoint as shown:
 
-#### :one::two: Request:
+#### 1️⃣2️⃣ Request:
 
 ```console
 curl -iX POST \
@@ -827,7 +830,7 @@ the subscription exists, and has been configured to send data to the correct loc
 **QuantumLeap** will persist data into separate tables within the **CrateDB** database based on the entity type. Table
 names are formed with the `et` prefix and the entity type name in lowercase.
 
-#### :one::three: Request:
+#### 1️⃣3️⃣ Request:
 
 ```console
 curl -X POST \
@@ -858,7 +861,7 @@ database.
 The SQL statement uses `ORDER BY` and `LIMIT` clauses to sort the data. More details can be found under within the
 **CrateDB** [documentation](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html)
 
-#### :one::four: Request:
+#### 1️⃣4️⃣ Request:
 
 ```console
 curl -iX POST \
@@ -887,7 +890,7 @@ curl -iX POST \
 The SQL statement uses an `OFFSET` clause to retrieve the required rows. More details can be found under within the
 **CrateDB** [documentation](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html).
 
-#### :one::five: Request:
+#### 1️⃣5️⃣ Request:
 
 ```console
 curl -iX POST \
@@ -917,7 +920,7 @@ The SQL statement uses an `ORDER BY ... DESC` clause combined with a `LIMIT` cla
 details can be found under within the **CrateDB**
 [documentation](https://crate.io/docs/crate/reference/en/latest/sql/statements/select.html).
 
-#### :one::six: Request:
+#### 1️⃣6️⃣ Request:
 
 ```console
 curl -iX POST \
@@ -948,7 +951,7 @@ of
 [Date-Time Functions](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)
 to truncate and convert the timestamps into data which can be grouped.
 
-#### :one::seven: Request:
+#### 1️⃣7️⃣ Request:
 
 ```console
 curl -iX POST \
@@ -981,7 +984,7 @@ of
 [Date-Time Functions](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)
 to truncate and convert the timestamps into data which can be grouped.
 
-#### :one::eight: Request:
+#### 1️⃣8️⃣ Request:
 
 ```console
 curl -iX POST \
@@ -1013,7 +1016,7 @@ The SQL statement uses a `MAX` function and a `WHERE` clause to retrieve the rel
 of [Aggregate Functions](https://crate.io/docs/crate/reference/en/latest/general/dql/selects.html#data-aggregation) to
 aggregate data in different ways.
 
-#### :one::nine: Request:
+#### 1️⃣9️⃣ Request:
 
 ```console
 curl -iX POST \
