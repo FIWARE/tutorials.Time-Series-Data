@@ -99,7 +99,7 @@ services:
     hostname: iot-sensors
     container_name: fiware-tutorial
     depends_on:
-      - orion
+      - orion-v2
       - quantumleap
     networks:
       default:
@@ -146,10 +146,12 @@ services:
     volumes:
       - mongo-db:/data
     healthcheck:
-      test: [ "CMD", "mongo", "--quiet", "127.0.0.1/test", "--eval", "'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)'"]
+      test: ["CMD","mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
     
-
   crate-db:
     labels:
       org.fiware: 'tutorial'
