@@ -20,21 +20,21 @@ EOF
 
 function addCondition()
 {
-  animals="$animals \"sex\": { \"type\": \"Property\", \"value\": \"$1\"},"
+  animals="$animals \"sex\": { \"type\": \"VocabularyProperty\", \"vocab\": \"$1\"},"
   if [ "$1" == "male" ]; then
-    animals="$animals \"phenologicalCondition\": { \"type\": \"Property\", \"value\": \"maleAdult\"},";
-    animals="$animals \"reproductiveCondition\": { \"type\": \"Property\", \"value\": \"active\"},";
+    animals="$animals \"phenologicalCondition\": { \"type\": \"VocabularyProperty\", \"vocab\": \"maleAdult\"},";
+    animals="$animals \"reproductiveCondition\": { \"type\": \"VocabularyProperty\", \"vocab\": \"active\"},";
   else
-    animals="$animals \"phenologicalCondition\": { \"type\": \"Property\", \"value\": \"femaleAdult\"},";
+    animals="$animals \"phenologicalCondition\": { \"type\": \"VocabularyProperty\", \"vocab\": \"femaleAdult\"},";
 
     if [ $((count%11)) -eq 0 ]; then
-       animals="$animals \"reproductiveCondition\": { \"type\": \"Property\", \"value\": \"inactive\"},";
+       animals="$animals \"reproductiveCondition\": { \"type\": \"VocabularyProperty\", \"vocab\": \"inactive\"},";
     elif [ $((count%7)) -eq 0 ]; then
-       animals="$animals \"reproductiveCondition\": { \"type\": \"Property\", \"value\": \"inHeat\"},";
+       animals="$animals \"reproductiveCondition\": { \"type\": \"VocabularyProperty\", \"vocab\": \"inHeat\"},";
     elif [ $((count%5)) -eq 0 ]; then
-       animals="$animals \"reproductiveCondition\": { \"type\": \"Property\", \"value\": \"inCalf\"},";
+       animals="$animals \"reproductiveCondition\": { \"type\": \"VocabularyProperty\", \"vocab\": \"inCalf\"},";
     else 
-      animals="$animals \"reproductiveCondition\": { \"type\": \"Property\", \"value\": \"active\"},";
+      animals="$animals \"reproductiveCondition\": { \"type\": \"VocabularyProperty\", \"vocab\": \"active\"},";
     fi
   fi
 }
@@ -64,10 +64,10 @@ do
       animals="$animals \"name\": { \"type\": \"Property\", \"value\": \"$cowName\"},";
       if [ $((count%20)) -eq 0 ]; then
        addCondition "male" "bull";
-       animals="$animals \"legalID\": { \"type\": \"Property\", \"value\": \"M-bull$number-$cowName\" }"
+       animals="$animals \"legalId\": { \"type\": \"Property\", \"value\": \"M-bull$number-$cowName\" }"
       else 
        addCondition "female" "cow";
-       animals="$animals \"legalID\": { \"type\": \"Property\", \"value\": \"F-cow$number-$cowName\" }"
+       animals="$animals \"legalId\": { \"type\": \"Property\", \"value\": \"F-cow$number-$cowName\" }"
       fi
       animals="$animals },"
     fi
@@ -80,10 +80,10 @@ do
      
       if [ $((count%2)) -eq 0 ]; then
        addCondition "male" "boar";
-       animals="$animals \"legalID\": { \"type\": \"Property\", \"value\": \"M-boar$number-$pigName\" }"
+       animals="$animals \"legalId\": { \"type\": \"Property\", \"value\": \"M-boar$number-$pigName\" }"
       else 
        addCondition "female" "sow";
-       animals="$animals \"legalID\": { \"type\": \"Property\", \"value\": \"M-sow$number-$pigName\" }"
+       animals="$animals \"legalId\": { \"type\": \"Property\", \"value\": \"M-sow$number-$pigName\" }"
       fi
       animals="$animals },"
     fi
