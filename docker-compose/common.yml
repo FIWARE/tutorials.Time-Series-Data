@@ -85,6 +85,7 @@ services:
       - IOTA_CB_NGSI_VERSION=ld # use NGSI-LD when sending updates for active attributes
       - IOTA_JSON_LD_CONTEXT=http://context/ngsi-context.jsonld
       - IOTA_FALLBACK_TENANT=openiot
+      - IOTA_MULTI_CORE=true
     healthcheck:
       interval: 30s
 
