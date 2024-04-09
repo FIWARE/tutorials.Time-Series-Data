@@ -49,6 +49,15 @@ services:
       driver: none
     volumes:
       - postgres-db:/var/lib/postgresql/data
+
+  farmer:
+    environment:
+      - CONTEXT_BROKER=http://scorpio:${SCORPIO_PORT}
+
+  devices:
+    environment:
+      - CONTEXT_BROKER=http://scorpio:${SCORPIO_PORT}
+      
   # IoT-Agent connects to the Scorpio Broker
   iot-agent:
     environment:

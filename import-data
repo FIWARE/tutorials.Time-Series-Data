@@ -190,4 +190,49 @@ curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOper
   }
 ]'
 
+echo -e "Registering Farmer and Devices as data sources.\n"
+
+curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/csourceRegistrations/' \
+-H 'Link: <http://context/ngsi-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json' \
+-H 'Content-Type: application/json' \
+-d '{
+    "type": "ContextSourceRegistration",
+    "information": [
+        {
+            "entities": [
+                {
+                    "type": "Animal"
+                }
+            ]
+        }
+    ],
+    "mode": "redirect",
+    "operations": [
+        "redirectionOps"
+    ],
+    "endpoint": "http://farmer"
+}'
+
+
+curl -s -o /dev/null -X POST 'http://farmer/ngsi-ld/v1/csourceRegistrations/' \
+-H 'Link: <http://context/ngsi-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json' \
+-H 'Content-Type: application/json' \
+-d '{
+    "type": "ContextSourceRegistration",
+    "information": [
+        {
+            "entities": [
+                {
+                    "type": "Animal"
+                }
+            ]
+        }
+    ],
+    "mode": "inclusive",
+    "operations": [
+        "federationOps"
+    ],
+    "endpoint": "http://devices"
+}'
+
 echo -e " \033[1;32mdone\033[0m"

@@ -38,6 +38,14 @@ services:
       test: curl --fail -s http://orion:${ORION_LD_PORT}/version || exit 1
       interval: 5s
 
+  farmer:
+    environment:
+      - CONTEXT_BROKER=http://orion:${ORION_LD_PORT}
+
+  devices:
+    environment:
+      - CONTEXT_BROKER=http://orion:${ORION_LD_PORT}
+
   # IoT-Agent connects to the Orion-LD Broker
   iot-agent:
     environment:
