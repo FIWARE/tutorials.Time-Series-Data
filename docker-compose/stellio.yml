@@ -23,6 +23,12 @@ services:
       - SPRING_R2DBC_USERNAME=stellio
       - SPRING_R2DBC_PASSWORD=stellio_password
       - APPLICATION_AUTHENTICATION_ENABLED=false
+      - APPLICATION_TENANTS_0_NAME=urn:ngsi-ld:tenant:default
+      - APPLICATION_TENANTS_0_ISSUER=https://sso.stellio.io/auth/realms/default
+      - APPLICATION_TENANTS_0_DBSCHEMA=public
+      - APPLICATION_TENANTS_1_NAME=openiot
+      - APPLICATION_TENANTS_1_ISSUER=https://sso.stellio.io/auth/realms/openiot
+      - APPLICATION_TENANTS_1_DBSCHEMA=openiot
     ports:
       - 8083:8083
     restart: always
@@ -44,6 +50,12 @@ services:
       - SPRING_R2DBC_USERNAME=stellio
       - SPRING_R2DBC_PASSWORD=stellio_password
       - APPLICATION_AUTHENTICATION_ENABLED=false
+      - APPLICATION_TENANTS_0_NAME=urn:ngsi-ld:tenant:default
+      - APPLICATION_TENANTS_0_ISSUER=https://sso.stellio.io/auth/realms/default
+      - APPLICATION_TENANTS_0_DBSCHEMA=public
+      - APPLICATION_TENANTS_1_NAME=openiot
+      - APPLICATION_TENANTS_1_ISSUER=https://sso.stellio.io/auth/realms/openiot
+      - APPLICATION_TENANTS_1_DBSCHEMA=openiot
     ports:
       - 8085:8084
     restart: always
@@ -113,7 +125,7 @@ services:
   iot-agent:
     environment:
       - IOTA_DEFAULT_RESOURCE=/iot/d
-      - IOTA_CB_HOST=api-gateway # name of the context broker to update context
+      - IOTA_CB_HOST=stellio # name of the context broker to update context
       - IOTA_CB_PORT=${STELLIO_PORT} # port the context broker listens on to update context
 
   # Tutorial acts as a series of dummy IoT Sensors over HTTP and connects to the Stellio Broker
@@ -124,6 +136,6 @@ services:
       - DUMMY_DEVICES_TRANSPORT=HTTP # Default transport used by dummy Io devices
       - DUMMY_DEVICES_PAYLOAD=ULTRALIGHT
       - CONTEXT_BROKER=http://stellio:${STELLIO_PORT}/ngsi-ld/v1 # URL of the context broker to update context
-     
+      - ENTITY_LIMIT=100
 volumes:
   postgres-db: ~
