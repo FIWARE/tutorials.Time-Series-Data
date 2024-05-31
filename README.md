@@ -228,7 +228,7 @@ the repository and create the necessary images by running the commands as shown:
 ```console
 git clone https://github.com/FIWARE/tutorials.Time-Series-Data.git
 cd tutorials.Time-Series-Data
-git checkout NGSI-v2
+git checkout NGSI-LD
 
 ./services create
 ```
