@@ -246,7 +246,8 @@ repository:
 ```
 
 > [!NOTE]
->  If you want to clean up and start over again you can do so with the following command:
+>
+> If you want to clean up and start over again you can do so with the following command:
 >
 > ```console
 > ./services stop
@@ -456,8 +457,8 @@ curl -iX POST \
 
 ### Checking Subscriptions for QuantumLeap
 
-Before anything, check the subscriptions you created in steps 1️⃣ and 2️⃣ are working (i.e., at least one
-notification for each was sent).
+Before anything, check the subscriptions you created in steps 1️⃣ and 2️⃣ are working (i.e., at least one notification for
+each was sent).
 
 #### 3️⃣ Request:
 
@@ -638,7 +639,7 @@ curl -X GET \
   -H 'Accept: application/json'
 ```
 
-#### 7️⃣  Request:
+#### 7️⃣ Request:
 
 ```console
 curl -X GET \
@@ -677,7 +678,7 @@ This example shows minimum `luminosity` values from `Lamp:001` over each minute.
 
 <!--lint enable no-blockquote-without-marker-->
 
-#### 8️⃣  Request:
+#### 8️⃣ Request:
 
 ```console
 curl -X GET \
@@ -735,8 +736,9 @@ This example shows the latest four sampled `luminosity` values of lamps that are
 the device monitor page, you should be able to see data for `Lamp:001` and `Lamp:004`.
 
 > [!NOTE]
->  Geographical queries are only available starting from version `0.5` of QuantumLeap
-> which implements the full set of queries detailed in the Geographical Queries section of the
+>
+> Geographical queries are only available starting from version `0.5` of QuantumLeap which implements the full set of
+> queries detailed in the Geographical Queries section of the
 > [NGSI v2 specification](http://fiware.github.io/specifications/ngsiv2/stable/).
 
 #### 1️⃣0️⃣ Request:
@@ -779,8 +781,9 @@ at `52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, Berlin, Germany). Even 
 available on the device monitor page, you should only see data for `Lamp:001`.
 
 > [!NOTE]
->  Geographical queries are only available starting from version `0.5` of QuantumLeap
-> which implements the full set of queries detailed in the Geographical Queries section of the
+>
+> Geographical queries are only available starting from version `0.5` of QuantumLeap which implements the full set of
+> queries detailed in the Geographical Queries section of the
 > [NGSI v2 specification](http://fiware.github.io/specifications/ngsiv2/stable/).
 
 #### 1️⃣1️⃣ Request:
@@ -992,7 +995,7 @@ of
 [Date-Time Functions](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)
 to truncate and convert the timestamps into data which can be grouped.
 
-#### 1️⃣7️⃣  Request:
+#### 1️⃣7️⃣ Request:
 
 ```console
 curl -iX POST \
@@ -1025,7 +1028,7 @@ of
 [Date-Time Functions](https://crate.io/docs/crate/reference/en/latest/general/builtins/scalar.html#date-and-time-functions)
 to truncate and convert the timestamps into data which can be grouped.
 
-#### 1️⃣8️⃣  Request:
+#### 1️⃣8️⃣ Request:
 
 ```console
 curl -iX POST \
