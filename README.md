@@ -228,6 +228,7 @@ repository:
 ```
 
 > [!NOTE]
+>
 > If you want to clean up and start over again you can do so with the following command:
 >
 > ```console
@@ -258,9 +259,9 @@ crate-db:
 
 If CrateDB exits immediately with a
 `max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]` error, this can be fixed
-by running the `sudo sysctl -w vm.max_map_count=262144` command on the host machine. For further information look
-within the CrateDB
-[documentation](https://crate.io/docs/crate/howtos/en/latest/admin/bootstrap-checks.html#bootstrap-checks) and Docker
+by running the `sudo sysctl -w vm.max_map_count=262144` command on the host machine. For further information look within
+the CrateDB [documentation](https://crate.io/docs/crate/howtos/en/latest/admin/bootstrap-checks.html#bootstrap-checks)
+and Docker
 [troubleshooting guide](https://crate.io/docs/crate/howtos/en/latest/deployment/containers/docker.html#troubleshooting)
 
 ## QuantumLeap Configuration
@@ -288,7 +289,6 @@ grafana:
         - "3003:3000"
     environment:
         - GF_INSTALL_PLUGINS=orchestracities-map-panel,grafana-clock-panel,grafana-worldmap-panel
-
 ```
 
 The `quantumleap` container is listening on one port:
@@ -429,8 +429,8 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 
 ### Checking Subscriptions for QuantumLeap
 
-Before anything, check the subscriptions you created in steps 1️⃣ and 2️⃣ are working (i.e., at least one
-notification for each was sent).
+Before anything, check the subscriptions you created in steps 1️⃣ and 2️⃣ are working (i.e., at least one notification for
+each was sent).
 
 #### 3️⃣ Request:
 
@@ -462,8 +462,8 @@ curl -X GET \
                 "accept": "application/json",
                 "receiverInfo": [
                     {
-                      "key": "fiware-service",
-                      "value": "openiot"
+                        "key": "fiware-service",
+                        "value": "openiot"
                     }
                 ]
             }
@@ -488,8 +488,8 @@ curl -X GET \
                 "accept": "application/json",
                 "receiverInfo": [
                     {
-                      "key": "fiware-service",
-                      "value": "openiot"
+                        "key": "fiware-service",
+                        "value": "openiot"
                     }
                 ]
             }
@@ -697,8 +697,9 @@ around the Berlin Tiergarten and on the device monitor page, you should be able 
 `urn:ngsi-ld:Device:cow001` and `urn:ngsi-ld:Device:pig001` .
 
 > [!NOTE]
->  Geographical queries are only available starting from version `0.5` of QuantumLeap
-> which implements the full set of queries detailed in the Geographical Queries section of the
+>
+> Geographical queries are only available starting from version `0.5` of QuantumLeap which implements the full set of
+> queries detailed in the Geographical Queries section of the
 > [NGSI v2 specification](http://fiware.github.io/specifications/ngsiv2/stable/).
 
 #### 1️⃣0️⃣ Request:
@@ -743,8 +744,9 @@ centered at `52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, Berlin, German
 filling sensors available on the device monitor page, you should only see data for `urn:ngsi-ld:Device:filling001`.
 
 > [!NOTE]
->  Geographical queries are only available starting from version `0.5` of QuantumLeap
-> which implements the full set of queries detailed in the Geographical Queries section of the
+>
+> Geographical queries are only available starting from version `0.5` of QuantumLeap which implements the full set of
+> queries detailed in the Geographical Queries section of the
 > [NGSI v2 specification](http://fiware.github.io/specifications/ngsiv2/stable/).
 
 #### 1️⃣1️⃣ Request:
