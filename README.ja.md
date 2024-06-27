@@ -528,7 +528,7 @@ API のドキュメントは[こちら](https://app.swaggerhub.com/apis/smartsdk
 ### QuantumLeap API - 最初の N 個の サンプリング値のリスト
 
 ここで、QuantumLeap が値を保持していることを確認するために、最初のクエリから始めましょう。この例は、
-`urn:ngsi-ld:Device:filling001` からサンプリングされた最初の3つの `filling` 値を示しています。
+`urn:ngsi-ld:FillingLevelSensor:filling001` からサンプリングされた最初の3つの `filling` 値を示しています。
 
 `NGSILD-Tenant` と同等の NGSI-v2 である `Fiware-Service` ヘッダの使用に注意してください。これらは、そのようなヘッダを
 使用してデータが Orion にプッシュされる場合にのみ必要です (マルチテナンシー・シナリオの場合)。これらのヘッダの整合に
@@ -538,7 +538,7 @@ API のドキュメントは[こちら](https://app.swaggerhub.com/apis/smartsdk
 
 ```console
 curl -X GET \
-  'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?limit=3' \
+  'http://localhost:8668/v2/entities/urn:ngsi-ld:FillingLevelSensor:filling001/attrs/filling?limit=3' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot'
 ```
@@ -549,7 +549,7 @@ curl -X GET \
 {
     "data": {
         "attrName": "filling",
-        "entityId": "urn:ngsi-ld:Device:filling001",
+        "entityId": "urn:ngsi-ld:FillingLevelSensor:filling001",
         "index": ["2018-10-29T14:27:26", "2018-10-29T14:27:28", "2018-10-29T14:27:29"],
         "values": [0.94, 0.87, 0.84]
     }
@@ -560,13 +560,13 @@ curl -X GET \
 
 ### QuantumLeap API - N 個のサンプリング値をオフセットでリスト
 
-この例は、`urn:ngsi-ld:Device:filling001` の4番目, 5番目, 6番目のサンプルの `filling` 値を示しています。
+この例は、`urn:ngsi-ld:FillingLevelSensor:filling001` の4番目, 5番目, 6番目のサンプルの `filling` 値を示しています。
 
 #### 5️⃣ リクエスト:
 
 ```console
 curl -X GET \
-  'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?offset=3&limit=3' \
+  'http://localhost:8668/v2/entities/urn:ngsi-ld:FillingLevelSensor:filling001/attrs/filling?offset=3&limit=3' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot'
 ```
@@ -577,7 +577,7 @@ curl -X GET \
 {
     "data": {
         "attrName": "filling",
-        "entityId": "urn:ngsi-ld:Device:filling001",
+        "entityId": "urn:ngsi-ld:FillingLevelSensor:filling001",
         "index": ["2018-10-29T14:23:53.804000", "2018-10-29T14:23:54.812000", "2018-10-29T14:24:00.849000"],
         "values": [0.75, 0.63, 0.91]
     }
@@ -588,13 +588,13 @@ curl -X GET \
 
 ### QuantumLeap API - 最新のN個のサンプリングされた値のリスト
 
-この例は、`urn:ngsi-ld:Device:filling001` からサンプリングされた最新の3つの `filling` 値を示しています。
+この例は、`urn:ngsi-ld:FillingLevelSensor:filling001` からサンプリングされた最新の3つの `filling` 値を示しています。
 
 #### 6️⃣ リクエスト:
 
 ```console
 curl -X GET \
-  'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?lastN=3' \
+  'http://localhost:8668/v2/entities/urn:ngsi-ld:FillingLevelSensor:filling001/attrs/filling?lastN=3' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot'
 ```
@@ -605,7 +605,7 @@ curl -X GET \
 {
     "data": {
         "attrName": "filling",
-        "entityId": "urn:ngsi-ld:Device:filling001",
+        "entityId": "urn:ngsi-ld:FillingLevelSensor:filling001",
         "index": ["2018-10-29T15:03:45.113000", "2018-10-29T15:03:46.118000", "2018-10-29T15:03:47.111000"],
         "values": [0.91, 0.67, 0.9]
     }
@@ -616,7 +616,7 @@ curl -X GET \
 
 ### QuantumLeap API - 期間別にグループ化された値の合計をリスト
 
-この例は、1分あたりの `urn:ngsi-ld:Device:filling001` の最後の3つの合計 `filling` 値を示しています。
+この例は、1分あたりの `urn:ngsi-ld:FillingLevelSensor:filling001` の最後の3つの合計 `filling` 値を示しています。
 
 QuantumLeap **バージョン0.4.1以上** が必要です。次のような簡単な GET でバージョンを確認できます:
 
@@ -630,7 +630,7 @@ curl -X GET \
 
 ```console
 curl -X GET \
-  'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?aggrMethod=count&aggrPeriod=minute&lastN=3' \
+  'http://localhost:8668/v2/entities/urn:ngsi-ld:FillingLevelSensor:filling001/attrs/filling?aggrMethod=count&aggrPeriod=minute&lastN=3' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot'
 ```
@@ -641,7 +641,7 @@ curl -X GET \
 {
     "data": {
         "attrName": "filling",
-        "entityId": "urn:ngsi-ld:Device:filling001",
+        "entityId": "urn:ngsi-ld:FillingLevelSensor:filling001",
         "index": ["2018-10-29T15:03:00.000000"],
         "values": [8]
     }
@@ -652,7 +652,7 @@ curl -X GET \
 
 ### QuantumLeap API - 期間別にグループ化された最小値をリスト
 
-この例は、1分ごとの `urn:ngsi-ld:Device:filling001` からの最小の `filling` 値を示しています。
+この例は、1分ごとの `urn:ngsi-ld:FillingLevelSensor:filling001` からの最小の `filling` 値を示しています。
 
 <!--lint disable no-blockquote-without-marker-->
 
@@ -670,7 +670,7 @@ curl -X GET \
 
 ```console
 curl -X GET \
-  'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?aggrMethod=min&aggrPeriod=minute&lastN=3' \
+  'http://localhost:8668/v2/entities/urn:ngsi-ld:FillingLevelSensor:filling001/attrs/filling?aggrMethod=min&aggrPeriod=minute&lastN=3' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot'
 ```
@@ -681,7 +681,7 @@ curl -X GET \
 {
     "data": {
         "attrName": "filling",
-        "entityId": "urn:ngsi-ld:Device:filling001",
+        "entityId": "urn:ngsi-ld:FillingLevelSensor:filling001",
         "index": ["2018-10-29T15:03:00.000000", "2018-10-29T15:04:00.000000", "2018-10-29T15:05:00.000000"],
         "values": [0.63, 0.49, 0.03]
     }
@@ -692,14 +692,14 @@ curl -X GET \
 
 ### QuantumLeap API - ある期間の最大値のリスト
 
-この例は、`2018-06-27T09:00:00` から `2018-06-30T23:59:59` の間に発生した `urn:ngsi-ld:Device:filling001` の
+この例は、`2018-06-27T09:00:00` から `2018-06-30T23:59:59` の間に発生した `urn:ngsi-ld:FillingLevelSensor:filling001` の
 最大 `filling` 値を示しています。
 
 #### 9️⃣ リクエスト:
 
 ```console
 curl -X GET \
-  'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?aggrMethod=max&fromDate=2018-06-27T09:00:00&toDate=2018-06-30T23:59:59' \
+  'http://localhost:8668/v2/entities/urn:ngsi-ld:FillingLevelSensor:filling001/attrs/filling?aggrMethod=max&fromDate=2018-06-27T09:00:00&toDate=2018-06-30T23:59:59' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot'
 ```
@@ -710,7 +710,7 @@ curl -X GET \
 {
     "data": {
         "attrName": "filling",
-        "entityId": "urn:ngsi-ld:Device:filling001",
+        "entityId": "urn:ngsi-ld:FillingLevelSensor:filling001",
         "index": [],
         "values": [0.94]
     }
@@ -771,7 +771,7 @@ curl -X GET \
 
 この例は、`52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, ベルリン, ドイツ) を中心とする一辺200mの正方形の内側にある
 充填センサの最新の4つのサンプリングされた `filling` 値を示しています。デバイス・モニタ・ページで使用可能なすべての
-充填センサをオンにした場合でも、`urn:ngsi-ld:Device:filling001` のデータのみが表示されます。
+充填センサをオンにした場合でも、`urn:ngsi-ld:FillingLevelSensor:filling001` のデータのみが表示されます。
 
 > :information_source: **注:** 地理的クエリは、QuantumLeap のバージョン `0.5` 以上で使用できます。これは、
 > [NGSI v2 specification](http://fiware.github.io/specifications/ngsiv2/stable/) の地理的クエリのセクションで詳しく
@@ -909,7 +909,7 @@ SQL ステートメントは、 `ORDERBY` 句 と `LIMIT` 句を使用してデ�
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT * FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' ORDER BY time_index ASC LIMIT 3"}'
+  -d '{"stmt":"SELECT * FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:FillingLevelSensor:filling001'\'' ORDER BY time_index ASC LIMIT 3"}'
 ```
 
 #### レスポンス:
@@ -918,9 +918,9 @@ curl -iX POST \
 {
     "cols": ["entity_id", "entity_type", "fiware_servicepath", "filling", "time_index"],
     "rows": [
-        ["urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 0.87, 1530262765000],
-        ["urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 0.65, 1530262770000],
-        ["urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 0.6, 1530262775000]
+        ["urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 0.87, 1530262765000],
+        ["urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 0.65, 1530262770000],
+        ["urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 0.6, 1530262775000]
     ],
     "rowcount": 3,
     "duration": 21.8338
@@ -940,7 +940,7 @@ SQL ステートメントは、`OFFSET` 句を使用して必要な行 (rows) �
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT * FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' order by time_index ASC LIMIT 3 OFFSET 3"}'
+  -d '{"stmt":"SELECT * FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:FillingLevelSensor:filling001'\'' order by time_index ASC LIMIT 3 OFFSET 3"}'
 ```
 
 #### レスポンス:
@@ -949,9 +949,9 @@ curl -iX POST \
 {
     "cols": ["filling", "entity_id", "entity_type", "fiware_servicepath", "time_index"],
     "rows": [
-        [0.75, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530262791452],
-        [0.63, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530262792469],
-        [0.5, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530262793472]
+        [0.75, "urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 1530262791452],
+        [0.63, "urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 1530262792469],
+        [0.5, "urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 1530262793472]
     ],
     "rowcount": 3,
     "duration": 54.215
@@ -972,7 +972,7 @@ SQL ステートメントは、`ORDER BY ... DESC` 句を `LIMIT` 句と組み�
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT * FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\''  ORDER BY time_index DESC LIMIT 3"}'
+  -d '{"stmt":"SELECT * FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:FillingLevelSensor:filling001'\''  ORDER BY time_index DESC LIMIT 3"}'
 ```
 
 #### レスポンス:
@@ -981,9 +981,9 @@ curl -iX POST \
 {
     "cols": ["filling", "entity_id", "entity_type", "fiware_servicepath", "time_index"],
     "rows": [
-        [0.51, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530263896550],
-        [0.43, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530263894491],
-        [0.4, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530263892483]
+        [0.51, "urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 1530263896550],
+        [0.43, "urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 1530263894491],
+        [0.4, "urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 1530263892483]
     ],
     "rowcount": 3,
     "duration": 18.591
@@ -1004,7 +1004,7 @@ SQL ステートメントは、`SUM` 関数と `GROUPBY` 句を使用して関�
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT DATE_FORMAT (DATE_TRUNC ('\''minute'\'', time_index)) AS minute, SUM (filling) AS sum FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' GROUP BY minute LIMIT 3"}'
+  -d '{"stmt":"SELECT DATE_FORMAT (DATE_TRUNC ('\''minute'\'', time_index)) AS minute, SUM (filling) AS sum FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:FillingLevelSensor:filling001'\'' GROUP BY minute LIMIT 3"}'
 ```
 
 #### レスポンス:
@@ -1038,7 +1038,7 @@ SQL ステートメントは、`MIN` 関数と `GROUPBY` 句を使用して関�
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT DATE_FORMAT (DATE_TRUNC ('\''minute'\'', time_index)) AS minute, MIN (filling) AS min FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' GROUP BY minute"}'
+  -d '{"stmt":"SELECT DATE_FORMAT (DATE_TRUNC ('\''minute'\'', time_index)) AS minute, MIN (filling) AS min FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:FillingLevelSensor:filling001'\'' GROUP BY minute"}'
 ```
 
 #### レスポンス:
@@ -1073,7 +1073,7 @@ SQL ステートメントは、`MAX` 関数と `WHERE` 句を使用して関連�
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT MAX(filling) AS max FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' and time_index >= '\''2018-06-27T09:00:00'\'' and time_index < '\''2018-06-30T23:59:59'\''"}'
+  -d '{"stmt":"SELECT MAX(filling) AS max FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:FillingLevelSensor:filling001'\'' and time_index >= '\''2018-06-27T09:00:00'\'' and time_index < '\''2018-06-30T23:59:59'\''"}'
 ```
 
 #### レスポンス:
