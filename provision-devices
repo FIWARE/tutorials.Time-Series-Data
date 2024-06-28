@@ -129,6 +129,7 @@ curl -s -o /dev/null -X POST \
      "device_id":   "motion001",
      "entity_name": "Motion:001",
      "entity_type": "Motion",
+     "apikey":      "1068318794",
      "static_attributes": [
          {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"}
      ]
@@ -137,6 +138,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "bell001",
       "entity_name": "Bell:001",
       "entity_type": "Bell",
+      "apikey":      "3020035",
       "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/bell001"'",
       "static_attributes": [
           {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"}
@@ -146,6 +148,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "door001",
       "entity_name": "Door:001",
       "entity_type": "Door",
+      "apikey":      "3089326",
       "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/door001"'",
       "static_attributes": [
           {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"}
@@ -155,6 +158,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "lamp001",
       "entity_name": "Lamp:001",
       "entity_type": "Lamp",
+      "apikey":      "3314136",
       "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/lamp001"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:001"},
@@ -186,6 +190,7 @@ curl -s -o /dev/null -X POST \
      "device_id":   "motion002",
      "entity_name": "Motion:002",
      "entity_type": "Motion",
+     "apikey":      "1068318794",
      "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
      ]
@@ -194,6 +199,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "bell002",
       "entity_name": "Bell:002",
       "entity_type": "Bell",
+      "apikey":      "3020035",
       "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/bell002"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
@@ -203,6 +209,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "door002",
       "entity_name": "Door:002",
       "entity_type": "Door",
+      "apikey":      "3089326",
       "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/door002"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"}
@@ -212,6 +219,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "lamp002",
       "entity_name": "Lamp:002",
       "entity_type": "Lamp",
+      "apikey":      "3314136",
       "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/lamp002"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:002"},
@@ -246,6 +254,7 @@ curl -s -o /dev/null -X POST \
      "device_id":   "motion003",
      "entity_name": "Motion:003",
      "entity_type": "Motion",
+     "apikey":      "1068318794",
      "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
      ]
@@ -254,6 +263,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "bell003",
       "entity_name": "Bell:003",
       "entity_type": "Bell",
+      "apikey":      "3020035",
       "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/bell003"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
@@ -263,6 +273,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "door003",
       "entity_name": "Door:003",
       "entity_type": "Door",
+      "apikey":      "3089326",
       "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/door003"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"}
@@ -272,6 +283,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "lamp003",
       "entity_name": "Lamp:003",
       "entity_type": "Lamp",
+      "apikey":      "3314136",
       "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/lamp003"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:003"},
@@ -305,6 +317,7 @@ curl -s -o /dev/null -X POST \
      "device_id":   "motion004",
      "entity_name": "Motion:004",
      "entity_type": "Motion",
+     "apikey":      "1068318794",
      "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
      ]
@@ -313,6 +326,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "bell004",
       "entity_name": "Bell:004",
       "entity_type": "Bell",
+      "apikey":      "3020035",
       "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/bell004"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
@@ -322,6 +336,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "door004",
       "entity_name": "Door:004",
       "entity_type": "Door",
+      "apikey":      "3089326",
       "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/door004"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"}
@@ -331,6 +346,7 @@ curl -s -o /dev/null -X POST \
       "device_id": "lamp004",
       "entity_name": "Lamp:004",
       "entity_type": "Lamp",
+      "apikey":      "3314136",
       "endpoint": "'"http://iot-sensors:$TUTORIAL_DUMMY_DEVICE_PORT/iot/lamp004"'",
       "static_attributes": [
         {"name": "refStore", "type": "Relationship","value": "urn:ngsi-ld:Store:004"},
