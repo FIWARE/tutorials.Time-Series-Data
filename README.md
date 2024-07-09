@@ -513,7 +513,7 @@ its API via `http://localhost:8668/v2/ui`.
 ### QuantumLeap API - List the first N Sampled Values
 
 Now, to check QuantumLeap is persisting values, let's get started with our first query. This example shows the first 3
-sampled `filling` values from `urn:ngsi-ld:FillingLevelSensor:filling001`.
+sampled `filling` values from `urn:ngsi-ld:Device:filling001`.
 
 Note the use of the `Fiware-Service` header which is the NGSI-v2 equivalent of `NGSILD-Tenant`. These are required only
 when data are pushed to Orion using such headers (in multitenancy scenarios). Failing to align these headers will result
@@ -523,7 +523,7 @@ in no data being returned.
 
 ```console
 curl -X GET \
-  'http://localhost:8668/v2/entities/urn:ngsi-ld:FillingLevelSensor:filling001/attrs/filling?limit=3' \
+  'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?limit=3' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot'
 ```
@@ -534,7 +534,7 @@ curl -X GET \
 {
     "data": {
         "attrName": "filling",
-        "entityId": "urn:ngsi-ld:FillingLevelSensor:filling001",
+        "entityId": "urn:ngsi-ld:Device:filling001",
         "index": ["2018-10-29T14:27:26", "2018-10-29T14:27:28", "2018-10-29T14:27:29"],
         "values": [0.94, 0.87, 0.84]
     }
@@ -543,13 +543,13 @@ curl -X GET \
 
 ### QuantumLeap API - List N Sampled Values at an Offset
 
-This example shows the fourth, fifth and sixth sampled `filling` values of `urn:ngsi-ld:FillingLevelSensor:filling001`.
+This example shows the fourth, fifth and sixth sampled `filling` values of `urn:ngsi-ld:Device:filling001`.
 
 #### 5️⃣ Request:
 
 ```console
 curl -X GET \
-  'http://localhost:8668/v2/entities/urn:ngsi-ld:FillingLevelSensor:filling001/attrs/filling?offset=3&limit=3' \
+  'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?offset=3&limit=3' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot'
 ```
@@ -560,7 +560,7 @@ curl -X GET \
 {
     "data": {
         "attrName": "filling",
-        "entityId": "urn:ngsi-ld:FillingLevelSensor:filling001",
+        "entityId": "urn:ngsi-ld:Device:filling001",
         "index": ["2018-10-29T14:23:53.804000", "2018-10-29T14:23:54.812000", "2018-10-29T14:24:00.849000"],
         "values": [0.75, 0.63, 0.91]
     }
@@ -569,13 +569,13 @@ curl -X GET \
 
 ### QuantumLeap API - List the latest N Sampled Values
 
-This example shows the latest three sampled `filling` values from `urn:ngsi-ld:FillingLevelSensor:filling001`.
+This example shows the latest three sampled `filling` values from `urn:ngsi-ld:Device:filling001`.
 
 #### 6️⃣ Request:
 
 ```console
 curl -X GET \
-  'http://localhost:8668/v2/entities/urn:ngsi-ld:FillingLevelSensor:filling001/attrs/filling?lastN=3' \
+  'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?lastN=3' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot'
 ```
@@ -586,7 +586,7 @@ curl -X GET \
 {
     "data": {
         "attrName": "filling",
-        "entityId": "urn:ngsi-ld:FillingLevelSensor:filling001",
+        "entityId": "urn:ngsi-ld:Device:filling001",
         "index": ["2018-10-29T15:03:45.113000", "2018-10-29T15:03:46.118000", "2018-10-29T15:03:47.111000"],
         "values": [0.91, 0.67, 0.9]
     }
@@ -595,7 +595,7 @@ curl -X GET \
 
 ### QuantumLeap API - List the Sum of values grouped by a time period
 
-This example shows last 3 total `filling` values of `urn:ngsi-ld:FillingLevelSensor:filling001` over each minute.
+This example shows last 3 total `filling` values of `urn:ngsi-ld:Device:filling001` over each minute.
 
 You need QuantumLeap **version >= 0.4.1**. You can check your version with a simple GET like:
 
@@ -609,7 +609,7 @@ curl -X GET \
 
 ```console
 curl -X GET \
-  'http://localhost:8668/v2/entities/urn:ngsi-ld:FillingLevelSensor:filling001/attrs/filling?aggrMethod=count&aggrPeriod=minute&lastN=3' \
+  'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?aggrMethod=count&aggrPeriod=minute&lastN=3' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot'
 ```
@@ -620,7 +620,7 @@ curl -X GET \
 {
     "data": {
         "attrName": "filling",
-        "entityId": "urn:ngsi-ld:FillingLevelSensor:filling001",
+        "entityId": "urn:ngsi-ld:Device:filling001",
         "index": ["2018-10-29T15:03:00.000000"],
         "values": [8]
     }
@@ -629,7 +629,7 @@ curl -X GET \
 
 ### QuantumLeap API - List the Minimum Values grouped by a Time Period
 
-This example shows minimum `filling` values from `urn:ngsi-ld:FillingLevelSensor:filling001` over each minute.
+This example shows minimum `filling` values from `urn:ngsi-ld:Device:filling001` over each minute.
 
 <!--lint disable no-blockquote-without-marker-->
 
@@ -647,7 +647,7 @@ This example shows minimum `filling` values from `urn:ngsi-ld:FillingLevelSensor
 
 ```console
 curl -X GET \
-  'http://localhost:8668/v2/entities/urn:ngsi-ld:FillingLevelSensor:filling001/attrs/filling?aggrMethod=min&aggrPeriod=minute&lastN=3' \
+  'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?aggrMethod=min&aggrPeriod=minute&lastN=3' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot'
 ```
@@ -658,7 +658,7 @@ curl -X GET \
 {
     "data": {
         "attrName": "filling",
-        "entityId": "urn:ngsi-ld:FillingLevelSensor:filling001",
+        "entityId": "urn:ngsi-ld:Device:filling001",
         "index": ["2018-10-29T15:03:00.000000", "2018-10-29T15:04:00.000000", "2018-10-29T15:05:00.000000"],
         "values": [0.63, 0.49, 0.03]
     }
@@ -667,14 +667,14 @@ curl -X GET \
 
 ### QuantumLeap API - List the Maximum Value over a Time Period
 
-This example shows maximum `filling` value of `urn:ngsi-ld:FillingLevelSensor:filling001` that occurred between from
+This example shows maximum `filling` value of `urn:ngsi-ld:Device:filling001` that occurred between from
 `2018-06-27T09:00:00` to `2018-06-30T23:59:59`.
 
 #### 9️⃣ Request:
 
 ```console
 curl -X GET \
-  'http://localhost:8668/v2/entities/urn:ngsi-ld:FillingLevelSensor:filling001/attrs/filling?aggrMethod=max&fromDate=2018-06-27T09:00:00&toDate=2018-06-30T23:59:59' \
+  'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?aggrMethod=max&fromDate=2018-06-27T09:00:00&toDate=2018-06-30T23:59:59' \
   -H 'Accept: application/json' \
   -H 'Fiware-Service: openiot'
 ```
@@ -685,7 +685,7 @@ curl -X GET \
 {
     "data": {
         "attrName": "filling",
-        "entityId": "urn:ngsi-ld:FillingLevelSensor:filling001",
+        "entityId": "urn:ngsi-ld:Device:filling001",
         "index": [],
         "values": [0.94]
     }
@@ -744,7 +744,7 @@ curl -X GET \
 
 This example shows the latest four sampled `filling` values of filling sensors that are inside a square of side 200 m
 centered at `52°33'16.9"N 13°23'55.0"E` (Bornholmer Straße 65, Berlin, Germany). Even if you have turned on all the
-filling sensors available on the device monitor page, you should only see data for `urn:ngsi-ld:FillingLevelSensor:filling001`.
+filling sensors available on the device monitor page, you should only see data for `urn:ngsi-ld:Device:filling001`.
 
 > [!NOTE]
 >
@@ -877,7 +877,7 @@ The SQL statement uses `ORDER BY` and `LIMIT` clauses to sort the data. More det
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT * FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:FillingLevelSensor:filling001'\'' ORDER BY time_index ASC LIMIT 3"}'
+  -d '{"stmt":"SELECT * FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' ORDER BY time_index ASC LIMIT 3"}'
 ```
 
 #### Response:
@@ -886,9 +886,9 @@ curl -iX POST \
 {
     "cols": ["entity_id", "entity_type", "fiware_servicepath", "filling", "time_index"],
     "rows": [
-        ["urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 0.87, 1530262765000],
-        ["urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 0.65, 1530262770000],
-        ["urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 0.6, 1530262775000]
+        ["urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 0.87, 1530262765000],
+        ["urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 0.65, 1530262770000],
+        ["urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 0.6, 1530262775000]
     ],
     "rowcount": 3,
     "duration": 21.8338
@@ -906,7 +906,7 @@ The SQL statement uses an `OFFSET` clause to retrieve the required rows. More de
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT * FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:FillingLevelSensor:filling001'\'' order by time_index ASC LIMIT 3 OFFSET 3"}'
+  -d '{"stmt":"SELECT * FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' order by time_index ASC LIMIT 3 OFFSET 3"}'
 ```
 
 #### Response:
@@ -915,9 +915,9 @@ curl -iX POST \
 {
     "cols": ["filling", "entity_id", "entity_type", "fiware_servicepath", "time_index"],
     "rows": [
-        [0.75, "urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 1530262791452],
-        [0.63, "urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 1530262792469],
-        [0.5, "urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 1530262793472]
+        [0.75, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530262791452],
+        [0.63, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530262792469],
+        [0.5, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530262793472]
     ],
     "rowcount": 3,
     "duration": 54.215
@@ -936,7 +936,7 @@ details can be found under within the **CrateDB**
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT * FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:FillingLevelSensor:filling001'\''  ORDER BY time_index DESC LIMIT 3"}'
+  -d '{"stmt":"SELECT * FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\''  ORDER BY time_index DESC LIMIT 3"}'
 ```
 
 #### Response:
@@ -945,9 +945,9 @@ curl -iX POST \
 {
     "cols": ["filling", "entity_id", "entity_type", "fiware_servicepath", "time_index"],
     "rows": [
-        [0.51, "urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 1530263896550],
-        [0.43, "urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 1530263894491],
-        [0.4, "urn:ngsi-ld:FillingLevelSensor:filling001", "FillingLevelSensor", "/", 1530263892483]
+        [0.51, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530263896550],
+        [0.43, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530263894491],
+        [0.4, "urn:ngsi-ld:Device:filling001", "FillingLevelSensor", "/", 1530263892483]
     ],
     "rowcount": 3,
     "duration": 18.591
@@ -967,7 +967,7 @@ to truncate and convert the timestamps into data which can be grouped.
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT DATE_FORMAT (DATE_TRUNC ('\''minute'\'', time_index)) AS minute, SUM (filling) AS sum FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:FillingLevelSensor:filling001'\'' GROUP BY minute LIMIT 3"}'
+  -d '{"stmt":"SELECT DATE_FORMAT (DATE_TRUNC ('\''minute'\'', time_index)) AS minute, SUM (filling) AS sum FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' GROUP BY minute LIMIT 3"}'
 ```
 
 #### Response:
@@ -1000,7 +1000,7 @@ to truncate and convert the timestamps into data which can be grouped.
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT DATE_FORMAT (DATE_TRUNC ('\''minute'\'', time_index)) AS minute, MIN (filling) AS min FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:FillingLevelSensor:filling001'\'' GROUP BY minute"}'
+  -d '{"stmt":"SELECT DATE_FORMAT (DATE_TRUNC ('\''minute'\'', time_index)) AS minute, MIN (filling) AS min FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' GROUP BY minute"}'
 ```
 
 #### Response:
@@ -1032,7 +1032,7 @@ aggregate data in different ways.
 curl -iX POST \
   'http://localhost:4200/_sql' \
   -H 'Content-Type: application/json' \
-  -d '{"stmt":"SELECT MAX(filling) AS max FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:FillingLevelSensor:filling001'\'' and time_index >= '\''2018-06-27T09:00:00'\'' and time_index < '\''2018-06-30T23:59:59'\''"}'
+  -d '{"stmt":"SELECT MAX(filling) AS max FROM mtopeniot.etFillingLevelSensor WHERE entity_id = '\''urn:ngsi-ld:Device:filling001'\'' and time_index >= '\''2018-06-27T09:00:00'\'' and time_index < '\''2018-06-30T23:59:59'\''"}'
 ```
 
 #### Response:
