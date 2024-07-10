@@ -9,7 +9,7 @@ set -e
 STELLIO="http://stellio:8080/actuator/health"
 SCORPIO="http://scorpio:9090/scorpio/"
 ORION="http://orion:1026/version"
-CONTEXT="http://context/ngsi-context.jsonld"
+CONTEXT="http://context/user-context.jsonld"
 CORE_CONTEXT="https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.6.jsonld"
 
 dockerCmd="docker compose"
@@ -125,7 +125,7 @@ loadData () {
 	docker run --rm -v $(pwd)/import-data:/import-data \
 		--network fiware_default \
 		-e CONTEXT_BROKER=${CONTEXT_BROKER} \
-		-e TUTORIAL_DATA_MODELS_CONTEXT="http://context/ngsi-context.jsonld" \
+		-e TUTORIAL_DATA_MODELS_CONTEXT="http://context/user-context.jsonld" \
 		-e PIG_COUNT=${PIG_COUNT:-4} \
 		-e COW_COUNT=${COW_COUNT:-4} \
 		--entrypoint /bin/ash quay.io/curl/curl:${CURL_VERSION} /import-data
@@ -133,7 +133,7 @@ loadData () {
 	docker run --rm -v $(pwd)/provision-devices:/provision-devices \
 		--network fiware_default \
 		-e CONTEXT_BROKER=${CONTEXT_BROKER} \
-		-e TUTORIAL_DATA_MODELS_CONTEXT="http://context/ngsi-context.jsonld" \
+		-e TUTORIAL_DATA_MODELS_CONTEXT="http://context/user-context.jsonld" \
 		--entrypoint /bin/ash quay.io/curl/curl:${CURL_VERSION} /provision-devices
 	docker run --rm -v $(pwd)/link-devices:/link-devices \
 		--network fiware_default \

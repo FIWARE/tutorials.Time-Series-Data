@@ -381,7 +381,7 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
       ]
     }
   },
-   "@context": "http://context/ngsi-context.jsonld"
+   "@context": "http://context/user-context.jsonld"
 }'
 ```
 
@@ -426,7 +426,7 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
     }
   },
    "throttling": 10,
-   "@context": "http://context/ngsi-context.jsonld"
+   "@context": "http://context/user-context.jsonld"
 }'
 ```
 
@@ -440,6 +440,7 @@ each was sent).
 ```console
 curl -X GET \
   'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
+  -H 'Link: <http://context/user-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
   -H 'NGSILD-Tenant: openiot'
 ```
 
@@ -470,8 +471,7 @@ curl -X GET \
                     }
                 ]
             }
-        },
-        "@context": "http://context/ngsi-context.jsonld"
+        }
     },
     {
         "id": "urn:ngsi-ld:Subscription:601157e3bc8ec912978db6e5",
@@ -497,8 +497,7 @@ curl -X GET \
                 ]
             }
         },
-        "throttling": 10,
-        "@context": "http://context/ngsi-context.jsonld"
+        "throttling": 10
     }
 ]
 ```

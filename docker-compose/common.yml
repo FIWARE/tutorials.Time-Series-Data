@@ -34,7 +34,7 @@ services:
           target: /usr/local/apache2/conf/mime.types
           read_only: true
     healthcheck:
-      test: (wget --server-response --spider --quiet  http://ld-context/ngsi-context.jsonld 2>&1 | awk 'NR==1{print $$2}'|  grep -q -e "200") || exit 1
+      test: (wget --server-response --spider --quiet  http://context/user-context.jsonld 2>&1 | awk 'NR==1{print $$2}'|  grep -q -e "200") || exit 1
 
   # Databases
   mongo-db:
@@ -83,7 +83,7 @@ services:
       - IOTA_HTTP_PORT=${IOTA_SOUTH_PORT} # The port used for device traffic over HTTP
       - IOTA_PROVIDER_URL=http://iot-agent:${IOTA_NORTH_PORT}
       - IOTA_CB_NGSI_VERSION=ld # use NGSI-LD when sending updates for active attributes
-      - IOTA_JSON_LD_CONTEXT=http://context/ngsi-context.jsonld
+      - IOTA_JSON_LD_CONTEXT=http://context/user-context.jsonld
       - IOTA_FALLBACK_TENANT=openiot
       - IOTA_MULTI_CORE=true
     healthcheck:
@@ -142,7 +142,7 @@ services:
       - TWITTER_CONSUMER_KEY=<ADD_YOUR_CONSUMER_KEY>
       - TWITTER_CONSUMER_SECRET=<ADD_YOUR_CONSUMER_SECRET>
       - MONGO_URL=mongodb://mongo-db:27017
-      - IOTA_JSON_LD_CONTEXT=http://context/ngsi-context.jsonld
+      - IOTA_JSON_LD_CONTEXT=http://context/user-context.jsonld
       - "CRATE_DB_SERVICE_URL=http://crate-db:4200/_sql"
 
       - PIG_COUNT=${PIG_COUNT}
