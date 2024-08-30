@@ -1140,60 +1140,61 @@ Click on the Save and test button and make sure it says _Database Connection OK_
 
 ### Configuring a Dashboard
 
+
+### Configuring a Dashboard
+
 To display a new dashboard, you can either click the **+** button and select **Dashboard** or go directly to
-`http://localhost:3003/dashboard/new?orgId=1`. Thereafter click **Add Query**.
+`http://localhost:3003/dashboard/new?orgId=1`. Thereafter, click **Add Query**.
 
 The following values in **bold text** need to be placed in the graphing wizard:
 
--   Queries to **CrateDB** (the previously created Data Source)
--   FROM **etFillingLevelSensor**
--   Time column **time_index**
--   Metric column **entity_id**
--   Select value **column:filling**
+-   Queries to **CrateDB** (the previously created Data Source).
+-   FROM **etFillingLevelSensor**.
+-   Time column **time_index**.
+-   Metric column **entity_id**.
+-   Select value **column:filling**.
 
 ![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-graph.png)
 
 Then click on `ESC` on your keyboard and you will see a dashboard including the graph you created.
 
-The click on the `Add Panel` button and select `Choose Visualisation` and pick `Map panel`.
+The click on the `Add Panel` button and select `Choose Visualisation` and pick `Orchestra Cities Map`.
 
-In the map layout options set the following values:
+In the **map view** options set the following values:
 
--   Center: **custom**
--   Latitude: **52.5031**
--   Longitude: **13.4447**
--   Initial Zoom: **12**
+-   View: **coordinates**.
+-   Latitude: **52.5012**.
+-   Longitude: **13.3682**.
+-   Initial Zoom: **12**.
 
-![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-map-config-1.png)
+![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-filling-map-view.png)
+
+In the **base layer** options set the following values:
+
+-   Layer: **Open Street Map**.
 
 Click on `Queries` tab on the left and set as follows:
 
--   Format as: **Table**
--   FROM **etFillingLevelSensor**
--   Time column **time_index**
--   Metric column **entity_id**
--   Select value
-    -   **column:filling** **alias:value**
-    -   **column:location** **alias:geojson**
-    -   **column:entity_type** **alias:type**
+-   Format as: **Table**.
+-   FROM **etFillingLevelSensor**.
+-   Time column **time_index**.
+-   Metric column **entity_id**.
+-   Select value:
+    -   **column:filling** **alias:value**.
+    -   **column:location** **alias:geojson**.
+    -   **column:entity_type** **alias:type**.
 
-![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-map-config-2.png)
+![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-filling-query.png)
 
-Click on `Visualisation` tab on the left and set as follows:
+Within the `Orchestra Cities Map` Click on `Data Layer` tab on the left and set as follows:
 
--   Map Layers:
-    -   FillingLevelSensor:
-        -   Icon: **lightbulb-o**
-        -   ClusterType: **average**
-        -   ColorType: **fix**
-        -   Column for value: **value**
-        -   Maker color: **red**
+-   Markers
+-   Name: Feedstock Level
+-   Query: A
 
-![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-lamp-map-config-3.png)
+![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-filling-data-layer.png)
 
 The final result can be seen below:
-
-![](https://fiware.github.io/tutorials.Time-Series-Data/img/grafana-result.png)
 
 # Next Steps
 

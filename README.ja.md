@@ -326,7 +326,7 @@ Grafana 環境変数は、Grafana の[ドキュメント](https://grafana.com/do
 これを行うことができます。
 
 農場周辺のさまざまな建物の詳細は、チュートリアル・アプリケーションにあります。
-`http://localhost:3000/app/farm/urn:ngsi-ld:Building:farm001` を開いて、関連する充填センサ (filling sensor) と
+`http://localhost:3000/app/building/urn:ngsi-ld:Building:farm001` を開いて、関連する充填センサ (filling sensor) と
 サーモスタット (thermostat) を備えた建物を表示します。
 
 ![](https://fiware.github.io/tutorials.Subscriptions/img/fmis.png)
