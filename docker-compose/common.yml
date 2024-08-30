@@ -53,7 +53,7 @@ services:
       - mongo-db:/data/db
       - mongo-config:/data/configdb
     healthcheck:
-      test: [ "CMD", "mongo", "--quiet", "127.0.0.1/test", "--eval", "'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)'"]
+      test: ["CMD","mongosh", "localhost:27017/test", "--quiet"]
       interval: 5s
 
   # IoT-Agent is configured for the UltraLight Protocol
