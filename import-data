@@ -20,21 +20,21 @@ EOF
 
 function addCondition()
 {
-  animals="$animals \"sex\": { \"type\": \"VocabularyProperty\", \"vocab\": \"$1\"},"
+  animals="$animals \"sex\": { \"type\": \"VocabProperty\", \"vocab\": \"$1\"},"
   if [ "$1" == "male" ]; then
-    animals="$animals \"phenologicalCondition\": { \"type\": \"VocabularyProperty\", \"vocab\": \"maleAdult\"},";
-    animals="$animals \"reproductiveCondition\": { \"type\": \"VocabularyProperty\", \"vocab\": \"active\"},";
+    animals="$animals \"phenologicalCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"maleAdult\"},";
+    animals="$animals \"reproductiveCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"active\"},";
   else
-    animals="$animals \"phenologicalCondition\": { \"type\": \"VocabularyProperty\", \"vocab\": \"femaleAdult\"},";
+    animals="$animals \"phenologicalCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"femaleAdult\"},";
 
     if [ $((count%11)) -eq 0 ]; then
-       animals="$animals \"reproductiveCondition\": { \"type\": \"VocabularyProperty\", \"vocab\": \"inactive\"},";
+       animals="$animals \"reproductiveCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"inactive\"},";
     elif [ $((count%7)) -eq 0 ]; then
-       animals="$animals \"reproductiveCondition\": { \"type\": \"VocabularyProperty\", \"vocab\": \"inHeat\"},";
+       animals="$animals \"reproductiveCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"inHeat\"},";
     elif [ $((count%5)) -eq 0 ]; then
-       animals="$animals \"reproductiveCondition\": { \"type\": \"VocabularyProperty\", \"vocab\": \"inCalf\"},";
+       animals="$animals \"reproductiveCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"inCalf\"},";
     else 
-      animals="$animals \"reproductiveCondition\": { \"type\": \"VocabularyProperty\", \"vocab\": \"active\"},";
+      animals="$animals \"reproductiveCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"active\"},";
     fi
   fi
 }
@@ -117,7 +117,7 @@ curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOper
   {
     "id": "urn:ngsi-ld:Building:farm001",
     "type": "Building",
-    "category": {"type": "Property", "value": ["farm"]},
+    "category": {"type": "VocabProperty", "vocab": ["farm"]},
     "address": {
         "type": "Property",
         "value": { "streetAddress": "Großer Stern 1", "addressRegion": "Berlin", "addressLocality": "Tiergarten", "postalCode": "10557"},
@@ -133,7 +133,7 @@ curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOper
   {
     "id": "urn:ngsi-ld:Building:barn002",
     "type": "Building",
-    "category": {"type": "Property", "value": ["barn"]},
+    "category": {"type": "VocabProperty", "vocab": ["barn"]},
     "address": {
         "type": "Property",
         "value": { "streetAddress": "Straße des 17. Juni", "addressRegion": "Berlin", "addressLocality": "Tiergarten", "postalCode": "10557"},
@@ -149,7 +149,7 @@ curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOper
   {
     "id": "urn:ngsi-ld:Building:tower003",
     "type": "Building",
-    "category": {"type": "Property", "value": ["water_tower"]},
+    "category": {"type": "VocabProperty", "vocab": ["water_tower"]},
     "address": {
         "type": "Property",
         "value": { "streetAddress": "John-Foster-Dulles-Allee", "addressRegion": "Berlin", "addressLocality": "Tiergarten", "postalCode": "10557"},
@@ -165,7 +165,7 @@ curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOper
   {
     "id": "urn:ngsi-ld:Building:farm002",
     "type": "Building",
-    "category": {"type": "Property", "value": ["farm"]},
+    "category": {"type": "VocabProperty", "vocab": ["farm"]},
     "address": {
         "type": "Property",
         "value": { "streetAddress": "Hardenbergplatz 8", "addressRegion": "Berlin", "addressLocality": "Tiergarten", "postalCode": "10787"},
