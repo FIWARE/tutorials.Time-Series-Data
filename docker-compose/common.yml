@@ -112,40 +112,53 @@ services:
       - TENANT=openiot
       - DEBUG=broker:*
 
-  # Tutorial acts as a series of dummy IoT Sensors over HTTP
+  # A series of dummy IoT Sensors over HTTP
+  iot-sensors:
+    labels:
+      org.fiware: 'tutorial'
+    image: quay.io/fiware/tutorials.iot-devices
+    hostname: iot-sensors
+    container_name: fiware-iot-devices
+    networks:
+      - default
+    expose:
+      - "${TUTORIAL_DUMMY_DEVICE_PORT}"
+    ports:
+      - "${TUTORIAL_DUMMY_DEVICE_PORT}:${TUTORIAL_DUMMY_DEVICE_PORT}" # localhost:3001
+    environment:
+      - DEBUG=devices:*
+      - WEB_APP_HOST=tutorial
+      - WEB_APP_PORT=${TUTORIAL_APP_PORT} # Port used by the content provider proxy and web-app for viewing data
+      - IOTA_HTTP_HOST=iot-agent
+      - IOTA_HTTP_PORT=${IOTA_SOUTH_PORT}
+      - PIG_COUNT=${PIG_COUNT}
+      - COW_COUNT=${COW_COUNT}
+
+  # Tutorial acts as a Farm Management Information System
   tutorial:
     labels:
       org.fiware: 'tutorial'
     image: quay.io/fiware/tutorials.ngsi-ld
-    hostname: iot-sensors
+    hostname: tutorial
     container_name: fiware-tutorial
     depends_on:
       - mongo-db
     networks:
-      default:
-        aliases:
-          - tutorial
-          - context-provider
+      - default
     expose:
       - "${TUTORIAL_APP_PORT}"
-      - "${TUTORIAL_DUMMY_DEVICE_PORT}"
     ports:
       - "${TUTORIAL_APP_PORT}:${TUTORIAL_APP_PORT}" # localhost:3000
-      - "${TUTORIAL_DUMMY_DEVICE_PORT}:${TUTORIAL_DUMMY_DEVICE_PORT}" # localhost:3001
     environment:
       - DEBUG=tutorial:*
       - WEB_APP_PORT=${TUTORIAL_APP_PORT} # Port used by the content provider proxy and web-app for viewing data
       - IOTA_HTTP_HOST=iot-agent
       - IOTA_HTTP_PORT=${IOTA_SOUTH_PORT}
-      - OPENWEATHERMAP_KEY_ID=<ADD_YOUR_KEY_ID>
-      - TWITTER_CONSUMER_KEY=<ADD_YOUR_CONSUMER_KEY>
-      - TWITTER_CONSUMER_SECRET=<ADD_YOUR_CONSUMER_SECRET>
+      - DUMMY_DEVICES=http://iot-sensors:3001
       - MONGO_URL=mongodb://mongo-db:27017
       - IOTA_JSON_LD_CONTEXT=http://context/user-context.jsonld
-      - "CRATE_DB_SERVICE_URL=http://crate-db:4200/_sql"
-
-      - PIG_COUNT=${PIG_COUNT}
-      - COW_COUNT=${COW_COUNT}
+      - CRATE_DB_SERVICE_URL=http://crate-db:4200/_sql
+      - NGSI_LD_TENANT=openiot
 
 
   # Quantum Leap is persisting Short Term History to Crate-DB

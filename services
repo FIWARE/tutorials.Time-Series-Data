@@ -197,6 +197,8 @@ case "${command}" in
 		echo -e "- \033[1;34mOrion\033[0m is the context broker"
 		echo -e "- \033[1;34mQuantumLeap\033[0m will write to CrateDB"
 		echo -e "- \033[1mGrafana\033[0m will read from CrateDB"
+		echo -e "- \033[1mTutorial\033[0m displays a web app to manipulate the context directly"
+		echo -e "- \033[1mIoT Devices\033[0m acts as a series of dummy IoT Sensors over HTTP"
 		echo -e "- Data models \033[1m@context\033[0m (Smart Farm) is supplied externally"
 		echo ""
 		${dockerCmd} -f docker-compose/common.yml -f docker-compose/orion-ld.yml -p fiware up -d --renew-anon-volumes
@@ -216,6 +218,8 @@ case "${command}" in
 		echo -e "- \033[1;Scorpio\033[0m is the context broker"
 		echo -e "- \033[1;34mQuantumLeap\033[0m will write to CrateDB"
 		echo -e "- \033[1mGrafana\033[0m will read from CrateDB"
+		echo -e "- \033[1mTutorial\033[0m displays a web app to manipulate the context directly"
+		echo -e "- \033[1mIoT Devices\033[0m acts as a series of dummy IoT Sensors over HTTP"
 		echo -e "- Data models \033[1m@context\033[0m (Smart Farm) is supplied externally"
 		echo ""
 		${dockerCmd} -f docker-compose/common.yml -f docker-compose/scorpio.yml -p fiware up -d --remove-orphans --renew-anon-volumes
@@ -235,6 +239,8 @@ case "${command}" in
 		echo -e "- \033[1;Stellio\033[0m is the context broker"
 		echo -e "- \033[1;34mQuantumLeap\033[0m will write to CrateDB"
 		echo -e "- \033[1mGrafana\033[0m will read from CrateDB"
+		echo -e "- \033[1mTutorial\033[0m displays a web app to manipulate the context directly"
+		echo -e "- \033[1mIoT Devices\033[0m acts as a series of dummy IoT Sensors over HTTP"
 		echo -e "- Data models \033[1m@context\033[0m (Smart Farm) is supplied externally"
 		echo ""
 		${dockerCmd} -f docker-compose/common.yml -f docker-compose/stellio.yml -p fiware up -d --remove-orphans --renew-anon-volumes
