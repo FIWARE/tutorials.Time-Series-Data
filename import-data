@@ -20,13 +20,17 @@ EOF
 
 function addCondition()
 {
+
   animals="$animals \"sex\": { \"type\": \"VocabProperty\", \"vocab\": \"$1\"},"
-  if [ "$1" == "male" ]; then
+  if [ "$1" == "Male" ]; then
+    weight=$(( RANDOM * ( 850 - 650) / 32767 + 650 ))
     animals="$animals \"phenologicalCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"maleAdult\"},";
     animals="$animals \"reproductiveCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"active\"},";
+    animals="$animals \"weight\": { \"type\": \"Property\", \"value\": $weight, \"unitCode\": \"KGM\"},";
   else
     animals="$animals \"phenologicalCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"femaleAdult\"},";
-
+    weight=$(( RANDOM * ( 500 - 300) / 32767 + 300 ))
+    animals="$animals \"weight\": { \"type\": \"Property\", \"value\": $weight, \"unitCode\": \"KGM\"},";
     if [ $((count%11)) -eq 0 ]; then
        animals="$animals \"reproductiveCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"inactive\"},";
     elif [ $((count%7)) -eq 0 ]; then
@@ -40,7 +44,7 @@ function addCondition()
 }
 
 count=0;
-for cowNames in Beany Trotter Petal River Sun Twilight Diamond Pollen Juicey Tulip Oats Rain Silver Stamps Button Lacey Fisher Rice Eenie Chalky Joy Feather Happy Fluffy Bug Opal Fresian Star Bumble Blossom Buttercup Clover Flower Grape Citrus Hero Cloud Jersey Cream Marble Sugar Pepsi Spots Milky Blue Dales Gorgeous Pitta Harvest Arnie Ermantrude Clarabelle Annabelle Elsie Elmer Ferdinand Laughing Cow Milky White Otis Toro  Kai Heffer Wolfe Benny Betsy Taurus Bulba Clemantine Clovis Zippy Harley Oakley Bead Bree Astro Galaxy Drone Fig Reef Palm Ursula Wazowski Dumpling Imp Tinker Titch Clifford Wade Hulk Moose Sherman Nemo Zorro Vache Mucca Speedy Zoomer Cleopatra Diablo Hiccup Viper Smithy Lolly Popsicle Summer Trident Horniman Moses Flynn Cinders Mouse Ego Slapper Flipper Denim Boyce Loops Racer Axe Blade Spice Fury Tyson Diesel Axel Chopper Viking Mystery Buzz Stark Brute Sabre Reaper Rebel Psycho Tank Gunner Bolt Bullet Shot Titan Sumo Kong Bruiser Ursula Drone Cracker Arrow Warrior Major Razor Spud Trip Slicer Charcoal Grill Gangster Boss Brute Don Danger Pepper Ton Python Poison Ace Woody Blade Hero Oreo Checkers Chess Dalmatian Soccer Puzzle Dice Orca Piano Penguin Panda Skunk Vintage Domino Yin Yang Badger Butler Patches Snoopy Pongo Perdita Freckles Tuxedo Cruella Keys Harlequin Banksy Coca-Cola Dot Lemur Sushi Shadow Silhouette Doodle Retro Polka Paisley Blackberry Pepper Zebra Magpie Newt Swan Pebble Storm Chocolate Coco Hershey Dairymilk Oak Wicker Bear Teddy Pine Conker Mushroom Coffee Toffee Fudge Mocha Peanut Gingerbread Walnut Cookie Acorn Cello Camel Fawn Chestnut Pheasant Muddy Toast Tea Biscuit Monkey Coconut Beaver Tawny Espresso Umber Brunette Cinnamon Cedar Penny Goomba Malteaser Brownie Pretzel Brunette Tanner Auburn Copper Bronze Liver Hazel
+for cowNames in Beany Trotter Petal River Sun Twilight Diamond Pollen Juicey Tulip Oats Rain Silver Stamps Button Lacey Fisher Rice Eenie Chalky Ferdinand Feather Happy Fluffy Bug Opal Fresian Star Clover Flower Grape Citrus Hero Cloud Jersey Cream Marble Sugar Pepsi Spots Milky Blue Dales Gorgeous Pitta Harvest Arnie Ermantrude Clarabelle Annabelle Elsie Elmer Ferdinand Laughing Cow Milky White Otis Toro  Kai Heffer Wolfe Benny Betsy Taurus Bulba Clemantine Clovis Zippy Harley Oakley Bead Bree Astro Galaxy Drone Fig Reef Palm Ursula Wazowski Dumpling Imp Tinker Titch Clifford Wade Hulk Moose Sherman Nemo Zorro Vache Mucca Speedy Zoomer Cleopatra Diablo Hiccup Viper Smithy Lolly Popsicle Summer Trident Horniman Moses Flynn Cinders Mouse Ego Slapper Flipper Denim Boyce Loops Racer Axe Blade Spice Fury Tyson Diesel Axel Chopper Viking Mystery Buzz Stark Brute Sabre Reaper Rebel Psycho Tank Gunner Bolt Bullet Shot Titan Sumo Kong Bruiser Ursula Drone Cracker Arrow Warrior Major Razor Spud Trip Slicer Charcoal Grill Gangster Boss Brute Don Danger Pepper Ton Python Poison Ace Woody Blade Hero Oreo Checkers Chess Dalmatian Soccer Puzzle Dice Orca Piano Penguin Panda Skunk Vintage Domino Yin Yang Badger Butler Patches Snoopy Pongo Perdita Freckles Tuxedo Cruella Keys Harlequin Banksy Coca-Cola Dot Lemur Sushi Shadow Silhouette Doodle Retro Polka Paisley Blackberry Pepper Zebra Magpie Newt Swan Pebble Storm Chocolate Coco Hershey Dairymilk Oak Wicker Bear Teddy Pine Conker Mushroom Coffee Toffee Fudge Mocha Peanut Gingerbread Walnut Cookie Acorn Cello Camel Fawn Chestnut Pheasant Muddy Toast Tea Biscuit Monkey Coconut Beaver Tawny Espresso Umber Brunette Cinnamon Cedar Penny Goomba Malteaser Brownie Pretzel Brunette Tanner Auburn Copper Bronze Liver Hazel
 do
     eval cowName$count="$cowNames";
     count=$((count + 1));
@@ -57,16 +61,42 @@ animals="[";
 for number in 001 002 003 004 005 006 007 008 009 010 011 012 013 014 015 016 017 018 019 020 021 022 023 024 025 026 027 028 029 030 031 032 033 034 035 036 037 038 039 040 041 042 043 044 045 046 047 048 049 050 051 052 053 054 055 056 057 058 059 060 061 062 063 064 065 066 067 068 069 070 071 072 073 074 075 076 077 078 079 080 081 082 083 084 085 086 087 088 089 090 091 092 093 094 095 096 097 098 099 100
 do
 
-  if [ $count -lt ${COW_COUNT:-4} ]; then
+
+
+    heartRate=$(( RANDOM * ( 56 - 50) / 32767 + 50 ))
+
+    lat=$(( RANDOM * ( 300 - 100) / 32767 + 100 ))
+    lng=$(( RANDOM * ( 300 - 100) / 32767 + 100 ))
+    field=$(( RANDOM * ( 7 - 3) / 32767 + 3 ))
+    owner=$(( RANDOM * ( 3 - 1) / 32767 + 1 ))
+
+    year=$(( RANDOM * ( 2022 - 2018) / 32767 + 2018 ))
+    month=$(( RANDOM * ( 10 - 1) / 32767 + 1 ))
+    day=$(( RANDOM * ( 28 - 1) / 32767 + 1 ))
+    padDay=$(echo 00000${day} | tail -c 3)
+
+    if [ $count -eq 4 ]; then
+        heartRate=70
+    fi
+
+    if [ $count -lt ${COW_COUNT:-4} ]; then
       eval cowName="\$cowName$count";
       animals="$animals {\"id\":\"urn:ngsi-ld:Animal:cow$number\", \"type\": \"Animal\",";
       animals="$animals \"species\": { \"type\": \"Property\", \"value\": \"dairy cattle\"},";
       animals="$animals \"name\": { \"type\": \"Property\", \"value\": \"$cowName\"},";
+
+      animals="$animals \"heartRate\": { \"type\": \"Property\", \"value\": $heartRate, \"unitCode\": \"5K\"},";
+      animals="$animals \"location\": {\"type\": \"GeoProperty\",\"value\": {\"type\": \"Point\",\"coordinates\": [13.$lat,52.$lng]}, \"observedAt\": \"2024-02-02T15:00:00.000Z\"},";
+      animals="$animals \"locatedAt\": { \"type\": \"Relationship\", \"object\": \"urn:ngsi-ld:AgriParcel:00$field\"},";
+      animals="$animals \"ownedBy\": { \"type\": \"Relationship\", \"object\": \"urn:ngsi-ld:Person:person00$owner\"},";
+
+      animals="$animals \"birthdate\": { \"type\": \"Property\", \"value\": \"${year}-0${month}-${padDay}T00:00:00.000Z\"},";
+
       if [ $((count%20)) -eq 0 ]; then
-       addCondition "male" "bull";
+       addCondition "Male" "bull";
        animals="$animals \"legalId\": { \"type\": \"Property\", \"value\": \"M-bull$number-$cowName\" }"
       else 
-       addCondition "female" "cow";
+       addCondition "Female" "cow";
        animals="$animals \"legalId\": { \"type\": \"Property\", \"value\": \"F-cow$number-$cowName\" }"
       fi
       animals="$animals },"
@@ -79,10 +109,10 @@ do
       animals="$animals \"name\": { \"type\": \"Property\", \"value\": \"$pigName\"},";
      
       if [ $((count%2)) -eq 0 ]; then
-       addCondition "male" "boar";
+       addCondition "Male" "boar";
        animals="$animals \"legalId\": { \"type\": \"Property\", \"value\": \"M-boar$number-$pigName\" }"
       else 
-       addCondition "female" "sow";
+       addCondition "Female" "sow";
        animals="$animals \"legalId\": { \"type\": \"Property\", \"value\": \"M-sow$number-$pigName\" }"
       fi
       animals="$animals },"
@@ -114,7 +144,7 @@ curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOper
 -H 'Link: <'"${TUTORIAL_DATA_MODELS_CONTEXT}"'>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
 -H 'Accept: application/ld+json' \
 --data-raw '[
-  {
+    {
     "id": "urn:ngsi-ld:Building:farm001",
     "type": "Building",
     "category": {"type": "VocabProperty", "vocab": ["farm"]},
