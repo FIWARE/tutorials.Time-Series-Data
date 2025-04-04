@@ -220,6 +220,109 @@ curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOper
   }
 ]'
 
+echo -e "Creating farmer's fields"
+curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOperations/upsert?options=update' \
+-H 'Content-Type: application/json' \
+-H 'Link: <'"${TUTORIAL_DATA_MODELS_CONTEXT}"'>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
+-H 'Accept: application/ld+json' \
+-d '[
+  {
+    "id": "urn:ngsi-ld:AgriParcel:001",
+    "type": "AgriParcel",
+    "name": {
+      "type": "Property", "value": "Wheatfield"
+    },
+    "cropType": {
+      "type": "Relationship", 
+      "object": "urn:ngsi-ld:AgriCrop:BuckWheat"
+    },
+    "cropStatus": {
+      "type": "VocabProperty", 
+      "vocab": "seeded"
+    },
+    "temperature": {
+      "type": "Property",  
+      "value": 15.4, "unitCode": "CEL",
+      "observedAt": "2024-01-01T15:00:00.000Z"
+    }
+  },
+  {
+    "id": "urn:ngsi-ld:AgriParcel:002",
+    "type": "AgriParcel",
+    "name": {
+      "type": "Property", "value": "Cornfield"
+    },
+     "cropStatus": {
+      "type": "VocabProperty", 
+      "vocab": "growing"
+    },
+    "cropType": {
+      "type": "Relationship", 
+      "object": "urn:ngsi-ld:AgriCrop:Corn"
+    }
+  },
+  {
+    "id": "urn:ngsi-ld:AgriParcel:003",
+    "type": "AgriParcel",
+    "name": {
+      "type": "Property", "value": "North Pasture"
+    },
+     "cropStatus": {
+      "type": "VocabProperty", 
+      "vocab": "maturing"
+    },
+    "cropType": {
+      "type": "Relationship", 
+      "object": "urn:ngsi-ld:AgriCrop:Grass"
+    }
+  },
+  {
+    "id": "urn:ngsi-ld:AgriParcel:004",
+    "type": "AgriParcel",
+    "name": {
+      "type": "Property", "value": "East Pasture"
+    },
+     "cropStatus": {
+      "type": "VocabProperty", 
+      "vocab": "maturing"
+    },
+    "cropType": {
+      "type": "Relationship", 
+      "object": "urn:ngsi-ld:AgriCrop:Grass"
+    }
+  },
+  {
+    "id": "urn:ngsi-ld:AgriParcel:005",
+    "type": "AgriParcel",
+    "name": {
+      "type": "Property", "value": "Water Meadow"
+    },
+     "cropStatus": {
+      "type": "VocabProperty", 
+      "vocab": "maturing"
+    },
+    "cropType": {
+      "type": "Relationship", 
+      "object": "urn:ngsi-ld:AgriCrop:Grass"
+    }
+  },
+  {
+    "id": "urn:ngsi-ld:AgriParcel:006",
+    "type": "AgriParcel",
+    "name": {
+      "type": "Property", "value": "The Paddock"
+    },
+     "cropStatus": {
+      "type": "VocabProperty", 
+      "vocab": "maturing"
+    },
+    "cropType": {
+      "type": "Relationship", 
+      "object": "urn:ngsi-ld:AgriCrop:Grass"
+    }
+  }
+]'
+
 echo -e "Registering Farmer and Devices as data sources.\n"
 
 curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/csourceRegistrations/' \
