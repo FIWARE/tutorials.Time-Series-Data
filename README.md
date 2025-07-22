@@ -20,6 +20,8 @@ sensors into the database. To retrieve time-based aggregations of such data, use
 API or connect directly to the **CrateDB** HTTP endpoint. Results are visualised on a graph or via the **Grafana** time
 series analytics tool.
 
+<ins>Note</ins>: this is required for context brokers not implementing the temporal API (e.g. **Orion-LD**). To handle temporal information (time series), it is recommended for interoperability purpose to make use of the [NGSI-LD API temporal end point](https://cim.etsi.org/NGSI-LD/official/11-tabapi-http-binding.html#tabresource-temporalentities) and benefit  from its aggregation functions. This is available in some FIWARE brokers (e.g. **Scorpio, Stellio**)
+
 The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also available as
 [Postman documentation](https://fiware.github.io/tutorials.Time-Series-Data/ngsi-ld.html)
 
