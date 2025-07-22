@@ -14,6 +14,11 @@ series analytics tool.
 The tutorials use [cUrl](https://ec.haxx.se/) commands throughout, but are also available as
 [Postman documentation](https://www.postman.com/downloads/)
 
+> [!NOTE]
+> 
+>  For **NGSI-LD** context brokers, use of the [NGSI-LD temporal API](https://github.com/FIWARE/tutorials.Short-Term-History/tree/NGSI-LD) is generally preferred where it
+>  is available.
+
 # Start-Up
 
 ## NGSI-v2 Smart Supermarket
