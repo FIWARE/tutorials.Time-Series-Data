@@ -26,7 +26,7 @@ series analytics tool.
 >  In general, for better interoperability, where available, it is recommended to make use of an existing
 >  [NGSI-LD API temporal end point](https://cim.etsi.org/NGSI-LD/official/11-tabapi-http-binding.html#tabresource-temporalentities) to handle temporal
 >  information (time series), and benefit from its aggregation functions. The Temporal API is available in most context brokers
->  such as **Scorpio, Stellio** and **Orion-LD** with **Mintaka**.
+>  such as **Scorpio, Stellio** and **Orion-LD** with **Mintaka**. More information can be found [here](https://www.youtube.com/watch?v=w6ymNPO-Baw&t=2309s)
 
 The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also available as
 [Postman documentation](https://fiware.github.io/tutorials.Time-Series-Data/ngsi-ld.html)
