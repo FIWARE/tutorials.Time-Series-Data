@@ -17,7 +17,7 @@ The tutorials use [cUrl](https://ec.haxx.se/) commands throughout, but are also 
 > [!NOTE]
 > 
 >  For **NGSI-LD** context brokers, use of the [NGSI-LD temporal API](https://github.com/FIWARE/tutorials.Short-Term-History/tree/NGSI-LD) is generally preferred where it
->  is available.
+>  is available. More information on the different approaches available for time series for **NGSI-v2** and **NGSI-LD** can be found [here](https://www.youtube.com/watch?v=w6ymNPO-Baw&t=2309s)
 
 # Start-Up
 
