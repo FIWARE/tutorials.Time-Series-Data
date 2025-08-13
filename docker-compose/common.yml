@@ -35,6 +35,20 @@ services:
     healthcheck:
       test: (wget --server-response --spider --quiet  http://context/user-context.jsonld 2>&1 | awk 'NR==1{print $$2}'|  grep -q -e "200") || exit 1
 
+  redis-sensors:
+    labels:
+      org.fiware: 'tutorial'
+    image: redis:8.2.0-alpine
+    container_name: redis
+    hostname: redis-for-sensors
+    ports:
+      - "6378:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli","ping"]
+      interval: 10s
+
   # Databases
   mongo-db:
     labels:
@@ -119,6 +133,8 @@ services:
     image: quay.io/fiware/tutorials.iot-devices
     hostname: iot-sensors
     container_name: fiware-iot-devices
+    depends_on:
+      - redis-sensors
     networks:
       - default
     expose:
@@ -133,7 +149,8 @@ services:
       - IOTA_HTTP_PORT=${IOTA_SOUTH_PORT}
       - PIG_COUNT=${PIG_COUNT}
       - COW_COUNT=${COW_COUNT}
-
+      - REDIS_HOST=redis-for-sensors
+ 
   # Tutorial acts as a Farm Management Information System
   tutorial:
     labels:
@@ -245,6 +262,7 @@ volumes:
   grafana: ~
   mongo-db: ~
   mongo-config: ~
+  redis-data: ~
   data-models:
     driver: local
     driver_opts:
