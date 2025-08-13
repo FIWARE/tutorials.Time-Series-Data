@@ -35,6 +35,7 @@ services:
     healthcheck:
       test: (wget --server-response --spider --quiet  http://context/user-context.jsonld 2>&1 | awk 'NR==1{print $$2}'|  grep -q -e "200") || exit 1
 
+  # Cache foe Sensor Data Readings
   redis-sensors:
     labels:
       org.fiware: 'tutorial'
