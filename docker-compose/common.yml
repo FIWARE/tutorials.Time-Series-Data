@@ -100,6 +100,8 @@ services:
       - IOTA_JSON_LD_CONTEXT=http://context/user-context.jsonld
       - IOTA_FALLBACK_TENANT=openiot
       - IOTA_MULTI_CORE=true
+      - IOTA_AMQP_DISABLED=true
+      - IOTA_MQTT_DISABLED=true
     healthcheck:
       interval: 30s
 

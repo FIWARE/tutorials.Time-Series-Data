@@ -47,6 +47,8 @@ services:
 
   # IoT-Agent connects to the Orion-LD Broker
   iot-agent:
+    depends_on:
+      - orion
     environment:
       #- IOTA_DEFAULT_RESOURCE=/iot/d
       - IOTA_CB_HOST=orion # name of the context broker to update context

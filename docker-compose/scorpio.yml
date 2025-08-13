@@ -59,6 +59,8 @@ services:
       
   # IoT-Agent connects to the Scorpio Broker
   iot-agent:
+    depends_on:
+      - scorpio
     environment:
       - IOTA_DEFAULT_RESOURCE=/iot/d
       - IOTA_CB_HOST=scorpio # name of the context broker to update context
