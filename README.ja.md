@@ -1,4 +1,4 @@
-# Time-Series-Data (QuantumLeap)[<img src="https://img.shields.io/badge/NGSI-LD-d6604d.svg" width="90"  align="left" />](https://cim.etsi.org/NGSI-LD/official/0--1.html)[<img src="https://fiware.github.io/tutorials.Time-Series-Data/img/fiware.png" align="left" width="162">](https://www.fiware.org/)<br/>
+# Time-Series-Data (QuantumLeap)[<img src="https://img.shields.io/badge/NGSI-LD-d6604d.svg" width="90"  align="left" />](https://cim.etsi.org/NGSI-LD/official/front-page.html)[<img src="https://fiware.github.io/tutorials.Time-Series-Data/img/fiware.png" align="left" width="162">](https://www.fiware.org/)<br/>
 
 [![FIWARE Core Context Management](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/core.svg)](https://github.com/FIWARE/catalogue/blob/master/core/README.md)
 [![License: MIT](https://img.shields.io/github/license/fiware/tutorials.Time-Series-Data.svg)](https://opensource.org/licenses/MIT)
