@@ -32,7 +32,7 @@ The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also a
 [Postman documentation](https://fiware.github.io/tutorials.Time-Series-Data/ngsi-ld.html)
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/513743-86151708-fb9d-42f2-a2fe-e40b4ea38861?action=collection%2Ffork&collection-url=entityId%3D513743-86151708-fb9d-42f2-a2fe-e40b4ea38861%26entityType%3Dcollection%26workspaceId%3Db6e7fcf4-ff0c-47cb-ada4-e222ddeee5ac)
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/FIWARE/tutorials.Time-Series-Data/tree/NGSI-LD)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?repo=FIWARE/tutorials.Time-Series-Data&ref=NGSI-LD)
 
 -   このチュートリアルは[日本語](README.ja.md)でもご覧いただけます。
 
