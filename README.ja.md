@@ -368,7 +368,8 @@ _property-of-property_ が含まれているため、**CrateDB**データベー�
 #### 1️⃣ リクエスト:
 
 ```console
-curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
+curl -L -X POST \
+  'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 -H 'Content-Type: application/ld+json' \
 -H 'NGSILD-Tenant: openiot' \
 --data-raw '{
@@ -412,7 +413,8 @@ curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 #### 2️⃣ リクエスト:
 
 ```console
-curl -L -X POST 'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
+curl -L -X POST \
+  'http://localhost:1026/ngsi-ld/v1/subscriptions/' \
 -H 'Content-Type: application/ld+json' \
 -H 'NGSILD-Tenant: openiot' \
 --data-raw '{
@@ -536,10 +538,11 @@ API のドキュメントは[こちら](https://app.swaggerhub.com/apis/smartsdk
 #### 4️⃣ リクエスト:
 
 ```console
-curl -X GET \
-  'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?limit=3' \
+curl -G -X GET \
+  'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling' \
   -H 'Accept: application/json' \
-  -H 'Fiware-Service: openiot'
+  -H 'Fiware-Service: openiot' \
+  -d 'limit=3'
 ```
 
 #### レスポンス:
@@ -564,10 +567,12 @@ curl -X GET \
 #### 5️⃣ リクエスト:
 
 ```console
-curl -X GET \
-  'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling?offset=3&limit=3' \
+curl -G -X GET \
+  'http://localhost:8668/v2/entities/urn:ngsi-ld:Device:filling001/attrs/filling' \
   -H 'Accept: application/json' \
-  -H 'Fiware-Service: openiot'
+  -H 'Fiware-Service: openiot' \
+  -d 'offset=3' \
+  -d 'limit=3'
 ```
 
 #### レスポンス:
