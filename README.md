@@ -21,12 +21,13 @@ API or connect directly to the **CrateDB** HTTP endpoint. Results are visualised
 series analytics tool.
 
 > [!NOTE]
-> 
->  Use of QuantumLeap is only required for context brokers when not implementing the temporal API (e.g. default **Orion-LD**).
->  In general, for better interoperability, where available, it is recommended to make use of an existing
->  [NGSI-LD API temporal end point](https://cim.etsi.org/NGSI-LD/official/11-tabapi-http-binding.html#tabresource-temporalentities) to handle temporal
->  information (time series), and benefit from its aggregation functions. The Temporal API is available in most context brokers
->  such as **Scorpio, Stellio** and **Orion-LD** with **Mintaka**. More information can be found [here](https://www.youtube.com/watch?v=w6ymNPO-Baw&t=2309s)
+>
+> Use of QuantumLeap is only required for context brokers when not implementing the temporal API (e.g. default
+> **Orion-LD**). In general, for better interoperability, where available, it is recommended to make use of an existing
+> [NGSI-LD API temporal end point](https://cim.etsi.org/NGSI-LD/official/11-tabapi-http-binding.html#tabresource-temporalentities)
+> to handle temporal information (time series), and benefit from its aggregation functions. The Temporal API is
+> available in most context brokers such as **Scorpio, Stellio** and **Orion-LD** with **Mintaka**. More information can
+> be found [here](https://www.youtube.com/watch?v=w6ymNPO-Baw&t=2309s)
 
 The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also available as
 [Postman documentation](https://fiware.github.io/tutorials.Time-Series-Data/ngsi-ld.html)
@@ -327,15 +328,14 @@ For the purpose of this tutorial, we must be monitoring a system where the conte
 dummy IoT Sensors can be used to do this.
 
 Details of various buildings around the farm can be found in the tutorial application. Open
-`http://localhost:3000/building/farm/urn:ngsi-ld:Building:farm001` to display a building with an associated filling sensor
-and thermostat.
+`http://localhost:3000/building/farm/urn:ngsi-ld:Building:farm001` to display a building with an associated filling
+sensor and thermostat.
 
 ![](https://fiware.github.io/tutorials.Subscriptions/img/fmis.png)
 
-Open the device monitor page at
-`http://localhost:3000/device/monitor`, open the barn door and remove some hay from the barn. This can be done by
-selecting an appropriate command from the drop-down list and pressing the `send` button. The stream of measurements
-coming from the devices can then be seen on the same page.
+Open the device monitor page at `http://localhost:3000/device/monitor`, open the barn door and remove some hay from the
+barn. This can be done by selecting an appropriate command from the drop-down list and pressing the `send` button. The
+stream of measurements coming from the devices can then be seen on the same page.
 
 ## Setting up Subscriptions
 
@@ -1153,7 +1153,6 @@ Click on the Save and test button and make sure it says _Database Connection OK_
 
 ### Configuring a Dashboard
 
-
 ### Configuring a Dashboard
 
 To display a new dashboard, you can either click the **+** button and select **Dashboard** or go directly to
@@ -1218,4 +1217,4 @@ the other [tutorials in this series](https://ngsi-ld-tutorials.readthedocs.io/)
 
 ## License
 
-[MIT](LICENSE) © 2018-2025 FIWARE Foundation e.V.
+[MIT](LICENSE) © 2018-2026 FIWARE Foundation e.V.
