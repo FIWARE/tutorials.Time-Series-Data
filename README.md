@@ -137,7 +137,7 @@ available licensed under the Apache License 2.0. More information can be found a
 For the purpose of this tutorial, a series of dummy IoT devices have been created, which will be attached to the context
 broker. Details of the architecture and protocol used can be found in the
 [IoT Sensors tutorial](https://github.com/FIWARE/tutorials.IoT-Sensors/tree/NGSI-v2). The state of each device can be
-seen on the UltraLight device monitor web page found at: `http://localhost:3000/device/monitor`
+seen on the JSON device monitor web page found at: `http://localhost:3000/device/monitor`
 
 ![FIWARE Monitor](https://fiware.github.io/tutorials.Time-Series-Data/img/device-monitor.png)
 
@@ -153,7 +153,7 @@ web page found at: `http://localhost:3000/device/history/urn:ngsi-ld:Store:001`
 This application builds on the components and dummy IoT devices created in
 [previous tutorials](https://github.com/FIWARE/tutorials.IoT-Agent/). It will use three FIWARE components: the
 [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/), the
-[IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/), and
+[IoT Agent for JSON](https://fiware-iotagent-json.readthedocs.io/en/latest/), and
 [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/) .
 
 Therefore the overall architecture will consist of the following elements:
@@ -162,9 +162,9 @@ Therefore the overall architecture will consist of the following elements:
 
     -   The FIWARE [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/) which will receive requests
         using [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2)
-    -   The FIWARE [IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/) which will
-        receive northbound measurements from the dummy IoT devices in
-        [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
+    -   The FIWARE [IoT Agent for JSON](https://fiware-iotagent-json.readthedocs.io/en/latest/) which will receive
+        northbound measurements from the dummy IoT devices in
+        [JSON](https://fiware-iotagent-json.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
         format and convert them to [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) requests for the
         context broker to alter the state of the context entities
     -   FIWARE [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) subscribed to context changes and persisting
@@ -183,9 +183,9 @@ Therefore the overall architecture will consist of the following elements:
 
 -   A **Context Provider**: - A webserver acting as set of
     [dummy IoT devices](https://github.com/FIWARE/tutorials.IoT-Sensors/tree/NGSI-v2) using the
-    [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
-    protocol running over HTTP. - Note the **Stock Management Frontend** and **Context Provider NGSI** proxy are not
-    used in this tutorial.
+    [JSON](https://fiware-iotagent-json.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual) protocol
+    running over HTTP. - Note the **Stock Management Frontend** and **Context Provider NGSI** proxy are not used in this
+    tutorial.
 
 Since all interactions between the elements are initiated by HTTP requests, the entities can be containerized and run
 from exposed ports.

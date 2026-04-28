@@ -29,4 +29,6 @@ jobs:
         ./services create || true
     - name: Run Script
       run: |
-        ./services start && ./services stop
+        ./services start
+        ./.github/test/iot_device_smoke_test
+        ./services stop

@@ -1,0 +1,96 @@
+#!/bin/bash
+#
+# Smoke test: verify IoT device provisioning by sending a 'ring' command to each
+# bell and confirming the context broker reflects the updated
+# ring_status attribute after the full command round-trip:
+#   Orion → IoT Agent → iot-sensors simulator → IoT Agent → Orion
+#
+
+set -e
+
+# Load environment variables if available
+if [ -f .env ]; then
+    export $(cat .env | grep "#" -v)
+fi
+
+BROKER="http://orion:1026"
+TENANT="openiot"
+DEVICES=("Bell:001" "Bell:002")
+
+failures=0
+
+run_curl () {
+    # If CURL_VERSION is not set, use latest
+    local curl_img="quay.io/curl/curl:${CURL_VERSION:-latest}"
+    docker run --rm --network fiware_default "${curl_img}" "$@"
+}
+
+send_ring_command () {
+    local device="$1"
+    local status
+    echo "Sending ring command to ${device}..."
+    status=$(run_curl -s -o /dev/null -w "%{http_code}" \
+        -X POST \
+        "${BROKER}/v2/op/update" \
+        -H "fiware-service: ${TENANT}" \
+        -H "fiware-servicepath: /" \
+        -H 'Content-Type: application/json' \
+        --data-raw '{
+          "actionType": "update",
+          "entities": [
+            {
+              "id": "'"${device}"'",
+              "type": "Bell",
+              "ring": {
+                "type": "command",
+                "value": ""
+              }
+            }
+          ]
+        }')
+    if [ "${status}" != "204" ]; then
+        echo "FAIL [${device}]: ring command returned HTTP ${status} (expected 204)"
+        return 1
+    fi
+    echo "PASS [${device}]: ring command accepted (204)"
+}
+
+check_ring_status () {
+    local device="$1"
+    local response
+    echo "Checking ring_status for ${device}..."
+    response=$(run_curl -s \
+        "${BROKER}/v2/entities/${device}?attrs=ring_status" \
+        -H "fiware-service: ${TENANT}" \
+        -H "fiware-servicepath: /" \
+        -H 'Accept: application/json')
+    if ! echo "${response}" | grep -q '"ring_status"'; then
+        echo "FAIL [${device}]: ring_status attribute missing from context broker"
+        echo "  Response: ${response}"
+        return 1
+    fi
+    if ! echo "${response}" | grep -q '"value":"OK"'; then
+         echo "FAIL [${device}]: ring_status is not OK"
+         echo "  Response: ${response}"
+         return 1
+    fi
+    echo "PASS [${device}]: ring_status confirmed as OK in context broker"
+}
+
+for device in "${DEVICES[@]}"; do
+    send_ring_command "${device}" || failures=$((failures + 1))
+done
+
+echo "Waiting 5s for command round-trip..."
+sleep 5
+
+for device in "${DEVICES[@]}"; do
+    check_ring_status "${device}" || failures=$((failures + 1))
+done
+
+echo ""
+if [ "${failures}" -gt 0 ]; then
+    echo "Smoke test FAILED: ${failures} assertion(s) did not pass"
+    exit 1
+fi
+echo "Smoke test PASSED: all bell devices are responding and context broker is updated"

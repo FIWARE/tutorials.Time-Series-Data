@@ -140,7 +140,7 @@ FIWARE [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) は、永続
 このチュートリアルの目的のために、一連のダミー IoT デバイスが作成され、Context Broker に接続されます。使用しているアーキ
 テクチャとプロトコルの詳細は
 、[IoT Sensors チュートリアル](https://github.com/FIWARE/tutorials.IoT-Sensors/tree/NGSI-v2)にあります。各デバイスの状態
-は、次の UltraLight デバイス・モニタの Web ページで確認できます : `http://localhost:3000/device/monitor`
+は、次の JSON デバイス・モニタの Web ページで確認できます : `http://localhost:3000/device/monitor`
 
 ![FIWARE Monitor](https://fiware.github.io/tutorials.Time-Series-Data/img/device-monitor.png)
 
@@ -159,7 +159,7 @@ FIWARE [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) は、永続
 
 このアプリケーションは、[以前のチュートリアル](https://github.com/FIWARE/tutorials.IoT-Agent/) で作成したコンポーネント
 とダミー IoT デバイスをベースにしています
-。[Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)，[IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/)
+。[Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)，[IoT Agent for JSON](https://fiware-iotagent-json.readthedocs.io/en/latest/)
 および [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) の 3 つの FIWARE コンポーネントを使用します。
 
 したがって、全体的なアーキテクチャは次の要素で構成されます :
@@ -168,7 +168,7 @@ FIWARE [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) は、永続
 
     -   FIWARE [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/) は
         、[NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使用してリクエストを受信します
-    -   FIWARE [IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/) は、Ultralight 2.0
+    -   FIWARE [IoT Agent for JSON](https://fiware-iotagent-json.readthedocs.io/en/latest/) は、JSON
         形式のダミー IoT デバイスからノース・バウンドの測定値を受信し、Context Broker の
         [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) リクエストに変換してコンテキスト・エンティティ
         の状態を変更します
@@ -187,7 +187,7 @@ FIWARE [QuantumLeap](https://quantumleap.readthedocs.io/en/latest/) は、永続
     -   時間ベースのデータクエリを解釈する HTTP エンドポイントを提供します
 
 -   **コンテキストプロバイダ** : - HTTP 上で動作する
-    [Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
+    [JSON](https://fiware-iotagent-json.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
     プロトコルを使用して、 [ダミー IoT デバイス](https://github.com/FIWARE/tutorials.IoT-Sensors/tree/NGSI-v2)のセットと
     して機能する Web サーバです。 - このチュートリアルでは、 **コンテキスト・プロバイダの NGSI proxy** は使用しません
 
