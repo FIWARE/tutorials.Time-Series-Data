@@ -14,7 +14,7 @@ printf "⏳ Provisioning IoT devices "
 
 
 #
-# Create a service groups for all UltraLight IoT devices
+# Create a service groups for all JSON IoT devices
 #
 
 curl -s -o /dev/null -X POST \
@@ -28,8 +28,8 @@ curl -s -o /dev/null -X POST \
      "apikey":      "321701236",
      "cbroker":     "http://orion:1026",
      "entity_type": "TemperatureSensor",
-     "resource":    "/iot/d",
-     "protocol":    "PDI-IoTA-UltraLight",
+     "resource":    "/iot/json",
+     "protocol":    "IoTA-JSON",
      "transport":   "HTTP",
      "timezone":    "Europe/Berlin",
      "attributes": [
@@ -41,15 +41,15 @@ curl -s -o /dev/null -X POST \
         {"name": "description", "type":"Property", "value": "Temperature Sensor"},
         {"name": "category", "type":"Property", "value": ["sensor"]},
         {"name": "controlledProperty", "type": "Property", "value": "temperature"},
-        {"name": "supportedProtocol", "type": "Property", "value": ["ul20"]}
+        {"name": "supportedProtocol", "type": "Property", "value": ["json"]}
       ]
    },
    {
      "apikey":      "548027571",
      "cbroker":     "http://orion:1026",
      "entity_type": "SoilSensor",
-     "resource":    "/iot/d",
-     "protocol":    "PDI-IoTA-UltraLight",
+     "resource":    "/iot/json",
+     "protocol":    "IoTA-JSON",
      "transport":   "HTTP",
      "timezone":    "Europe/Berlin",
      "attributes": [
@@ -61,15 +61,15 @@ curl -s -o /dev/null -X POST \
         {"name": "description", "type":"Property", "value": "Soil Humdity Sensor"},
         {"name": "category", "type":"Property", "value": ["sensor"]},
         {"name": "controlledProperty", "type": "Property", "value": "humidity"},
-        {"name": "supportedProtocol", "type": "Property", "value": ["ul20"]}
+        {"name": "supportedProtocol", "type": "Property", "value": ["json"]}
       ]
    },
    {
      "apikey":      "854782081",
      "cbroker":     "http://orion:1026",
      "entity_type": "FillingLevelSensor",
-     "resource":    "/iot/d",
-     "protocol":    "PDI-IoTA-UltraLight",
+     "resource":    "/iot/json",
+     "protocol":    "IoTA-JSON",
      "transport":   "HTTP",
      "timezone":    "Europe/Berlin",
      "attributes": [
@@ -82,7 +82,7 @@ curl -s -o /dev/null -X POST \
         {"name": "remove", "type": "Property"}
       ],
       "static_attributes": [
-        {"name": "supportedProtocol", "type": "Property", "value": ["ul20"]},
+        {"name": "supportedProtocol", "type": "Property", "value": ["json"]},
         {"name": "description", "type":"Property", "value": "Barn filling Sensor"},
         {"name": "category", "type":"Property", "value": ["actuator", "sensor"]},
         {"name": "controlledProperty", "type": "Property", "value": ["filling"]}
@@ -92,8 +92,8 @@ curl -s -o /dev/null -X POST \
      "apikey":      "110990",
      "cbroker":     "http://orion:1026",
      "entity_type": "Device",
-     "resource":    "/iot/d",
-     "protocol":    "PDI-IoTA-UltraLight",
+     "resource":    "/iot/json",
+     "protocol":    "IoTA-JSON",
      "transport":   "HTTP",
      "timezone":    "Europe/Berlin",
      "attributes": [
@@ -108,15 +108,15 @@ curl -s -o /dev/null -X POST \
         {"name": "description", "type":"Property", "value": "Animal Collar"},
         {"name": "category", "type":"Property", "value": ["sensor"]},
         {"name": "controlledProperty", "type": "Property", "value": ["heartRate", "location", "status"]},
-        {"name": "supportedProtocol", "type": "Property", "value": ["ul20"]}
+        {"name": "supportedProtocol", "type": "Property", "value": ["json"]}
       ]
    },
    {
      "apikey":      "98699",
      "cbroker":     "http://orion:1026",
      "entity_type": "Device",
-     "resource":    "/iot/d",
-     "protocol":    "PDI-IoTA-UltraLight",
+     "resource":    "/iot/json",
+     "protocol":    "IoTA-JSON",
      "transport":   "HTTP",
      "timezone":    "Europe/Berlin",
      "attributes": [
@@ -132,15 +132,15 @@ curl -s -o /dev/null -X POST \
         {"name": "category", "type":"Property", "value": ["sensor"]},
         {"name": "controlledProperty", "type": "Property", "value": ["heartRate", "location", "status"]},
         {"name": "function", "type": "Property", "value":["sensing"]},
-        {"name": "supportedProtocol", "type": "Property", "value": ["ul20"]}
+        {"name": "supportedProtocol", "type": "Property", "value": ["json"]}
       ]
    },
    {
      "apikey":      "112903447",
      "cbroker":     "http://orion:1026",
      "entity_type": "Water",
-     "resource":    "/iot/d",
-     "protocol":    "PDI-IoTA-UltraLight",
+     "resource":    "/iot/json",
+     "protocol":    "IoTA-JSON",
      "transport":   "HTTP",
      "timezone":    "Europe/Berlin",
      "commands": [
@@ -150,15 +150,15 @@ curl -s -o /dev/null -X POST \
       "static_attributes": [
         {"name": "description", "type":"Property", "value": "Irrigation System"},
         {"name": "category", "type":"Property", "value": ["actuator"]},
-        {"name": "supportedProtocol", "type": "Property", "value": ["ul20"]}
+        {"name": "supportedProtocol", "type": "Property", "value": ["json"]}
       ]
    },
    {
      "apikey":      "1067386313",
      "cbroker":     "http://orion:1026",
      "entity_type": "Tractor",
-     "resource":    "/iot/d",
-     "protocol":    "PDI-IoTA-UltraLight",
+     "resource":    "/iot/json",
+     "protocol":    "IoTA-JSON",
      "transport":   "HTTP",
      "timezone":    "Europe/Berlin",
      "attributes": [
@@ -174,7 +174,7 @@ curl -s -o /dev/null -X POST \
         {"name": "description", "type":"Property", "value": "Tractor FMIS"},
         {"name": "category", "type":"Property", "value": ["actuator", "sensor"]},
         {"name": "controlledProperty", "type": "Property", "value": ["location", "status"]},
-        {"name": "supportedProtocol", "type": "Property", "value": ["ul20"]}
+        {"name": "supportedProtocol", "type": "Property", "value": ["json"]}
       ]
    }
 

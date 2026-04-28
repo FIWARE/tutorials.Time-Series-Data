@@ -1,0 +1,3 @@
+id,type,addressLocality,addressRegion,postalCode,streetAddress,name,owner,location_type,lng,lat,alternateName,hasAgriParcel,hasBuilding
+urn:ngsi-ld:AgriFarm:farm001,AgriFarm,Tiergarten,Berlin,10557,Großer Stern 1,Victory Farm,urn:ngsi-ld:Person:person001,Point,13.3505,52.5144,,"[""urn:ngsi-ld:AgriParcel:001"",""urn:ngsi-ld:AgriParcel:002""]","[""urn:ngsi-ld:Building:tower003"",""urn:ngsi-ld:Building:farm001"",""urn:ngsi-ld:Building:barn002""]"
+urn:ngsi-ld:AgriFarm:farm002,AgriFarm,Tiergarten,Berlin,10787,Hardenbergplatz 8,Animal Farm,urn:ngsi-ld:Person:person002,Point,13.3368,52.5078,Manor Farm,"[""urn:ngsi-ld:AgriParcel:003"",""urn:ngsi-ld:AgriParcel:004"",""urn:ngsi-ld:AgriParcel:005"",""urn:ngsi-ld:AgriParcel:006""]","[""urn:ngsi-ld:Building:farm002""]"

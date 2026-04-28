@@ -113,7 +113,7 @@ TimescaleDB は通常のテーブルのように見えるものを公開しま�
 このチュートリアルの目的のために、一連のダミーの農業用 IoT デバイスが作成され、Context Broker に接続されます。使用
 されているアーキテクチャとプロトコルの詳細は、
 [IoT センサ・チュートリアル](https://github.com/FIWARE/tutorials.IoT-Sensors/tree/NGSI-LD)にあります。各デバイスの
-状態は、 UltraLight デバイス・モニタの Web ページは次の場所にあります: `http://localhost:3000/device/monitor`
+状態は、 JSON デバイス・モニタの Web ページは次の場所にあります: `http://localhost:3000/device/monitor`
 
 ![FIWARE Monitor](https://fiware.github.io/tutorials.Time-Series-Data/img/farm-devices.png)
 
@@ -131,7 +131,7 @@ TimescaleDB は通常のテーブルのように見えるものを公開しま�
 このアプリケーションは、[以前のチュートリアル](https://github.com/FIWARE/tutorials.IoT-Agent/)で作成された
 コンポーネントとダミー IoT デバイスに基づいて構築されています。
 [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/),
-[IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/),
+[IoT Agent for JSON](https://fiware-iotagent-json.readthedocs.io/en/latest/),
 [QuantumLeap](https://smartsdk.github.io/ngsi-timeseries-api/)
 の3つのFIWAREコンポーネントを使用します。
 
@@ -141,8 +141,8 @@ TimescaleDB は通常のテーブルのように見えるものを公開しま�
         [NGSI-LD](https://forge.etsi.org/swagger/ui/?url=https://forge.etsi.org/rep/NGSI-LD/NGSI-LD/raw/master/spec/updated/generated/full_api.json)
         を使用してリクエストを受信します
     -   FIWARE
-        [IoT Agent for Ultralight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/)
-        は、Ultralight 2.0 形式のダミー IoT デバイスからノース・バウンドの測定値
+        [IoT Agent for JSON](https://fiware-iotagent-json.readthedocs.io/en/latest/)
+        は、JSON 形式のダミー IoT デバイスからノース・バウンドの測定値
         を受信し、Context Broker の
         [NGSI-LD](https://forge.etsi.org/swagger/ui/?url=https://forge.etsi.org/rep/NGSI-LD/NGSI-LD/raw/master/spec/updated/generated/full_api.json)
         リクエストに変換してコンテキスト・エンティティの状態を変更します
@@ -162,7 +162,7 @@ TimescaleDB は通常のテーブルのように見えるものを公開しま�
 
 -   HTTP **Web-Server** は、システム内のコンテキスト・エンティティを定義する静的な `@context` ファイルを提供します
 -   **チュートリアルアプリケーション** は次のことを行います:
-    -   HTTP上で実行される [UltraLight 2.0](https://fiware-iotagent-ul.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
+    -   HTTP上で実行される [JSON](https://fiware-iotagent-json.readthedocs.io/en/latest/usermanual/index.html#user-programmers-manual)
         プロトコルを使用して、ダミーの[農業用 IoT デバイス](https://github.com/FIWARE/tutorials.IoT-Sensors/tree/NGSI-LD)
         のセットとして機能します
 

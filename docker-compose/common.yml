@@ -74,7 +74,7 @@ services:
   iot-agent:
     labels:
       org.fiware: 'tutorial'
-    image: quay.io/fiware/iotagent-ul:${ULTRALIGHT_VERSION}
+    image: quay.io/fiware/iotagent-json:${JSON_VERSION}
     hostname: iot-agent
     container_name: fiware-iot-agent
     depends_on:
@@ -99,10 +99,9 @@ services:
       - IOTA_LOG_LEVEL=INFO # The log level of the IoT Agent
       - IOTA_TIMESTAMP=true # Supply timestamp information with each measurement
       - IOTA_AUTOCAST=true # Ensure Ultralight number values are read as numbers not strings
-      - IOTA_MONGO_HOST=mongo-db # The host name of MongoDB
-      - IOTA_MONGO_PORT=${MONGO_DB_PORT} # The port mongoDB is listening on
-      - IOTA_MONGO_DB=iotagentul # The name of the database used in mongoDB
-      - IOTA_HTTP_PORT=${IOTA_SOUTH_PORT} # The port used for device traffic over HTTP
+      - IOTA_MONGO_URI=mongodb://mongo-db:${MONGO_DB_PORT}/iotagentjson
+      - IOTA_HTTP_PORT=${IOTA_SOUTH_PORT}
+      - IOTA_DEFAULT_RESOURCE=/iot/json # The port used for device traffic over HTTP
       - IOTA_PROVIDER_URL=http://iot-agent:${IOTA_NORTH_PORT}
       - IOTA_CB_NGSI_VERSION=ld # use NGSI-LD when sending updates for active attributes
       - IOTA_JSON_LD_CONTEXT=http://context/user-context.jsonld
@@ -158,11 +157,13 @@ services:
       - WEB_APP_PORT=${TUTORIAL_APP_PORT} # Port used by the content provider proxy and web-app for viewing data
       - IOTA_HTTP_HOST=iot-agent
       - IOTA_HTTP_PORT=${IOTA_SOUTH_PORT}
+      - IOTA_DEFAULT_RESOURCE=/iot/json
       - PIG_COUNT=${PIG_COUNT}
       - COW_COUNT=${COW_COUNT}
       - REDIS_HOST=redis-for-sensors
- 
-  # Tutorial acts as a Farm Management Information System
+      - DUMMY_DEVICES_PAYLOAD=JSON
+  
+  # Tutorial acts as a Farm Management Information System  
   tutorial:
     labels:
       org.fiware: 'tutorial'
@@ -182,12 +183,12 @@ services:
       - WEB_APP_PORT=${TUTORIAL_APP_PORT} # Port used by the content provider proxy and web-app for viewing data
       - IOTA_HTTP_HOST=iot-agent
       - IOTA_HTTP_PORT=${IOTA_SOUTH_PORT}
+      - IOTA_DEFAULT_RESOURCE=/iot/json
       - DUMMY_DEVICES=http://iot-sensors:3001
       - MONGO_URL=mongodb://mongo-db:27017
       - IOTA_JSON_LD_CONTEXT=http://context/user-context.jsonld
-      - CRATE_DB_SERVICE_URL=http://crate-db:4200/_sql
       - NGSI_LD_TENANT=openiot
-
+      - DUMMY_DEVICES_PAYLOAD=JSON
 
   # Quantum Leap is persisting Short Term History to Crate-DB
   quantumleap:

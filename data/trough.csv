@@ -1,0 +1,12 @@
+id,type,locatedAt,location_type,lng,lat
+urn:ngsi-ld:Trough:barn021,Trough,urn:ngsi-ld:Building:barn002,Point,13.36984,52.51634
+urn:ngsi-ld:Trough:field031,Trough,urn:ngsi-ld:AgriParcel:003,Point,13.34806,52.51186
+urn:ngsi-ld:Trough:field032,Trough,urn:ngsi-ld:AgriParcel:003,Point,13.34856,52.51121
+urn:ngsi-ld:Trough:field041,Trough,urn:ngsi-ld:AgriParcel:004,Point,13.34973,52.51139
+urn:ngsi-ld:Trough:field042,Trough,urn:ngsi-ld:AgriParcel:004,Point,13.35458,52.51367
+urn:ngsi-ld:Trough:field051,Trough,urn:ngsi-ld:AgriParcel:005,Point,13.35509,52.5152
+urn:ngsi-ld:Trough:field052,Trough,urn:ngsi-ld:AgriParcel:005,Point,13.35599,52.51567
+urn:ngsi-ld:Trough:field053,Trough,urn:ngsi-ld:AgriParcel:005,Point,13.35569,52.51515
+urn:ngsi-ld:Trough:field061,Trough,urn:ngsi-ld:AgriParcel:006,Point,13.34896,52.51713
+urn:ngsi-ld:Trough:field062,Trough,urn:ngsi-ld:AgriParcel:006,Point,13.34824,52.51844
+urn:ngsi-ld:Trough:field063,Trough,urn:ngsi-ld:AgriParcel:006,Point,13.34898,52.5175

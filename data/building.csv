@@ -1,0 +1,5 @@
+id,type,addressLocality,addressRegion,postalCode,streetAddress,name,category,owner,location_type,lng,lat
+urn:ngsi-ld:Building:tower003,Building,Tiergarten,Berlin,10557,John-Foster-Dulles-Allee,Triton Tower,water_tower,urn:ngsi-ld:Person:person001,Point,13.3598,52.5165
+urn:ngsi-ld:Building:farm001,Building,Tiergarten,Berlin,10557,Großer Stern 1,Victory Farm,farm,urn:ngsi-ld:Person:person001,Point,13.3505,52.5144
+urn:ngsi-ld:Building:farm002,Building,Tiergarten,Berlin,10787,Hardenbergplatz 8,Animal Farm,farm,urn:ngsi-ld:Person:person002,Point,13.3368,52.5078
+urn:ngsi-ld:Building:barn002,Building,Tiergarten,Berlin,10557,Straße des 17. Juni,Big Red Barn,barn,urn:ngsi-ld:Person:person001,Point,13.3698,52.5163

@@ -1,0 +1,11 @@
+id,type,heartRate,location_type,lng,lat,providedBy,status,offset
+urn:ngsi-ld:Device:cow001,Device,51,Point,13.34981,52.51139,urn:ngsi-ld:Device:cow001,AT REST,1
+urn:ngsi-ld:Device:cow001,Device,52,Point,13.34985,52.51139,urn:ngsi-ld:Device:cow001,DRINKING,2
+urn:ngsi-ld:Device:cow001,Device,52,Point,13.34991,52.51139,urn:ngsi-ld:Device:cow001,GRAZING,3
+urn:ngsi-ld:Device:cow001,Device,53,Point,13.34985,52.51139,urn:ngsi-ld:Device:cow001,GRAZING,4
+urn:ngsi-ld:Device:cow001,Device,55,Point,13.34984,52.51141,urn:ngsi-ld:Device:cow001,GRAZING,5
+urn:ngsi-ld:Device:cow001,Device,53,Point,13.34972,52.51144,urn:ngsi-ld:Device:cow001,GRAZING,6
+urn:ngsi-ld:Device:cow001,Device,51,Point,13.34969,52.51145,urn:ngsi-ld:Device:cow001,AT REST,7
+urn:ngsi-ld:Device:cow001,Device,51,Point,13.34969,52.51142,urn:ngsi-ld:Device:cow001,AT REST,8
+urn:ngsi-ld:Device:cow001,Device,51,Point,13.34962,52.51139,urn:ngsi-ld:Device:cow001,AT REST,9
+urn:ngsi-ld:Device:cow001,Device,51,Point,13.34961,52.5114,urn:ngsi-ld:Device:cow001,AT REST,10

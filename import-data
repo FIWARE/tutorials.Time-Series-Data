@@ -1,3 +1,4 @@
+
 #!/bin/bash
 #
 #  curl commands to reload the data from the previous tutorial
@@ -9,323 +10,63 @@ set -e
 echo -e "⏳ Loading context data in \033[1mNGSI-LD\033[0m format"
 echo -e "    - all entity data models are defined referencing the" 
 echo -e "      \033[1m"${TUTORIAL_DATA_MODELS_CONTEXT}"\033[0m JSON-LD context"
-echo -e "\nCreating ${COW_COUNT:-4} cows and ${COW_COUNT:-4} pigs"
+echo -e "\nCreating buildings for the farm ..."
+curl  -F "file=@./data/building.csv" http://tutorial:3000/csv/Building
 
-generate_post_data()
-{
-  cat <<EOF
-  $animals
-EOF
-}
-
-function addCondition()
-{
-
-  animals="$animals \"sex\": { \"type\": \"VocabProperty\", \"vocab\": \"$1\"},"
-  if [ "$1" == "Male" ]; then
-    weight=$(( RANDOM * ( 850 - 650) / 32767 + 650 ))
-    animals="$animals \"phenologicalCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"maleAdult\"},";
-    animals="$animals \"reproductiveCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"active\"},";
-    animals="$animals \"weight\": { \"type\": \"Property\", \"value\": $weight, \"unitCode\": \"KGM\"},";
-  else
-    animals="$animals \"phenologicalCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"femaleAdult\"},";
-    weight=$(( RANDOM * ( 500 - 300) / 32767 + 300 ))
-    animals="$animals \"weight\": { \"type\": \"Property\", \"value\": $weight, \"unitCode\": \"KGM\"},";
-    if [ $((count%11)) -eq 0 ]; then
-       animals="$animals \"reproductiveCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"inactive\"},";
-    elif [ $((count%7)) -eq 0 ]; then
-       animals="$animals \"reproductiveCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"inHeat\"},";
-    elif [ $((count%5)) -eq 0 ]; then
-       animals="$animals \"reproductiveCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"inCalf\"},";
-    else 
-      animals="$animals \"reproductiveCondition\": { \"type\": \"VocabProperty\", \"vocab\": \"active\"},";
-    fi
-  fi
-}
-
-count=0;
-for cowNames in Beany Trotter Petal River Sun Twilight Diamond Pollen Juicey Tulip Oats Rain Silver Stamps Button Lacey Fisher Rice Eenie Chalky Ferdinand Feather Happy Fluffy Bug Opal Fresian Star Clover Flower Grape Citrus Hero Cloud Jersey Cream Marble Sugar Pepsi Spots Milky Blue Dales Gorgeous Pitta Harvest Arnie Ermantrude Clarabelle Annabelle Elsie Elmer Ferdinand Laughing Cow Milky White Otis Toro  Kai Heffer Wolfe Benny Betsy Taurus Bulba Clemantine Clovis Zippy Harley Oakley Bead Bree Astro Galaxy Drone Fig Reef Palm Ursula Wazowski Dumpling Imp Tinker Titch Clifford Wade Hulk Moose Sherman Nemo Zorro Vache Mucca Speedy Zoomer Cleopatra Diablo Hiccup Viper Smithy Lolly Popsicle Summer Trident Horniman Moses Flynn Cinders Mouse Ego Slapper Flipper Denim Boyce Loops Racer Axe Blade Spice Fury Tyson Diesel Axel Chopper Viking Mystery Buzz Stark Brute Sabre Reaper Rebel Psycho Tank Gunner Bolt Bullet Shot Titan Sumo Kong Bruiser Ursula Drone Cracker Arrow Warrior Major Razor Spud Trip Slicer Charcoal Grill Gangster Boss Brute Don Danger Pepper Ton Python Poison Ace Woody Blade Hero Oreo Checkers Chess Dalmatian Soccer Puzzle Dice Orca Piano Penguin Panda Skunk Vintage Domino Yin Yang Badger Butler Patches Snoopy Pongo Perdita Freckles Tuxedo Cruella Keys Harlequin Banksy Coca-Cola Dot Lemur Sushi Shadow Silhouette Doodle Retro Polka Paisley Blackberry Pepper Zebra Magpie Newt Swan Pebble Storm Chocolate Coco Hershey Dairymilk Oak Wicker Bear Teddy Pine Conker Mushroom Coffee Toffee Fudge Mocha Peanut Gingerbread Walnut Cookie Acorn Cello Camel Fawn Chestnut Pheasant Muddy Toast Tea Biscuit Monkey Coconut Beaver Tawny Espresso Umber Brunette Cinnamon Cedar Penny Goomba Malteaser Brownie Pretzel Brunette Tanner Auburn Copper Bronze Liver Hazel
-do
-    eval cowName$count="$cowNames";
-    count=$((count + 1));
-done
-count=0;
-for pigNames in Bubblegum Fuchshia Flamingo Salmon Rouge Peach Coral Magenta Cherry Carnation Strawberry Blush Mauve Orchid Cotton Tango Lavender Grape Raspberry Wine Watermelon Taffy Lemonade Lips Flower Bud Sprinkles Jellybean Sherbert Tutu Mammoth Goliath Hulk Thor Giant Bruce Colossus Clifford Terminator Reptar BFG Balrog Smaug King Kong Hagrid Thanos Godzilla Beast Drogon Kraken Ogre Dino Bear Hercules Maximus Attila Moose Caesar Sampson Ragnarok Minnie Micra Nano Atom Ion Tinker Chico Bambi Scamp Cub Bean Skittles Tic Tac Pickle Pippin Twiglet Bitsy Gnat Neutron Smudge Pip Bonbon Shrimp Ladybug Midge Raisin Shorty Teeny Beans Squash Ebony Midnight Ink Raven Crow Charcoal Olive Onyx Noir Sable Obsidian Sooty Pitch Tar Petrol Diesel Fuel Spider Jade Jet Lead Iron Shadow Ash Anchor Pewter Slate Smoke Flint Fossil Scratching Melon Oinks Mud Bubbles Opal Jewel Addison Pebbles Star Kiss Wrinkle Bacon Cuddles Snorter Belle Vax Rose Chorizo Vanity Blue Lolly Icicle Crafty Snout Dart Jig Pancetta Wish Percy
-do
-    eval pigName$count="$pigNames";
-    count=$((count + 1));
-done
-count=0;
-
-animals="[";
-for number in 001 002 003 004 005 006 007 008 009 010 011 012 013 014 015 016 017 018 019 020 021 022 023 024 025 026 027 028 029 030 031 032 033 034 035 036 037 038 039 040 041 042 043 044 045 046 047 048 049 050 051 052 053 054 055 056 057 058 059 060 061 062 063 064 065 066 067 068 069 070 071 072 073 074 075 076 077 078 079 080 081 082 083 084 085 086 087 088 089 090 091 092 093 094 095 096 097 098 099 100
-do
-
-
-
-    heartRate=$(( RANDOM * ( 56 - 50) / 32767 + 50 ))
-
-    lat=$(( RANDOM * ( 300 - 100) / 32767 + 100 ))
-    lng=$(( RANDOM * ( 300 - 100) / 32767 + 100 ))
-    field=$(( RANDOM * ( 7 - 3) / 32767 + 3 ))
-    owner=$(( RANDOM * ( 3 - 1) / 32767 + 1 ))
-
-    year=$(( RANDOM * ( 2022 - 2018) / 32767 + 2018 ))
-    month=$(( RANDOM * ( 10 - 1) / 32767 + 1 ))
-    day=$(( RANDOM * ( 28 - 1) / 32767 + 1 ))
-    padDay=$(echo 00000${day} | tail -c 3)
-
-    if [ $count -eq 4 ]; then
-        heartRate=70
-    fi
-
-    if [ $count -lt ${COW_COUNT:-4} ]; then
-      eval cowName="\$cowName$count";
-      animals="$animals {\"id\":\"urn:ngsi-ld:Animal:cow$number\", \"type\": \"Animal\",";
-      animals="$animals \"species\": { \"type\": \"Property\", \"value\": \"dairy cattle\"},";
-      animals="$animals \"name\": { \"type\": \"Property\", \"value\": \"$cowName\"},";
-
-      animals="$animals \"heartRate\": { \"type\": \"Property\", \"value\": $heartRate, \"unitCode\": \"5K\"},";
-      animals="$animals \"location\": {\"type\": \"GeoProperty\",\"value\": {\"type\": \"Point\",\"coordinates\": [13.$lat,52.$lng]}, \"observedAt\": \"2024-02-02T15:00:00.000Z\"},";
-      animals="$animals \"locatedAt\": { \"type\": \"Relationship\", \"object\": \"urn:ngsi-ld:AgriParcel:00$field\"},";
-      animals="$animals \"ownedBy\": { \"type\": \"Relationship\", \"object\": \"urn:ngsi-ld:Person:person00$owner\"},";
-
-      animals="$animals \"birthdate\": { \"type\": \"Property\", \"value\": \"${year}-0${month}-${padDay}T00:00:00.000Z\"},";
-
-      if [ $((count%20)) -eq 0 ]; then
-       addCondition "Male" "bull";
-       animals="$animals \"legalId\": { \"type\": \"Property\", \"value\": \"M-bull$number-$cowName\" }"
-      else 
-       addCondition "Female" "cow";
-       animals="$animals \"legalId\": { \"type\": \"Property\", \"value\": \"F-cow$number-$cowName\" }"
-      fi
-      animals="$animals },"
-    fi
-
-    if [ $count -lt ${PIG_COUNT:-4} ]; then
-      eval pigName="\$pigName$count";
-      animals="$animals {\"id\":\"urn:ngsi-ld:Animal:pig$number\", \"type\": \"Animal\",";
-      animals="$animals \"species\": { \"type\": \"Property\", \"value\": \"pig\"},";
-      animals="$animals \"name\": { \"type\": \"Property\", \"value\": \"$pigName\"},";
-     
-      if [ $((count%2)) -eq 0 ]; then
-       addCondition "Male" "boar";
-       animals="$animals \"legalId\": { \"type\": \"Property\", \"value\": \"M-boar$number-$pigName\" }"
-      else 
-       addCondition "Female" "sow";
-       animals="$animals \"legalId\": { \"type\": \"Property\", \"value\": \"M-sow$number-$pigName\" }"
-      fi
-      animals="$animals },"
-    fi
-
-  count=$((count + 1));
-done
-
-animals="${animals::-1} ]"
-
-#echo $animals;
-#exit 0;
-
-
-curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOperations/upsert?options=update' \
--H 'NGSILD-Tenant: openiot' \
--H 'Content-Type: application/json' \
--H 'Link: <'"${TUTORIAL_DATA_MODELS_CONTEXT}"'>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
--H 'Accept: application/ld+json' \
--d "$(generate_post_data)"
-
-
-echo -e "Creating farm workers and buildings"
-#
-# Create four Farm Entities in various locations across Berlin
-#
-curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOperations/upsert' \
+curl -s -H "NGSILD-Tenant: farmer"  -iX POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOperations/upsert' \
 -H 'Content-Type: application/json' \
 -H 'Link: <'"${TUTORIAL_DATA_MODELS_CONTEXT}"'>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
 -H 'Accept: application/ld+json' \
 --data-raw '[
-    {
-    "id": "urn:ngsi-ld:Building:farm001",
-    "type": "Building",
-    "category": {"type": "VocabProperty", "vocab": ["farm"]},
-    "address": {
-        "type": "Property",
-        "value": { "streetAddress": "Großer Stern 1", "addressRegion": "Berlin", "addressLocality": "Tiergarten", "postalCode": "10557"},
-        "verified": { "type": "Property", "value": true}
-    },
-    "location": {
-        "type": "GeoProperty",
-        "value": { "type": "Point", "coordinates": [13.3505, 52.5144]}
-    },
-    "name": {"type": "Property","value": "Victory Farm"},
-    "owner": {"type": "Relationship", "object": "urn:ngsi-ld:Person:person001"}
-  },
   {
-    "id": "urn:ngsi-ld:Building:barn002",
-    "type": "Building",
-    "category": {"type": "VocabProperty", "vocab": ["barn"]},
-    "address": {
-        "type": "Property",
-        "value": { "streetAddress": "Straße des 17. Juni", "addressRegion": "Berlin", "addressLocality": "Tiergarten", "postalCode": "10557"},
-        "verified": { "type": "Property", "value": true}
-    },
-    "location": {
-        "type": "GeoProperty",
-        "value": { "type": "Point", "coordinates": [13.3698, 52.5163]}
-    },
-    "name": {"type": "Property","value": "Big Red Barn"},
-    "owner": {"type": "Relationship", "object": "urn:ngsi-ld:Person:person001"}
-  },
-  {
-    "id": "urn:ngsi-ld:Building:tower003",
-    "type": "Building",
-    "category": {"type": "VocabProperty", "vocab": ["water_tower"]},
-    "address": {
-        "type": "Property",
-        "value": { "streetAddress": "John-Foster-Dulles-Allee", "addressRegion": "Berlin", "addressLocality": "Tiergarten", "postalCode": "10557"},
-        "verified": { "type": "Property", "value": true}
-    },
-    "location": {
-        "type": "GeoProperty",
-        "value": { "type": "Point", "coordinates": [13.3598, 52.5165]}
-    },
-    "name": {"type": "Property","value": "Triton Tower"},
-    "owner": {"type": "Relationship", "object": "urn:ngsi-ld:Person:person001"}
-  },
-  {
-    "id": "urn:ngsi-ld:Building:farm002",
-    "type": "Building",
-    "category": {"type": "VocabProperty", "vocab": ["farm"]},
-    "address": {
-        "type": "Property",
-        "value": { "streetAddress": "Hardenbergplatz 8", "addressRegion": "Berlin", "addressLocality": "Tiergarten", "postalCode": "10787"},
-        "verified": { "type": "Property", "value": true}
-    },
-    "location": {
-        "type": "GeoProperty",
-        "value": { "type": "Point", "coordinates": [13.3127, 52.4893]}
-    },
-    "name": {"type": "Property","value": "Animal Farm"},
-    "owner": {"type": "Relationship", "object": "urn:ngsi-ld:Person:person002"}
-  },
-  {
-    "id": "urn:ngsi-ld:Person:person001",
-    "type": "Person",
-    "name": {"type": "Property","value": "Old MacDonald"}
-  },
-  {
-    "id": "urn:ngsi-ld:Person:person002",
-    "type": "Person",
-    "name": {"type": "Property","value": "Napoleon"}
+    "id": "urn:ngsi-ld:Animal:cow001",
+    "type": "Animal"
   }
 ]'
 
-echo -e "Creating farmer's fields"
-curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOperations/upsert?options=update' \
+sleep 3
+
+
+curl -s -o /dev/null -H "NGSILD-Tenant: openiot"  -iX POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOperations/upsert' \
 -H 'Content-Type: application/json' \
 -H 'Link: <'"${TUTORIAL_DATA_MODELS_CONTEXT}"'>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
 -H 'Accept: application/ld+json' \
--d '[
+--data-raw '[
   {
-    "id": "urn:ngsi-ld:AgriParcel:001",
-    "type": "AgriParcel",
-    "name": {
-      "type": "Property", "value": "Wheatfield"
-    },
-    "cropType": {
-      "type": "Relationship", 
-      "object": "urn:ngsi-ld:AgriCrop:BuckWheat"
-    },
-    "cropStatus": {
-      "type": "VocabProperty", 
-      "vocab": "seeded"
-    },
-    "temperature": {
-      "type": "Property",  
-      "value": 15.4, "unitCode": "CEL",
-      "observedAt": "2024-01-01T15:00:00.000Z"
-    }
-  },
-  {
-    "id": "urn:ngsi-ld:AgriParcel:002",
-    "type": "AgriParcel",
-    "name": {
-      "type": "Property", "value": "Cornfield"
-    },
-     "cropStatus": {
-      "type": "VocabProperty", 
-      "vocab": "growing"
-    },
-    "cropType": {
-      "type": "Relationship", 
-      "object": "urn:ngsi-ld:AgriCrop:Corn"
-    }
-  },
-  {
-    "id": "urn:ngsi-ld:AgriParcel:003",
-    "type": "AgriParcel",
-    "name": {
-      "type": "Property", "value": "North Pasture"
-    },
-     "cropStatus": {
-      "type": "VocabProperty", 
-      "vocab": "maturing"
-    },
-    "cropType": {
-      "type": "Relationship", 
-      "object": "urn:ngsi-ld:AgriCrop:Grass"
-    }
-  },
-  {
-    "id": "urn:ngsi-ld:AgriParcel:004",
-    "type": "AgriParcel",
-    "name": {
-      "type": "Property", "value": "East Pasture"
-    },
-     "cropStatus": {
-      "type": "VocabProperty", 
-      "vocab": "maturing"
-    },
-    "cropType": {
-      "type": "Relationship", 
-      "object": "urn:ngsi-ld:AgriCrop:Grass"
-    }
-  },
-  {
-    "id": "urn:ngsi-ld:AgriParcel:005",
-    "type": "AgriParcel",
-    "name": {
-      "type": "Property", "value": "Water Meadow"
-    },
-     "cropStatus": {
-      "type": "VocabProperty", 
-      "vocab": "maturing"
-    },
-    "cropType": {
-      "type": "Relationship", 
-      "object": "urn:ngsi-ld:AgriCrop:Grass"
-    }
-  },
-  {
-    "id": "urn:ngsi-ld:AgriParcel:006",
-    "type": "AgriParcel",
-    "name": {
-      "type": "Property", "value": "The Paddock"
-    },
-     "cropStatus": {
-      "type": "VocabProperty", 
-      "vocab": "maturing"
-    },
-    "cropType": {
-      "type": "Relationship", 
-      "object": "urn:ngsi-ld:AgriCrop:Grass"
-    }
+    "id": "urn:ngsi-ld:Device:cow001",
+    "type": "Device"
   }
 ]'
 
-echo -e "Registering Farmer and Devices as data sources.\n"
+sleep 3
 
-curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/csourceRegistrations/' \
+
+
+echo -e "\nCreating animals for the farm ..."
+curl -s -o /dev/null -H "NGSILD-Tenant: openiot" -F "file=@./data/cow.csv" http://tutorial:3000/csv/Animal
+curl -s -o /dev/null -H "NGSILD-Tenant: openiot" -F "file=@./data/pig.csv" http://tutorial:3000/csv/Animal
+
+echo -e "Creating devices for the animals ..."
+curl -s -o /dev/null -H "NGSILD-Tenant: openiot" -F "file=@./data/device.csv" http://tutorial:3000/csv/Device
+
+echo -e "Creating agri-data for the farmer ..."
+curl -s -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/agri-parcel.csv" http://tutorial:3000/csv/AgriParcel
+curl -s -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/agri-crop.csv" http://tutorial:3000/csv/AgriCrop
+curl -s -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/agri-farm.csv" http://tutorial:3000/csv/AgriFarm
+curl -s -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/agri-pest.csv" http://tutorial:3000/csv/AgriPest
+curl -s -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/agri-soil.csv" http://tutorial:3000/csv/AgriSoil
+
+echo -e "Creating personnel for the farm ..."
+curl -s -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/person.csv" http://tutorial:3000/csv/Person
+
+echo -e "Creating weather observations readings ..."
+curl -s -o /dev/null -F "file=@./data/weather.csv" http://tutorial:3000/csv/Weather
+
+
+
+echo -e "\nRegistering Farmer as data source ...\n"
+
+curl -s -iX POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/csourceRegistrations/' \
 -H 'Link: <http://context/user-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
 -H 'Content-Type: application/json' \
 -d '{
@@ -333,21 +74,26 @@ curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/csourceReg
     "information": [
         {
             "entities": [
-                {
-                    "type": "Animal"
-                }
+                {"type": "Animal"},
+                {"type": "AgriParcel"},
+                {"type": "AgriCrop"},
+                {"type": "AgriFarm"},
+                {"type": "AgriPest"},
+                {"type": "AgriSoil"},
+                {"type": "Person"},
+                {"type": "Device"}
             ]
         }
     ],
     "mode": "redirect",
-    "operations": [
-        "redirectionOps"
-    ],
+    "operations": ["redirectionOps"],
     "endpoint": "http://farmer"
 }'
 
 
-curl -s -o /dev/null -X POST 'http://farmer/ngsi-ld/v1/csourceRegistrations/' \
+echo -e "\nRegistering Devices as data source ...\n"
+curl -s -iX POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/csourceRegistrations/' \
+-H "NGSILD-Tenant: farmer" \
 -H 'Link: <http://context/user-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
 -H 'Content-Type: application/json' \
 -d '{
@@ -355,17 +101,158 @@ curl -s -o /dev/null -X POST 'http://farmer/ngsi-ld/v1/csourceRegistrations/' \
     "information": [
         {
             "entities": [
-                {
-                    "type": "Animal"
-                }
+                {"type": "Animal"},
+                {"type": "Device"}
             ]
         }
     ],
     "mode": "inclusive",
-    "operations": [
-        "federationOps"
-    ],
+    "operations": ["federationOps"],
     "endpoint": "http://devices"
 }'
 
-echo -e " \033[1;32mdone\033[0m"
+
+
+echo -e "\nInitialising devices readings ... \n"
+curl -s -o /dev/null -iX PUT --location ''"${IOT_DEVICES}"'/devices' \
+-H 'Content-Type: application/json' \
+-d '{
+  "cow001": "o|1|hide|o,x|d|AT_REST|bpm|51|gps|13.3497,52.5113|s|0",
+  "cow002": "o|1|hide|o,x|d|AT_REST|bpm|54|gps|13.3480,52.5118|s|0",
+  "cow003": "o|1|hide|o,x|d|AT_REST|bpm|51|gps|13.3550,52.5152|s|0",
+  "cow004": "o|1|hide|o,x|d|GRAZING|bpm|54|gps|13.3545,52.5136|s|0",
+  "cow006": "o|1|hide|o,x|d|AT_REST|bpm|52|gps|13.3698,52.5163|s|0",
+  "cow010": "o|1|hide|o,x|d|AT_REST|bpm|55|gps|13.3485,52.5112|s|0",
+  "cow009": "o|1|hide|o,x|d|AT_REST|bpm|54|gps|13.3489,52.5171|s|0",
+  "cow008": "o|1|hide|o,x|d|GRAZING|bpm|50|gps|13.3482,52.5184|s|0",
+  "cow007": "o|1|hide|o,x|d|AT_REST|bpm|55|gps|13.3559,52.5156|s|0",
+  "cow005": "o|1|hide|o,x|d|AT_REST|bpm|70|gps|13.3556,52.5151|s|0",
+  "cow011": "o|1|hide|o,x|d|GRAZING|bpm|55|gps|13.3489,52.5175|s|0",
+  "cow012": "o|1|hide|o,x|d|GRAZING|bpm|55|gps|13.3527,52.5136|s|0",
+  "cow019": "o|1|hide|o,x|d|GRAZING|bpm|55|gps|13.3542,52.5136|s|0",
+  "cow018": "o|1|hide|o,x|d|GRAZING|bpm|52|gps|13.3529,52.5135|s|0",
+  "cow017": "o|1|hide|o,x|d|AT_REST|bpm|54|gps|13.3553,52.5158|s|0",
+  "cow016": "o|1|hide|o,x|d|AT_REST|bpm|52|gps|13.3544,52.5158|s|0",
+  "cow015": "o|1|hide|o,x|d|GRAZING|bpm|55|gps|13.3482,52.5171|s|0",
+  "cow014": "o|1|hide|o,x|d|GRAZING|bpm|54|gps|13.3524,52.5133|s|0",
+  "cow013": "o|1|hide|o,x|d|GRAZING|bpm|51|gps|13.3498,52.5113|s|0",
+  "cow021": "o|1|hide|o,x|d|AT_REST|bpm|51|gps|13.3495,52.5117|s|0",
+  "cow020": "o|1|hide|o,x|d|AT_REST|bpm|55|gps|13.3489,52.5184|s|0",
+  "cow023": "o|1|hide|o,x|d|GRAZING|bpm|53|gps|13.3534,52.5132|s|0",
+  "cow022": "o|1|hide|o,x|d|AT_REST|bpm|50|gps|13.3483,52.5169|s|0",
+  "cow024": "o|1|hide|o,x|d|AT_REST|bpm|54|gps|13.3541,52.5158|s|0",
+  "cow025": "o|1|hide|o,x|d|DRINKING|bpm|50|gps|13.3550,52.5150|s|0",
+  "cow026": "o|1|hide|o,x|d|AT_REST|bpm|54|gps|13.3545,52.5159|s|0",
+  "cow027": "o|1|hide|o,x|d|AT_REST|bpm|52|gps|13.3558,52.5152|s|0",
+  "cow029": "o|1|hide|o,x|d|AT_REST|bpm|51|gps|13.3495,52.5111|s|0",
+  "cow028": "o|1|hide|o,x|d|DRINKING|bpm|54|gps|13.348,52.5111|s|0",
+  "cow033": "o|1|hide|o,x|d|AT_REST|bpm|54|gps|13.3489,52.5179|s|0",
+  "cow031": "o|1|hide|o,x|d|GRAZING|bpm|53|gps|13.355,52.5159|s|0",
+  "cow030": "o|1|hide|o,x|d|GRAZING|bpm|52|gps|13.3543,52.5154|s|0",
+  "cow037": "o|1|hide|o,x|d|GRAZING|bpm|54|gps|13.3494,52.5118|s|0",
+  "cow036": "o|1|hide|o,x|d|GRAZING|bpm|50|gps|13.3487,52.5185|s|0",
+  "cow035": "o|1|hide|o,x|d|GRAZING|bpm|52|gps|13.3539,52.5139|s|0",
+  "cow034": "o|1|hide|o,x|d|AT_REST|bpm|55|gps|13.3543,52.5151|s|0",
+  "cow032": "o|1|hide|o,x|d|AT_REST|bpm|51|gps|13.3489,52.5114|s|0",
+  "cow038": "o|1|hide|o,x|d|GRAZING|bpm|50|gps|13.3547,52.5156|s|0",
+  "cow039": "o|1|hide|o,x|d|AT_REST|bpm|51|gps|13.3533,52.5138|s|0",
+  "cow040": "o|1|hide|o,x|d|AT_REST|bpm|55|gps|13.3483,52.5168|s|0",
+  "pig001": "d|AT_REST|bpm|64|gps|13.3507,52.5183|s|0",
+  "pig002": "d|AT_REST|bpm|61|gps|13.3500,52.5188|s|0",
+  "pig003": "d|FORAGING|bpm|62|gps|13.350,52.518|s|0",
+  "pig004": "d|FORAGING|bpm|63|gps|13.3505,52.5186|s|0",
+  "pig007": "d|FORAGING|bpm|64|gps|13.3509,52.5186|s|0",
+  "pig008": "d|AT_REST|bpm|60|gps|13.3502,52.5184|s|0",
+  "pig009": "d|AT_REST|bpm|65|gps|13.3509,52.5181|s|0",
+  "pig006": "d|FORAGING|bpm|61|gps|13.3504,52.5184|s|0",
+  "pig005": "d|WALLOWING|bpm|62|gps|13.3506,52.5181|s|0",
+  "pig012": "d|FORAGING|bpm|63|gps|13.3507,52.5186|s|0",
+  "pig010": "d|FORAGING|bpm|65|gps|13.3505,52.5182|s|0",
+  "pig011": "d|FORAGING|bpm|63|gps|13.3509,52.5185|s|0",
+  "pig013": "d|FORAGING|bpm|60|gps|13.3508,52.5183|s|0",
+  "pig018": "d|FORAGING|bpm|60|gps|13.3509,52.5180|s|0",
+  "pig019": "d|AT_REST|bpm|62|gps|13.3500,52.5186|s|0",
+  "pig016": "d|AT_REST|bpm|63|gps|13.3504,52.5188|s|0",
+  "pig017": "d|FORAGING|bpm|64|gps|13.3503,52.5188|s|0",
+  "pig014": "d|FORAGING|bpm|64|gps|13.3504,52.5183|s|0",
+  "pig015": "d|FORAGING|bpm|62|gps|13.3502,52.5181|s|0",
+  "pig021": "d|FORAGING|bpm|60|gps|13.3505,52.5187|s|0",
+  "pig020": "d|AT_REST|bpm|61|gps|13.3509,52.5184|s|0",
+  "pig023": "d|WALLOWING|bpm|62|gps|13.3504,52.5182|s|0",
+  "pig022": "d|AT_REST|bpm|61|gps|13.3503,52.5189|s|0",
+  "pig024": "d|AT_REST|bpm|60|gps|13.3501,52.5188|s|0",
+  "pig028": "d|DRINKING|bpm|61|gps|13.3501,52.5181|s|0",
+  "pig029": "d|AT_REST|bpm|60|gps|13.3505,52.5181|s|0",
+  "pig027": "d|AT_REST|bpm|64|gps|13.3508,52.5182|s|0",
+  "pig025": "d|AT_REST|bpm|61|gps|13.3507,52.5180|s|0",
+  "pig026": "d|DRINKING|bpm|63|gps|13.3505,52.5189|s|0",
+  "pig030": "d|AT_REST|bpm|64|gps|13.3503,52.5184|s|0",
+  "pig033": "d|FORAGING|bpm|65|gps|13.3509,52.5189|s|0",
+  "pig032": "d|FORAGING|bpm|60|gps|13.3509,52.5184|s|0",
+  "pig038": "d|FORAGING|bpm|60|gps|13.3507,52.5186|s|0",
+  "pig037": "d|FORAGING|bpm|61|gps|13.3504,52.518|s|0",
+  "pig036": "d|FORAGING|bpm|64|gps|13.3507,52.5185|s|0",
+  "pig031": "d|FORAGING|bpm|63|gps|13.3500,52.5189|s|0",
+  "pig035": "d|AT_REST|bpm|62|gps|13.3509,52.5189|s|0",
+  "pig034": "d|WALLOWING|bpm|62|gps|13.3503,52.5181|s|0",
+  "pig039": "d|AT_REST|bpm|64|gps|13.3503,52.5188|s|0",
+  "pig040": "d|AT_REST|bpm|64|gps|13.3503,52.5188|s|0"
+}'
+
+curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOperations/upsert' \
+    -H 'Content-Type: application/json' \
+    -H 'Link: <'"${TUTORIAL_DATA_MODELS_CONTEXT}"'>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
+    -H 'NGSILD-Tenant: openiot' \
+    -H 'Accept: application/ld+json' \
+    --data-raw '[
+  {
+    "id": "urn:ngsi-ld:Device:tractor001",
+    "type": "Tractor"
+  },
+  {
+    "id": "urn:ngsi-ld:Device:tractor002",
+    "type": "Tractor"
+  },
+  {
+    "id": "urn:ngsi-ld:Device:tractor003",
+    "type": "Tractor"
+  },
+  {
+    "id": "urn:ngsi-ld:Device:tractor004",
+    "type": "Tractor"
+  },
+  {
+    "id": "urn:ngsi-ld:Device:water001",
+    "type": "Water"
+  },
+  {
+    "id": "urn:ngsi-ld:Device:water002",
+    "type": "Water"
+  },
+  {
+    "id": "urn:ngsi-ld:Device:water003",
+    "type": "Water"
+  },
+  {
+    "id": "urn:ngsi-ld:Device:water004",
+    "type": "Water"
+  },
+  {
+    "id": "urn:ngsi-ld:Device:filling001",
+    "type": "FillingLevelSensor"
+  },
+  {
+    "id": "urn:ngsi-ld:Device:filling002",
+    "type": "FillingLevelSensor"
+  },
+  {
+    "id": "urn:ngsi-ld:Device:filling003",
+    "type": "FillingLevelSensor"
+  },
+  {
+    "id": "urn:ngsi-ld:Device:filling004",
+    "type": "FillingLevelSensor"
+  }
+]'
+
+echo -e "\n \033[1;32mdone\033[0m"
