@@ -76,9 +76,9 @@ The tutorial uses [cUrl](https://ec.haxx.se/) commands throughout, but is also a
 
 # Persisting and Querying Time Series Data (CrateDB)
 
-> "Forever is composed of nows."
+> "Age is something that doesn't matter, unless you are a cheese."
 >
-> — Emily Dickinson
+> — Luis Buñuel
 
 Previous tutorials have shown how to persist historic context data into a range of databases such as **MySQL** and
 **PostgreSQL**. using [Apache Flume](https://github.com/FIWARE/tutorials.Historic-Context) and
