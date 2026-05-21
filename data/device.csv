@@ -1,4 +1,4 @@
-id,type,description,category,controlledProperty,supportedProtocol,humidity,heartRateX,location_typeX,lngX,latX,status,batteryLevel,deviceState,controlledAsset,deviceModel
+id,type,description,category,controlledProperty,supportedProtocol,humidity,heartRate,location_type,lng,lat,status,batteryLevel,deviceState,controlledAsset,deviceModel
 urn:ngsi-ld:Device:cow001,Device,Beany's Animal Collar,sensor,"[""heartRate"",""location"",""status""]",ul20,,51,Point,13.34973,52.51139,AT REST,0.8,OK,urn:ngsi-ld:Animal:cow001,urn:ngsi-ld:DeviceModel:Collar
 urn:ngsi-ld:Device:cow002,Device,Trotter's Animal Collar,sensor,"[""heartRate"",""location"",""status""]",ul20,,54,Point,13.34806,52.51186,AT REST,0.8,OK,urn:ngsi-ld:Animal:cow002,urn:ngsi-ld:DeviceModel:Collar
 urn:ngsi-ld:Device:cow003,Device,Petal's Animal Collar,sensor,"[""heartRate"",""location"",""status""]",ul20,,51,Point,13.35509,52.5152,AT REST,0.8,OK,urn:ngsi-ld:Animal:cow003,urn:ngsi-ld:DeviceModel:Collar
