@@ -40,4 +40,6 @@ jobs:
     - name: Run Scorpio
       run: |
         ./services scorpio && ./services stop
-
+    - name: Run Coraine
+      run: |
+        ./services coraine && ./services stop
