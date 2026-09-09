@@ -10,7 +10,7 @@ set -e
 
 export $(cat .env | grep "#" -v)
 
-BROKER="http://orion:1026"
+BROKER="${BROKER:-http://orion:1026}"
 CONTEXT="http://context/user-context.jsonld"
 TENANT="openiot"
 DEVICES=("water001" "water002" "water003" "water004")

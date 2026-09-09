@@ -41,5 +41,9 @@ jobs:
       run: |
         ./services scorpio && ./services stop
     - name: Run Coraine
-      run: |
-        ./services coraine && ./services stop
+      run: ./services coraine
+    - name: Smoke Test (Coraine)
+      run: BROKER=http://coraine:1026 ./.github/test/iot_device_smoke_test
+    - name: Stop (Coraine)
+      if: always()
+      run: ./services stop

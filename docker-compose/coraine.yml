@@ -43,6 +43,7 @@ services:
       - none
       - --apiPlugins
       - admin
+      - --distributed
 
   farmer:
     environment:
@@ -70,4 +71,3 @@ services:
       - DUMMY_DEVICES_TRANSPORT=HTTP # Default transport used by dummy Io devices
       - DUMMY_DEVICES_PAYLOAD=JSON
       - CONTEXT_BROKER=http://coraine:${CORAINE_PORT}/ngsi-ld/v1 # URL of the context broker to update context
-
