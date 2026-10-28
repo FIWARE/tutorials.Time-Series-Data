@@ -13,7 +13,7 @@ echo -e "      \033[1m"${TUTORIAL_DATA_MODELS_CONTEXT}"\033[0m JSON-LD context"
 echo -e "\nCreating buildings for the farm ..."
 curl  -F "file=@./data/building.csv" http://tutorial:3000/csv/Building
 
-curl -s -H "NGSILD-Tenant: farmer"  -iX POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOperations/upsert' \
+curl -sS -H "NGSILD-Tenant: farmer"  -iX POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOperations/upsert' \
 -H 'Content-Type: application/json' \
 -H 'Link: <'"${TUTORIAL_DATA_MODELS_CONTEXT}"'>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
 -H 'Accept: application/ld+json' \
@@ -27,7 +27,7 @@ curl -s -H "NGSILD-Tenant: farmer"  -iX POST 'http://'"${CONTEXT_BROKER}"'/ngsi-
 sleep 3
 
 
-curl -s -o /dev/null -H "NGSILD-Tenant: openiot"  -iX POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOperations/upsert' \
+curl -sS -o /dev/null -H "NGSILD-Tenant: openiot"  -iX POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOperations/upsert' \
 -H 'Content-Type: application/json' \
 -H 'Link: <'"${TUTORIAL_DATA_MODELS_CONTEXT}"'>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
 -H 'Accept: application/ld+json' \
@@ -43,30 +43,30 @@ sleep 3
 
 
 echo -e "\nCreating animals for the farm ..."
-curl -s -o /dev/null -H "NGSILD-Tenant: openiot" -F "file=@./data/cow.csv" http://tutorial:3000/csv/Animal
-curl -s -o /dev/null -H "NGSILD-Tenant: openiot" -F "file=@./data/pig.csv" http://tutorial:3000/csv/Animal
+curl -sS -o /dev/null -H "NGSILD-Tenant: openiot" -F "file=@./data/cow.csv" http://tutorial:3000/csv/Animal
+curl -sS -o /dev/null -H "NGSILD-Tenant: openiot" -F "file=@./data/pig.csv" http://tutorial:3000/csv/Animal
 
 echo -e "Creating devices for the animals ..."
-curl -s -o /dev/null -H "NGSILD-Tenant: openiot" -F "file=@./data/device.csv" http://tutorial:3000/csv/Device
+curl -sS -o /dev/null -H "NGSILD-Tenant: openiot" -F "file=@./data/device.csv" http://tutorial:3000/csv/Device
 
 echo -e "Creating agri-data for the farmer ..."
-curl -s -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/agri-parcel.csv" http://tutorial:3000/csv/AgriParcel
-curl -s -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/agri-crop.csv" http://tutorial:3000/csv/AgriCrop
-curl -s -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/agri-farm.csv" http://tutorial:3000/csv/AgriFarm
-curl -s -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/agri-pest.csv" http://tutorial:3000/csv/AgriPest
-curl -s -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/agri-soil.csv" http://tutorial:3000/csv/AgriSoil
+curl -sS -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/agri-parcel.csv" http://tutorial:3000/csv/AgriParcel
+curl -sS -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/agri-crop.csv" http://tutorial:3000/csv/AgriCrop
+curl -sS -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/agri-farm.csv" http://tutorial:3000/csv/AgriFarm
+curl -sS -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/agri-pest.csv" http://tutorial:3000/csv/AgriPest
+curl -sS -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/agri-soil.csv" http://tutorial:3000/csv/AgriSoil
 
 echo -e "Creating personnel for the farm ..."
-curl -s -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/person.csv" http://tutorial:3000/csv/Person
+curl -sS -o /dev/null -H "NGSILD-Tenant: farmer" -F "file=@./data/person.csv" http://tutorial:3000/csv/Person
 
 echo -e "Creating weather observations readings ..."
-curl -s -o /dev/null -F "file=@./data/weather.csv" http://tutorial:3000/csv/Weather
+curl -sS -o /dev/null -F "file=@./data/weather.csv" http://tutorial:3000/csv/Weather
 
 
 
 echo -e "\nRegistering Farmer as data source ...\n"
 
-curl -s -iX POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/csourceRegistrations/' \
+curl -sS -iX POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/csourceRegistrations/' \
 -H 'Link: <http://context/user-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
 -H 'Content-Type: application/json' \
 -d '{
@@ -92,7 +92,7 @@ curl -s -iX POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/csourceRegistrations/'
 
 
 echo -e "\nRegistering Devices as data source ...\n"
-curl -s -iX POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/csourceRegistrations/' \
+curl -sS -iX POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/csourceRegistrations/' \
 -H "NGSILD-Tenant: farmer" \
 -H 'Link: <http://context/user-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
 -H 'Content-Type: application/json' \
@@ -114,7 +114,7 @@ curl -s -iX POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/csourceRegistrations/'
 
 
 echo -e "\nInitialising devices readings ... \n"
-curl -s -o /dev/null -iX PUT --location ''"${IOT_DEVICES}"'/devices' \
+curl -sS -o /dev/null -iX PUT --location ''"${IOT_DEVICES}"'/devices' \
 -H 'Content-Type: application/json' \
 -d '{
   "cow001": "o|1|hide|o,x|d|AT_REST|bpm|51|gps|13.3497,52.5113|s|0",
@@ -199,7 +199,7 @@ curl -s -o /dev/null -iX PUT --location ''"${IOT_DEVICES}"'/devices' \
   "pig040": "d|AT_REST|bpm|64|gps|13.3503,52.5188|s|0"
 }'
 
-curl -s -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOperations/upsert' \
+curl -sS -o /dev/null -X POST 'http://'"${CONTEXT_BROKER}"'/ngsi-ld/v1/entityOperations/upsert' \
     -H 'Content-Type: application/json' \
     -H 'Link: <'"${TUTORIAL_DATA_MODELS_CONTEXT}"'>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"' \
     -H 'NGSILD-Tenant: openiot' \
