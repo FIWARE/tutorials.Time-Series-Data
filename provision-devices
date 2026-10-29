@@ -17,7 +17,7 @@ printf "⏳ Provisioning IoT devices "
 # Create a service groups for all JSON IoT devices
 #
 
-curl -sSf -o /dev/null --retry 10 --retry-all-errors --retry-delay 10 -X POST \
+curl -sSf -o /dev/null -X POST \
   'http://iot-agent:4041/iot/services' \
   -H 'Content-Type: application/json' \
   -H 'fiware-service: openiot' \
@@ -186,7 +186,7 @@ curl -sSf -o /dev/null --retry 10 --retry-all-errors --retry-delay 10 -X POST \
 # Provision actuators for Farm 001
 #
 
-curl -sSf -o /dev/null --retry 10 --retry-all-errors --retry-delay 10 -X POST \
+curl -sSf -o /dev/null -X POST \
   'http://iot-agent:4041/iot/devices' \
   -H 'Content-Type: application/json' \
   -H 'fiware-service: openiot' \
@@ -242,7 +242,7 @@ curl -sSf -o /dev/null --retry 10 --retry-all-errors --retry-delay 10 -X POST \
 # Provision actuators for Farm 002
 #
 
-curl -sSf -o /dev/null --retry 10 --retry-all-errors --retry-delay 10 -X POST \
+curl -sSf -o /dev/null -X POST \
   'http://iot-agent:4041/iot/devices' \
   -H 'Content-Type: application/json' \
   -H 'fiware-service: openiot' \
@@ -298,7 +298,7 @@ curl -sSf -o /dev/null --retry 10 --retry-all-errors --retry-delay 10 -X POST \
 # Provision actuators for Farm 003
 #
 
-curl -sSf -o /dev/null --retry 10 --retry-all-errors --retry-delay 10 -X POST \
+curl -sSf -o /dev/null -X POST \
   'http://iot-agent:4041/iot/devices' \
   -H 'Content-Type: application/json' \
   -H 'fiware-service: openiot' \
@@ -354,7 +354,7 @@ curl -sSf -o /dev/null --retry 10 --retry-all-errors --retry-delay 10 -X POST \
 # Provision actuators for Farm 004
 #
 
-curl -sSf -o /dev/null --retry 10 --retry-all-errors --retry-delay 10 -X POST \
+curl -sSf -o /dev/null -X POST \
   'http://iot-agent:4041/iot/devices' \
   -H 'Content-Type: application/json' \
   -H 'fiware-service: openiot' \

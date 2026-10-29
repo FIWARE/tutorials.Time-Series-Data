@@ -106,7 +106,7 @@ services:
       - IOTA_CB_NGSI_VERSION=ld # use NGSI-LD when sending updates for active attributes
       - IOTA_JSON_LD_CONTEXT=http://context/user-context.jsonld
       - IOTA_FALLBACK_TENANT=openiot
-      - IOTA_MULTI_CORE=true
+      - IOTA_MULTI_CORE=false
       - IOTA_AMQP_DISABLED=true
       - IOTA_MQTT_DISABLED=true
     healthcheck:
